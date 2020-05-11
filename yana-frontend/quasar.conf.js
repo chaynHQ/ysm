@@ -35,7 +35,7 @@ module.exports = configure(function (ctx) {
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font', // optional, you are not bound to it
+      // 'roboto-font', // optional, you are not bound to it
       // 'material-icons', // optional, you are not bound to it
     ],
 
@@ -57,7 +57,7 @@ module.exports = configure(function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: ['LoadingBar']
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
@@ -127,8 +127,8 @@ module.exports = configure(function (ctx) {
         description: 'A companion app for sexual assault survivors',
         display: 'standalone',
         orientation: 'portrait',
-        background_color: '#ffffff',
-        theme_color: '#027be3',
+        background_color: '#fff5f0',
+        theme_color: '#fff5f0',
         icons: [
           {
             src: 'statics/icons/icon-128x128.png',

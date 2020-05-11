@@ -12,13 +12,37 @@
 // to match your app's branding.
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
-$primary   : #1976D2;
-$secondary : #26A69A;
-$accent    : #9C27B0;
+$primary: #1d2445;
+$secondary: #0c7ca1;
+$accent: #efa78e;
 
-$dark      : #1D1D1D;
+$dark: #1d2445;
 
-$positive  : #21BA45;
-$negative  : #C10015;
-$info      : #31CCEC;
-$warning   : #F2C037;
+$positive: #21ba45;
+$negative: #c10015;
+$info: #efa78e;
+$warning: #d44a6a;
+
+$background: #fff5f0;
+
+// ---
+// Custom font
+// ---
+
+@import url('https://fonts.googleapis.com/css?family=Nunito:100,300,400,500,700,900&amp;display=swap');
+
+$typography-font-family: 'Nunito', '-apple-system', 'Helvetica Neue', Helvetica,
+  Arial, sans-serif;
+
+// Fix font-weight values to match the imported font family weights
+$text-weights: (
+  thin: 100,
+  light: 300,
+  regular: 400,
+  medium: 500,
+  bold: 700,
+  bolder: 900
+) !default;
+$button-font-weight: 700;
+
+// ---
