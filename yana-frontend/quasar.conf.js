@@ -114,8 +114,8 @@ module.exports = function (/* ctx */) {
         description: 'A companion app for survivors of sexual assault',
         display: 'standalone',
         orientation: 'portrait',
-        background_color: '#ffffff',
-        theme_color: '#027be3',
+        background_color: '#fff5f0',
+        theme_color: '#fff5f0',
         icons: [
           {
             src: 'statics/icons/icon-128x128.png',
