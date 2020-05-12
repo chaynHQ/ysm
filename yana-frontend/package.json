@@ -12,7 +12,17 @@
     "build": "quasar build",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ./",
     "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
+    "test:unit": "NODE_ENV=test jest",
+    "test:unit:watch": "NODE_ENV=test jest --watch",
+    "test:unit:watchAll": "NODE_ENV=test jest --watchAll",
+    "serve:test:coverage": "quasar serve test/jest/coverage/lcov-report/ --port 8788",
+    "concurrently:dev:jest": "concurrently \"quasar dev\" \"NODE_ENV=test jest --watch\"",
+    "test:unit:ui": "majestic",
+    "audit:snyk": "snyk test --json > ./test/audits/snyk.json",
+    "audit:node_modules": "yarn audit --json > ./test/audits/node_modules_audit.json",
+    "audit:licenses": "nlf --summary detail > ./test/audits/licenses.txt",
+    "audit:lighthouse": "lighthouse http://localhost:4000 --view --output-path=./test/lighthouse/reports/index.html --config-path=./test/lighthouse/configs/full-config.js"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -23,12 +33,16 @@
   "devDependencies": {
     "@quasar/app": "^1.0.0",
     "@quasar/cli": "^1.0.7",
+    "@quasar/quasar-app-extension-testing": "^1.0.0",
+    "@quasar/quasar-app-extension-testing-quality": "^1.0.0-beta.8",
+    "@quasar/quasar-app-extension-testing-unit-jest": "^1.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-loader": "^3.0.3",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-vue": "^6.1.2",
+    "majestic": "^1.2.24",
     "prettier": "^2.0.5"
   },
   "engines": {

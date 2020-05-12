@@ -18,7 +18,7 @@
         Are you in immediate distress or danger?
       </q-btn>
 
-      <q-btn unelevated color="primary" class="q-mt-lg q-mx-md" padding="sm">
+      <q-btn to="/journey" unelevated color="primary" class="q-mt-lg q-mx-md" padding="sm">
         Start your journey
       </q-btn>
     </div>
@@ -27,6 +27,6 @@
 
 <script>
 export default {
-  name: 'PageIndex',
+  name: 'LandingPage',
 };
 </script>
