@@ -1,3 +1,10 @@
 body {
   background-color: $background;
 }
+
+.landing-page {
+  background-image: url('~assets/YANA-background-03.png');
+  background-position: center 105%;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
