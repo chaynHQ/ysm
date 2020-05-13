@@ -9,7 +9,8 @@
   "private": true,
   "scripts": {
     "dev": "quasar dev",
-    "build": "quasar build",
+    "dev:pwa": "quasar dev -m pwa",
+    "build": "quasar build -m pwa",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ./",
     "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore ./",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
