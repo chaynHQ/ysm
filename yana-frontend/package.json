@@ -2,6 +2,7 @@
   "name": "yana",
   "version": "0.0.1",
   "description": "A companion app for survivors of sexual assault",
+  "license": "MIT",
   "productName": "YANA",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
