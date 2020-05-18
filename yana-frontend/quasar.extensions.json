@@ -1,0 +1,20 @@
+{
+  "@quasar/testing": {
+    "harnesses": [
+      "unit-jest",
+      "quality"
+    ]
+  },
+  "@quasar/testing-unit-jest": {
+    "babel": "babelrc",
+    "options": [
+      "scripts",
+      "majestic"
+    ]
+  },
+  "@quasar/testing-quality": {
+    "options": [
+      "scripts"
+    ]
+  }
+}
