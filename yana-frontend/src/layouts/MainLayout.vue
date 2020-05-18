@@ -6,7 +6,7 @@
       </q-page-container>
 
       <q-footer class="bg-primary text-white">
-        <q-toolbar> </q-toolbar>
+        <q-toolbar />
       </q-footer>
     </q-layout>
   </div>
