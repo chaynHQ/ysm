@@ -8,6 +8,7 @@ A companion app for survivors of sexual assault.
 
 This repo consists of:
 
+- [`yana-backend`](yana-backend/README.md)
 - [`yana-frontend`](yana-frontend/README.md)
 
 ## Support Us
