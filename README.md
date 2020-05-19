@@ -1,6 +1,6 @@
 # You Are Not Alone (YANA)
 
-![GitHub Actions CI workflow badge](https://github.com/chaynHQ/yana/workflows/.github/workflows/ci.yml/badge.svg)
+![GitHub Actions CI workflow badge](https://github.com/chaynHQ/yana/workflows/YANA%20CI%20pipeline/badge.svg)
 
 A companion app for survivors of sexual assault.
 
