@@ -1,6 +1,6 @@
 # YANA Frontend
 
-A [Quasar](https://quasar.dev/) VueJS app (with PWA enabled) and Jest unit testing.
+A [Quasar](https://quasar.dev/) VueJS app with PWA mode enabled and [Jest](https://jestjs.io/) unit testing.
 
 ## Development
 
