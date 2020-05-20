@@ -1,4 +1,10 @@
-import Vue from 'vue';
 import axios from 'axios';
+import Vue from 'vue';
 
-Vue.prototype.$axios = axios;
+const axiosInstance = axios.create({
+  baseURL: '/api',
+});
+
+Vue.prototype.$axios = axiosInstance;
+
+export { axiosInstance };

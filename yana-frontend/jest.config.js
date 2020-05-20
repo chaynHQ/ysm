@@ -33,6 +33,8 @@ module.exports = {
     '^~/(.*)$': '<rootDir>/$1',
     '^src/(.*)$': '<rootDir>/src/$1',
     '.*css$': '<rootDir>/test/jest/utils/stub.css',
+    '^components/(.*)$': '<rootDir>src/components/$1',
+    '^assets/(.*)$': '<rootDir>src/assets/$1',
   },
   transform: {
     '.*\\.vue$': 'vue-jest',
