@@ -29,15 +29,15 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
-    "quasar": "^1.0.0",
+    "quasar": "^1.11.3",
     "vue-i18n": "^8.0.0"
   },
   "devDependencies": {
-    "@quasar/app": "^1.0.0",
+    "@quasar/app": "^1.8.10",
     "@quasar/cli": "^1.0.7",
     "@quasar/quasar-app-extension-testing": "^1.0.0",
     "@quasar/quasar-app-extension-testing-quality": "^1.0.0-beta.8",
-    "@quasar/quasar-app-extension-testing-unit-jest": "^1.0.0",
+    "@quasar/quasar-app-extension-testing-unit-jest": "^1.1.0-beta.2",
     "babel-eslint": "^10.0.1",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
