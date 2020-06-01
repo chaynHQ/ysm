@@ -6,15 +6,15 @@ describe('App.vue', () => {
   const wrapper = mountQuasar(App);
   const vm = wrapper.vm;
 
-  it('is instantiated', () => {
+  it('should be instantiated', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('has the expected component name', () => {
+  it('should have the expected component name', () => {
     expect(vm.$options.name).toBe('App');
   });
 
-  it('has the expected ID for the wrapper DOM node', () => {
+  it('should have the expected ID for the wrapper DOM node', () => {
     expect(wrapper.attributes('id')).toBe('q-app');
   });
 });

@@ -9,6 +9,18 @@ A [NestJS](https://nestjs.com/) API server with [Jest](https://jestjs.io/) testi
 - NodeJS v10+
 - Yarn v1.21+
 
+### Set up local env
+
+Certain config values are required to run the server.
+
+For local development, create a new **`.env.development`** at the root of the backend folder, and add in the following:
+
+```shell
+STORYBLOK_TOKEN={add here the API token from Storyblok / another dev}
+```
+
+Note that tests will use a separate `.env.test` which should already be present. When adding new config make sure to add a dummy 'noop' value in this test env file and commit to the repo.
+
 ### Install dependencies
 
 ```bash

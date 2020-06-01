@@ -2,7 +2,23 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/Index.vue') }],
+    children: [
+      {
+        path: '',
+        name: 'Home',
+        component: () => import('pages/Index.vue'),
+      },
+      {
+        path: 'resources',
+        name: 'resources',
+        component: () => import('pages/resources/Index.vue'),
+      },
+      {
+        path: 'resources/:slug',
+        name: 'resource',
+        component: () => import('pages/resources/Resource.vue'),
+      },
+    ],
   },
 ];
 
