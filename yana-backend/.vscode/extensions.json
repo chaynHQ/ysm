@@ -1,9 +1,5 @@
 {
-  "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "rbbit.typescript-hero"
-  ],
+  "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
   "unwantedRecommendations": [
     "hookyqr.beautify",
     "dbaeumer.jshint",
