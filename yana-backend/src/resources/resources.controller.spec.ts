@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-
 import { resourcesListFixture, singleResourceFixture } from '../../test/fixtures/resources';
+import { FiltersService } from './filters.service';
 import { ResourceSerialiserService } from './resource-serialiser.service';
 import { ResourcesController } from './resources.controller';
 import { ResourcesService } from './resources.service';
@@ -13,7 +13,7 @@ describe('Resources Controller', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ResourcesController],
-      providers: [ConfigService, ResourceSerialiserService, ResourcesService],
+      providers: [ConfigService, FiltersService, ResourceSerialiserService, ResourcesService],
     }).compile();
 
     controller = module.get<ResourcesController>(ResourcesController);
@@ -30,7 +30,7 @@ describe('Resources Controller', () => {
 
       jest.spyOn(resourcesService, 'list').mockResolvedValue(output);
 
-      expect(await controller.list()).toBe(output);
+      expect(await controller.list(undefined)).toBe(output);
     });
   });
 

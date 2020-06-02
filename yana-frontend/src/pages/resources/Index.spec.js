@@ -1,5 +1,4 @@
 import { mountQuasar } from '~/test/jest/utils';
-
 import Index from './Index.vue';
 
 describe('pages/resources/Index.vue', () => {

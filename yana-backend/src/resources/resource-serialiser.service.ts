@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import _pickBy from 'lodash/pickBy';
 import { RichtextInstance, StoryData } from 'storyblok-js-client';
-
-import { ContentItem, Resource } from './resource';
+import { ContentItem, Resource } from './resource.types';
 
 @Injectable()
 export class ResourceSerialiserService {
@@ -24,14 +23,13 @@ export class ResourceSerialiserService {
       icon: story.content.icon,
       subtitle: story.content.subtitle || null,
       descriptionHtml: richTextResolver.render(story.content.description),
+      countries: story.content.countries,
       content,
     };
   }
 
   private serialiseContentItem(
-    contentItem: {
-      [key: string]: any;
-    },
+    contentItem: Record<string, any>,
     richTextResolver: RichtextInstance,
   ): ContentItem {
     const innerItem = contentItem.item[0];

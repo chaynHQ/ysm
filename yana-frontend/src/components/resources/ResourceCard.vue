@@ -9,6 +9,13 @@
     </q-card-section>
 
     <q-card-section class="q-pt-none">
+      <resource-countries-list
+        :countries="resource.countries"
+        :mappings="countryMappings"
+      ></resource-countries-list>
+    </q-card-section>
+
+    <q-card-section class="q-pt-none">
       <!-- eslint-disable vue/no-v-html -->
       <div class="text-body1" v-html="resource.descriptionHtml"></div>
     </q-card-section>
@@ -16,10 +23,17 @@
 </template>
 
 <script>
+import ResourceCountriesList from './ResourceCountriesList';
+
 export default {
   name: 'ResourceCard',
+  components: { ResourceCountriesList },
   props: {
     resource: {
+      type: Object,
+      required: true,
+    },
+    countryMappings: {
       type: Object,
       required: true,
     },
