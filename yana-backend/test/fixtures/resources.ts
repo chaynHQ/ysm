@@ -1,4 +1,4 @@
-import { Resource } from 'src/resources/resource';
+import { Resource } from 'src/resources/resource.types';
 
 export const richTextPlaceholder = 'RICH TEXT PLACEHOLDER';
 
@@ -10,6 +10,7 @@ export const resourcesListFixture: Resource[] = [
     icon: 'link-2-outline',
     subtitle: null,
     descriptionHtml: richTextPlaceholder,
+    countries: ['GB'],
   },
   {
     id: '9f1b48d5-7299-432d-b3ee-29f1855a4363',
@@ -18,6 +19,7 @@ export const resourcesListFixture: Resource[] = [
     icon: 'file-outline',
     subtitle: null,
     descriptionHtml: richTextPlaceholder,
+    countries: ['GLOBAL', 'GB'],
   },
   {
     id: '020e96d7-f1d3-4dc2-954e-3988cdd57efa',
@@ -26,6 +28,7 @@ export const resourcesListFixture: Resource[] = [
     icon: 'file-outline',
     subtitle: 'This is a test resource',
     descriptionHtml: richTextPlaceholder,
+    countries: ['GLOBAL'],
   },
 ];
 
@@ -36,6 +39,7 @@ export const singleResourceFixture: Resource = {
   icon: 'link-2-outline',
   subtitle: null,
   descriptionHtml: richTextPlaceholder,
+  countries: ['GB'],
   content: [
     {
       type: 'external_link',
@@ -43,7 +47,7 @@ export const singleResourceFixture: Resource = {
       title: 'NHS - How to access mental health services',
       descriptionHtml: richTextPlaceholder,
       link:
-        'https://www.nhs.uk/using-the-nhs/nhs-services/mental-health-services/how-to-access-mental-health-services',
+        'https://www.nhs.uk/using-the-nhs/nhs-services/mental-health-services/how-to-access-mental-health-services/',
     },
   ],
 };

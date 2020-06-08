@@ -5,6 +5,7 @@ export const singleResource = {
   icon: 'link-2-outline',
   subtitle: null,
   descriptionHtml: '<p>I am rich text</p>',
+  countries: ['GB'],
   content: [
     {
       type: 'external_link',

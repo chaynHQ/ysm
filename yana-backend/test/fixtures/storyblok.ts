@@ -12,6 +12,7 @@ export const storyblokResourcesListFixture = {
         icon: 'link-2-outline',
         subtitle: '',
         component: 'resource',
+        countries: ['GB'],
         description: {
           type: 'doc',
           content: [
@@ -26,8 +27,6 @@ export const storyblokResourcesListFixture = {
             },
           ],
         },
-        _editable:
-          '<!--#storyblok#{"name": "resource", "space": "82492", "uid": "f715192a-fe7d-48e7-96cf-2166d03d8526", "id": "12207237"}-->',
       },
       slug: 'mental-health-services',
       full_slug: 'resources/mental-health-services',
@@ -56,6 +55,7 @@ export const storyblokResourcesListFixture = {
         icon: 'file-outline',
         subtitle: '',
         component: 'resource',
+        countries: ['GLOBAL', 'GB'],
         description: {
           type: 'doc',
           content: [
@@ -70,8 +70,6 @@ export const storyblokResourcesListFixture = {
             },
           ],
         },
-        _editable:
-          '<!--#storyblok#{"name": "resource", "space": "82492", "uid": "5f468144-0c14-4b40-b230-2ccd34ada1ed", "id": "12101418"}-->',
       },
       slug: 'another-test',
       full_slug: 'resources/another-test',
@@ -100,6 +98,7 @@ export const storyblokResourcesListFixture = {
         icon: 'file-outline',
         subtitle: 'This is a test resource',
         component: 'resource',
+        countries: ['GLOBAL'],
         description: {
           type: 'doc',
           content: [
@@ -128,8 +127,6 @@ export const storyblokResourcesListFixture = {
             },
           ],
         },
-        _editable:
-          '<!--#storyblok#{"name": "resource", "space": "82492", "uid": "6eeb71ba-e883-41d2-98be-480a279c7c67", "id": "11839563"}-->',
       },
       slug: 'test-1',
       full_slug: 'resources/test-1',
@@ -162,6 +159,7 @@ export const storyblokSingleResourceFixture = {
       icon: 'link-2-outline',
       subtitle: '',
       component: 'resource',
+      countries: ['GB'],
       description: {
         type: 'doc',
         content: [
@@ -183,34 +181,14 @@ export const storyblokSingleResourceFixture = {
             {
               _uid: '48583500-2ece-4188-9c76-1d60f9a50579',
               link:
-                'https://www.nhs.uk/using-the-nhs/nhs-services/mental-health-services/how-to-access-mental-health-services',
+                'https://www.nhs.uk/using-the-nhs/nhs-services/mental-health-services/how-to-access-mental-health-services/',
               component: 'external_link',
-              _editable:
-                '<!--#storyblok#{"name": "external_link", "space": "82492", "uid": "48583500-2ece-4188-9c76-1d60f9a50579", "id": "12207237"}-->',
             },
           ],
           title: 'NHS - How to access mental health services',
           component: 'content_item',
-          description: {
-            type: 'doc',
-            content: [
-              {
-                type: 'paragraph',
-                content: [
-                  {
-                    text: 'This is the NHS mental health services link',
-                    type: 'text',
-                  },
-                ],
-              },
-            ],
-          },
-          _editable:
-            '<!--#storyblok#{"name": "content_item", "space": "82492", "uid": "4c74945e-9a62-42ac-9e71-fbb8252db29b", "id": "12207237"}-->',
         },
       ],
-      _editable:
-        '<!--#storyblok#{"name": "resource", "space": "82492", "uid": "f715192a-fe7d-48e7-96cf-2166d03d8526", "id": "12207237"}-->',
     },
     slug: 'mental-health-services',
     full_slug: 'resources/mental-health-services',

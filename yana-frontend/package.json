@@ -29,6 +29,8 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
+    "lodash-es": "^4.17.15",
+    "qs": "^6.9.4",
     "quasar": "^1.11.3",
     "vue-i18n": "^8.0.0"
   },

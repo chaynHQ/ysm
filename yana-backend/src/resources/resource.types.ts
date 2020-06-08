@@ -5,6 +5,7 @@ export interface Resource {
   icon: string;
   subtitle?: string;
   descriptionHtml: string;
+  countries: string[];
   content?: ContentItem[];
 }
 export type ContentItem = {
@@ -12,4 +13,4 @@ export type ContentItem = {
   id: string;
   title: string;
   descriptionHtml: string;
-} & { [key: string]: any };
+} & Record<string, string>;

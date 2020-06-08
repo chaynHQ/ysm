@@ -1,14 +1,13 @@
 import * as Quasar from 'quasar';
 import { singleResource } from '~/test/jest/fixtures/resources';
 import { mountQuasar } from '~/test/jest/utils';
-
 import ResourceCard from './ResourceCard.vue';
 
 const QCard = Quasar.QCard;
 
-describe('pages/resources/ResourceCard.vue', () => {
+describe('components/resources/ResourceCard.vue', () => {
   const wrapper = mountQuasar(ResourceCard, {
-    propsData: { resource: singleResource },
+    propsData: { resource: singleResource, countryMappings: {} },
   });
   const vm = wrapper.vm;
 
