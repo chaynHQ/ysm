@@ -187,6 +187,20 @@ export const storyblokSingleResourceFixture = {
           ],
           title: 'NHS - How to access mental health services',
           component: 'content_item',
+          description: {
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                content: [
+                  {
+                    text: 'This is the NHS mental health services link',
+                    type: 'text',
+                  },
+                ],
+              },
+            ],
+          },
         },
       ],
     },
