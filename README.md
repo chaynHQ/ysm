@@ -1,6 +1,6 @@
-# You Are Not Alone (YANA)
+# Your Story Matters (YSM)
 
-![GitHub Actions CI workflow badge](https://github.com/chaynHQ/yana/workflows/YANA%20CI%20pipeline/badge.svg)
+![GitHub Actions CI workflow badge](https://github.com/chaynHQ/ysm/workflows/YSM%20CI%20pipeline/badge.svg)
 
 A companion app for survivors of sexual assault.
 
@@ -8,9 +8,9 @@ A companion app for survivors of sexual assault.
 
 This repo consists of:
 
-- [`yana-backend`](yana-backend/README.md)
-- [`yana-frontend`](yana-frontend/README.md)
+- [`ysm-backend`](ysm-backend/README.md)
+- [`ysm-frontend`](ysm-frontend/README.md)
 
 ## Support Us
 
-YANA is created by Chayn a global volunteer network with over 400 volunteers from 15 countries. If you like what you see and you want to join our team of volunteers get in touch. Or you can [donate](https://www.paypal.me/chaynhq); all proceeds go to improving YANA and building more tools and resources at ChaynHQ.
+YSM is created by Chayn a global volunteer network with over 400 volunteers from 15 countries. If you like what you see and you want to join our team of volunteers get in touch. Or you can [donate](https://www.paypal.me/chaynhq); all proceeds go to improving YSM and building more tools and resources at ChaynHQ.

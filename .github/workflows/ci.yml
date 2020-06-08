@@ -1,4 +1,4 @@
-name: YANA CI pipeline
+name: YSM CI pipeline
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./yana-backend
+        working-directory: ./ysm-backend
 
     steps:
       - uses: actions/checkout@v2
@@ -28,9 +28,9 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: yana-backend-${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          key: ysm-backend-${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
           restore-keys: |
-            yana-backend-${{ runner.os }}-yarn--
+            ysm-backend-${{ runner.os }}-yarn--
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -55,7 +55,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./yana-frontend
+        working-directory: ./ysm-frontend
 
     steps:
       - uses: actions/checkout@v2
@@ -68,9 +68,9 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: yana-frontend-${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          key: ysm-frontend-${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
           restore-keys: |
-            yana-frontend-${{ runner.os }}-yarn--
+            ysm-frontend-${{ runner.os }}-yarn--
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
