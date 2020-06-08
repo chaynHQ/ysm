@@ -1,4 +1,4 @@
-# YANA Backend
+# YSM Backend
 
 A [NestJS](https://nestjs.com/) API server with [Jest](https://jestjs.io/) testing.
 

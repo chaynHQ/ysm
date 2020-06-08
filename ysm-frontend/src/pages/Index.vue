@@ -1,16 +1,16 @@
 <template>
   <q-page class="landing-page flex column content-center q-px-lg">
     <div class="flex flex-center">
-      <img alt="YANA logo" src="~assets/logo.png" height="100px" class="q-mt-lg" />
+      <img alt="YSM logo" src="~assets/logo.png" height="100px" class="q-mt-lg" />
     </div>
 
     <p class="q-mt-lg q-px-lg text-h6 text-center">
-      If you’ve been treated in a way that has made you feel uncomfortable or violated, use yana to
+      If you’ve been treated in a way that has made you feel uncomfortable or violated, use YSM to
       find out how to get support.
     </p>
 
     <p class="q-mt-md q-px-lg text-h6 text-center">
-      Let yana be your companion because You Are Not Alone.
+      Let YSM be your companion because You Are Not Alone.
     </p>
 
     <div class="q-mt-lg q-px-md flex column content-center">

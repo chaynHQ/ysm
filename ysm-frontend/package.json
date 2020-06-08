@@ -1,9 +1,9 @@
 {
-  "name": "yana",
+  "name": "ysm-frontend",
   "version": "0.0.1",
   "description": "A companion app for survivors of sexual assault",
   "license": "MIT",
-  "productName": "YANA",
+  "productName": "YSM",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
   "author": "Chayn",
