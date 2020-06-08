@@ -1,6 +1,6 @@
 export default function () {
   return {
-    filterOptions: [],
+    filterOptions: {},
     filters: {},
     resources: [],
     resource: null,

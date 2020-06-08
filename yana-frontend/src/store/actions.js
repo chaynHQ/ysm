@@ -1,6 +1,7 @@
 import { axiosInstance } from 'boot/axios';
 import _cloneDeep from 'lodash-es/cloneDeep';
 import _isEmpty from 'lodash-es/isEmpty';
+import _keyBy from 'lodash-es/keyBy';
 import _uniq from 'lodash-es/uniq';
 import {
   APPLY_FILTER,
@@ -16,12 +17,13 @@ export default {
   async [FETCH_FILTER_OPTIONS]({ state, commit }) {
     // Only fetch them if we don't already have them.
     // This means once we fetch them we cache them for the lifetime of the app instance. (We may want to add a time based expiry later).
-    if (state.filterOptions.length) {
+    if (!_isEmpty(state.filterOptions)) {
       return Promise.resolve();
     }
 
     const response = await axiosInstance.get('resources/filters');
-    commit(SET_FILTER_OPTIONS, response.data);
+    const optionsMap = _keyBy(response.data, 'field');
+    commit(SET_FILTER_OPTIONS, optionsMap);
   },
 
   async [APPLY_FILTER]({ state, dispatch, commit }, { field, value }) {

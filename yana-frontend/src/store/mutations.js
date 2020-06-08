@@ -1,9 +1,8 @@
-import _keyBy from 'lodash/keyBy';
 import { SET_FILTERS, SET_FILTER_OPTIONS, SET_RESOURCE, SET_RESOURCES } from './mutations.types';
 
 export default {
   [SET_FILTER_OPTIONS](state, options) {
-    state.filterOptions = _keyBy(options, 'field');
+    state.filterOptions = options;
   },
 
   [SET_FILTERS](state, filters) {
