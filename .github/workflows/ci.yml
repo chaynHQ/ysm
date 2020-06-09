@@ -47,6 +47,50 @@ jobs:
       - name: Build app
         run: yarn build
 
+  backend-deploy-staging:
+    name: 'Backend deploy to staging env (only on master push)'
+
+    if: github.ref == 'refs/heads/master'
+
+    needs: backend-test-and-build
+
+    runs-on: ubuntu-18.04 # Contains node v12.x and Yarn v1.22.x
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./ysm-backend
+
+    env:
+      PROJECT_ID: ${{ secrets.GCP_STAGING_PROJECT }}
+      RUN_REGION: europe-west1
+      SERVICE_NAME: ysm-backend
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup gcloud CLI
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '290.0.1'
+          service_account_key: ${{ secrets.GCP_STAGING_SA_KEY }}
+          project_id: ${{ secrets.GCP_STAGING_PROJECT }}
+
+      - name: Build and push image to Google Container Registry
+        run: |-
+          gcloud builds submit \
+            --quiet \
+            --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+
+      - name: Deploy image to Cloud Run
+        run: |-
+          gcloud run deploy "$SERVICE_NAME" \
+            --quiet \
+            --region "$RUN_REGION" \
+            --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+            --platform "managed" \
+            --allow-unauthenticated
+
   frontend-test-and-build:
     name: 'Frontend test and build'
 
