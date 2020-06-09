@@ -24,7 +24,8 @@
     "audit:snyk": "snyk test --json > ./test/audits/snyk.json",
     "audit:node_modules": "yarn audit --json > ./test/audits/node_modules_audit.json",
     "audit:licenses": "nlf --summary detail > ./test/audits/licenses.txt",
-    "audit:lighthouse": "lighthouse http://localhost:4000 --view --output-path=./test/lighthouse/reports/index.html --config-path=./test/lighthouse/configs/full-config.js"
+    "audit:lighthouse": "lighthouse http://localhost:4000 --view --output-path=./test/lighthouse/reports/index.html --config-path=./test/lighthouse/configs/full-config.js",
+    "deploy:dev": "yarn build && firebase deploy --only hosting"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -46,6 +47,7 @@
     "eslint-loader": "^3.0.3",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-vue": "^6.1.2",
+    "firebase-tools": "^8.4.2",
     "majestic": "^1.2.24",
     "prettier": "^2.0.5"
   },
