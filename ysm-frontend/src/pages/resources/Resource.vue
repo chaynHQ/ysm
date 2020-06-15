@@ -3,11 +3,11 @@
     <div v-if="resource" class="q-pa-md">
       <h1 class="text-h5">
         {{ resource.title }}
-        <q-icon :name="'eva-' + resource.icon" class="q-ml-sm text-primary"></q-icon>
+        <q-icon :name="'eva-' + resource.icon" class="q-ml-sm float-right text-primary"></q-icon>
       </h1>
       <h2 v-if="resource.subtitle" class="text-h6">{{ resource.subtitle }}</h2>
 
-      <div class="q-mt-md">
+      <div class="q-mt-sm">
         <resource-countries-list
           :countries="resource.countries"
           :mappings="filterOptionsForField('countries')"
@@ -17,15 +17,14 @@
       <!-- eslint-disable vue/no-v-html -->
       <div class="q-mt-md text-body1" v-html="resource.descriptionHtml"></div>
 
-      <q-card v-for="c in resource.content" :key="c.id" flat bordered class="q-mt-md">
-        <template v-if="c.type === 'external_link'">
-          <q-card-section>
-            <!-- eslint-disable vue/no-v-html -->
-            <div v-if="c.descriptionHtml" class="text-body1" v-html="c.descriptionHtml"></div>
-            <a :href="c.link" target="_blank" rel="noopener">{{ c.title }}</a>
-          </q-card-section>
-        </template>
-      </q-card>
+      <div class="q-py-sm">
+        <content-item
+          v-for="i in resource.content"
+          :key="i.id"
+          :item="i"
+          class="q-mt-sm"
+        ></content-item>
+      </div>
     </div>
   </q-page>
 </template>
@@ -37,10 +36,11 @@ import { Notify } from 'quasar';
 import { FETCH_RESOURCE, FETCH_FILTER_OPTIONS } from 'src/store/actions.types';
 
 import ResourceCountriesList from 'components/resources/ResourceCountriesList';
+import ContentItem from 'components/resources/ContentItem';
 
 export default {
   name: 'ResourcePage',
-  components: { ResourceCountriesList },
+  components: { ResourceCountriesList, ContentItem },
   preFetch({ store, currentRoute, redirect }) {
     const fetchFilterOptionsPromise = store.dispatch(FETCH_FILTER_OPTIONS);
 
