@@ -47,6 +47,50 @@ jobs:
       - name: Build app
         run: yarn build
 
+  backend-deploy-staging:
+    name: 'Backend deploy to staging env (only on master push)'
+
+    if: github.ref == 'refs/heads/master'
+
+    needs: backend-test-and-build
+
+    runs-on: ubuntu-18.04 # Contains node v12.x and Yarn v1.22.x
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./ysm-backend
+
+    env:
+      PROJECT_ID: ${{ secrets.GCP_STAGING_PROJECT }}
+      RUN_REGION: europe-west1
+      SERVICE_NAME: ysm-backend
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup gcloud CLI
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '290.0.1'
+          service_account_key: ${{ secrets.GCP_STAGING_SA_KEY }}
+          project_id: ${{ secrets.GCP_STAGING_PROJECT }}
+
+      - name: Build and push image to Google Container Registry
+        run: |-
+          gcloud builds submit \
+            --quiet \
+            --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+
+      - name: Deploy image to Cloud Run
+        run: |-
+          gcloud run deploy "$SERVICE_NAME" \
+            --quiet \
+            --region "$RUN_REGION" \
+            --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+            --platform "managed" \
+            --allow-unauthenticated
+
   frontend-test-and-build:
     name: 'Frontend test and build'
 
@@ -73,7 +117,7 @@ jobs:
             ysm-frontend-${{ runner.os }}-yarn--
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --non-interactive
 
       - name: Run linting
         run: yarn lint
@@ -83,3 +127,47 @@ jobs:
 
       - name: Build app
         run: yarn build
+
+  frontend-deploy-staging:
+    name: 'Frontend deploy to staging env (only on master push)'
+
+    if: github.ref == 'refs/heads/master'
+
+    needs: [frontend-test-and-build, backend-deploy-staging]
+
+    runs-on: ubuntu-18.04 # Contains node v12.x and Yarn v1.22.x
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./ysm-frontend
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Activate caching for yarn (same as the frontend-test-and-build cache)
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ysm-frontend-${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ysm-frontend-${{ runner.os }}-yarn--
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+
+      - name: Build production app
+        env:
+          NODE_ENV: production
+        run: yarn build
+
+      - name: Deploy to Firebase Hosting
+        run: |-
+          yarn firebase deploy \
+            --only hosting \
+            --project ${{ secrets.GCP_STAGING_PROJECT }} \
+            --token "${{ secrets.FIREBASE_CI_TOKEN }}"
