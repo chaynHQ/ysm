@@ -1,7 +1,5 @@
 import { Resource } from 'src/resources/resource.types';
 
-export const richTextPlaceholder = 'RICH TEXT PLACEHOLDER';
-
 export const resourcesListFixture: Resource[] = [
   {
     id: '4c4c24ae-966b-476f-abd9-b6b3a2e75b92',
@@ -9,7 +7,20 @@ export const resourcesListFixture: Resource[] = [
     title: 'Mental Health Services',
     icon: 'link-2-outline',
     subtitle: null,
-    descriptionHtml: richTextPlaceholder,
+    description: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              text: 'Here you can find mental health services applicable to you.',
+              type: 'text',
+            },
+          ],
+        },
+      ],
+    },
     countries: ['GB'],
   },
   {
@@ -18,7 +29,20 @@ export const resourcesListFixture: Resource[] = [
     title: 'Another test',
     icon: 'file-outline',
     subtitle: null,
-    descriptionHtml: richTextPlaceholder,
+    description: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              text: 'This is yet another test resource for you.',
+              type: 'text',
+            },
+          ],
+        },
+      ],
+    },
     countries: ['GLOBAL', 'GB'],
   },
   {
@@ -27,7 +51,34 @@ export const resourcesListFixture: Resource[] = [
     title: 'Test 1',
     icon: 'file-outline',
     subtitle: 'This is a test resource',
-    descriptionHtml: richTextPlaceholder,
+    description: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              text: 'This the test 1 resource',
+              type: 'text',
+            },
+          ],
+        },
+        {
+          type: 'paragraph',
+          content: [
+            {
+              text: 'Hello World!',
+              type: 'text',
+              marks: [
+                {
+                  type: 'bold',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
     countries: ['GLOBAL'],
   },
 ];
@@ -38,16 +89,89 @@ export const singleResourceFixture: Resource = {
   title: 'Mental Health Services',
   icon: 'link-2-outline',
   subtitle: null,
-  descriptionHtml: richTextPlaceholder,
+  description: {
+    type: 'doc',
+    content: [
+      {
+        type: 'paragraph',
+        content: [
+          {
+            text: 'Here you can find mental health services applicable to you.',
+            type: 'text',
+          },
+        ],
+      },
+    ],
+  },
   countries: ['GB'],
   content: [
     {
       type: 'external_link',
       id: '4c74945e-9a62-42ac-9e71-fbb8252db29b',
       title: 'NHS - How to access mental health services',
-      descriptionHtml: richTextPlaceholder,
+      description: {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                text: 'This is the NHS mental health services link',
+                type: 'text',
+              },
+            ],
+          },
+        ],
+      },
       link:
         'https://www.nhs.uk/using-the-nhs/nhs-services/mental-health-services/how-to-access-mental-health-services/',
+    },
+    {
+      type: 'note',
+      id: 'c9fbf48f-d7fa-4b4c-904f-b564433efc67',
+      title: 'Day 1 - Breathe',
+      description: {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                text: "Today, you'll learn how to breathe to create more space in your life.",
+                type: 'text',
+              },
+            ],
+          },
+        ],
+      },
+      content: {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                type: 'text',
+                marks: [
+                  {
+                    type: 'italic',
+                  },
+                ],
+              },
+              {
+                text: 'placerat',
+                type: 'text',
+                marks: [
+                  {
+                    type: 'bold',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
     },
   ],
 };

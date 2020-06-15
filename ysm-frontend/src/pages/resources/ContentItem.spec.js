@@ -1,22 +1,20 @@
 import { singleResource } from '~/test/jest/fixtures/resources';
 import { mountQuasar } from '~/test/jest/utils';
-import Index from './Index.vue';
+import ContentItem from './ContentItem.vue';
 
-describe('pages/resources/Index.vue', () => {
+describe('pages/resources/ContentItem.vue', () => {
   const store = {
     state: {
-      filterOptions: [],
-      filters: {},
-      resources: [singleResource],
+      resource: singleResource,
     },
     getters: {
-      filterOptionsForField: () => ({}),
-      filterIsActive: () => false,
-      hasAnyFilters: false,
+      contentItem: () => singleResource.content[0],
+      previousContentItem: () => null,
+      nextContentItem: () => null,
     },
   };
 
-  const wrapper = mountQuasar(Index, { $store: store });
+  const wrapper = mountQuasar(ContentItem, { $store: store });
   const vm = wrapper.vm;
 
   it('should be instantiated', () => {
@@ -24,10 +22,10 @@ describe('pages/resources/Index.vue', () => {
   });
 
   it('should have the expected component name', () => {
-    expect(vm.$options.name).toBe('ResourcesPage');
+    expect(vm.$options.name).toBe('ContentItemPage');
   });
 
   it('should have an expected class on the wrapper DOM node', () => {
-    expect(wrapper.classes('resources-page')).toBe(true);
+    expect(wrapper.classes('content-item-page')).toBe(true);
   });
 });

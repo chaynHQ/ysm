@@ -1,7 +1,6 @@
 import * as All from 'quasar';
 import { createLocalVue, shallowMount } from 'test-utils';
 import VueRouter from 'vue-router';
-import Vuex from 'vuex';
 
 const { Quasar, cookies } = All;
 const components = Object.keys(All).reduce((object, key) => {
@@ -27,10 +26,8 @@ export const mountQuasar = (component, options = {}) => {
   const localVue = createLocalVue();
   const app = {};
 
-  localVue.use(Vuex);
   localVue.use(VueRouter);
   localVue.use(Quasar, { components });
-  const store = new Vuex.Store({});
   const router = new VueRouter();
 
   if (options) {
@@ -46,10 +43,13 @@ export const mountQuasar = (component, options = {}) => {
 
     if (options.plugins) {
       options.plugins.forEach((plugin) => {
-        plugin({ app, store, router, Vue: localVue, ssrContext });
+        plugin({ app, router, Vue: localVue, ssrContext });
       });
     }
   }
+
+  // mock $store
+  const $store = options.$store;
 
   // mock vue-i18n
   const $t = () => {};
@@ -60,9 +60,8 @@ export const mountQuasar = (component, options = {}) => {
   return shallowMount(component, {
     localVue: localVue,
     propsData: options.propsData,
-    store,
     router,
-    mocks: { $t, $tc, $n, $d },
+    mocks: { $t, $tc, $n, $d, $store },
     // Injections for Components with a QPage root Element
     provide: {
       pageContainer: true,

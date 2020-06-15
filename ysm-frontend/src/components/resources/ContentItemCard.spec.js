@@ -1,12 +1,13 @@
 import * as Quasar from 'quasar';
+import { singleResource } from '~/test/jest/fixtures/resources';
 import { mountQuasar } from '~/test/jest/utils';
-import ContentItem from './ContentItem.vue';
+import ContentItemCard from './ContentItemCard.vue';
 
 const QCard = Quasar.QCard;
 
-describe('components/resources/ContentItem.vue', () => {
-  const wrapper = mountQuasar(ContentItem, {
-    propsData: { item: {} },
+describe('components/resources/ContentItemCard.vue', () => {
+  const wrapper = mountQuasar(ContentItemCard, {
+    propsData: { resourceSlug: 'foo', item: singleResource.content[0] },
   });
   const vm = wrapper.vm;
 
@@ -15,7 +16,7 @@ describe('components/resources/ContentItem.vue', () => {
   });
 
   it('should have the expected component name', () => {
-    expect(vm.$options.name).toBe('ContentItem');
+    expect(vm.$options.name).toBe('ContentItemCard');
   });
 
   it('should contain a QCard component', () => {

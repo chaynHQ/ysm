@@ -1,9 +1,18 @@
+import { singleResource } from '~/test/jest/fixtures/resources';
 import { mountQuasar } from '~/test/jest/utils';
-
 import Resource from './Resource.vue';
 
 describe('pages/resources/Resource.vue', () => {
-  const wrapper = mountQuasar(Resource);
+  const store = {
+    state: {
+      resource: singleResource,
+    },
+    getters: {
+      filterOptionsForField: () => ({}),
+    },
+  };
+
+  const wrapper = mountQuasar(Resource, { $store: store });
   const vm = wrapper.vm;
 
   it('should be instantiated', () => {

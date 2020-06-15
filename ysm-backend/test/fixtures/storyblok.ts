@@ -106,7 +106,7 @@ export const storyblokResourcesListFixture = {
               type: 'paragraph',
               content: [
                 {
-                  text: 'I like this resource very very much!',
+                  text: 'This the test 1 resource',
                   type: 'text',
                 },
               ],
@@ -195,6 +195,59 @@ export const storyblokSingleResourceFixture = {
                 content: [
                   {
                     text: 'This is the NHS mental health services link',
+                    type: 'text',
+                  },
+                ],
+              },
+            ],
+          },
+        },
+        {
+          _uid: 'c9fbf48f-d7fa-4b4c-904f-b564433efc67',
+          item: [
+            {
+              _uid: 'dcccc47b-ebb6-4fcb-be08-309ac725ea09',
+              content: {
+                type: 'doc',
+                content: [
+                  {
+                    type: 'paragraph',
+                    content: [
+                      {
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                        type: 'text',
+                        marks: [
+                          {
+                            type: 'italic',
+                          },
+                        ],
+                      },
+                      {
+                        text: 'placerat',
+                        type: 'text',
+                        marks: [
+                          {
+                            type: 'bold',
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              component: 'note',
+            },
+          ],
+          title: 'Day 1 - Breathe',
+          component: 'content_item',
+          description: {
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                content: [
+                  {
+                    text: "Today, you'll learn how to breathe to create more space in your life.",
                     type: 'text',
                   },
                 ],

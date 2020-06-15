@@ -65,7 +65,12 @@ export default {
     commit(SET_RESOURCES, response.data);
   },
 
-  async [FETCH_RESOURCE]({ commit }, slug) {
+  async [FETCH_RESOURCE]({ state, commit }, slug) {
+    // Check in case we already have the resource loaded.
+    if (state.resource?.slug === slug) {
+      return Promise.resolve();
+    }
+
     const response = await axiosInstance.get(`resources/${slug}`);
     commit(SET_RESOURCE, response.data);
   },

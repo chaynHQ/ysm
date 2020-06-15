@@ -4,7 +4,7 @@ export interface Resource {
   title: string;
   icon: string;
   subtitle?: string;
-  descriptionHtml: string;
+  description: Record<string, any>;
   countries: string[];
   content?: ContentItem[];
 }
@@ -12,5 +12,5 @@ export type ContentItem = {
   type: string;
   id: string;
   title: string;
-  descriptionHtml: string;
-} & Record<string, string>;
+  description?: Record<string, any>;
+} & Record<string, any>;
