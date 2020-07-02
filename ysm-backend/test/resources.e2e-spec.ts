@@ -5,11 +5,7 @@ import StoryblokClient from 'storyblok-js-client';
 import request from 'supertest';
 import { mocked } from 'ts-jest/utils';
 import { AppModule } from './../src/app.module';
-import {
-  resourcesListFixture,
-  richTextPlaceholder,
-  singleResourceFixture,
-} from './fixtures/resources';
+import { resourcesListFixture, singleResourceFixture } from './fixtures/resources';
 import {
   storyblokResourcesListFixture,
   storyblokSingleResourceFixture,
@@ -17,12 +13,6 @@ import {
 
 jest.mock('storyblok-js-client');
 const mockedStoryblokClient = mocked(StoryblokClient, true);
-
-function mockRichTextResolver(instance: StoryblokClient): void {
-  instance.richTextResolver = {
-    render: () => richTextPlaceholder,
-  };
-}
 
 function mockGetStories(instance: StoryblokClient, data: any, filter_query?: any): void {
   when(mocked(instance.getStories))
@@ -38,8 +28,6 @@ function mockGetStories(instance: StoryblokClient, data: any, filter_query?: any
       total: 0,
       headers: null,
     });
-
-  mockRichTextResolver(instance);
 }
 
 function mockGetStory(instance: StoryblokClient, slug: string, data: any): void {
@@ -47,8 +35,6 @@ function mockGetStory(instance: StoryblokClient, slug: string, data: any): void 
     data,
     headers: null,
   });
-
-  mockRichTextResolver(instance);
 }
 
 // This is just a sanity check.

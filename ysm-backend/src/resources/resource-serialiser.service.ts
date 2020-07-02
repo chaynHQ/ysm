@@ -1,19 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import _pickBy from 'lodash/pickBy';
-import { RichtextInstance, StoryData } from 'storyblok-js-client';
+import { StoryData } from 'storyblok-js-client';
 import { ContentItem, Resource } from './resource.types';
 
 @Injectable()
 export class ResourceSerialiserService {
   private IGNORE_CONTENT_ITEM_FIELDS = ['_uid', 'component', '_editable'];
 
-  serialise(story: StoryData, richTextResolver: RichtextInstance): Resource {
+  serialise(story: StoryData): Resource {
     let content: ContentItem[];
 
     if (story.content.content_items) {
-      content = story.content.content_items.map((i) =>
-        this.serialiseContentItem(i, richTextResolver),
-      );
+      content = story.content.content_items.map((i) => this.serialiseContentItem(i));
     }
 
     return {
@@ -22,16 +20,13 @@ export class ResourceSerialiserService {
       title: story.name,
       icon: story.content.icon,
       subtitle: story.content.subtitle || null,
-      descriptionHtml: richTextResolver.render(story.content.description),
+      description: story.content.description,
       countries: story.content.countries,
       content,
     };
   }
 
-  private serialiseContentItem(
-    contentItem: Record<string, any>,
-    richTextResolver: RichtextInstance,
-  ): ContentItem {
+  private serialiseContentItem(contentItem: Record<string, any>): ContentItem {
     const innerItem = contentItem.item[0];
 
     const extraFields = _pickBy(innerItem, (v, k) => !this.IGNORE_CONTENT_ITEM_FIELDS.includes(k));
@@ -40,7 +35,7 @@ export class ResourceSerialiserService {
       id: contentItem._uid,
       type: innerItem.component,
       title: contentItem.title,
-      descriptionHtml: richTextResolver.render(contentItem.description),
+      description: contentItem.description,
       ...extraFields,
     };
   }
