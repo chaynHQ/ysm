@@ -23,5 +23,5 @@
     "source.organizeImports": true,
     "source.fixAll": true
   },
-  "typescriptHero.imports.organizeOnSave": true
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
