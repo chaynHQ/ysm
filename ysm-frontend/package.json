@@ -1,65 +1,52 @@
 {
   "name": "ysm-frontend",
-  "version": "0.0.1",
-  "description": "A companion app for survivors of sexual assault",
-  "license": "MIT",
-  "productName": "YSM",
-  "cordovaId": "org.cordova.quasar.app",
-  "capacitorId": "",
-  "author": "Chayn",
+  "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "quasar dev",
-    "dev:pwa": "quasar dev -m pwa",
-    "build": "quasar build -m pwa",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ./",
-    "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore ./",
-    "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
-    "test:unit": "NODE_ENV=test jest",
-    "test:unit:watch": "NODE_ENV=test jest --watch",
-    "test:unit:watchAll": "NODE_ENV=test jest --watchAll",
-    "serve:test:coverage": "quasar serve test/jest/coverage/lcov-report/ --port 8788",
-    "concurrently:dev:jest": "concurrently \"quasar dev\" \"NODE_ENV=test jest --watch\"",
-    "test:unit:ui": "majestic",
-    "audit:snyk": "snyk test --json > ./test/audits/snyk.json",
-    "audit:node_modules": "yarn audit --json > ./test/audits/node_modules_audit.json",
-    "audit:licenses": "nlf --summary detail > ./test/audits/licenses.txt",
-    "audit:lighthouse": "lighthouse http://localhost:4000 --view --output-path=./test/lighthouse/reports/index.html --config-path=./test/lighthouse/configs/full-config.js",
-    "deploy:dev": "yarn build && firebase deploy --only hosting"
-  },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
-    "axios": "^0.18.1",
-    "lodash-es": "^4.17.15",
-    "qs": "^6.9.4",
-    "quasar": "^1.11.3",
-    "storyblok-js-client": "^2.5.0",
-    "vue-i18n": "^8.0.0"
+    "@material-ui/core": "^4.11.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^26.0.4",
+    "@types/node": "^14.0.18",
+    "@types/react": "^16.9.41",
+    "@types/react-dom": "^16.9.8",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "typescript": "^3.9.6"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint \"src/**/*.tsx\"",
+    "lint:fix": "eslint \"src/**/*.tsx\"  --fix"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "@quasar/app": "^1.8.10",
-    "@quasar/cli": "^1.0.7",
-    "@quasar/quasar-app-extension-testing": "^1.0.0",
-    "@quasar/quasar-app-extension-testing-quality": "^1.0.0-beta.8",
-    "@quasar/quasar-app-extension-testing-unit-jest": "^1.1.0-beta.2",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.9.0",
-    "eslint-loader": "^3.0.3",
-    "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-vue": "^6.1.2",
-    "firebase-tools": "^8.4.2",
-    "majestic": "^1.2.24",
-    "prettier": "^2.0.5"
-  },
-  "engines": {
-    "node": ">= 10.18.1",
-    "yarn": ">= 1.21.1"
-  },
-  "browserslist": [
-    "last 1 version, not dead, ie >= 11"
-  ],
-  "resolutions": {
-    "@babel/parser": "7.7.5"
+    "@typescript-eslint/eslint-plugin": "^3.6.0",
+    "@typescript-eslint/parser": "^3.6.0",
+    "eslint": "^7.4.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.5"
   }
 }

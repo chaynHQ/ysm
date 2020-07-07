@@ -1,98 +1,44 @@
-# YSM Frontend
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-A [Quasar](https://quasar.dev/) VueJS app with PWA mode enabled and [Jest](https://jestjs.io/) unit testing.
+## Available Scripts
 
-## Development
+In the project directory, you can run:
 
-### Prerequisites
+### `yarn start`
 
-- NodeJS v10+
-- Yarn v1.21+
+Runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### Install dependencies
+The page will reload if you make edits.<br />
+You will also see any lint errors in the console.
 
-```bash
-yarn
-```
+### `yarn test`
 
-### Run locally
+Launches the test runner in the interactive watch mode.<br />
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-Start the app in development mode (with hot-code reloading, error reporting, etc.):
+### `yarn build`
 
-```bash
-yarn dev
-```
+Builds the app for production to the `build` folder.<br />
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-To also run in PWA mode (only needed if developing/testing the service worker and other PWA capabilities):
+The build is minified and the filenames include the hashes.<br />
+Your app is ready to be deployed!
 
-```bash
-yarn dev:pwa
-```
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### Run unit tests
+### `yarn eject`
 
-```bash
-yarn test:unit
-```
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-To have your unit tests running in the background as you change code:
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-```bash
-yarn test:unit:watch
-```
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You can also run the unit tests via the [Majestic app](https://github.com/Raathigesh/majestic):
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-```bash
-yarn test:unit:ui
-```
+## Learn More
 
-The unit tests use [Jest](https://jestjs.io/) and [vue-test-utils](https://vue-test-utils.vuejs.org/).
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-The config and extra utils live in [jest.config.js](jest.config.js) and the [test/jest](test/jest) folder.
-
-The test harness will look for any `*.spec.js` files within the `src` folder – this allows test files to be next to the code.
-
-### Formatting and linting
-
-```bash
-yarn lint
-```
-
-To lint and fix:
-
-```bash
-yarn lint:fix
-```
-
-Formatting and linting is provided by ESLint and Prettier (see the relevant configs for details).
-
-Workspace settings for VSCode are included in this folder.
-
-### Build the app for production
-
-```bash
-yarn build
-```
-
-### Run Lighthouse
-
-**Make sure to only ever run lighthouse on a production build of the app (i.e. not the dev server)**
-
-We have a [Lighthouse](https://github.com/GoogleChrome/lighthouse) config set up under [test/lighthouse](test/lighthouse). You can run Lighthouse by…
-
-First building and serving the production app locally:
-
-```bash
-yarn build && quasar serve --history dist/pwa
-```
-
-... then in a separate console window (make sure to keep the server from the above command still running):
-
-```bash
-yarn audit:lighthouse
-```
-
-### Generating new pages, layouts, components, etc
-
-Quasar provides the [`quasar new`](https://quasar.dev/quasar-cli/cli-documentation/commands-list#New) command to help generate relevant files.
+To learn React, check out the [React documentation](https://reactjs.org/).

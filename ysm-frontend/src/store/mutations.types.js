@@ -1,4 +1,0 @@
-export const SET_FILTER_OPTIONS = 'SET_FILTER_OPTIONS';
-export const SET_FILTERS = 'SET_FILTERS';
-export const SET_RESOURCES = 'SET_RESOURCES';
-export const SET_RESOURCE = 'SET_RESOURCE';
