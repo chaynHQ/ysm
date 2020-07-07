@@ -1,3 +1,25 @@
+export const storyblokTagsFixture = {
+  tags: [
+    { name: 'Health', taggings_count: 1 },
+    { name: 'Timeline', taggings_count: 0 },
+  ],
+};
+
+export const storyblokDatasourceEntriesCountriesFixture = {
+  datasource_entries: [
+    {
+      id: 123,
+      name: 'Global',
+      value: 'GLOBAL',
+    },
+    {
+      id: 234,
+      name: 'United Kingdom',
+      value: 'GB',
+    },
+  ],
+};
+
 export const storyblokResourcesListFixture = {
   stories: [
     {
@@ -32,7 +54,7 @@ export const storyblokResourcesListFixture = {
       full_slug: 'resources/mental-health-services',
       sort_by_date: null,
       position: -20,
-      tag_list: [],
+      tag_list: ['Health'],
       is_startpage: false,
       parent_id: 11830512,
       meta_data: null,
@@ -261,7 +283,7 @@ export const storyblokSingleResourceFixture = {
     full_slug: 'resources/mental-health-services',
     sort_by_date: null,
     position: -20,
-    tag_list: [],
+    tag_list: ['Health'],
     is_startpage: false,
     parent_id: 11830512,
     meta_data: null,

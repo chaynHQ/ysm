@@ -30,7 +30,7 @@ describe('Resources Controller', () => {
 
       jest.spyOn(resourcesService, 'list').mockResolvedValue(output);
 
-      expect(await controller.list(undefined)).toBe(output);
+      expect(await controller.list(undefined, undefined)).toBe(output);
     });
   });
 

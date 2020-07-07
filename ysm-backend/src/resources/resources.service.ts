@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import StoryblokClient from 'storyblok-js-client';
+import StoryblokClient, { StoriesParams } from 'storyblok-js-client';
 import { FiltersService } from './filters.service';
 import { FilterOptions } from './filters.types';
 import { ResourceSerialiserService } from './resource-serialiser.service';
@@ -22,33 +22,18 @@ export class ResourcesService {
   }
 
   async filterOptions(): Promise<FilterOptions[]> {
-    // We have one type of filter available right now – countries – but expect more in the future.
-    // At that point, we should refactor this into the FiltersService.
-    const response = await this.storyblok.get('cdn/datasource_entries', {
-      datasource: 'countries',
-    });
-
-    const options = response.data.datasource_entries.reduce((acc, e) => {
-      acc[e.value] = e.name;
-      return acc;
-    }, {});
-
-    return [
-      {
-        title: 'Countries',
-        field: 'countries',
-        options,
-      },
-    ];
+    return this.filtersService.options(this.storyblok);
   }
 
-  async list(filters: Record<string, string>): Promise<Resource[]> {
-    const response = await this.storyblok.getStories({
+  async list(filters: Record<string, string>, searchQuery: string): Promise<Resource[]> {
+    const params: StoriesParams = {
       starts_with: 'resources/',
       excluding_fields: 'content_items',
-      filter_query: this.filtersService.mapFilters(filters),
       version: 'draft',
-    });
+      ...this.buildRetrievalParamsForStoryblok(filters, searchQuery),
+    };
+
+    const response = await this.storyblok.getStories(params);
     return response.data.stories.map((s) => this.resourceSerialiserService.serialise(s));
   }
 
@@ -62,5 +47,26 @@ export class ResourcesService {
       }
       throw e;
     }
+  }
+
+  private buildRetrievalParamsForStoryblok(
+    filters: Record<string, string>,
+    searchQuery: string,
+  ): Partial<StoriesParams> {
+    const params = {};
+
+    if (filters) {
+      params['with_tag'] = filters[this.filtersService.TAGS_FILTER_FIELD];
+
+      const filtersWithoutTags = { ...filters };
+      delete filtersWithoutTags[this.filtersService.TAGS_FILTER_FIELD];
+      params['filter_query'] = this.filtersService.mapFilters(filtersWithoutTags);
+    }
+
+    if (searchQuery) {
+      params['search_term'] = searchQuery;
+    }
+
+    return params;
   }
 }

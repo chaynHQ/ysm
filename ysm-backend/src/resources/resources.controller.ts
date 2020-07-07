@@ -13,8 +13,11 @@ export class ResourcesController {
   }
 
   @Get()
-  async list(@Query('filters') filters: Record<string, string>): Promise<Resource[]> {
-    return this.resourcesService.list(filters);
+  async list(
+    @Query('filters') filters: Record<string, string>,
+    @Query('q') searchQuery: string,
+  ): Promise<Resource[]> {
+    return this.resourcesService.list(filters, searchQuery);
   }
 
   @Get(':slug')

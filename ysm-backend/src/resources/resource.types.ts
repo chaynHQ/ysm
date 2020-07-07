@@ -5,6 +5,7 @@ export interface Resource {
   icon: string;
   subtitle?: string;
   description: Record<string, any>;
+  tags: string[];
   countries: string[];
   content?: ContentItem[];
 }
