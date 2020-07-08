@@ -1,0 +1,16 @@
+.appContainer {
+    height: 100vh;
+    background-color: #FFF5F0;
+}
+
+.pageContainerDesktop{
+    background-color: forestgreen;
+    height:731px;
+    width:752px;
+}
+
+.pageContainerMobile {
+    background-color: fuchsia;
+    height:100vh;
+    width:100vw;
+}
