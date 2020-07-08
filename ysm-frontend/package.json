@@ -1,6 +1,12 @@
 {
   "name": "ysm-frontend",
-  "version": "0.1.0",
+  "version": "0.0.1",
+  "description": "A companion app for survivors of sexual assault",
+  "license": "MIT",
+  "productName": "YSM",
+  "cordovaId": "org.cordova.quasar.app",
+  "capacitorId": "",
+  "author": "Chayn",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -19,10 +25,14 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint \"src/**/*.tsx\"",
-    "lint:fix": "eslint \"src/**/*.tsx\"  --fix"
+    "lint:fix": "eslint \"src/**/*.tsx\"  --fix",
+    "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
+    "test:unit": "NODE_ENV=test react-scripts test",
+    "test:unit:watch": "NODE_ENV=test react-scripts test --watch",
+    "test:unit:watchAll": "NODE_ENV=test react-scripts test --watchAll",
+    "deploy:dev": "yarn build && firebase deploy --only hosting"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,7 +52,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.6.0",
     "@typescript-eslint/parser": "^3.6.0",
-    "eslint": "^7.4.0",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
