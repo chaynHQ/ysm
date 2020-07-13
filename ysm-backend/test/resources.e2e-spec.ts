@@ -1,33 +1,51 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { when } from 'jest-when';
-import StoryblokClient from 'storyblok-js-client';
+import { FilterOptions } from 'src/resources/filters.types';
+import StoryblokClient, { StoriesParams } from 'storyblok-js-client';
 import request from 'supertest';
 import { mocked } from 'ts-jest/utils';
 import { AppModule } from './../src/app.module';
 import { resourcesListFixture, singleResourceFixture } from './fixtures/resources';
 import {
+  storyblokDatasourceEntriesCountriesFixture,
   storyblokResourcesListFixture,
   storyblokSingleResourceFixture,
+  storyblokTagsFixture,
 } from './fixtures/storyblok';
 
 jest.mock('storyblok-js-client');
 const mockedStoryblokClient = mocked(StoryblokClient, true);
 
-function mockGetStories(instance: StoryblokClient, data: any, filter_query?: any): void {
-  when(mocked(instance.getStories))
-    .expectCalledWith({
-      starts_with: 'resources/',
-      filter_query,
-      excluding_fields: 'content_items',
-      version: 'draft',
-    })
-    .mockResolvedValueOnce({
-      data,
-      perPage: 0,
-      total: 0,
-      headers: null,
-    });
+function mockGetStories(
+  instance: StoryblokClient,
+  data: any,
+  filterQuery?: any,
+  tags?: string,
+  searchTerm?: string,
+): void {
+  const params: StoriesParams = {
+    starts_with: 'resources/',
+    excluding_fields: 'content_items',
+    version: 'draft',
+  };
+
+  if (filterQuery) {
+    params['filter_query'] = filterQuery;
+  }
+  if (tags) {
+    params['with_tag'] = tags;
+  }
+  if (searchTerm) {
+    params['search_term'] = searchTerm;
+  }
+
+  when(mocked(instance.getStories)).expectCalledWith(params).mockResolvedValueOnce({
+    data,
+    perPage: 0,
+    total: 0,
+    headers: null,
+  });
 }
 
 function mockGetStory(instance: StoryblokClient, slug: string, data: any): void {
@@ -63,6 +81,44 @@ describe('Resources (e2e)', () => {
     expect(mockedStoryblokClient).toHaveBeenCalledTimes(1);
   });
 
+  describe('GET /resources/filters', () => {
+    it('should return all filter options', () => {
+      const mockedStoryblokClientInstance = mockedStoryblokClient.mock.instances[0];
+
+      when(mocked(mockedStoryblokClientInstance.get))
+        .expectCalledWith('cdn/tags', { version: 'draft' })
+        .mockResolvedValueOnce({
+          data: storyblokTagsFixture,
+          perPage: 0,
+          total: 0,
+          headers: null,
+        });
+
+      when(mocked(mockedStoryblokClientInstance.get))
+        .expectCalledWith('cdn/datasource_entries', { datasource: 'countries' })
+        .mockResolvedValueOnce({
+          data: storyblokDatasourceEntriesCountriesFixture,
+          perPage: 0,
+          total: 0,
+          headers: null,
+        });
+
+      const result: FilterOptions[] = [
+        { title: 'Tags', field: 'tags', options: { Health: 'Health', Timeline: 'Timeline' } },
+        {
+          title: 'Countries',
+          field: 'countries',
+          options: { GLOBAL: 'Global', GB: 'United Kingdom' },
+        },
+      ];
+
+      return request(app.getHttpServer())
+        .get('/resources/filters')
+        .expect('Content-Type', /json/)
+        .expect(200, result);
+    });
+  });
+
   describe('GET /resources', () => {
     describe('when no resources exist on Storyblok', () => {
       beforeEach(() => {
@@ -96,19 +152,46 @@ describe('Resources (e2e)', () => {
 
     describe('when resources do exist on Storyblok and we want to filter them', () => {
       beforeEach(() => {
-        // NOTE: We don't test any actual filtering here. Just that the expected API call is made to Storyblok via the StoryblokClient. Therefore we can just use the resources list fixture to represent the filtered list.
+        // NOTE: We don't test any actual filtering here – just that the expected API call is made to Storyblok via the StoryblokClient. Therefore we can just use the resources list fixture to represent the output.
         const mockedStoryblokClientInstance = mockedStoryblokClient.mock.instances[0];
 
         const filters = {
           countries: { in_array: 'GB' },
         };
+        const tags = 'Health';
 
-        mockGetStories(mockedStoryblokClientInstance, storyblokResourcesListFixture, filters);
+        mockGetStories(mockedStoryblokClientInstance, storyblokResourcesListFixture, filters, tags);
       });
 
       it('should return the filtered list of resources', () => {
+        const url = '/resources?filters[countries]=GB&filters[tags]=Health';
+
         return request(app.getHttpServer())
-          .get('/resources?filters[countries]=GB')
+          .get(url)
+          .expect('Content-Type', /json/)
+          .expect(200, resourcesListFixture);
+      });
+    });
+
+    describe('when resources do exist on Storyblok and we want to search for them', () => {
+      beforeEach(() => {
+        // NOTE: We don't test any actual searching here – just that the expected API call is made to Storyblok via the StoryblokClient. Therefore we can just use the resources list fixture to represent the output.
+        const mockedStoryblokClientInstance = mockedStoryblokClient.mock.instances[0];
+
+        mockGetStories(
+          mockedStoryblokClientInstance,
+          storyblokResourcesListFixture,
+          undefined,
+          undefined,
+          'foo',
+        );
+      });
+
+      it('should return the searched list of resources', () => {
+        const url = '/resources?q=foo';
+
+        return request(app.getHttpServer())
+          .get(url)
           .expect('Content-Type', /json/)
           .expect(200, resourcesListFixture);
       });

@@ -21,6 +21,7 @@ export const resourcesListFixture: Resource[] = [
         },
       ],
     },
+    tags: ['Health'],
     countries: ['GB'],
   },
   {
@@ -43,6 +44,7 @@ export const resourcesListFixture: Resource[] = [
         },
       ],
     },
+    tags: [],
     countries: ['GLOBAL', 'GB'],
   },
   {
@@ -79,6 +81,7 @@ export const resourcesListFixture: Resource[] = [
         },
       ],
     },
+    tags: [],
     countries: ['GLOBAL'],
   },
 ];
@@ -103,6 +106,7 @@ export const singleResourceFixture: Resource = {
       },
     ],
   },
+  tags: ['Health'],
   countries: ['GB'],
   content: [
     {
