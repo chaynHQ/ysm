@@ -31,6 +31,7 @@ export const storyblokResourcesListFixture = {
       uuid: '4c4c24ae-966b-476f-abd9-b6b3a2e75b92',
       content: {
         _uid: 'f715192a-fe7d-48e7-96cf-2166d03d8526',
+        enabled: true,
         icon: 'link-2-outline',
         subtitle: '',
         component: 'resource',
@@ -74,6 +75,7 @@ export const storyblokResourcesListFixture = {
       uuid: '9f1b48d5-7299-432d-b3ee-29f1855a4363',
       content: {
         _uid: '5f468144-0c14-4b40-b230-2ccd34ada1ed',
+        enabled: true,
         icon: 'file-outline',
         subtitle: '',
         component: 'resource',
@@ -117,6 +119,7 @@ export const storyblokResourcesListFixture = {
       uuid: '020e96d7-f1d3-4dc2-954e-3988cdd57efa',
       content: {
         _uid: '6eeb71ba-e883-41d2-98be-480a279c7c67',
+        enabled: true,
         icon: 'file-outline',
         subtitle: 'This is a test resource',
         component: 'resource',
@@ -178,6 +181,7 @@ export const storyblokSingleResourceFixture = {
     uuid: '4c4c24ae-966b-476f-abd9-b6b3a2e75b92',
     content: {
       _uid: 'f715192a-fe7d-48e7-96cf-2166d03d8526',
+      enabled: true,
       icon: 'link-2-outline',
       subtitle: '',
       component: 'resource',
@@ -281,6 +285,82 @@ export const storyblokSingleResourceFixture = {
     },
     slug: 'mental-health-services',
     full_slug: 'resources/mental-health-services',
+    sort_by_date: null,
+    position: -20,
+    tag_list: ['Health'],
+    is_startpage: false,
+    parent_id: 11830512,
+    meta_data: null,
+    group_id: '18745933-b934-4faa-a2f6-d23d5af9366b',
+    first_published_at: null,
+    release_id: null,
+    lang: 'default',
+    path: null,
+    translated_slugs: [],
+  },
+};
+
+export const storyblokSingleResourceDisabledFixture = {
+  story: {
+    name: 'Mental Health Services',
+    created_at: '2020-05-27T10:40:03.868Z',
+    published_at: null,
+    alternates: [],
+    id: 12207237,
+    uuid: '4c4c24ae-966b-476f-abd9-b6b3a2e75b92',
+    content: {
+      _uid: 'f715192a-fe7d-48e7-96cf-2166d03d8526',
+      enabled: false,
+      icon: 'link-2-outline',
+      subtitle: '',
+      component: 'resource',
+      countries: ['GB'],
+      description: {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                text: 'Here you can find mental health services applicable to you.',
+                type: 'text',
+              },
+            ],
+          },
+        ],
+      },
+      content_items: [
+        {
+          _uid: '4c74945e-9a62-42ac-9e71-fbb8252db29b',
+          item: [
+            {
+              _uid: '48583500-2ece-4188-9c76-1d60f9a50579',
+              link:
+                'https://www.nhs.uk/using-the-nhs/nhs-services/mental-health-services/how-to-access-mental-health-services/',
+              component: 'external_link',
+            },
+          ],
+          title: 'NHS - How to access mental health services',
+          component: 'content_item',
+          description: {
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                content: [
+                  {
+                    text: 'This is the NHS mental health services link',
+                    type: 'text',
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+    slug: 'mental-health-services-disabled',
+    full_slug: 'resources/mental-health-services-disabled',
     sort_by_date: null,
     position: -20,
     tag_list: ['Health'],

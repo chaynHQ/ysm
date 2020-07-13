@@ -10,6 +10,7 @@ import { resourcesListFixture, singleResourceFixture } from './fixtures/resource
 import {
   storyblokDatasourceEntriesCountriesFixture,
   storyblokResourcesListFixture,
+  storyblokSingleResourceDisabledFixture,
   storyblokSingleResourceFixture,
   storyblokTagsFixture,
 } from './fixtures/storyblok';
@@ -30,9 +31,11 @@ function mockGetStories(
     version: 'draft',
   };
 
-  if (filterQuery) {
-    params['filter_query'] = filterQuery;
-  }
+  params['filter_query'] = {
+    ...filterQuery,
+    enabled: { is: true },
+  };
+
   if (tags) {
     params['with_tag'] = tags;
   }
@@ -199,7 +202,7 @@ describe('Resources (e2e)', () => {
   });
 
   describe('GET /resources/:slug', () => {
-    describe('when the resource exists', () => {
+    describe('when the resource exists and is enabled', () => {
       let slug;
 
       beforeEach(() => {
@@ -215,6 +218,25 @@ describe('Resources (e2e)', () => {
           .get(`/resources/${slug}`)
           .expect('Content-Type', /json/)
           .expect(200, singleResourceFixture);
+      });
+    });
+
+    describe('when the resource exists but is not enabled', () => {
+      let slug;
+
+      beforeEach(() => {
+        slug = 'foo';
+
+        const mockedStoryblokClientInstance = mockedStoryblokClient.mock.instances[0];
+
+        mockGetStory(mockedStoryblokClientInstance, slug, storyblokSingleResourceDisabledFixture);
+      });
+
+      it('should return a 404 Not Found', () => {
+        return request(app.getHttpServer())
+          .get('/resources/foo')
+          .expect('Content-Type', /json/)
+          .expect(404);
       });
     });
 
