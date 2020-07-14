@@ -32,6 +32,7 @@ export const storyblokResourcesListFixture = {
       content: {
         _uid: 'f715192a-fe7d-48e7-96cf-2166d03d8526',
         enabled: true,
+        themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
         icon: 'link-2-outline',
         subtitle: '',
         component: 'resource',
@@ -76,6 +77,7 @@ export const storyblokResourcesListFixture = {
       content: {
         _uid: '5f468144-0c14-4b40-b230-2ccd34ada1ed',
         enabled: true,
+        themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
         icon: 'file-outline',
         subtitle: '',
         component: 'resource',
@@ -120,6 +122,7 @@ export const storyblokResourcesListFixture = {
       content: {
         _uid: '6eeb71ba-e883-41d2-98be-480a279c7c67',
         enabled: true,
+        themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
         icon: 'file-outline',
         subtitle: 'This is a test resource',
         component: 'resource',
@@ -182,6 +185,7 @@ export const storyblokSingleResourceFixture = {
     content: {
       _uid: 'f715192a-fe7d-48e7-96cf-2166d03d8526',
       enabled: true,
+      themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
       icon: 'link-2-outline',
       subtitle: '',
       component: 'resource',
@@ -311,6 +315,7 @@ export const storyblokSingleResourceDisabledFixture = {
     content: {
       _uid: 'f715192a-fe7d-48e7-96cf-2166d03d8526',
       enabled: false,
+      themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
       icon: 'link-2-outline',
       subtitle: '',
       component: 'resource',
@@ -374,4 +379,63 @@ export const storyblokSingleResourceDisabledFixture = {
     path: null,
     translated_slugs: [],
   },
+};
+
+export const storyblokThemesListFixture = {
+  stories: [
+    {
+      name: 'For Your Mind',
+      created_at: '2020-07-13T13:30:46.190Z',
+      published_at: null,
+      alternates: [],
+      id: 15360264,
+      uuid: '4a594a9c-424e-4668-a94f-23acc2e9561e',
+      content: {
+        _uid: '43905e88-93ce-41cf-b029-e7925d758895',
+        component: 'theme',
+        description: {
+          type: 'doc',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  text: 'Focus on your ',
+                  type: 'text',
+                },
+                {
+                  text: 'recovery',
+                  type: 'text',
+                  marks: [
+                    {
+                      type: 'bold',
+                    },
+                  ],
+                },
+                {
+                  text: ' by focusing on your mind.',
+                  type: 'text',
+                },
+              ],
+            },
+          ],
+        },
+      },
+      slug: 'mind',
+      full_slug: 'themes/mind',
+      default_full_slug: null,
+      sort_by_date: null,
+      position: 0,
+      tag_list: [],
+      is_startpage: false,
+      parent_id: 15360212,
+      meta_data: null,
+      group_id: '87ed42ba-c5e6-4a86-aa1a-3e7584a59b29',
+      first_published_at: null,
+      release_id: null,
+      lang: 'default',
+      path: null,
+      translated_slugs: [],
+    },
+  ],
 };
