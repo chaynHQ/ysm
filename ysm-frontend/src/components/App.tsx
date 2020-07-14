@@ -1,9 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
-import styles from '../styles/app.module.css';
 import {Container, Box, makeStyles} from '@material-ui/core';
 
-import Page from './Page'
+import Home from './Home'
 
 import {isMobile} from 'react-device-detect';
 
@@ -42,7 +40,7 @@ function App() {
 
       <Box boxShadow={3}>
         <Container className={`${classes.container} ${isMobile ? classes.pageContainerMobile : classes.pageContainerDesktop}`}>
-          <Page />
+          <Home />
         </Container>
       </Box>
   </Box>)
