@@ -5,7 +5,9 @@ module.exports = {
     },
     "extends": [
         "plugin:react/recommended",
-        "airbnb"
+        "plugin:@typescript-eslint/recommended", 
+        "prettier/@typescript-eslint",
+        "plugin:prettier/recommended"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -21,8 +23,13 @@ module.exports = {
     },
     "plugins": [
         "react",
-        "@typescript-eslint"
+        "@typescript-eslint",
     ],
+    settings: {
+        react: {
+          version: "detect"
+        }
+      },
     "rules": {
     }
 };
