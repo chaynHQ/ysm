@@ -4,7 +4,7 @@ const Theme = createMuiTheme({
   palette: {
     primary: {
       main: '#1D2445',
-      contrastText: '#FFF5F0'
+      contrastText: '#FFF5F0',
     },
     secondary: {
       main: '#FFF5F0',
@@ -15,17 +15,17 @@ const Theme = createMuiTheme({
       contrastText: '#1D2445',
     },
     warning: {
-        main: '#D44A6A',
-        contrastText: '#1D2445',
+      main: '#D44A6A',
+      contrastText: '#1D2445',
     },
     info: {
-        main: '#EFA78E',
-        contrastText: '#1D2445',
+      main: '#EFA78E',
+      contrastText: '#1D2445',
     },
     success: {
-        main: '#8BD4BE',
-        contrastText: '#1D2445',
-    }
+      main: '#8BD4BE',
+      contrastText: '#1D2445',
+    },
   },
   typography: {
     fontFamily: 'Nunito',
@@ -41,8 +41,8 @@ const Theme = createMuiTheme({
     },
     subtitle2: {
       fontSize: 14,
-      color: '#FFF5F0'
-    }
+      color: '#FFF5F0',
+    },
   },
   overrides: {
     MuiButton: {
@@ -50,7 +50,7 @@ const Theme = createMuiTheme({
         paddingLeft: 30,
         paddingRight: 30,
         marginBottom: 16,
-        borderRadius: 0
+        borderRadius: 0,
       },
     },
     MuiIconButton: {
@@ -60,22 +60,22 @@ const Theme = createMuiTheme({
         height: 32,
         fontSize: 22,
         lineHeight: 26,
-      }
+      },
     },
-    MuiTypography : {
+    MuiTypography: {
       root: {
         marginBottom: 16,
         paddingLeft: '1rem',
         paddingRight: '1rem',
       },
       colorTextPrimary: {
-        color: '#1D2445'
+        color: '#1D2445',
       },
       colorTextSecondary: {
-        color: '#FFF5F0'
-      }
-    }
-  }
+        color: '#FFF5F0',
+      },
+    },
+  },
 });
 
 export default Theme;
