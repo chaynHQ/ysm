@@ -1,46 +1,43 @@
-import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { resourcesListFixture, singleResourceFixture } from '../../test/fixtures/resources';
-import { FiltersService } from './filters.service';
-import { ResourceSerialiserService } from './resource-serialiser.service';
 import { ResourcesController } from './resources.controller';
 import { ResourcesService } from './resources.service';
 
+class ResourcesServiceMock {
+  async list() {
+    return resourcesListFixture;
+  }
+
+  async get() {
+    return singleResourceFixture;
+  }
+}
+
 describe('Resources Controller', () => {
   let controller: ResourcesController;
-  let resourcesService: ResourcesService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ResourcesController],
-      providers: [ConfigService, FiltersService, ResourceSerialiserService, ResourcesService],
+      providers: [{ provide: ResourcesService, useClass: ResourcesServiceMock }],
     }).compile();
 
     controller = module.get<ResourcesController>(ResourcesController);
-    resourcesService = module.get<ResourcesService>(ResourcesService);
   });
 
-  it('is defined', () => {
+  it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
   describe('list', () => {
     it('should return an array of Resources', async () => {
-      const output = resourcesListFixture;
-
-      jest.spyOn(resourcesService, 'list').mockResolvedValue(output);
-
-      expect(await controller.list(undefined, undefined)).toBe(output);
+      expect(await controller.list(undefined, undefined)).toBe(resourcesListFixture);
     });
   });
 
   describe('get', () => {
-    it('should returns a single Resource', async () => {
-      const output = singleResourceFixture;
-
-      jest.spyOn(resourcesService, 'get').mockResolvedValue(output);
-
-      expect(await controller.get('foo')).toBe(output);
+    it('should return a single Resource', async () => {
+      expect(await controller.get('foo')).toBe(singleResourceFixture);
     });
   });
 });

@@ -8,7 +8,7 @@ export class LoggingInterceptor implements NestInterceptor {
   private logger: Logger = new Logger('Interceptor');
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<void> {
-    const req = context.switchToHttp().getRequest() as Request;
+    const req = context.switchToHttp().getRequest<Request>();
 
     const commonMessage = `${req.method} "${req.originalUrl}" for ${req.ip}`;
 

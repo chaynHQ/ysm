@@ -21,6 +21,7 @@ export class ResourceSerialiserService {
       icon: story.content.icon,
       subtitle: story.content.subtitle || null,
       description: story.content.description,
+      themes: story.content.themes,
       tags: story.tag_list,
       countries: story.content.countries,
       content,

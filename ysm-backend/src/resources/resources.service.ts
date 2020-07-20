@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import StoryblokClient, { StoriesParams } from 'storyblok-js-client';
+import { STORYBLOK_CLIENT } from '../storyblok/storyblok-factory';
 import { FiltersService } from './filters.service';
 import { FilterOptions } from './filters.types';
 import { ResourceSerialiserService } from './resource-serialiser.service';
@@ -8,18 +8,11 @@ import { Resource } from './resource.types';
 
 @Injectable()
 export class ResourcesService {
-  private readonly storyblok: StoryblokClient;
-
   constructor(
-    private configService: ConfigService,
+    @Inject(STORYBLOK_CLIENT) private storyblok: StoryblokClient,
     private filtersService: FiltersService,
     private resourceSerialiserService: ResourceSerialiserService,
-  ) {
-    const storyblokToken = this.configService.get<string>('storyblok.token');
-    this.storyblok = new StoryblokClient({
-      accessToken: storyblokToken,
-    });
-  }
+  ) {}
 
   async filterOptions(): Promise<FilterOptions[]> {
     return this.filtersService.options(this.storyblok);
@@ -40,7 +33,12 @@ export class ResourcesService {
   async get(slug: string): Promise<Resource> {
     try {
       const response = await this.storyblok.getStory(`resources/${slug}`, { version: 'draft' });
-      return this.resourceSerialiserService.serialise(response.data.story);
+
+      if (response.data.story.content.enabled) {
+        return this.resourceSerialiserService.serialise(response.data.story);
+      } else {
+        throw new NotFoundException();
+      }
     } catch (e) {
       if (e.response?.status === 404) {
         throw new NotFoundException();
@@ -55,13 +53,17 @@ export class ResourcesService {
   ): Partial<StoriesParams> {
     const params = {};
 
-    if (filters) {
-      params['with_tag'] = filters[this.filtersService.TAGS_FILTER_FIELD];
-
-      const filtersWithoutTags = { ...filters };
-      delete filtersWithoutTags[this.filtersService.TAGS_FILTER_FIELD];
-      params['filter_query'] = this.filtersService.mapFilters(filtersWithoutTags);
+    const tagFilter = filters?.[this.filtersService.TAGS_FILTER_FIELD];
+    if (tagFilter) {
+      params['with_tag'] = tagFilter;
     }
+
+    const filtersWithoutTags = { ...filters };
+    delete filtersWithoutTags[this.filtersService.TAGS_FILTER_FIELD];
+    params['filter_query'] = {
+      ...this.filtersService.mapFilters(filtersWithoutTags),
+      enabled: { is: true },
+    };
 
     if (searchQuery) {
       params['search_term'] = searchQuery;
