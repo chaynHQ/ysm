@@ -51,7 +51,6 @@ function App() {
           }`}
         >
           <Box display="flex" flexDirection="column" height={1}>
-            <Header />
             <Box flexGrow={1}>
               <BrowserRouter>
                 <Switch>
@@ -64,7 +63,6 @@ function App() {
                 </Switch>
               </BrowserRouter>
             </Box>
-            <Footer />
           </Box>
         </Container>
       </Box>
