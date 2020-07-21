@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Container, Box, makeStyles } from '@material-ui/core';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { isMobile } from 'react-device-detect';
 import Home from './Home';
 import Overview from './Overview';
-import Footer from './Footer';
-import Header from './Header';
 
 import backgroundImage from '../assets/background.png';
 
@@ -34,7 +32,7 @@ const useStyles = makeStyles({
   },
 });
 
-function App() {
+const App: React.FC = (): ReactElement => {
   const classes = useStyles();
 
   return (
@@ -68,6 +66,6 @@ function App() {
       </Box>
     </Box>
   );
-}
+};
 
 export default App;
