@@ -51,7 +51,7 @@ const Footer: React.FC<FooterProps> = ({
           </IconButton>
         </Box>
       </Box>
-      <Box>
+      <Box display="flex" alignItems="center">
         <Box display={loginRight ? 'block' : 'none'}>
           <IconButton>
             <VpnKey color="primary" />

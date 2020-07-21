@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ menu, search }: HeaderProps) => {
   const classes = useStyles();
 
   return (
-    <Box display="flex" alignContent="flex-start" width={1} className={classes.container}>
+    <Box display="flex" alignContent="flex-start" justifyContent="space-between" width={1} className={classes.container}>
       <Box display={menu ? 'block' : 'none'}>
         <IconButton>
           <Menu />

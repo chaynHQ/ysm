@@ -26,9 +26,6 @@ const useStyles = makeStyles({
 
   appContainer: {
     padding: 0,
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
   },
 });
 
