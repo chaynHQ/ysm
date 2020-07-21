@@ -8,11 +8,13 @@ import Footer from './Footer';
 
 import logo from '../assets/logo.png';
 import illustration from '../assets/homepage-illustration.png';
+import backgroundImage from '../assets/background.png';
 
 const useStyles = makeStyles({
   container: {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    backgroundImage: `url(${backgroundImage})`,
   },
 });
 
@@ -24,7 +26,7 @@ const Home: React.FC = (): ReactElement => {
   });
 
   return (
-    <Box display="flex" flexDirection="column" height={1}>
+    <Box display="flex" flexDirection="column" height={1} className={classes.container}>
       <Header menu={true} />
       <Box flexGrow={1}>
         <Grid
@@ -32,7 +34,6 @@ const Home: React.FC = (): ReactElement => {
           justify="space-between"
           direction="column"
           alignItems="center"
-          className={classes.container}
         >
           <img src={logo} alt="Your story matters logo" width={isMobile ? '25%' : '15%'} />
           <img
