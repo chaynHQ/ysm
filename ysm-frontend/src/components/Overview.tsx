@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
-import { makeStyles, Grid, Typography, useMediaQuery } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, Grid, Typography } from '@material-ui/core';
 
 import backgroundImage from '../assets/background.png';
 
@@ -14,12 +13,8 @@ const useStyles = makeStyles({
   },
 });
 
-function Overview() {
+const Overview: React.FC = (): ReactElement => {
   const classes = useStyles();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('xs'), {
-    defaultMatches: true,
-  });
 
   return (
     <Grid
@@ -32,6 +27,6 @@ function Overview() {
       <Typography>Overview</Typography>
     </Grid>
   );
-}
+};
 
 export default Overview;
