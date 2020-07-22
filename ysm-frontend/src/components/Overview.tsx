@@ -1,9 +1,11 @@
 import React, { ReactElement } from 'react';
-
+import { connect } from 'react-redux';
 import { makeStyles, Grid, Typography, Box } from '@material-ui/core';
 
 import Header from './Header';
 import Footer from './Footer';
+
+import {fetchResources} from '../actions'
 
 const useStyles = makeStyles({
   container: {
@@ -11,8 +13,9 @@ const useStyles = makeStyles({
   },
 });
 
-const Overview: React.FC = (): ReactElement => {
+const Overview = (props: any) => {
   const classes = useStyles();
+  props.fetchResources();
 
   return (
     <Box display="flex" flexDirection="column" height={1}>
@@ -38,4 +41,11 @@ const Overview: React.FC = (): ReactElement => {
   );
 };
 
-export default Overview;
+const mapStateToProps = () => ({
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  fetchResources: () => dispatch(fetchResources())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Overview);
