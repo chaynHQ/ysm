@@ -29,12 +29,7 @@ const Home: React.FC = (): ReactElement => {
     <Box display="flex" flexDirection="column" height={1} className={classes.container}>
       <Header menu={true} />
       <Box flexGrow={1}>
-        <Grid
-          container
-          justify="space-between"
-          direction="column"
-          alignItems="center"
-        >
+        <Grid container justify="space-between" direction="column" alignItems="center">
           <img src={logo} alt="Your story matters logo" width={isMobile ? '25%' : '15%'} />
           <img
             src={illustration}

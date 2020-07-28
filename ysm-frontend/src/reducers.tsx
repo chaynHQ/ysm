@@ -1,22 +1,19 @@
 import { combineReducers } from 'redux';
-import { richTextHelper} from './shared/rich-text'
-import {
-  SET_THEMES,
-  SET_RESOURCES
-} from './actions';
-
+import { richTextHelper } from './shared/rich-text';
+import { SET_THEMES, SET_RESOURCES } from './actions';
 
 const themes = (state = [], action: any) => {
-  let newState: { description: any; id: any; slug: any; title: any; }[] = [];
+  const newState: { description: any; id: any; slug: any; title: any }[] = [];
   switch (action.type) {
     case SET_THEMES:
-      action.data.forEach((data: any)=> {
+      action.data.forEach((data: any) => {
         newState.push({
           description: richTextHelper(data.description),
-        id: data.id,
-      slug: data.slug,
-    title: data.title})
-      })
+          id: data.id,
+          slug: data.slug,
+          title: data.title,
+        });
+      });
       return newState;
     default:
       return state;

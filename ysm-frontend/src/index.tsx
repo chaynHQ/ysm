@@ -11,10 +11,7 @@ import thunk from 'redux-thunk';
 import Theme from './styles/theme';
 import ysmApp from './reducers';
 
-const store = createStore(
-  ysmApp,
-  applyMiddleware(thunk),
-);
+const store = createStore(ysmApp, applyMiddleware(thunk));
 
 ReactDOM.render(
   <Provider store={store}>
