@@ -1,51 +1,39 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles, Grid, Typography, Box, CircularProgress } from '@material-ui/core';
+import ReactHtmlParser from 'react-html-parser';
+
+import illustration from '../assets/resource-illustration.png';
 
 import Header from './Header';
 import Footer from './Footer';
 
-import {fetchThemes} from '../actions'
+import {fetchThemes, fetchResources} from '../actions'
 
 const useStyles = makeStyles({
   container: {
     height: '100%',
   },
+  illustration: {
+
+  }
 });
-
-function useTraceUpdate(props: any) {
-  const prev = useRef(props);
-  useEffect(() => {
-    const changedProps = Object.entries(props).reduce((ps: any, [k, v]) => {
-      if (prev.current[k] !== v) {
-        ps[k] = [prev.current[k], v];
-      }
-      return ps;
-    }, {});
-    if (Object.keys(changedProps).length > 0) {
-      console.log('Changed props:', changedProps);
-    }
-    prev.current = props;
-  });
-}
-
 
 const Overview = (props: any) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
 
-  // Need all themes and then we can switch to loading = false
-  // TODO: THIS IS OVERLOADING THINGS
-  // TODO: USE RICH TEXT on the props.themes objects
   useEffect(() => {
-    // 👍 We're not breaking the first rule anymore
-    if (props.themes.length > 0){
+    if (props.themes.length > 0 && props.resources.length > 0){
       setLoading(false)
-      console.log(props.themes)
-    } else {
+    } else if (props.themes.length <=0) {
       props.fetchThemes();
+    } else if (props.resources.length <= 0) {
+      props.fetchResources();
     }
   });
+
+  // TODO: STYLING
 
   return (
     <Box display="flex" flexDirection="column" height={1}>
@@ -64,10 +52,24 @@ const Overview = (props: any) => {
         {loading ?
           <CircularProgress />
         :
-        <Box>
-        <Typography>Process what’s happened.</Typography>
-        <Typography>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”</Typography>
-      </Box>
+        props.themes.map((theme: any)=>{
+          return <Box key={theme.id} bgcolor="primary.main" color="secondary.main">
+            <Typography >{theme.title}</Typography>
+            {ReactHtmlParser(theme.description)}
+            <Box flexDirection="row">
+           {props.resources.filter((resource: any) => resource.themes && resource.themes.includes(theme.id)).map((resource: any) => {
+             return <Box key={resource.id}>
+              <img
+                src={illustration}
+                alt="Illustration of person walking"
+                width={'30%'}
+              />
+             <Typography>{resource.title}</Typography>
+             </Box>
+           })}
+           </Box>
+            </Box>
+        })
         }
       </Grid>
       <Footer logo leave directory loginRight favourite/>
@@ -76,11 +78,13 @@ const Overview = (props: any) => {
 };
 
 const mapStateToProps = (state: any) => ({
-  themes: state.themes
+  themes: state.themes,
+  resources: state.resources
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchThemes: () => dispatch(fetchThemes())
+  fetchThemes: () => dispatch(fetchThemes()),
+  fetchResources: () => dispatch(fetchResources())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);
