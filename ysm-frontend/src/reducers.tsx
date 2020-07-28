@@ -1,21 +1,29 @@
 import { combineReducers } from 'redux';
-import { isMobile } from 'react-device-detect';
+import { richTextHelper} from './shared/rich-text'
 import {
-  ADD_USER_INPUT,
+  SET_THEMES,
 } from './actions';
 
 
-const resources = (state = [], action: any) => {
+const themes = (state = [], action: any) => {
+  let newState: { content: any; id: any; slug: any; title: any; }[] = [];
   switch (action.type) {
-    case ADD_USER_INPUT:
-      return [];
+    case SET_THEMES:
+      action.data.forEach((data: any)=> {
+        newState.push({
+          content: richTextHelper(data.description),
+        id: data.id,
+      slug: data.slug,
+    title: data.title})
+      })
+      return newState;
     default:
       return state;
   }
 };
 
 const ysmApp = combineReducers({
-  resources,
+  themes,
 
 });
 

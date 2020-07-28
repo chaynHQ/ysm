@@ -3,25 +3,36 @@ import {axiosInstance} from './axios'
 /*
  * action types
  */
-export const ADD_USER_INPUT = 'ADD_USER_INPUT';
+export const SET_THEMES = 'SET_THEMES';
 
 /*
  * action creators
  */
-export const addUserInputToStack = (text: any) => ({
-  type: ADD_USER_INPUT,
-  text,
+export const setThemes = (data: any) => ({
+  type: SET_THEMES,
+  data,
 });
 
-export function fetchResources() {
+// export function fetchResources() {
+//     return async (dispatch: any) => {
+//       try {
+//         const response = await axiosInstance.get('resources');
+//         console.log(response);
+//         dispatch(setThemes)
+//       } catch {
+//         console.log('error')
+//       }
+//     };
+//   }
+
+  export function fetchThemes() {
     return async (dispatch: any) => {
       try {
-        console.log("FETCHING")
-        const response = await axiosInstance.get('resources');
-        console.log(response);
-        dispatch(addUserInputToStack)
-      } catch {
+        const response = await axiosInstance.get('themes');
+        dispatch(setThemes(response.data))
+      } catch (err) {
         console.log('error')
+        console.log(err)
       }
     };
   }
