@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import Home from './Home';
 import Overview from './Overview';
+import SignIn from './SignIn';
 
 import backgroundImage from '../assets/background.png';
 
@@ -49,6 +50,9 @@ const App: React.FC = (): ReactElement => {
             <Box flexGrow={1}>
               <BrowserRouter>
                 <Switch>
+                  <Route path="/signin">
+                    <SignIn />
+                  </Route>
                   <Route path="/overview">
                     <Overview />
                   </Route>

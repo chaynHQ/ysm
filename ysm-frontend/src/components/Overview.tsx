@@ -8,7 +8,7 @@ import illustration from '../assets/resource-illustration.png';
 import Header from './Header';
 import Footer from './Footer';
 
-import { fetchThemes, fetchResources } from '../actions';
+import { fetchThemes, fetchResources } from '../store/actions';
 
 const useStyles = makeStyles({
   container: {

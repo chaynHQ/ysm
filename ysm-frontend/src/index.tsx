@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import { ThemeProvider } from '@material-ui/core/styles';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
@@ -9,7 +8,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 import Theme from './styles/theme';
-import ysmApp from './reducers';
+import ysmApp from './store/reducers';
 
 const store = createStore(ysmApp, applyMiddleware(thunk));
 

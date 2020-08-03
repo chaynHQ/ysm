@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { richTextHelper } from './shared/rich-text';
-import { SET_THEMES, SET_RESOURCES } from './actions';
+import { richTextHelper } from '../shared/rich-text';
+import { SET_THEMES, SET_RESOURCES, SET_USER_SIGNIN } from './actions';
 
 const themes = (state = [], action: any) => {
   const newState: { description: any; id: any; slug: any; title: any }[] = [];
@@ -29,9 +29,20 @@ const resources = (state = [], action: any) => {
   }
 };
 
+const user = (state = {}, action: any) => {
+  switch (action.type) {
+    case SET_USER_SIGNIN:
+      console.log(action.data);
+      return action.data;
+    default:
+      return state;
+  }
+};
+
 const ysmApp = combineReducers({
   themes,
   resources,
+  user,
 });
 
 export default ysmApp;
