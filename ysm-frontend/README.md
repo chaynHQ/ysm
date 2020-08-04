@@ -23,12 +23,6 @@ Start the app in development mode (with hot-code reloading, error reporting, etc
 yarn dev
 ```
 
-To also run in PWA mode (only needed if developing/testing the service worker and other PWA capabilities):
-
-```bash
-yarn dev:pwa
-```
-
 ### Run unit tests
 
 ```bash
@@ -74,25 +68,3 @@ Workspace settings for VSCode are included in this folder.
 ```bash
 yarn build
 ```
-
-### Run Lighthouse
-
-**Make sure to only ever run lighthouse on a production build of the app (i.e. not the dev server)**
-
-We have a [Lighthouse](https://github.com/GoogleChrome/lighthouse) config set up under [test/lighthouse](test/lighthouse). You can run Lighthouse by…
-
-First building and serving the production app locally:
-
-```bash
-yarn build && quasar serve --history dist/pwa
-```
-
-... then in a separate console window (make sure to keep the server from the above command still running):
-
-```bash
-yarn audit:lighthouse
-```
-
-### Generating new pages, layouts, components, etc
-
-Quasar provides the [`quasar new`](https://quasar.dev/quasar-cli/cli-documentation/commands-list#New) command to help generate relevant files.
