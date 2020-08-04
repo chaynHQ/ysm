@@ -8,4 +8,5 @@ export type Firestore = firebase.firestore.Firestore;
 export interface FirebaseServices {
   auth: FirebaseAuth;
   firestore: Firestore;
+  shutdown: () => Promise<void>;
 }

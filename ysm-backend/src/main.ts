@@ -12,6 +12,8 @@ async function bootstrap() {
   // see https://expressjs.com/en/guide/behind-proxies.html
   app.set('trust proxy', 1);
 
+  app.enableShutdownHooks();
+
   app.useGlobalInterceptors(new LoggingInterceptor());
 
   const configService = app.get(ConfigService);

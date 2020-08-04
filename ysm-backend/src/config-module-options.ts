@@ -1,5 +1,4 @@
 import { ConfigModuleOptions } from '@nestjs/config/dist/interfaces';
-
 import config from './config';
 
 const envFilePath = [];
@@ -11,6 +10,7 @@ switch (process.env.NODE_ENV) {
     break;
 
   case 'test':
+    envFilePath.push('.env.test.local');
     envFilePath.push('.env.test');
     break;
 }

@@ -66,6 +66,10 @@ it(`the STORYBLOK_TOKEN env var should not be a valid token`, () => {
 describe('Resources (e2e)', () => {
   let app: INestApplication;
 
+  afterAll(async () => {
+    await app.close();
+  });
+
   beforeEach(() => {
     mockedStoryblokClient.mockClear();
   });
@@ -256,9 +260,5 @@ describe('Resources (e2e)', () => {
           .expect(404);
       });
     });
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 });

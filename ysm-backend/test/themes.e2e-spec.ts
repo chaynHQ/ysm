@@ -25,6 +25,10 @@ function mockGetStories(instance: StoryblokClient, data: any): void {
 describe('Themes (e2e)', () => {
   let app: INestApplication;
 
+  afterAll(async () => {
+    await app.close();
+  });
+
   beforeEach(() => {
     mockedStoryblokClient.mockClear();
   });
@@ -68,9 +72,5 @@ describe('Themes (e2e)', () => {
           .expect(200, themesListFixture);
       });
     });
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 });

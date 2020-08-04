@@ -7,7 +7,11 @@ export const FIREBASE = 'FIREBASE';
 export const firebaseFactory = {
   provide: FIREBASE,
   useFactory: (configService: ConfigService): FirebaseServices => {
-    const projectId: string = configService.get('firebase.projectId');
+    const serviceAccount: Record<string, string> = configService.get('firebase.serviceAccount');
+
+    const projectId = serviceAccount.project_id;
+    const serviceAccountId = serviceAccount.client_email;
+
     let app: firebase.app.App;
 
     if (firebase.apps.length) {
@@ -15,7 +19,8 @@ export const firebaseFactory = {
     } else {
       app = firebase.initializeApp({
         projectId,
-        credential: firebase.credential.applicationDefault(),
+        serviceAccountId,
+        credential: firebase.credential.cert(serviceAccount),
         databaseURL: `https://${projectId}.firebaseio.com`,
       });
     }
@@ -23,6 +28,7 @@ export const firebaseFactory = {
     return {
       auth: app.auth(),
       firestore: app.firestore(),
+      shutdown: app.delete.bind(app),
     };
   },
   inject: [ConfigService],
