@@ -13,6 +13,8 @@ describe('ProfileService', () => {
     mockFirebaseServices = {
       auth: createMock<FirebaseAuth>(),
       firestore: createMock<Firestore>(),
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      shutdown: async () => {},
     };
 
     const module: TestingModule = await Test.createTestingModule({

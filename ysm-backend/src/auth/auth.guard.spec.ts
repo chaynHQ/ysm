@@ -28,6 +28,8 @@ describe('AuthGuard', () => {
     mockFirebaseServices = {
       auth: mockFirebaseAuth,
       firestore: createMock<Firestore>(),
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      shutdown: async () => {},
     };
 
     mockContext = createMock<ExecutionContext>();

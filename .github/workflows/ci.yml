@@ -42,6 +42,9 @@ jobs:
         run: yarn test:cov
 
       - name: Run e2e tests
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          FIREBASE_WEB_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
         run: yarn test:e2e
 
       - name: Build app
