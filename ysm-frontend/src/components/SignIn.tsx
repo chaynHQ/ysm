@@ -22,7 +22,6 @@ const config = {
 firebase.initializeApp(config);
 
 const SignIn = (props: any) => {
-  const classes = useStyles();
   const uiConfig = {
     credentialHelper: 'none',
     signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],

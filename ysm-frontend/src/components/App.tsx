@@ -7,8 +7,6 @@ import Home from './Home';
 import Overview from './Overview';
 import SignIn from './SignIn';
 
-import backgroundImage from '../assets/background.png';
-
 const useStyles = makeStyles({
   screenContainer: {
     height: '100vh',
