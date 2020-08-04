@@ -1,17 +1,10 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { makeStyles, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import firebase from 'firebase';
 import { StyledFirebaseAuth } from 'react-firebaseui';
 
 import { setUserSignIn } from '../store/actions';
-
-const useStyles = makeStyles({
-  container: {
-    height: '100%',
-  },
-  illustration: {},
-});
 
 // Configure Firebase.
 const config = {

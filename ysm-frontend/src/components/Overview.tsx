@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles, Grid, Typography, Box, CircularProgress } from '@material-ui/core';
 import ReactHtmlParser from 'react-html-parser';
@@ -20,6 +20,8 @@ const useStyles = makeStyles({
 const Overview = (props: any) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
+
+  setLoading(false);
 
   // useEffect(() => {
   //   if (props.themes.length > 0 && props.resources.length > 0) {
