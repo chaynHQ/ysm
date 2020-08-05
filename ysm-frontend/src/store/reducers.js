@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import richTextHelper from '../shared/rich-text';
-import { SET_THEMES, SET_RESOURCES, SET_USER_SIGNIN } from './actions';
+import { SET_THEMES, SET_RESOURCES, SET_USER_SIGNIN, SET_SETTINGS_AUTH } from './actions';
 
 const themes = (state = [], action) => {
   const newState = [];
@@ -32,7 +32,9 @@ const resources = (state = [], action) => {
 const user = (state = {}, action) => {
   switch (action.type) {
     case SET_USER_SIGNIN:
-      return action.data;
+      return {...state, ...action.data}
+    case SET_SETTINGS_AUTH:
+      return {...state, settingsAuth: action.data}
     default:
       return state;
   }

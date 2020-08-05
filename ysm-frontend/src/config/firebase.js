@@ -14,15 +14,4 @@ export default firebase;
 export const uiConfig = {
   credentialHelper: 'none',
   signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
-  callbacks: {
-    signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-      const { user } = authResult;
-      setUserSignIn(user);
-      console.log(redirectUrl);
-      if (authResult.additionalUserInfo.isNewUser || !user.emailVerified) {
-        user.sendEmailVerification();
-      }
-      return true;
-    },
-  },
 };

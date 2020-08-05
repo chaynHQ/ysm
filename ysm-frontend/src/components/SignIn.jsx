@@ -3,15 +3,34 @@ import { connect } from 'react-redux';
 import { Box } from '@material-ui/core';
 import firebase, {uiConfig} from '../config/firebase';
 import { StyledFirebaseAuth } from 'react-firebaseui';
+import { useLocation, useHistory } from 'react-router-dom'
 
-import { setUserSignIn } from '../store/actions';
+import { setSettingsAuth } from '../store/actions';
 
 const SignIn = (props) => {
+
+  let location = useLocation()
 
   return (
     <Box display="flex" flexDirection="column" height={1}>
       <StyledFirebaseAuth
-        uiConfig={{...uiConfig, signInSuccessUrl: props.location.state ? props.location.state.from + '?auth=true': '/overview'}} 
+        uiConfig={{
+          ...uiConfig, 
+          signInSuccessUrl: props.redirectUrl ? props.redirectUrl : '/overview',
+          callbacks: {
+            signInSuccessWithAuthResult: (authResult) => {
+              const { user } = authResult;
+              if(location.pathname === '/settings') {
+                props.setSettingsAuth()
+                return false
+              }
+              if (authResult.additionalUserInfo.isNewUser || !user.emailVerified) {
+                user.sendEmailVerification();
+              }
+              return true;
+            }
+          }
+          }} 
         firebaseAuth={firebase.auth()}
       />
     </Box>
@@ -19,10 +38,11 @@ const SignIn = (props) => {
 };
 
 const mapStateToProps = (state) => ({
+  user: state.user
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setUserSignIn: () => dispatch(setUserSignIn),
+  setSettingsAuth: () => dispatch(setSettingsAuth()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

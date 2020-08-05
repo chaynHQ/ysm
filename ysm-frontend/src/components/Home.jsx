@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Home: React.FC = (): ReactElement => {
+const Home = () => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'), {
