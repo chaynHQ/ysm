@@ -21,7 +21,7 @@ const SignIn = (props) => {
             signInSuccessWithAuthResult: (authResult) => {
               const { user } = authResult;
               if(location.pathname === '/settings') {
-                props.setSettingsAuth()
+                props.setSettingsAuth(true)
                 return false
               }
               if (authResult.additionalUserInfo.isNewUser || !user.emailVerified) {
@@ -42,7 +42,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setSettingsAuth: () => dispatch(setSettingsAuth()),
+  setSettingsAuth: (bool) => dispatch(setSettingsAuth(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
