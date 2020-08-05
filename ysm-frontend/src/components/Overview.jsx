@@ -17,11 +17,11 @@ const useStyles = makeStyles({
   illustration: {},
 });
 
-const Overview = (props: any) => {
+const Overview = (props) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
 
-  setLoading(false);
+  // setLoading(false);
 
   // useEffect(() => {
   //   if (props.themes.length > 0 && props.resources.length > 0) {
@@ -49,48 +49,54 @@ const Overview = (props: any) => {
           <Typography>“Quote to show we understand”</Typography>
           <Typography>Take a look at what we’ve got for you.</Typography>
         </Box>
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          props.themes.map((theme: any) => {
-            return (
-              <Box key={theme.id} bgcolor="primary.main" color="secondary.main">
-                <Typography>{theme.title}</Typography>
-                {ReactHtmlParser(theme.description)}
-                <Box flexDirection="row">
-                  {props.resources
-                    .filter(
-                      (resource: any) => resource.themes && resource.themes.includes(theme.id)
-                    )
-                    .map((resource: any) => {
-                      return (
-                        <Box key={resource.id}>
-                          <img
-                            src={illustration}
-                            alt="Illustration of person walking"
-                            width={'30%'}
-                          />
-                          <Typography>{resource.title}</Typography>
-                        </Box>
-                      );
-                    })}
-                </Box>
-              </Box>
-            );
-          })
-        )}
+        <Box>
+          <Typography>User</Typography>
+        </Box>
+        
       </Grid>
       <Footer logo leave directory loginRight favourite />
     </Box>
   );
 };
 
-const mapStateToProps = (state: any) => ({
+// {loading ? (
+//   <CircularProgress />
+// ) : (
+//   props.themes.map((theme) => {
+//     return (
+//       <Box key={theme.id} bgcolor="primary.main" color="secondary.main">
+//         <Typography>{theme.title}</Typography>
+//         {ReactHtmlParser(theme.description)}
+//         <Box flexDirection="row">
+//           {props.resources
+//             .filter(
+//               (resource) => resource.themes && resource.themes.includes(theme.id)
+//             )
+//             .map((resource) => {
+//               return (
+//                 <Box key={resource.id}>
+//                   <img
+//                     src={illustration}
+//                     alt="Illustration of person walking"
+//                     width={'30%'}
+//                   />
+//                   <Typography>{resource.title}</Typography>
+//                 </Box>
+//               );
+//             })}
+//         </Box>
+//       </Box>
+//     );
+//   })
+// )}
+
+const mapStateToProps = (state) => ({
   themes: state.themes,
   resources: state.resources,
+  user: state.user
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch) => ({
   fetchThemes: () => dispatch(fetchThemes()),
   fetchResources: () => dispatch(fetchResources()),
 });
