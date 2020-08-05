@@ -6,6 +6,7 @@ import axiosInstance from './axios';
 export const SET_THEMES = 'SET_THEMES';
 export const SET_RESOURCES = 'SET_RESOURCES';
 export const SET_USER_SIGNIN = 'SET_USER_SIGNIN';
+export const SET_SETTINGS_AUTH = 'SET_SETTINGS_AUTH'
 
 /*
  * action creators
@@ -23,6 +24,11 @@ export const setUserSignIn = (data) => ({
   type: SET_USER_SIGNIN,
   data,
 });
+
+export const setSettingsAuth = () => ({
+  type: SET_SETTINGS_AUTH,
+  data: true,
+})
 
 export function fetchResources() {
   return async (dispatch) => {

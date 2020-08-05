@@ -8,8 +8,7 @@ import Home from './Home';
 import Overview from './Overview';
 import SignIn from './SignIn';
 import Settings from './Settings';
-import firebase, {uiConfig} from '../config/firebase';
-import ProtectedRoute from './ProtectedRoute';
+import firebase from '../config/firebase';
 
 import { setUserSignIn } from '../store/actions';
 
@@ -65,7 +64,7 @@ const App= (props) => {
                   <Route path="/overview">
                     <Overview />
                   </Route>
-                  <ProtectedRoute path="/settings" component={Settings}/>
+                  <Route path="/settings" component={Settings}/>
                   <Route path="/">
                     <Home />
                   </Route>
@@ -78,12 +77,9 @@ const App= (props) => {
     </Box>
   );
 };
-const mapStateToProps = (state) => ({
-  user: state.user
-});
 
 const mapDispatchToProps = (dispatch) => ({
   setUserSignIn: (user) => dispatch(setUserSignIn(user)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);
