@@ -1,0 +1,28 @@
+import * as firebase from 'firebase';
+
+import { setUserSignIn } from '../store/actions';
+
+const config = {
+  apiKey: process.env.REACT_APP_FIREBASE_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
+};
+
+firebase.initializeApp(config);
+
+export default firebase;
+
+export const uiConfig = {
+  credentialHelper: 'none',
+  signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
+  callbacks: {
+    signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+      const { user } = authResult;
+      setUserSignIn(user);
+      console.log(redirectUrl);
+      if (authResult.additionalUserInfo.isNewUser || !user.emailVerified) {
+        user.sendEmailVerification();
+      }
+      return true;
+    },
+  },
+};

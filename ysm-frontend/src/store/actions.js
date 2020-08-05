@@ -1,4 +1,4 @@
-import { axiosInstance } from './axios';
+import axiosInstance from './axios';
 
 /*
  * action types
@@ -10,22 +10,22 @@ export const SET_USER_SIGNIN = 'SET_USER_SIGNIN';
 /*
  * action creators
  */
-export const setThemes = (data: any) => ({
+export const setThemes = (data) => ({
   type: SET_THEMES,
   data,
 });
-export const setResources = (data: any) => ({
+export const setResources = (data) => ({
   type: SET_RESOURCES,
   data,
 });
 
-export const setUserSignIn = (data: boolean) => ({
+export const setUserSignIn = (data) => ({
   type: SET_USER_SIGNIN,
   data,
 });
 
 export function fetchResources() {
-  return async (dispatch: any) => {
+  return async (dispatch) => {
     try {
       const response = await axiosInstance.get('resources');
       dispatch(setResources(response.data));
@@ -36,7 +36,7 @@ export function fetchResources() {
 }
 
 export function fetchThemes() {
-  return async (dispatch: any) => {
+  return async (dispatch) => {
     try {
       const response = await axiosInstance.get('themes');
       dispatch(setThemes(response.data));

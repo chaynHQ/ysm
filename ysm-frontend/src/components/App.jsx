@@ -1,11 +1,18 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { Container, Box, makeStyles } from '@material-ui/core';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { isMobile } from 'react-device-detect';
 import Home from './Home';
 import Overview from './Overview';
 import SignIn from './SignIn';
+import Settings from './Settings';
+import firebase, {uiConfig} from '../config/firebase';
+import ProtectedRoute from './ProtectedRoute';
+
+import { setUserSignIn } from '../store/actions';
+
 
 const useStyles = makeStyles({
   screenContainer: {
@@ -28,8 +35,14 @@ const useStyles = makeStyles({
   },
 });
 
-const App: React.FC = (): ReactElement => {
+const App= (props) => {
   const classes = useStyles();
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      props.setUserSignIn(user)
+    });
+  });
 
   return (
     <Box
@@ -48,12 +61,11 @@ const App: React.FC = (): ReactElement => {
             <Box flexGrow={1}>
               <BrowserRouter>
                 <Switch>
-                  <Route path="/signin">
-                    <SignIn />
-                  </Route>
+                  <Route path="/signin" render={(props) => <SignIn {...props}/>}/>
                   <Route path="/overview">
                     <Overview />
                   </Route>
+                  <ProtectedRoute path="/settings" component={Settings}/>
                   <Route path="/">
                     <Home />
                   </Route>
@@ -66,5 +78,12 @@ const App: React.FC = (): ReactElement => {
     </Box>
   );
 };
+const mapStateToProps = (state) => ({
+  user: state.user
+});
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  setUserSignIn: (user) => dispatch(setUserSignIn(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
