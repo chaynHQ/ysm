@@ -53,7 +53,7 @@ jobs:
   backend-deploy-staging:
     name: 'Backend deploy to staging env (only on master push)'
 
-    # if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
 
     needs: backend-test-and-build
 
@@ -134,7 +134,7 @@ jobs:
   frontend-deploy-staging:
     name: 'Frontend deploy to staging env (only on master push)'
 
-    # if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
 
     needs: [frontend-test-and-build, backend-deploy-staging]
 
