@@ -30,17 +30,37 @@ describe('Profile Controller', () => {
   });
 
   describe('get', () => {
-    it('should return the profile', () => {
+    it('should return the profile', async () => {
       const profile: Profile = {
         id: 'foo',
-        favorites: [],
+        bookmarkedResources: [],
       };
 
-      profileService.get.mockReturnValueOnce(profile);
+      profileService.get.mockResolvedValueOnce(profile);
 
-      expect(controller.get('foo')).toEqual(profile);
+      expect(await controller.get('foo')).toEqual(profile);
 
       expect(profileService.get).toHaveBeenCalledWith('foo');
+    });
+  });
+
+  describe('addBookmarkForResource', () => {
+    it('should call the profile service', async () => {
+      profileService.addBookmarkForResource.mockResolvedValueOnce(undefined);
+
+      expect(await controller.addBookmarkForResource('foo', '123456')).toEqual(undefined);
+
+      expect(profileService.addBookmarkForResource).toHaveBeenCalledWith('foo', '123456');
+    });
+  });
+
+  describe('removeBookmarkForResource', () => {
+    it('should call the profile service', async () => {
+      profileService.removeBookmarkForResource.mockResolvedValueOnce(undefined);
+
+      expect(await controller.removeBookmarkForResource('foo', '123456')).toEqual(undefined);
+
+      expect(profileService.removeBookmarkForResource).toHaveBeenCalledWith('foo', '123456');
     });
   });
 });

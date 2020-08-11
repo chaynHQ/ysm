@@ -1,6 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import * as firebase from 'firebase-admin';
-import { FirebaseServices } from './firebase.types';
+import { firebase, FirebaseServices } from './firebase.types';
 
 export const FIREBASE = 'FIREBASE';
 

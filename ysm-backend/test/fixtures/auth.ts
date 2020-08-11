@@ -1,6 +1,6 @@
-import { DecodedIdToken } from 'src/firebase/firebase.types';
+import { firebase } from 'src/firebase/firebase.types';
 
-function buildDecodedToken(): DecodedIdToken {
+function buildDecodedToken(): firebase.auth.DecodedIdToken {
   const uid = 'User1223456';
   const authTime = new Date();
 
@@ -19,12 +19,12 @@ function buildDecodedToken(): DecodedIdToken {
   };
 }
 
-export const unverifiedDecodedTokenFixture: DecodedIdToken = {
+export const unverifiedDecodedTokenFixture: firebase.auth.DecodedIdToken = {
   ...buildDecodedToken(),
   email_verified: false,
 };
 
-export const verifiedDecodedTokenFixture: DecodedIdToken = {
+export const verifiedDecodedTokenFixture: firebase.auth.DecodedIdToken = {
   ...buildDecodedToken(),
   email_verified: true,
 };

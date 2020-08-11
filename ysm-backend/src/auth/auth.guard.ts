@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { FIREBASE } from '../firebase/firebase-factory';
-import { DecodedIdToken, FirebaseServices } from '../firebase/firebase.types';
+import { firebase, FirebaseServices } from '../firebase/firebase.types';
 import { CURRENT_USER_ID_FIELD } from './constants';
 
 @Injectable()
@@ -52,7 +52,7 @@ export class AuthGuard implements CanActivate {
     return true;
   }
 
-  private async parseAndValidateToken(token: string): Promise<DecodedIdToken> {
+  private async parseAndValidateToken(token: string): Promise<firebase.auth.DecodedIdToken> {
     try {
       const decodedToken = await this.firebase.auth.verifyIdToken(token, this.CHECK_REVOKED);
 
