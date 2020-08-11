@@ -1,12 +1,7 @@
 import axiosInstance from './axios';
-
-/*
- * action types
- */
-export const SET_THEMES = 'SET_THEMES';
-export const SET_RESOURCES = 'SET_RESOURCES';
-export const SET_USER_SIGNIN = 'SET_USER_SIGNIN';
-export const SET_SETTINGS_AUTH = 'SET_SETTINGS_AUTH';
+import {
+  SET_THEMES, SET_RESOURCES, SET_USER_SIGNIN, SET_SETTINGS_AUTH, SET_BOOKMARKS,
+} from './types';
 
 /*
  * action creators
@@ -19,7 +14,10 @@ export const setResources = (data) => ({
   type: SET_RESOURCES,
   data,
 });
-
+export const setBookmarks = (data) => ({
+  type: SET_BOOKMARKS,
+  data,
+});
 export const setUserSignIn = (data) => ({
   type: SET_USER_SIGNIN,
   data,
@@ -35,7 +33,8 @@ export function fetchResources() {
     try {
       const response = await axiosInstance.get('resources');
       dispatch(setResources(response.data));
-    } catch {
+    } catch (err) {
+      console.log(err);
       console.log('error');
     }
   };
@@ -49,8 +48,7 @@ export function fetchBookmarks() {
             authorization: `Bearer ${getState().user.xa}`,
           },
         });
-      console.log(response);
-      dispatch(setThemes(response.data));
+      dispatch(setBookmarks(response.data));
     } catch (err) {
       console.log('error');
       console.log(err);

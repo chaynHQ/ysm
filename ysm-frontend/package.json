@@ -37,6 +37,7 @@
     "test:unit": "NODE_ENV=test react-scripts test --pass-with-no-tests",
     "test:unit:watch": "NODE_ENV=test react-scripts test --watch",
     "test:unit:watchAll": "NODE_ENV=test react-scripts test --watchAll",
+    "test:cov": "NODE_ENV=test react-scripts test --collect-coverage",
     "deploy:dev": "yarn build && firebase deploy --only hosting"
   },
   "eslintConfig": {
@@ -60,7 +61,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.5",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "redux-mock-store": "^1.5.4"
   },
   "proxy": "http://localhost:3000"
 }
