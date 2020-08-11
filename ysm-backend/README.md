@@ -15,13 +15,29 @@ Note: if you just want to run the backend service locally and not do any develop
 
 Certain config values are required to run the server.
 
-For local development, create a new **`.env.development`** at the root of the backend folder, and add in the following:
+For local development, create a new **`.env.development`** file at the root of the `ysm-backend` folder, and add in the following:
 
 ```shell
-STORYBLOK_TOKEN={add here the API token from Storyblok / another dev}
+STORYBLOK_TOKEN={value}  # The API token from Storyblok (must have 'draft' access)
+
+FIREBASE_SERVICE_ACCOUNT={value}  # The service account JSON object serialised into a string and then base64 encoded
 ```
 
-Note that tests will use a separate `.env.test` which should already be present. When adding new config make sure to add a dummy 'noop' value in this test env file and commit to the repo.
+#### Env config for tests
+
+Tests will use a separate `.env.test` file which should already be present.
+
+You'll also need to create a **`.env.test.local`** file (see below for more details).
+
+All access to external services in **unit tests** should be mocked out, so when adding new config to the app make sure to add a dummy 'noop' value in the `.env.test` file and commit to the repo.
+
+It's also advisable to mock out access to external services in the **e2e tests** (e.g. like with Storyblok), but sometimes it makes sense to actually call the external service (like for Firebase Auth tokens). In the latter case, make sure all "live" config is set in a **`.env.test.local`** file (which must NOT be committed to the repo), with the following:
+
+```shell
+FIREBASE_SERVICE_ACCOUNT={value}  # Same as in .env.development - the service account JSON object serialised into a string and then base64 encoded
+
+FIREBASE_WEB_API_KEY={value}  # Special API key just for use in e2e tests - found in the settings page for the Firebase project
+```
 
 ### Install dependencies
 
