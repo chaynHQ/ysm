@@ -40,6 +40,23 @@ export function fetchResources() {
     }
   };
 }
+export function fetchBookmarks() {
+  return async (dispatch, getState) => {
+    try {
+      const response = await axiosInstance.get('profile',
+        {
+          headers: {
+            authorization: `Bearer ${getState().user.xa}`,
+          },
+        });
+      console.log(response);
+      dispatch(setThemes(response.data));
+    } catch (err) {
+      console.log('error');
+      console.log(err);
+    }
+  };
+}
 
 export function fetchThemes() {
   return async (dispatch) => {

@@ -5,7 +5,7 @@ import firebase from '../config/firebase';
 
 import SignIn from './SignIn';
 
-import { setSettingsAuth } from '../store/actions';
+import { setSettingsAuth, fetchBookmarks } from '../store/actions';
 
 
 const Settings = (props) => {
@@ -114,6 +114,9 @@ const Settings = (props) => {
                     Update
                 </Button>
             </Box>
+            <Button onClick={() => { props.fetchBookmarks()}}>
+                    Get Bookmarks
+            </Button>
         </Box>
         :
         <SignIn redirectUrl = '/settings' />
@@ -126,10 +129,13 @@ const Settings = (props) => {
 const mapStateToProps = (state) => ({
     user: state.user,
     settingsAuth: state.user.settingsAuth
+    // settingsAuth: true
 });
 
 const mapDispatchToProps = (dispatch) => ({
     setSettingsAuth: (bool) => dispatch(setSettingsAuth(bool)),
+    fetchBookmarks: () => dispatch(fetchBookmarks())
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles, Grid, Typography, Box, CircularProgress } from '@material-ui/core';
 import ReactHtmlParser from 'react-html-parser';
@@ -23,15 +23,15 @@ const Overview = (props) => {
 
   // setLoading(false);
 
-  // useEffect(() => {
-  //   if (props.themes.length > 0 && props.resources.length > 0) {
-  //     setLoading(false);
-  //   } else if (props.themes.length <= 0) {
-  //     props.fetchThemes();
-  //   } else if (props.resources.length <= 0) {
-  //     props.fetchResources();
-  //   }
-  // });
+  useEffect(() => {
+    if (props.themes.length > 0 && props.resources.length > 0) {
+      setLoading(false);
+    } else if (props.themes.length <= 0) {
+      props.fetchThemes();
+    } else if (props.resources.length <= 0) {
+      props.fetchResources();
+    }
+  });
 
   // TODO: STYLING
 
