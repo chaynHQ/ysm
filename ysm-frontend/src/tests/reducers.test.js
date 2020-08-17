@@ -1,8 +1,8 @@
 import ysmApp from '../store/reducers';
-import * as types from '../store/types';
+// import * as types from '../store/types';
 
-import themes from './fixtures/themes';
-import resources from './fixtures/resources';
+// import themes from './fixtures/themes';
+// import resources from './fixtures/resources';
 
 const initialState = { resources: [], themes: [], user: {} };
 
