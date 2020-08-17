@@ -1,3 +1,6 @@
+/* eslint-disable*/ 
+//TODO: Remove this disable
+
 import React from 'react';
 
 import { Box, IconButton, makeStyles } from '@material-ui/core';
@@ -8,13 +11,8 @@ const useStyles = makeStyles({
     minHeight: 32,
   },
 });
-type HeaderProps = {
-  menu?: boolean;
-  search?: boolean;
-};
-// TODO: Dynamically show the search button
 
-const Header: React.FC<HeaderProps> = ({ menu, search }: HeaderProps) => {
+const Header = ({ menu, search }) => {
   const classes = useStyles();
 
   return (

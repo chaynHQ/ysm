@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
-import { richTextHelper } from '../shared/rich-text';
-import { SET_THEMES, SET_RESOURCES, SET_USER_SIGNIN } from './actions';
+import richTextHelper from '../shared/rich-text';
+import {
+  SET_THEMES, SET_RESOURCES, SET_USER_SIGNIN, SET_SETTINGS_AUTH, SET_BOOKMARKS,
+} from './types';
 
-const themes = (state = [], action: any) => {
-  const newState: { description: any; id: any; slug: any; title: any }[] = [];
+const themes = (state = [], action) => {
+  const newState = [];
   switch (action.type) {
     case SET_THEMES:
-      action.data.forEach((data: any) => {
+      action.data.forEach((data) => {
         newState.push({
           description: richTextHelper(data.description),
           id: data.id,
@@ -20,7 +22,7 @@ const themes = (state = [], action: any) => {
   }
 };
 
-const resources = (state = [], action: any) => {
+const resources = (state = [], action) => {
   switch (action.type) {
     case SET_RESOURCES:
       return action.data;
@@ -29,11 +31,14 @@ const resources = (state = [], action: any) => {
   }
 };
 
-const user = (state = {}, action: any) => {
+const user = (state = {}, action) => {
   switch (action.type) {
     case SET_USER_SIGNIN:
-      console.log(action.data);
-      return action.data;
+      return { ...state, ...action.data };
+    case SET_SETTINGS_AUTH:
+      return { ...state, settingsAuth: action.data };
+    case SET_BOOKMARKS:
+      return { ...state, bookmarks: action.data };
     default:
       return state;
   }
