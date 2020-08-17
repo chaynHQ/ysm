@@ -1,5 +1,16 @@
 const themes = [{
-  description: '<h1>Some description text</h1>',
+  description: {
+    type: 'doc',
+    content: [{
+      type: 'paragraph',
+      content: [{
+        type: 'text',
+        text: 'Lorum Ipsum',
+        marks: [{
+          type: 'italic'
+        }]
+      }]
+    }] },
   id: 123456,
   slug: 'slug',
   title: 'Theme title',
