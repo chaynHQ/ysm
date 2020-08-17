@@ -7,10 +7,11 @@ const themes = [{
         type: 'text',
         text: 'Lorum Ipsum',
         marks: [{
-          type: 'italic'
-        }]
-      }]
-    }] },
+          type: 'italic',
+        }],
+      }],
+    }],
+  },
   id: 123456,
   slug: 'slug',
   title: 'Theme title',
