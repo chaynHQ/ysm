@@ -1,7 +1,12 @@
+/* eslint-disable*/ 
+//TODO: Remove this disable
+
 import React, { ReactElement } from 'react';
 
 import { makeStyles, Box, IconButton } from '@material-ui/core';
-import { ExitToApp, VpnKey, Favorite, Explore } from '@material-ui/icons';
+import {
+  ExitToApp, VpnKey, Favorite, Explore,
+} from '@material-ui/icons';
 
 import icon from '../assets/logo.png';
 
@@ -15,23 +20,15 @@ const useStyles = makeStyles({
   },
 });
 
-type FooterProps = {
-  logo?: boolean;
-  loginLeft?: boolean;
-  leave?: boolean;
-  loginRight?: boolean;
-  favourite?: boolean;
-  directory?: boolean;
-};
 
-const Footer: React.FC<FooterProps> = ({
+const Footer = ({
   logo,
   loginLeft,
   loginRight,
   leave,
   favourite,
   directory,
-}: FooterProps): ReactElement => {
+}) => {
   const classes = useStyles();
   return (
     <Box

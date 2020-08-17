@@ -1,48 +1,53 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Box } from '@material-ui/core';
-import firebase, {uiConfig} from '../config/firebase';
 import { StyledFirebaseAuth } from 'react-firebaseui';
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import firebase, { uiConfig } from '../config/firebase';
 
 import { setSettingsAuth } from '../store/actions';
 
-const SignIn = (props) => {
-
-  let location = useLocation()
+const SignIn = ({ redirectUrl, setSettingsAuthOnSuccess }) => {
+  const location = useLocation();
 
   return (
     <Box display="flex" flexDirection="column" height={1}>
       <StyledFirebaseAuth
         uiConfig={{
-          ...uiConfig, 
-          signInSuccessUrl: props.redirectUrl ? props.redirectUrl : '/overview',
+          ...uiConfig,
+          signInSuccessUrl: redirectUrl || '/overview',
           callbacks: {
             signInSuccessWithAuthResult: (authResult) => {
               const { user } = authResult;
-              if(location.pathname === '/settings') {
-                props.setSettingsAuth(true)
-                return false
+              if (location.pathname === '/settings') {
+                setSettingsAuthOnSuccess(true);
+                return false;
               }
               if (authResult.additionalUserInfo.isNewUser || !user.emailVerified) {
                 user.sendEmailVerification();
               }
               return true;
-            }
-          }
-          }} 
+            },
+          },
+        }}
         firebaseAuth={firebase.auth()}
       />
     </Box>
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.user
-});
+SignIn.propTypes = {
+  redirectUrl: PropTypes.string,
+  setSettingsAuthOnSuccess: PropTypes.func.isRequired,
+};
+
+SignIn.defaultProps = {
+  redirectUrl: '',
+};
 
 const mapDispatchToProps = (dispatch) => ({
-  setSettingsAuth: (bool) => dispatch(setSettingsAuth(bool)),
+  setSettingsAuthOnSuccess: (bool) => dispatch(setSettingsAuth(bool)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(null, mapDispatchToProps)(SignIn);

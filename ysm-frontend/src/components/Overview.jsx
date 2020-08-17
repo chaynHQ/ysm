@@ -1,7 +1,10 @@
+/* eslint-disable*/ 
+//TODO: Remove this disable
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { makeStyles, Grid, Typography, Box, CircularProgress } from '@material-ui/core';
-import ReactHtmlParser from 'react-html-parser';
+import {
+  makeStyles, Grid, Typography, Box, 
+} from '@material-ui/core';
 
 import illustration from '../assets/resource-illustration.png';
 
@@ -52,7 +55,7 @@ const Overview = (props) => {
         <Box>
           <Typography>User</Typography>
         </Box>
-        
+
       </Grid>
       <Footer logo leave directory loginRight favourite />
     </Box>
@@ -93,7 +96,7 @@ const Overview = (props) => {
 const mapStateToProps = (state) => ({
   themes: state.themes,
   resources: state.resources,
-  user: state.user
+  user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({

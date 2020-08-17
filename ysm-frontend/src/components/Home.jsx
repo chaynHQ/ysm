@@ -1,6 +1,8 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 
-import { Button, makeStyles, Grid, Typography, Box, useMediaQuery } from '@material-ui/core';
+import {
+  Button, makeStyles, Grid, Typography, Box, useMediaQuery,
+} from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import Header from './Header';
@@ -27,7 +29,7 @@ const Home = () => {
 
   return (
     <Box display="flex" flexDirection="column" height={1} className={classes.container}>
-      <Header menu={true} />
+      <Header menu />
       <Box flexGrow={1}>
         <Grid container justify="space-between" direction="column" alignItems="center">
           <img src={logo} alt="Your story matters logo" width={isMobile ? '25%' : '15%'} />
@@ -48,7 +50,7 @@ const Home = () => {
           </Typography>
         </Grid>
       </Box>
-      <Footer loginLeft={true} leave={true} />
+      <Footer loginLeft leave />
     </Box>
   );
 };
