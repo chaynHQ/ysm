@@ -140,7 +140,6 @@ Settings.defaultProps = {
 const mapStateToProps = (state) => ({
   user: state.user,
   settingsAuth: state.user.settingsAuth,
-  // settingsAuth: true
 });
 
 const mapDispatchToProps = (dispatch) => ({
