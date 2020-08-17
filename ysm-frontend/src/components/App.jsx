@@ -13,15 +13,13 @@ import firebase from '../config/firebase';
 
 import { setUserSignIn } from '../store/actions';
 
+import useWindowDimensions from '../shared/dimensions'
+
 const useStyles = makeStyles({
   screenContainer: {
     height: '100vh',
     backgroundColor: '#FFF5F0',
-  },
-
-  pageContainerDesktop: {
-    height: 731,
-    width: 752,
+    margin: 0,
   },
 
   pageContainerMobile: {
@@ -31,11 +29,13 @@ const useStyles = makeStyles({
 
   appContainer: {
     padding: 0,
+    overflow: 'scroll'
   },
 });
 
 const App = ({ setUserSignInOnAuthChange }) => {
   const classes = useStyles();
+  const { height, width } = useWindowDimensions();
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -53,8 +53,12 @@ const App = ({ setUserSignInOnAuthChange }) => {
       <Box boxShadow={3}>
         <Container
           className={`${classes.appContainer} ${
-            isMobile ? classes.pageContainerMobile : classes.pageContainerDesktop
+            isMobile ? classes.pageContainerMobile : null
           }`}
+          style={{
+            height: height,
+            width: width 
+          }}
         >
           <Box display="flex" flexDirection="column" height={1}>
             <Box flexGrow={1}>
