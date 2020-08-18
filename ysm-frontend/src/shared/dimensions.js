@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
   return width > 752 ? {
-    width: 752, height: 731
+    width: 752, height: 731,
   } : {
     width,
-    height
-  }
+    height,
+  };
 }
 
 export default function useWindowDimensions() {

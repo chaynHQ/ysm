@@ -13,7 +13,7 @@ import firebase from '../config/firebase';
 
 import { setUserSignIn } from '../store/actions';
 
-import useWindowDimensions from '../shared/dimensions'
+import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles({
   screenContainer: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 
   appContainer: {
     padding: 0,
-    overflow: 'scroll'
+    overflow: 'scroll',
   },
 });
 
@@ -56,8 +56,8 @@ const App = ({ setUserSignInOnAuthChange }) => {
             isMobile ? classes.pageContainerMobile : null
           }`}
           style={{
-            height: height,
-            width: width 
+            height,
+            width,
           }}
         >
           <Box display="flex" flexDirection="column" height={1}>
