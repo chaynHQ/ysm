@@ -33,7 +33,7 @@ const Theme = createMuiTheme({
     fontFamily: 'Nunito',
     fontSize: 16,
     h1: {
-      fontSize: 22
+      fontSize: 22,
     },
     body1: {
       fontSize: 16,
@@ -60,14 +60,14 @@ const Theme = createMuiTheme({
       },
       label: {
         fontWeight: 900,
-        textTransform: 'none'
-      }
+        textTransform: 'none',
+      },
     },
     MuiIconButton: {
       root: {
         color: '#000000',
-        width: 32,
-        height: 32,
+        width: 20,
+        height: 20,
         fontSize: 22,
         lineHeight: 26,
       },
