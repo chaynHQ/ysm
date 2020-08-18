@@ -1,8 +1,9 @@
 export interface Resource {
   id: string;
   slug: string;
+  featured: boolean;
+  image: string;
   title: string;
-  icon: string;
   subtitle?: string;
   description: Record<string, any>;
   themes: string[];

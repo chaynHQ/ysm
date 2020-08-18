@@ -32,6 +32,8 @@ export const storyblokResourcesListFixture = {
       content: {
         _uid: 'f715192a-fe7d-48e7-96cf-2166d03d8526',
         enabled: true,
+        featured: false,
+        image: 'http://a-storyblok-url-to-the-image-asset',
         themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
         icon: 'link-2-outline',
         subtitle: '',
@@ -77,6 +79,8 @@ export const storyblokResourcesListFixture = {
       content: {
         _uid: '5f468144-0c14-4b40-b230-2ccd34ada1ed',
         enabled: true,
+        featured: true,
+        image: 'http://a-storyblok-url-to-the-image-asset',
         themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
         icon: 'file-outline',
         subtitle: '',
@@ -122,6 +126,8 @@ export const storyblokResourcesListFixture = {
       content: {
         _uid: '6eeb71ba-e883-41d2-98be-480a279c7c67',
         enabled: true,
+        featured: false,
+        image: 'http://a-storyblok-url-to-the-image-asset',
         themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
         icon: 'file-outline',
         subtitle: 'This is a test resource',
@@ -185,6 +191,8 @@ export const storyblokSingleResourceFixture = {
     content: {
       _uid: 'f715192a-fe7d-48e7-96cf-2166d03d8526',
       enabled: true,
+      featured: false,
+      image: 'http://a-storyblok-url-to-the-image-asset',
       themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
       icon: 'link-2-outline',
       subtitle: '',
@@ -315,6 +323,8 @@ export const storyblokSingleResourceDisabledFixture = {
     content: {
       _uid: 'f715192a-fe7d-48e7-96cf-2166d03d8526',
       enabled: false,
+      featured: false,
+      image: 'http://a-storyblok-url-to-the-image-asset',
       themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
       icon: 'link-2-outline',
       subtitle: '',
@@ -420,6 +430,7 @@ export const storyblokThemesListFixture = {
             },
           ],
         },
+        image: 'http://a-storyblok-url-to-the-image-asset',
       },
       slug: 'mind',
       full_slug: 'themes/mind',

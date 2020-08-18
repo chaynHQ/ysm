@@ -32,5 +32,6 @@ export const themesListFixture: Theme[] = [
         },
       ],
     },
+    image: 'http://a-storyblok-url-to-the-image-asset',
   },
 ];

@@ -23,6 +23,8 @@ export class ResourcesService {
       starts_with: 'resources/',
       excluding_fields: 'content_items',
       version: 'draft',
+      sort_by: 'position:asc',
+      per_page: 100,
       ...this.buildRetrievalParamsForStoryblok(filters, searchQuery),
     };
 
