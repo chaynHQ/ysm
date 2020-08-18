@@ -4,8 +4,9 @@ export const resourcesListFixture: Resource[] = [
   {
     id: '4c4c24ae-966b-476f-abd9-b6b3a2e75b92',
     slug: 'mental-health-services',
+    featured: false,
+    image: 'http://a-storyblok-url-to-the-image-asset',
     title: 'Mental Health Services',
-    icon: 'link-2-outline',
     subtitle: null,
     description: {
       type: 'doc',
@@ -28,8 +29,9 @@ export const resourcesListFixture: Resource[] = [
   {
     id: '9f1b48d5-7299-432d-b3ee-29f1855a4363',
     slug: 'another-test',
+    featured: true,
+    image: 'http://a-storyblok-url-to-the-image-asset',
     title: 'Another test',
-    icon: 'file-outline',
     subtitle: null,
     description: {
       type: 'doc',
@@ -52,8 +54,9 @@ export const resourcesListFixture: Resource[] = [
   {
     id: '020e96d7-f1d3-4dc2-954e-3988cdd57efa',
     slug: 'test-1',
+    featured: false,
+    image: 'http://a-storyblok-url-to-the-image-asset',
     title: 'Test 1',
-    icon: 'file-outline',
     subtitle: 'This is a test resource',
     description: {
       type: 'doc',
@@ -92,8 +95,9 @@ export const resourcesListFixture: Resource[] = [
 export const singleResourceFixture: Resource = {
   id: '4c4c24ae-966b-476f-abd9-b6b3a2e75b92',
   slug: 'mental-health-services',
+  featured: false,
+  image: 'http://a-storyblok-url-to-the-image-asset',
   title: 'Mental Health Services',
-  icon: 'link-2-outline',
   subtitle: null,
   description: {
     type: 'doc',

@@ -10,6 +10,7 @@ export class ThemeSerialiserService {
       slug: story.slug,
       title: story.name,
       description: story.content.description,
+      image: story.content.image,
     };
   }
 }

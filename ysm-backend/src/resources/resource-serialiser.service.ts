@@ -17,8 +17,9 @@ export class ResourceSerialiserService {
     return {
       id: story.uuid,
       slug: story.slug,
+      featured: !!story.content.featured,
+      image: story.content.image,
       title: story.name,
-      icon: story.content.icon,
       subtitle: story.content.subtitle || null,
       description: story.content.description,
       themes: story.content.themes,
