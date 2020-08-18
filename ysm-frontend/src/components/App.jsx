@@ -63,8 +63,9 @@ const App = ({ setUserSignInOnAuthChange }) => {
           }}
         >
           <Box flexGrow={1} display="flex" flexDirection="column" height={1}>
-            <Header />
             <BrowserRouter>
+              <Header />
+
               <Switch>
                 <Route path="/signin" render={(props) => <SignIn redirectUrl={props.redirectUrl} />} />
                 <Route path="/overview">
@@ -75,8 +76,9 @@ const App = ({ setUserSignInOnAuthChange }) => {
                   <Home />
                 </Route>
               </Switch>
+
+              <Footer />
             </BrowserRouter>
-            <Footer />
           </Box>
         </Container>
       </Box>

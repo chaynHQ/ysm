@@ -21,6 +21,6 @@ describe('Footer', () => {
   });
 
   it('renders with correct number of links', () => {
-    expect(wrapper.find(Footer).find('button')).toHaveLength(4);
+    expect(wrapper.find(Footer).find('a')).toHaveLength(4);
   });
 });

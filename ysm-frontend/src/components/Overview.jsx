@@ -1,9 +1,7 @@
-/* eslint-disable*/ 
-//TODO: Remove this disable
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  makeStyles, Grid, Typography, Box, 
+  makeStyles, Grid, Typography, Box,
 } from '@material-ui/core';
 
 import illustration from '../assets/resource-illustration.png';
@@ -39,25 +37,20 @@ const Overview = (props) => {
   // TODO: STYLING
 
   return (
-    <Box display="flex" flexDirection="column" height={1}>
-      <Header menu search />
-      <Grid
-        container
-        justify="space-between"
-        direction="column"
-        alignItems="center"
-        className={classes.container}
-      >
-        <Box>
-          <Typography>“Quote to show we understand”</Typography>
-          <Typography>Take a look at what we’ve got for you.</Typography>
-        </Box>
-        <Box>
-          <Typography>User</Typography>
-        </Box>
-
-      </Grid>
-      <Footer logo leave directory loginRight favourite />
+    <Box
+      display="flex"
+      flexDirection="column"
+      height={1}
+      justifyContent="space-between"
+      direction="column"
+      alignItems="center"
+      className={classes.container}
+    >
+      <Typography>“Quote to show we understand”</Typography>
+      <Typography>Take a look at what we’ve got for you.</Typography>
+      <Box>
+        <Typography>User</Typography>
+      </Box>
     </Box>
   );
 };
