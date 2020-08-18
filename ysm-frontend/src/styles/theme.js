@@ -91,11 +91,20 @@ const Theme = createMuiTheme({
         alignItems: 'flex-start',
         height: 68,
         position: 'sticky',
+
       },
     },
     MuiBottomNavigationAction: {
+      root: {
+        '&$selected': {
+          color: '#D27200',
+        },
+      },
       label: {
         fontSize: 12,
+        '&$selected': {
+          fontSize: 12,
+        },
       },
     },
     MuiSvgIcon: {
