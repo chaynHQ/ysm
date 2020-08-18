@@ -85,6 +85,25 @@ const Theme = createMuiTheme({
         color: '#717798',
       },
     },
+    MuiBottomNavigation: {
+      root: {
+        backgroundColor: '#EFE9E5',
+        alignItems: 'flex-start',
+        height: 68,
+        position: 'sticky',
+      },
+    },
+    MuiBottomNavigationAction: {
+      label: {
+        fontSize: 12,
+      },
+    },
+    MuiSvgIcon: {
+      root: {
+        height: 22,
+        width: 22,
+      },
+    },
   },
 });
 

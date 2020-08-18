@@ -10,6 +10,8 @@ import Overview from './Overview';
 import SignIn from './SignIn';
 import Settings from './Settings';
 import firebase from '../config/firebase';
+import Header from './Header';
+import Footer from './Footer';
 
 import { setUserSignIn } from '../store/actions';
 
@@ -60,21 +62,21 @@ const App = ({ setUserSignInOnAuthChange }) => {
             width,
           }}
         >
-          <Box display="flex" flexDirection="column" height={1}>
-            <Box flexGrow={1}>
-              <BrowserRouter>
-                <Switch>
-                  <Route path="/signin" render={(props) => <SignIn redirectUrl={props.redirectUrl} />} />
-                  <Route path="/overview">
-                    <Overview />
-                  </Route>
-                  <Route path="/settings" component={Settings} />
-                  <Route path="/">
-                    <Home />
-                  </Route>
-                </Switch>
-              </BrowserRouter>
-            </Box>
+          <Box flexGrow={1} display="flex" flexDirection="column" height={1}>
+            <Header />
+            <BrowserRouter>
+              <Switch>
+                <Route path="/signin" render={(props) => <SignIn redirectUrl={props.redirectUrl} />} />
+                <Route path="/overview">
+                  <Overview />
+                </Route>
+                <Route path="/settings" component={Settings} />
+                <Route path="/">
+                  <Home />
+                </Route>
+              </Switch>
+            </BrowserRouter>
+            <Footer />
           </Box>
         </Container>
       </Box>
