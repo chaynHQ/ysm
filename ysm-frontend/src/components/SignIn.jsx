@@ -16,7 +16,7 @@ const SignIn = ({ redirectUrl, setSettingsAuthOnSuccess }) => {
       <StyledFirebaseAuth
         uiConfig={{
           ...uiConfig,
-          signInSuccessUrl: redirectUrl || '/overview',
+          signInSuccessUrl: redirectUrl || '/your-journey',
           callbacks: {
             signInSuccessWithAuthResult: (authResult) => {
               const { user } = authResult;

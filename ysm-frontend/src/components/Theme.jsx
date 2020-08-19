@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Overview = ({ fetchThemesOnRender, themes }) => {
+const Theme = ({ fetchThemesOnRender, themes }) => {
   const classes = useStyles();
   const { width } = useWindowDimensions();
 
@@ -152,7 +152,7 @@ const Overview = ({ fetchThemesOnRender, themes }) => {
   );
 };
 
-Overview.propTypes = {
+Theme.propTypes = {
   themes: PropTypes.arrayOf(
     PropTypes.objectOf(
       PropTypes.oneOfType([
@@ -164,7 +164,7 @@ Overview.propTypes = {
   fetchThemesOnRender: PropTypes.func.isRequired,
 };
 
-Overview.defaultProps = {
+Theme.defaultProps = {
   themes: [],
 };
 
@@ -176,4 +176,4 @@ const mapDispatchToProps = (dispatch) => ({
   fetchThemesOnRender: () => dispatch(fetchThemes()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Overview);
+export default connect(mapStateToProps, mapDispatchToProps)(Theme);
