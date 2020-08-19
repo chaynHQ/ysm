@@ -93,7 +93,7 @@ const Theme = ({
 
             </Breadcrumbs>
             <Typography variant="h1">{theme.title}</Typography>
-            <Typography>{ReactHtmlParser(theme.description)}</Typography>
+            <Typography component={'span'}>{ReactHtmlParser(theme.description)}</Typography>
           </Box>
         )}
 
