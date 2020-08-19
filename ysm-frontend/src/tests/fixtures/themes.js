@@ -12,7 +12,7 @@ const themes = [{
       }],
     }],
   },
-  id: 123456,
+  id: '123456',
   slug: 'slug',
   title: 'Theme title',
 }];
