@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 const mockStore = configureMockStore();
 jest.mock('react-router-dom', () => ({
   useLocation: jest.fn().mockReturnValue({
-    pathname: '/overview',
+    pathname: '/your-journey',
   }),
 }));
 

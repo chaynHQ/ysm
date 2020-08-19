@@ -4,13 +4,13 @@ import thunk from 'redux-thunk';
 import React from 'react';
 import Link from '@material-ui/core/Link';
 import { Button, Card } from '@material-ui/core';
-import Overview from '../components/Overview';
+import YourJourney from '../components/YourJourney';
 import themes from './fixtures/themes';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('Overview', () => {
+describe('YourJourney', () => {
   let wrapper;
   let shallow;
 
@@ -20,7 +20,7 @@ describe('Overview', () => {
 
   it('renders with correct number of links', () => {
     wrapper = shallow(
-      <Overview
+      <YourJourney
         store={mockStore({ themes })}
       />,
     ).dive().dive();
@@ -37,7 +37,7 @@ describe('Overview', () => {
     const fetchThemesOnRenderMock = jest.fn();
 
     wrapper = shallow(
-      <Overview
+      <YourJourney
         store={store}
         fetchThemesOnRender={fetchThemesOnRenderMock()}
       />,

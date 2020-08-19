@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 
 import { isMobile } from 'react-device-detect';
 import Home from './Home';
-import Overview from './Overview';
+import YourJourney from './YourJourney';
+import Theme from './Theme';
 import SignIn from './SignIn';
 import Settings from './Settings';
 import firebase from '../config/firebase';
@@ -68,13 +69,15 @@ const App = ({ setUserSignInOnAuthChange }) => {
               <Box minHeight={height * 0.875} overflow="scroll">
                 <Switch>
                   <Route path="/signin" render={(props) => <SignIn redirectUrl={props.redirectUrl} />} />
-                  <Route path="/overview">
-                    <Overview />
+                  <Route path="/your-journey">
+                    <YourJourney />
                   </Route>
                   <Route path="/settings" component={Settings} />
+                  <Route path="/theme/:id" component={Theme} />
                   <Route path="/">
                     <Home />
                   </Route>
+
                 </Switch>
               </Box>
               <Footer />

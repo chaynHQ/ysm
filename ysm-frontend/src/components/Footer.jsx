@@ -17,7 +17,7 @@ const Footer = () => {
 
   useEffect(() => {
     switch (location.pathname) {
-      case '/overview':
+      case '/your-journey':
         setSelected('journey');
         break;
       default:
@@ -35,7 +35,7 @@ const Footer = () => {
         <BottomNavigationAction
           value="journey"
           component={Link}
-          to="/overview"
+          to="/your-journey"
           label="Your Journey"
           icon={<ImportContacts />}
         />
