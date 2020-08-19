@@ -62,24 +62,24 @@ const App = ({ setUserSignInOnAuthChange }) => {
             width,
           }}
         >
-          <Box flexGrow={1} display="flex" flexDirection="column" height={1}>
-            <BrowserRouter>
+          <BrowserRouter>
+            <Box flexGrow={1} display="flex" flexDirection="column" height={1}>
               <Header />
-
-              <Switch>
-                <Route path="/signin" render={(props) => <SignIn redirectUrl={props.redirectUrl} />} />
-                <Route path="/overview">
-                  <Overview />
-                </Route>
-                <Route path="/settings" component={Settings} />
-                <Route path="/">
-                  <Home />
-                </Route>
-              </Switch>
-
+              <Box minHeight={height * 0.875} overflow="scroll">
+                <Switch>
+                  <Route path="/signin" render={(props) => <SignIn redirectUrl={props.redirectUrl} />} />
+                  <Route path="/overview">
+                    <Overview />
+                  </Route>
+                  <Route path="/settings" component={Settings} />
+                  <Route path="/">
+                    <Home />
+                  </Route>
+                </Switch>
+              </Box>
               <Footer />
-            </BrowserRouter>
-          </Box>
+            </Box>
+          </BrowserRouter>
         </Container>
       </Box>
     </Box>

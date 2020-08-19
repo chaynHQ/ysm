@@ -1,26 +1,32 @@
 import configureMockStore from 'redux-mock-store';
-import { mount } from 'enzyme';
-import { BrowserRouter } from 'react-router-dom';
+import { createShallow } from '@material-ui/core/test-utils';
 import React from 'react';
+import { BottomNavigationAction } from '@material-ui/core';
 import Footer from '../components/Footer';
 
 const mockStore = configureMockStore();
+jest.mock('react-router-dom', () => ({
+  useLocation: jest.fn().mockReturnValue({
+    pathname: '/overview',
+  }),
+}));
 
 describe('Footer', () => {
   const store = mockStore({});
   let wrapper;
+  let shallow;
 
   beforeEach(() => {
-    wrapper = mount(
-      <BrowserRouter>
-        <Footer
-          store={store}
-        />
-      </BrowserRouter>,
+    shallow = createShallow();
+
+    wrapper = shallow(
+      <Footer
+        store={store}
+      />,
     );
   });
 
   it('renders with correct number of links', () => {
-    expect(wrapper.find(Footer).find('a')).toHaveLength(4);
+    expect(wrapper.find(BottomNavigationAction)).toHaveLength(4);
   });
 });

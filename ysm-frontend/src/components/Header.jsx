@@ -6,13 +6,9 @@ import React from 'react';
 import { Box, IconButton, makeStyles, Typography } from '@material-ui/core';
 import { Menu, Search } from '@material-ui/icons';
 
-
 import logo from '../assets/logo.png';
 
 const useStyles = makeStyles({
-  container: {
-    minHeight: 32,
-  },
   icon: {
     width: 20,
     height: 20
@@ -23,8 +19,11 @@ const useStyles = makeStyles({
   }
 });
 
+import useWindowDimensions from '../shared/dimensions';
+  
 const Header = () => {
   const classes = useStyles();
+  const { height, width } = useWindowDimensions();
 
   return (
     <Box
@@ -33,8 +32,8 @@ const Header = () => {
       alignItems="center"
       justifyContent="space-between"
       width={1}
-      className={classes.container}
       bgcolor={'#EFE9E5'}
+      height={height*0.05}
     >
     <Box p={2}>
         <IconButton>

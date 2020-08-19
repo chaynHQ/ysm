@@ -23,10 +23,10 @@ const Footer = () => {
       default:
         setSelected('');
     }
-  });
+  }, [location]);
 
   return (
-    <Box top={height} position="sticky">
+    <Box height={height * 0.075}>
       <BottomNavigation
         showLabels
         value={selected}

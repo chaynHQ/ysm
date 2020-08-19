@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store';
-import { mount } from 'enzyme';
-import { BrowserRouter } from 'react-router-dom';
+import { createShallow } from '@material-ui/core/test-utils';
 import React from 'react';
+import { IconButton } from '@material-ui/core';
 import Header from '../components/Header';
 
 const mockStore = configureMockStore();
@@ -9,18 +9,19 @@ const mockStore = configureMockStore();
 describe('Header', () => {
   const store = mockStore({});
   let wrapper;
+  let shallow;
 
   beforeEach(() => {
-    wrapper = mount(
-      <BrowserRouter>
-        <Header
-          store={store}
-        />
-      </BrowserRouter>,
+    shallow = createShallow();
+
+    wrapper = shallow(
+      <Header
+        store={store}
+      />,
     );
   });
 
   it('renders with correct number of links', () => {
-    expect(wrapper.find(Header).find('button')).toHaveLength(2);
+    expect(wrapper.find(IconButton)).toHaveLength(2);
   });
 });
