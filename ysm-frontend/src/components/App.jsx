@@ -13,6 +13,7 @@ import Settings from './Settings';
 import firebase from '../config/firebase';
 import Header from './Header';
 import Footer from './Footer';
+import NotFoundError from './NotFoundError';
 
 import { setUserSignIn } from '../store/actions';
 
@@ -69,13 +70,17 @@ const App = ({ setUserSignInOnAuthChange }) => {
               <Box minHeight={height * 0.875} overflow="scroll">
                 <Switch>
                   <Route path="/signin" render={(props) => <SignIn redirectUrl={props.redirectUrl} />} />
+                  <Route path="/your-journey/:themeSlug" component={Theme} />
                   <Route path="/your-journey">
                     <YourJourney />
                   </Route>
                   <Route path="/settings" component={Settings} />
-                  <Route path="/theme/:id" component={Theme} />
-                  <Route path="/">
+
+                  <Route exact path="/">
                     <Home />
+                  </Route>
+                  <Route path="*">
+                    <NotFoundError />
                   </Route>
 
                 </Switch>

@@ -1,29 +1,26 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import ReactHtmlParser from 'react-html-parser';
 
 import {
   makeStyles,
   Typography,
   Box,
   Breadcrumbs,
-  Button,
-  Avatar,
   Card,
   CardContent,
   CardMedia,
   CardActionArea,
 } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
+
 import Link from '@material-ui/core/Link';
 import {
   ArrowBack,
 } from '@material-ui/icons';
 
-import { fetchThemes } from '../store/actions';
-import useWindowDimensions from '../shared/dimensions';
-
-import smallIllustration from '../assets/resource-illustration.png';
+import { fetchThemes, fetchResources } from '../store/actions';
 import illustration from '../assets/homepage-illustration.png';
 
 const useStyles = makeStyles((theme) => ({
@@ -59,13 +56,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Theme = ({ fetchThemesOnRender, themes }) => {
+const Theme = ({
+  fetchResourcesOnRender, fetchThemesOnRender, resources, theme,
+}) => {
   const classes = useStyles();
-  const { width } = useWindowDimensions();
 
   useEffect(() => {
-    if (themes.length <= 0) {
+    if (!theme) {
       fetchThemesOnRender();
+    }
+    if (resources.length <= 0) {
+      fetchResourcesOnRender();
     }
   }, []);
 
@@ -78,102 +79,90 @@ const Theme = ({ fetchThemesOnRender, themes }) => {
       pt={3.5}
       px={2}
     >
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link component={RouterLink} color="inherit" to="/">
-          <Box display="flex" alignItems="center">
-            <ArrowBack className={classes.icon} />
-            Back to Home
-          </Box>
-        </Link>
+      { !theme
+        ? <Typography>Theme does not exist</Typography>
+        : (
+          <Box>
+            <Breadcrumbs aria-label="breadcrumb">
+              <Link component={RouterLink} color="inherit" to="/your-journey">
+                <Box display="flex" alignItems="center">
+                  <ArrowBack className={classes.icon} />
+                  Back to Your Jorney
+                </Box>
+              </Link>
 
-      </Breadcrumbs>
-      <Typography variant="h1">Your Journey</Typography>
-      <Typography>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ac
-      </Typography>
-      {themes.map((theme) => (
-        <Card key={theme.id} className={classes.card}>
-          <CardActionArea className={classes.cardMedia} component={RouterLink} to="/">
-            <CardMedia
-              className={classes.cardContent}
-              image={illustration}
-            >
-              <CardContent>
-                <Typography variant="h2" className={classes.title} color="textSecondary">
-                  {theme.title}
-                </Typography>
-              </CardContent>
-            </CardMedia>
-          </CardActionArea>
-        </Card>
-      ))}
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link component={RouterLink} color="inherit" to="/">
-          <Box display="flex" alignItems="center">
-            <ArrowBack className={classes.icon} />
-            Back to Home
+            </Breadcrumbs>
+            <Typography variant="h1">{theme.title}</Typography>
+            <Typography>{ReactHtmlParser(theme.description)}</Typography>
           </Box>
-        </Link>
-      </Breadcrumbs>
-      <Box
-        display="flex"
-        flexDirection="column"
-        height={1}
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Box width={width * 0.3} height={width * 0.3} p={4}>
-          <Avatar className={classes.iconContainer} alt="Illustration of woman and a butterfly" src={smallIllustration} />
-        </Box>
-        <Typography variant="h1" align="center">Sign up, it’s free</Typography>
-        <Typography align="center">
-          Sign up to Your Story Matters and privately save resources for later.
-        </Typography>
-        <Button variant="contained" color="primary" component={Link} to="/signin">
-          Create Your Account
-        </Button>
-        <Box width="50%" display="flex" flexDirection="column" alignItems="center">
-          <Typography align="center" variant="subtitle1" className={classes.linkSubtitle}>
-            Your privacy will be protected.
-          </Typography>
-          <Link
-            component={RouterLink}
-            className={classes.link}
-            underline="always"
-            to="/"
-            variant="subtitle1"
-          >
-            Read our Terms & Privacy Policy
-          </Link>
-        </Box>
-      </Box>
+        )}
+
+      { resources.length < 1
+        ? <Typography>There are no resources for this theme</Typography>
+        : (
+          <Box>
+            {resources.map((resource) => (
+              <Card key={resource.id} className={classes.card}>
+                <CardActionArea className={classes.cardMedia} component={RouterLink} to={`/your-journey/${theme.slug}`}>
+                  <CardMedia
+                    className={classes.cardContent}
+                    image={illustration}
+                  >
+                    <CardContent>
+                      <Typography variant="h2" className={classes.title} color="textSecondary">
+                        {resource.title}
+                      </Typography>
+                    </CardContent>
+                  </CardMedia>
+                </CardActionArea>
+              </Card>
+            ))}
+          </Box>
+        )}
 
     </Box>
   );
 };
 
 Theme.propTypes = {
-  themes: PropTypes.arrayOf(
+  resources: PropTypes.arrayOf(
     PropTypes.objectOf(
       PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.object,
+        PropTypes.array,
       ]),
     ),
   ),
+  theme: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+    ]),
+  ),
   fetchThemesOnRender: PropTypes.func.isRequired,
+  fetchResourcesOnRender: PropTypes.func.isRequired,
 };
 
 Theme.defaultProps = {
-  themes: [],
+  resources: [],
+  theme: undefined,
 };
 
-const mapStateToProps = (state) => ({
-  themes: state.themes,
-});
+const mapStateToProps = (state, ownProps) => {
+  const theme = state.themes.find((t) => t.slug === ownProps.match.params.themeSlug);
+  const resources = theme !== undefined ? state.resources.filter(
+    (resource) => resource.themes && resource.themes.includes(theme.id),
+  ) : [];
+  return {
+    theme,
+    resources,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   fetchThemesOnRender: () => dispatch(fetchThemes()),
+  fetchResourcesOnRender: () => dispatch(fetchResources()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Theme);

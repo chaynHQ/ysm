@@ -78,6 +78,7 @@ const YourJourney = ({ fetchThemesOnRender, themes }) => {
       pt={3.5}
       px={2}
     >
+
       <Breadcrumbs aria-label="breadcrumb">
         <Link component={RouterLink} color="inherit" to="/">
           <Box display="flex" alignItems="center">
@@ -93,7 +94,7 @@ const YourJourney = ({ fetchThemesOnRender, themes }) => {
       </Typography>
       {themes.map((theme) => (
         <Card key={theme.id} className={classes.card}>
-          <CardActionArea className={classes.cardMedia} component={RouterLink} to="/">
+          <CardActionArea className={classes.cardMedia} component={RouterLink} to={`/your-journey/${theme.slug}`}>
             <CardMedia
               className={classes.cardContent}
               image={illustration}
