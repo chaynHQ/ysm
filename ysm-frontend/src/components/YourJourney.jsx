@@ -7,8 +7,6 @@ import {
   Typography,
   Box,
   Breadcrumbs,
-  Button,
-  Avatar,
   Card,
   CardContent,
   CardMedia,
@@ -21,10 +19,9 @@ import {
 } from '@material-ui/icons';
 
 import { fetchThemes } from '../store/actions';
-import useWindowDimensions from '../shared/dimensions';
 
-import smallIllustration from '../assets/resource-illustration.png';
 import illustration from '../assets/homepage-illustration.png';
+import SignUpPrompt from './SignUpPrompt';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -61,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
 
 const YourJourney = ({ fetchThemesOnRender, themes }) => {
   const classes = useStyles();
-  const { width } = useWindowDimensions();
 
   useEffect(() => {
     if (themes.length <= 0) {
@@ -116,38 +112,7 @@ const YourJourney = ({ fetchThemesOnRender, themes }) => {
           </Box>
         </Link>
       </Breadcrumbs>
-      <Box
-        display="flex"
-        flexDirection="column"
-        height={1}
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Box width={width * 0.3} height={width * 0.3} p={4}>
-          <Avatar className={classes.iconContainer} alt="Illustration of woman and a butterfly" src={smallIllustration} />
-        </Box>
-        <Typography variant="h1" align="center">Sign up, it’s free</Typography>
-        <Typography align="center">
-          Sign up to Your Story Matters and privately save resources for later.
-        </Typography>
-        <Button variant="contained" color="primary" component={Link} to="/signin">
-          Create Your Account
-        </Button>
-        <Box width="50%" display="flex" flexDirection="column" alignItems="center">
-          <Typography align="center" variant="subtitle1" className={classes.linkSubtitle}>
-            Your privacy will be protected.
-          </Typography>
-          <Link
-            component={RouterLink}
-            className={classes.link}
-            underline="always"
-            to="/"
-            variant="subtitle1"
-          >
-            Read our Terms & Privacy Policy
-          </Link>
-        </Box>
-      </Box>
+      <SignUpPrompt url="/" />
 
     </Box>
   );

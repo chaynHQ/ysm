@@ -3,7 +3,7 @@ import { createShallow } from '@material-ui/core/test-utils';
 import thunk from 'redux-thunk';
 import React from 'react';
 import Link from '@material-ui/core/Link';
-import { Button, Card } from '@material-ui/core';
+import { Card } from '@material-ui/core';
 import YourJourney from '../components/YourJourney';
 import themes from './fixtures/themes';
 
@@ -25,12 +25,11 @@ describe('YourJourney', () => {
       />,
     ).dive().dive();
 
-    expect(wrapper.find(Link)).toHaveLength(3);
+    expect(wrapper.find(Link)).toHaveLength(2);
     expect(wrapper.find(Card)).toHaveLength(themes.length);
-    expect(wrapper.find(Button)).toHaveLength(1);
   });
 
-  it('calls correct actions on minimise click', () => {
+  it('calls correct action on empty themes in store', () => {
     jest.spyOn(React, 'useEffect').mockImplementation((f) => f());
 
     const store = mockStore({ themes: [] });

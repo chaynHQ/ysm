@@ -12,16 +12,18 @@ import {
   CardContent,
   CardMedia,
   CardActionArea,
+  Button,
+  Avatar,
 } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
-
-import Link from '@material-ui/core/Link';
 import {
+  BookmarkBorder,
   ArrowBack,
 } from '@material-ui/icons';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 
 import { fetchThemes, fetchResources } from '../store/actions';
-import illustration from '../assets/homepage-illustration.png';
+import SignUpPrompt from './SignUpPrompt';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -30,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
     height: 20,
   },
   card: {
-    height: 200,
     margin: 6,
   },
   cardMedia: {
@@ -49,10 +50,17 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
   },
   link: {
-    color: '#D27200',
+    color: '#ffffff',
   },
   linkSubtitle: {
     margin: 0,
+  },
+  avatar: {
+    height: '70px',
+    width: '70px',
+  },
+  button: {
+    fontSize: '12px',
   },
 }));
 
@@ -69,56 +77,84 @@ const Theme = ({
       fetchResourcesOnRender();
     }
   }, []);
-
   return (
     <Box
       display="flex"
       flexDirection="column"
       direction="column"
       className={classes.container}
-      pt={3.5}
-      px={2}
     >
       { !theme
         ? <Typography>Theme does not exist</Typography>
         : (
-          <Box>
-            <Breadcrumbs aria-label="breadcrumb">
-              <Link component={RouterLink} color="inherit" to="/your-journey">
-                <Box display="flex" alignItems="center">
-                  <ArrowBack className={classes.icon} />
-                  Back to Your Jorney
-                </Box>
-              </Link>
+          <Card raised={false} square>
+            <CardMedia
+              className={classes.cardContent}
+              image={theme.image ? theme.image.filename : null}
+            >
+              <CardContent>
+                <Breadcrumbs aria-label="breadcrumb">
+                  <Link component={RouterLink} to="/your-journey">
+                    <Box display="flex" alignItems="center" className={classes.link}>
+                      <ArrowBack className={classes.icon} />
+                      Back to Your Journey
+                    </Box>
+                  </Link>
 
-            </Breadcrumbs>
-            <Typography variant="h1">{theme.title}</Typography>
-            <Typography component={'span'}>{ReactHtmlParser(theme.description)}</Typography>
-          </Box>
+                </Breadcrumbs>
+                <Typography color="textSecondary" variant="h1">{theme.title}</Typography>
+                <Typography color="textSecondary" component="div">{ReactHtmlParser(theme.description)}</Typography>
+              </CardContent>
+            </CardMedia>
+          </Card>
         )}
 
       { resources.length < 1
         ? <Typography>There are no resources for this theme</Typography>
         : (
-          <Box>
+          <Box
+            pt={3.5}
+            px={2}
+          >
             {resources.map((resource) => (
               <Card key={resource.id} className={classes.card}>
                 <CardActionArea className={classes.cardMedia} component={RouterLink} to={`/your-journey/${theme.slug}`}>
-                  <CardMedia
-                    className={classes.cardContent}
-                    image={illustration}
-                  >
-                    <CardContent>
-                      <Typography variant="h2" className={classes.title} color="textSecondary">
-                        {resource.title}
-                      </Typography>
-                    </CardContent>
-                  </CardMedia>
+                  <CardContent>
+                    <Box display="flex" flexDirection="row">
+                      <Box>
+                        <Typography variant="h2" className={classes.title}>
+                          {resource.title}
+                        </Typography>
+                        <Typography>
+                          {resource.subtitle}
+                        </Typography>
+                      </Box>
+                      {resource.image
+                        ? (
+                          <Avatar
+                            alt={resource.image.alt}
+                            src={resource.image.filename}
+                            className={classes.avatar}
+                          />
+                        )
+                        : null}
+                    </Box>
+                    <Button className={classes.button} color="secondary" variant="contained" disableElevation size="small" startIcon={<BookmarkBorder />}>Save for later</Button>
+                  </CardContent>
                 </CardActionArea>
               </Card>
             ))}
           </Box>
         )}
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link component={RouterLink} color="inherit" to="/your-journey">
+          <Box display="flex" alignItems="center">
+            <ArrowBack className={classes.icon} />
+            Back to Your Journey
+          </Box>
+        </Link>
+      </Breadcrumbs>
+      <SignUpPrompt />
 
     </Box>
   );
@@ -131,6 +167,7 @@ Theme.propTypes = {
         PropTypes.string,
         PropTypes.object,
         PropTypes.array,
+        PropTypes.bool,
       ]),
     ),
   ),
@@ -154,6 +191,7 @@ const mapStateToProps = (state, ownProps) => {
   const resources = theme !== undefined ? state.resources.filter(
     (resource) => resource.themes && resource.themes.includes(theme.id),
   ) : [];
+
   return {
     theme,
     resources,

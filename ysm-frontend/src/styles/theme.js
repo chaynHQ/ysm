@@ -68,6 +68,9 @@ const Theme = createMuiTheme({
         fontWeight: 900,
         textTransform: 'none',
       },
+      secondary: {
+        color: 'green',
+      },
     },
     MuiIconButton: {
       root: {
@@ -81,8 +84,6 @@ const Theme = createMuiTheme({
     MuiTypography: {
       root: {
         marginBottom: 16,
-        paddingLeft: '1rem',
-        paddingRight: '1rem',
         color: '#242A4A',
       },
       colorTextPrimary: {

@@ -2,8 +2,10 @@ const resources = [{
   id: '4c4c24ae-966b-476f-abd9-b6b3a2e75b92',
   slug: 'mental-health-services',
   title: 'Mental Health Services',
-  icon: 'link-2-outline',
-  subtitle: null,
+  image: { alt: 'alt text', filename: 'file name' },
+  featured: true,
+  themes: ['123456'],
+  subtitle: 'Subtitle',
   description: {
     type: 'doc',
     content: [
