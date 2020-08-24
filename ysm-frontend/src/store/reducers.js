@@ -14,6 +14,7 @@ const themes = (state = [], action) => {
           id: data.id,
           slug: data.slug,
           title: data.title,
+          image: data.image,
         });
       });
       return newState;
@@ -25,6 +26,13 @@ const themes = (state = [], action) => {
 const resources = (state = [], action) => {
   switch (action.type) {
     case SET_RESOURCES:
+      action.data.sort((a, b) => {
+        if (a.featured === b.featured) {
+          return 0;
+        } if (a.featured) {
+          return -1;
+        } return 1;
+      });
       return action.data;
     default:
       return state;

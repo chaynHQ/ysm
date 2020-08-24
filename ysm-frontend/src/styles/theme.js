@@ -1,5 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
+// TODO:
+// Once colours are settled upon remove Hex codes from within the components & transfer into here
 const Theme = createMuiTheme({
   palette: {
     primary: {
@@ -29,15 +31,25 @@ const Theme = createMuiTheme({
   },
   typography: {
     fontFamily: 'Nunito',
+    fontSize: 16,
+    h1: {
+      fontSize: 22,
+      fontWeight: 700,
+    },
+    h2: {
+      fontSize: 17,
+      fontWeight: 700,
+    },
     body1: {
-      fontSize: 18,
+      fontSize: 16,
     },
     body2: {
-      fontSize: 18,
+      fontSize: 16,
       color: '#FFF5F0',
     },
     subtitle1: {
       fontSize: 14,
+      color: '#717798',
     },
     subtitle2: {
       fontSize: 14,
@@ -50,14 +62,21 @@ const Theme = createMuiTheme({
         paddingLeft: 30,
         paddingRight: 30,
         marginBottom: 16,
-        borderRadius: 0,
+        borderRadius: 6,
+      },
+      label: {
+        fontWeight: 900,
+        textTransform: 'none',
+      },
+      secondary: {
+        color: 'green',
       },
     },
     MuiIconButton: {
       root: {
         color: '#000000',
-        width: 32,
-        height: 32,
+        width: 20,
+        height: 20,
         fontSize: 22,
         lineHeight: 26,
       },
@@ -65,14 +84,46 @@ const Theme = createMuiTheme({
     MuiTypography: {
       root: {
         marginBottom: 16,
-        paddingLeft: '1rem',
-        paddingRight: '1rem',
+        color: '#242A4A',
       },
       colorTextPrimary: {
         color: '#1D2445',
       },
       colorTextSecondary: {
-        color: '#FFF5F0',
+        color: '#FFFFFF',
+      },
+    },
+    MuiBottomNavigation: {
+      root: {
+        backgroundColor: '#EFE9E5',
+        alignItems: 'flex-start',
+        height: '100%',
+
+      },
+    },
+    MuiBottomNavigationAction: {
+      root: {
+        '&$selected': {
+          color: '#D27200',
+        },
+      },
+      label: {
+        fontSize: 12,
+        '&$selected': {
+          fontSize: 12,
+        },
+      },
+    },
+    MuiSvgIcon: {
+      root: {
+        height: 22,
+        width: 22,
+      },
+    },
+    MuiBreadcrumbs: {
+      li: {
+        fontSize: 14,
+        color: '#D27200',
       },
     },
   },

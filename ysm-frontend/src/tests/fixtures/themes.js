@@ -12,9 +12,10 @@ const themes = [{
       }],
     }],
   },
-  id: 123456,
+  id: '123456',
   slug: 'slug',
   title: 'Theme title',
+  image: { alt: 'alt text', filename: 'file name' },
 }];
 
 export default themes;

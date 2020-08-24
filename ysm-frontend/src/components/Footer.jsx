@@ -1,76 +1,68 @@
-/* eslint-disable*/ 
-//TODO: Remove this disable
+import React, { useState, useEffect } from 'react';
 
-import React, { ReactElement } from 'react';
-
-import { makeStyles, Box, IconButton } from '@material-ui/core';
 import {
-  ExitToApp, VpnKey, Favorite, Explore,
+  BottomNavigationAction, BottomNavigation, Box,
+} from '@material-ui/core';
+import {
+  ExitToApp, ImportContacts, LocationOn, Bookmark,
 } from '@material-ui/icons';
+import { Link, useLocation } from 'react-router-dom';
 
-import icon from '../assets/logo.png';
+import useWindowDimensions from '../shared/dimensions';
 
-const useStyles = makeStyles({
-  logo: {
-    height: '1.5em',
-    width: '1.5em',
-  },
-  container: {
-    minHeight: 32,
-  },
-});
+const Footer = () => {
+  const { height } = useWindowDimensions();
+  const location = useLocation();
+  const [selected, setSelected] = useState('');
 
+  useEffect(() => {
+    switch (location.pathname) {
+      case '/your-journey':
+        setSelected('journey');
+        break;
+      default:
+        setSelected('');
+    }
+  }, [location]);
 
-const Footer = ({
-  logo,
-  loginLeft,
-  loginRight,
-  leave,
-  favourite,
-  directory,
-}) => {
-  const classes = useStyles();
   return (
-    <Box
-      display="flex"
-      width={1}
-      justifyContent="space-between"
-      bgcolor="secondary.main"
-      className={classes.container}
-    >
-      <Box display="flex" alignItems="center" paddingLeft={1}>
-        <Box display={logo ? 'block' : 'none'}>
-          <img src={icon} alt="Your story matters logo" className={classes.logo} />
-        </Box>
-        <Box display={loginLeft ? 'block' : 'none'}>
-          <IconButton>
-            <VpnKey color="primary" />
-          </IconButton>
-        </Box>
-      </Box>
-      <Box display="flex" alignItems="center">
-        <Box display={loginRight ? 'block' : 'none'}>
-          <IconButton>
-            <VpnKey color="primary" />
-          </IconButton>
-        </Box>
-        <Box display={favourite ? 'block' : 'none'}>
-          <IconButton color="primary">
-            <Favorite />
-          </IconButton>
-        </Box>
-        <Box display={directory ? 'block' : 'none'}>
-          <IconButton color="primary">
-            <Explore />
-          </IconButton>
-        </Box>
-        <Box display={leave ? 'block' : 'none'}>
-          <IconButton color="primary">
-            <ExitToApp />
-          </IconButton>
-        </Box>
-      </Box>
+    <Box height={height * 0.075}>
+      <BottomNavigation
+        showLabels
+        value={selected}
+        onChange={(e, value) => setSelected(value)}
+      >
+        <BottomNavigationAction
+          value="journey"
+          component={Link}
+          to="/your-journey"
+          label="Your Journey"
+          icon={<ImportContacts />}
+        />
+        <BottomNavigationAction
+          component={Link}
+          to="/saved"
+          label="Saved Items"
+          value="Saved"
+          icon={<Bookmark />}
+        />
+        <BottomNavigationAction
+          component={Link}
+          to="/directory"
+          label="Find Support"
+          value="Directory"
+          icon={<LocationOn />}
+        />
+        <BottomNavigationAction
+          component={Link}
+          to="/leave"
+          label="Leave Site"
+          value="Leave"
+          icon={<ExitToApp />}
+        />
+      </BottomNavigation>
     </Box>
+
   );
 };
 

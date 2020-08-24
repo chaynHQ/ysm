@@ -6,22 +6,24 @@ import PropTypes from 'prop-types';
 
 import { isMobile } from 'react-device-detect';
 import Home from './Home';
-import Overview from './Overview';
+import YourJourney from './YourJourney';
+import Theme from './Theme';
 import SignIn from './SignIn';
 import Settings from './Settings';
 import firebase from '../config/firebase';
+import Header from './Header';
+import Footer from './Footer';
+import NotFoundError from './NotFoundError';
 
 import { setUserSignIn } from '../store/actions';
+
+import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles({
   screenContainer: {
     height: '100vh',
     backgroundColor: '#FFF5F0',
-  },
-
-  pageContainerDesktop: {
-    height: 731,
-    width: 752,
+    margin: 0,
   },
 
   pageContainerMobile: {
@@ -31,11 +33,13 @@ const useStyles = makeStyles({
 
   appContainer: {
     padding: 0,
+    overflow: 'scroll',
   },
 });
 
 const App = ({ setUserSignInOnAuthChange }) => {
   const classes = useStyles();
+  const { height, width } = useWindowDimensions();
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -53,25 +57,37 @@ const App = ({ setUserSignInOnAuthChange }) => {
       <Box boxShadow={3}>
         <Container
           className={`${classes.appContainer} ${
-            isMobile ? classes.pageContainerMobile : classes.pageContainerDesktop
+            isMobile ? classes.pageContainerMobile : null
           }`}
+          style={{
+            height,
+            width,
+          }}
         >
-          <Box display="flex" flexDirection="column" height={1}>
-            <Box flexGrow={1}>
-              <BrowserRouter>
+          <BrowserRouter>
+            <Box flexGrow={1} display="flex" flexDirection="column" height={1}>
+              <Header />
+              <Box minHeight={height * 0.875} overflow="scroll">
                 <Switch>
                   <Route path="/signin" render={(props) => <SignIn redirectUrl={props.redirectUrl} />} />
-                  <Route path="/overview">
-                    <Overview />
+                  <Route path="/your-journey/:themeSlug" component={Theme} />
+                  <Route path="/your-journey">
+                    <YourJourney />
                   </Route>
                   <Route path="/settings" component={Settings} />
-                  <Route path="/">
+
+                  <Route exact path="/">
                     <Home />
                   </Route>
+                  <Route path="*">
+                    <NotFoundError />
+                  </Route>
+
                 </Switch>
-              </BrowserRouter>
+              </Box>
+              <Footer />
             </Box>
-          </Box>
+          </BrowserRouter>
         </Container>
       </Box>
     </Box>

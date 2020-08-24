@@ -13,6 +13,8 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.3",
     "firebase": "^7.17.1",
     "prop-types": "^15.7.2",
     "query-string": "^6.13.1",
@@ -38,7 +40,7 @@
     "test:unit": "NODE_ENV=test react-scripts test --pass-with-no-tests",
     "test:unit:watch": "NODE_ENV=test react-scripts test --watch",
     "test:unit:watchAll": "NODE_ENV=test react-scripts test --watchAll",
-    "test:cov": "NODE_ENV=test react-scripts test --collect-coverage",
+    "test:cov": "NODE_ENV=test react-scripts test --collect-coverage --watchAll",
     "deploy:dev": "yarn build && firebase deploy --only hosting"
   },
   "eslintConfig": {
@@ -66,5 +68,13 @@
     "prettier": "^2.0.5",
     "redux-mock-store": "^1.5.4"
   },
-  "proxy": "http://localhost:3000"
+  "proxy": "http://localhost:3000",
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index.js",
+      "!**/serviceWorker.js",
+      "!src/tests/fixtures/*.js"
+    ]
+  }
 }
