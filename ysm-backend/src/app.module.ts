@@ -5,6 +5,7 @@ import { configModuleOptions } from './config-module-options';
 import { ProfileModule } from './profile/profile.module';
 import { ResourcesModule } from './resources/resources.module';
 import { ThemesModule } from './themes/themes.module';
+import { PagesModule } from './pages/pages.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ThemesModule } from './themes/themes.module';
     ResourcesModule,
     ThemesModule,
     ProfileModule,
+    PagesModule,
   ],
   controllers: [AppController],
 })
