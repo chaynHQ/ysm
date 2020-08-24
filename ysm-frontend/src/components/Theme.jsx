@@ -65,18 +65,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Theme = ({
-  fetchResourcesOnRender, fetchThemesOnRender, resources, theme,
+  fetchResourcesOnRender, fetchThemesOnRender, resources, theme, hasThemes, hasResources,
 }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (!theme) {
+    if (hasThemes) {
       fetchThemesOnRender();
     }
-    if (resources.length <= 0) {
+    if (hasResources) {
       fetchResourcesOnRender();
     }
-  }, []);
+  }, [fetchThemesOnRender, hasResources, fetchResourcesOnRender, hasThemes]);
+
   return (
     <Box
       display="flex"
@@ -179,11 +180,15 @@ Theme.propTypes = {
   ),
   fetchThemesOnRender: PropTypes.func.isRequired,
   fetchResourcesOnRender: PropTypes.func.isRequired,
+  hasThemes: PropTypes.bool,
+  hasResources: PropTypes.bool,
 };
 
 Theme.defaultProps = {
   resources: [],
   theme: undefined,
+  hasThemes: false,
+  hasResources: false,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -195,6 +200,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     theme,
     resources,
+    hasThemes: state.themes.length <= 0,
+    hasResources: state.resources.length <= 0,
   };
 };
 

@@ -56,14 +56,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const YourJourney = ({ fetchThemesOnRender, themes }) => {
+const YourJourney = ({ fetchThemesOnRender, themes, hasThemes }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (themes.length <= 0) {
+    if (hasThemes) {
       fetchThemesOnRender();
     }
-  }, []);
+  }, [fetchThemesOnRender, hasThemes]);
 
   return (
     <Box
@@ -128,14 +128,17 @@ YourJourney.propTypes = {
     ),
   ),
   fetchThemesOnRender: PropTypes.func.isRequired,
+  hasThemes: PropTypes.bool,
 };
 
 YourJourney.defaultProps = {
   themes: [],
+  hasThemes: false,
 };
 
 const mapStateToProps = (state) => ({
   themes: state.themes,
+  hasThemes: state.themes.length <= 0,
 });
 
 const mapDispatchToProps = (dispatch) => ({
