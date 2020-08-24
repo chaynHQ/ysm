@@ -199,7 +199,9 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchThemesOnRender: () => dispatch(fetchThemes()),
+  fetchThemesOnRender: () => {
+    dispatch(fetchThemes());
+  },
   fetchResourcesOnRender: () => dispatch(fetchResources()),
 });
 
