@@ -97,6 +97,16 @@ yarn build
 
 NestJS provides the [`nest generate`](https://docs.nestjs.com/cli/usages#nest-generate) command to help generate relevant files.
 
+### Debug logs for all `axios` requests (e.g. for Storyblok requests)
+
+To see debug logs for all axios requests made – e.g. by the Storyblok client – start the dev server with:
+
+```bash
+DEBUG=axios yarn start:dev
+```
+
+Note: the `axios-debug-log` library used to provide this logging has only been added as a dev dependency, so this will not work in production environments.
+
 ## Running as a Docker container locally
 
 You may want to run the backend service in a Docker container if:

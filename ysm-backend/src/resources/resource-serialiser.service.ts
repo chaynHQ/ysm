@@ -25,6 +25,7 @@ export class ResourceSerialiserService {
       themes: story.content.themes,
       tags: story.tag_list,
       countries: story.content.countries,
+      languages: story.content.languages,
       content,
     };
   }

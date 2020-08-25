@@ -9,6 +9,7 @@ import { AppModule } from './../src/app.module';
 import { resourcesListFixture, singleResourceFixture } from './fixtures/resources';
 import {
   storyblokDatasourceEntriesCountriesFixture,
+  storyblokDatasourceEntriesLanguagesFixture,
   storyblokResourcesListFixture,
   storyblokSingleResourceDisabledFixture,
   storyblokSingleResourceFixture,
@@ -112,12 +113,26 @@ describe('Resources (e2e)', () => {
           headers: null,
         });
 
+      when(mocked(mockedStoryblokClientInstance.get))
+        .expectCalledWith('cdn/datasource_entries', { datasource: 'languages' })
+        .mockResolvedValueOnce({
+          data: storyblokDatasourceEntriesLanguagesFixture,
+          perPage: 0,
+          total: 0,
+          headers: null,
+        });
+
       const result: FilterOptions[] = [
         { title: 'Tags', field: 'tags', options: { Health: 'Health', Timeline: 'Timeline' } },
         {
           title: 'Countries',
           field: 'countries',
           options: { GLOBAL: 'Global', GB: 'United Kingdom' },
+        },
+        {
+          title: 'Languages',
+          field: 'languages',
+          options: { en: 'English', es: 'Spanish' },
         },
       ];
 
