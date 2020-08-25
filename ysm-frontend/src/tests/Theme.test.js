@@ -7,6 +7,7 @@ import { Card } from '@material-ui/core';
 import Theme from '../components/Theme';
 import themes from './fixtures/themes';
 import resources from './fixtures/resources';
+import ResourceCard from '../components/ResourceCard';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -34,8 +35,8 @@ describe('Theme', () => {
     ).dive().dive();
 
     expect(wrapper.find(Link)).toHaveLength(2);
-    expect(wrapper.find(Card)).toHaveLength(3);
-    // One for the theme, two for the resources that have the matching theme
+    expect(wrapper.find(Card)).toHaveLength(1);
+    expect(wrapper.find(ResourceCard)).toHaveLength(2);
   });
 
   it('displays no cards when theme does not exist', () => {

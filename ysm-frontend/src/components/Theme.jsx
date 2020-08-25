@@ -11,12 +11,8 @@ import {
   Card,
   CardContent,
   CardMedia,
-  CardActionArea,
-  Button,
-  Avatar,
 } from '@material-ui/core';
 import {
-  BookmarkBorder,
   ArrowBack,
 } from '@material-ui/icons';
 import { Link as RouterLink } from 'react-router-dom';
@@ -24,6 +20,7 @@ import Link from '@material-ui/core/Link';
 
 import { fetchThemes, fetchResources } from '../store/actions';
 import SignUpPrompt from './SignUpPrompt';
+import ResourceCard from './ResourceCard';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -31,36 +28,13 @@ const useStyles = makeStyles((theme) => ({
     width: 20,
     height: 20,
   },
-  card: {
-    margin: 6,
-  },
-  cardMedia: {
-    height: '100%',
-  },
   cardContent: {
     height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
     display: 'flex',
     boxShadow: 'inset 0 0 0 1000px rgba(36, 42, 74, 0.3)',
   },
-  iconContainer: {
-    backgroundColor: '#EADED6',
-    width: '100%',
-    height: '100%',
-  },
   link: {
     color: '#ffffff',
-  },
-  linkSubtitle: {
-    margin: 0,
-  },
-  avatar: {
-    height: '70px',
-    width: '70px',
-  },
-  button: {
-    fontSize: '12px',
   },
 }));
 
@@ -118,32 +92,12 @@ const Theme = ({
             px={2}
           >
             {resources.map((resource) => (
-              <Card key={resource.id} className={classes.card}>
-                <CardActionArea className={classes.cardMedia} component={RouterLink} to={`/your-journey/${theme.slug}`}>
-                  <CardContent>
-                    <Box display="flex" flexDirection="row">
-                      <Box>
-                        <Typography variant="h2" className={classes.title}>
-                          {resource.title}
-                        </Typography>
-                        <Typography>
-                          {resource.subtitle}
-                        </Typography>
-                      </Box>
-                      {resource.image
-                        ? (
-                          <Avatar
-                            alt={resource.image.alt}
-                            src={resource.image.filename}
-                            className={classes.avatar}
-                          />
-                        )
-                        : null}
-                    </Box>
-                    <Button className={classes.button} color="secondary" variant="contained" disableElevation size="small" startIcon={<BookmarkBorder />}>Save for later</Button>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <ResourceCard
+                key={resource.id}
+                title={resource.title}
+                subtitle={resource.subtitle}
+                image={resource.image}
+              />
             ))}
           </Box>
         )}
