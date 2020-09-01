@@ -7,11 +7,9 @@ import { FilterOptions } from './filters.types';
 export class FiltersService {
   TAGS_FILTER_FIELD = 'tags';
 
-  private DEFAULT_OPERATOR = 'in';
+  private DEFAULT_OPERATOR = 'in_array';
 
-  private OPERATOR_OVERRIDE = {
-    countries: 'in_array',
-  };
+  private OPERATOR_OVERRIDE = {};
 
   async options(storyblok: StoryblokClient): Promise<FilterOptions[]> {
     const tags = this.fromTags(storyblok);
@@ -22,7 +20,13 @@ export class FiltersService {
       'Countries',
     );
 
-    return Promise.all([tags, countries]);
+    const languages: Promise<FilterOptions> = this.fromDataSourceEntries(
+      storyblok,
+      'languages',
+      'Languages',
+    );
+
+    return Promise.all([tags, countries, languages]);
   }
 
   // Adds in the intermediate operator required by Storyblok in the `filter_query`.

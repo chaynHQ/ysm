@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'axios') {
+  require('axios-debug-log');
+}
+
 import { ConfigService } from '@nestjs/config';
 import StoryblokClient from 'storyblok-js-client';
 

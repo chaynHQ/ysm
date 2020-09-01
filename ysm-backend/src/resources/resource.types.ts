@@ -9,6 +9,7 @@ export interface Resource {
   themes: string[];
   tags: string[];
   countries: string[];
+  languages: string[];
   content?: ContentItem[];
 }
 export type ContentItem = {
