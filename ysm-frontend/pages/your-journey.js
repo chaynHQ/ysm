@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {
@@ -12,13 +12,13 @@ import {
   CardMedia,
   CardActionArea,
 } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
+import Link from 'next/link';
+import LinkUi from '@material-ui/core/Link';
 import {
   ArrowBack,
 } from '@material-ui/icons';
 
-// import { fetchThemes } from '../store/actions';
+import { fetchThemes } from '../store/actions';
 
 // import SignUpPrompt from './SignUpPrompt';
 
@@ -75,11 +75,13 @@ const YourJourney = ({ fetchThemesOnRender, themes, hasThemes }) => {
     >
 
       <Breadcrumbs aria-label="breadcrumb">
-        <Link component={RouterLink} color="inherit" to="/">
-          <Box display="flex" alignItems="center">
-            <ArrowBack className={classes.icon} />
-            Back to Home
-          </Box>
+        <Link href="/">
+          <LinkUi component={"a"}  color="inherit">
+            <Box display="flex" alignItems="center">
+              <ArrowBack className={classes.icon} />
+              Back to Home
+            </Box>
+          </LinkUi>
         </Link>
 
       </Breadcrumbs>
@@ -104,12 +106,15 @@ const YourJourney = ({ fetchThemesOnRender, themes, hasThemes }) => {
         </Card>
       ))}
       <Breadcrumbs aria-label="breadcrumb">
-        <Link component={RouterLink} color="inherit" to="/">
-          <Box display="flex" alignItems="center">
-            <ArrowBack className={classes.icon} />
-            Back to Home
-          </Box>
+        <Link href="/">
+          <LinkUi component={"a"}  color="inherit">
+            <Box display="flex" alignItems="center">
+              <ArrowBack className={classes.icon} />
+              Back to Home
+            </Box>
+          </LinkUi>
         </Link>
+
       </Breadcrumbs>
       {/* <SignUpPrompt url="/" /> */}
 

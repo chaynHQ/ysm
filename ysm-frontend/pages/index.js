@@ -32,7 +32,11 @@ const Home = () => {
       alignItems="center"
     >
       <Box width={width * 0.5} height={width * 0.5} p={4}>
-        <Avatar className={classes.iconContainer} alt="Illustration of woman and a butterfly" src="/resource-illustration.png" />
+        <Avatar 
+          className={classes.iconContainer} 
+          alt="Illustration of woman and a butterfly" 
+          src="/resource-illustration.png"
+        />
       </Box>
       <Typography variant="h1" align="center">Your Story Matters</Typography>
       <Typography align="center">
