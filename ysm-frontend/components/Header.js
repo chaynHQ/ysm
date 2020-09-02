@@ -1,29 +1,26 @@
-/* eslint-disable*/ 
-//TODO: Remove this disable
-
 import React from 'react';
 
-import { Box, IconButton, makeStyles, Typography } from '@material-ui/core';
+import {
+  Box, IconButton, makeStyles, Typography,
+} from '@material-ui/core';
 import { Menu, Search } from '@material-ui/icons';
 
-import logo from '../assets/logo.png';
+import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles({
   icon: {
     width: 20,
-    height: 20
+    height: 20,
   },
   title: {
     paddingLeft: 4,
-    marginBottom: 0
-  }
+    marginBottom: 0,
+  },
 });
 
-import useWindowDimensions from '../shared/dimensions';
-  
 const Header = () => {
   const classes = useStyles();
-  const { height, width } = useWindowDimensions();
+  const { height } = useWindowDimensions();
 
   return (
     <Box
@@ -32,26 +29,31 @@ const Header = () => {
       alignItems="center"
       justifyContent="space-between"
       width={1}
-      bgcolor={'#EFE9E5'}
-      height={height*0.05}
+      bgcolor="#EFE9E5"
+      height={height * 0.05}
     >
-    <Box p={2}>
+      <Box p={2}>
         <IconButton>
           <Menu />
         </IconButton>
-        </Box>
-      <Box 
+      </Box>
+      <Box
         display="flex"
         alignItems="center"
-        justifyContent="space-around">
-        <img className={classes.icon} src={logo}/>
+        justifyContent="space-around"
+      >
+        <img
+          className={classes.icon}
+          src="/logo.png"
+          alt="YSM Logo"
+        />
         <Typography className={classes.title} variant="subtitle1">Your Story Matters</Typography>
       </Box>
       <Box p={2}>
         <IconButton>
           <Search />
         </IconButton>
-        </Box>
+      </Box>
     </Box>
   );
 };
