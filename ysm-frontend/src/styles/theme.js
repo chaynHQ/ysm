@@ -61,7 +61,6 @@ const Theme = createMuiTheme({
       root: {
         paddingLeft: 30,
         paddingRight: 30,
-        marginBottom: 16,
         borderRadius: 6,
       },
       label: {

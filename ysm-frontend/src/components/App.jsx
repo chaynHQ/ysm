@@ -14,6 +14,7 @@ import firebase from '../config/firebase';
 import Header from './Header';
 import Footer from './Footer';
 import NotFoundError from './NotFoundError';
+import Search from './Search';
 
 import { setUserSignIn } from '../store/actions';
 
@@ -71,17 +72,12 @@ const App = ({ setUserSignInOnAuthChange }) => {
                 <Switch>
                   <Route path="/signin" render={(props) => <SignIn redirectUrl={props.redirectUrl} />} />
                   <Route path="/your-journey/:themeSlug" component={Theme} />
-                  <Route path="/your-journey">
-                    <YourJourney />
-                  </Route>
+                  <Route path="/your-journey" component={YourJourney} />
                   <Route path="/settings" component={Settings} />
+                  <Route path="/search" component={Search} />
 
-                  <Route exact path="/">
-                    <Home />
-                  </Route>
-                  <Route path="*">
-                    <NotFoundError />
-                  </Route>
+                  <Route exact path="/" component={Home} />
+                  <Route path="*" component={NotFoundError} />
 
                 </Switch>
               </Box>
