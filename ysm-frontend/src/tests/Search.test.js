@@ -42,29 +42,4 @@ describe('Search', () => {
     expect(wrapper.find(ResourceCard)).toHaveLength(resources.length);
   });
 
-  //   it("doesn't search on enter press without searchTerm", () => {
-  //     wrapper = shallow(
-  //       <Search />,
-  //     ).dive();
-
-  //     console.log(wrapper.debug())
-  //     const submitButton = wrapper.find('.addtocart');
-  //     submitButton.simulate('click');
-
-  //     expect(wrapper.contains('Use the box above to search')).toEqual(true)
-
-  //   });
-
-  //   it('saves search term on user entering term', () => {
-  //     wrapper = shallow(
-  //       <Search />,
-  //     ).dive();
-
-  //     console.log(wrapper.debug())
-  //     const submitButton = wrapper.find('.addtocart');
-  //     submitButton.simulate('click');
-
-  //     expect(wrapper.contains('Use the box above to search')).toEqual(true)
-
-  //   });
 });
