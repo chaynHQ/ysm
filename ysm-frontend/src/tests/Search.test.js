@@ -41,5 +41,4 @@ describe('Search', () => {
     wrapper.update();
     expect(wrapper.find(ResourceCard)).toHaveLength(resources.length);
   });
-
 });
