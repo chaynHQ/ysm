@@ -43,11 +43,13 @@ const Home = () => {
         If you&apos;ve been treated in a way that has made you feel uncomfortable or violated,
         let YSM be your companion because your story matters.
       </Typography>
-      <Button variant="contained" color="primary">
+
         <Link href="/your-journey">
-          <a>Start your journey</a>
+          <Button variant="contained" component="a" color="primary">
+            Start your journey
+          </Button>
         </Link>
-      </Button>
+
       <Box width="50%">
         <Typography align="center" variant="subtitle2" color="textSecondary">
           If you&apos;re in crisis call the emergency services

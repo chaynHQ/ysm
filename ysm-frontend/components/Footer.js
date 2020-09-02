@@ -37,6 +37,7 @@ const Footer = () => {
         <Link href="/your-journey" passHref>
           <BottomNavigationAction
             value="journey"
+            showLabel
             component="a"
             label="Your Journey"
             icon={<ImportContacts />}
@@ -45,6 +46,7 @@ const Footer = () => {
         <Link href="/saved" passHref>
           <BottomNavigationAction
             label="Saved Items"
+            showLabel
             component="a"
             value="Saved"
             icon={<Bookmark />}
@@ -53,6 +55,7 @@ const Footer = () => {
         <Link href="/directory" passHref>
           <BottomNavigationAction
             component="a"
+            showLabel
             label="Find Support"
             value="Directory"
             icon={<LocationOn />}
@@ -61,6 +64,7 @@ const Footer = () => {
         <Link href="/leave" passHref>
           <BottomNavigationAction
             component="a"
+            showLabel
             label="Leave Site"
             value="Leave"
             icon={<ExitToApp />}
