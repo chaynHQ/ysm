@@ -1,8 +1,13 @@
 import axios from 'axios';
 
 // TODO: Need to check for existance of VERCEL_URL
+let baseUrl = process.env.VERCEL_URL;
+if (!/^https?:\/\//i.test(baseUrl)) {
+  baseUrl = `https://${baseUrl}`;
+}
+
 const axiosInstance = axios.create({
-  baseURL: `${process.env.VERCEL_URL}/api`,
+  baseURL: `${baseUrl}/api`,
 });
 
 axiosInstance.interceptors.request.use((request) => {
