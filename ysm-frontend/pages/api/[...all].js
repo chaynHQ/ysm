@@ -10,4 +10,5 @@ export const config = {
 // TODO: Need to check for the existance of API_URL
 export default createProxyMiddleware({
   target: process.env.API_URL,
+  changeOrigin: true,
 });
