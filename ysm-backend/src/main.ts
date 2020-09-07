@@ -18,6 +18,8 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
+  app.enableCors();
+
   await app.listen(configService.get('port'));
 }
 bootstrap();
