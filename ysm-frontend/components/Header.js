@@ -4,6 +4,7 @@ import {
   Box, IconButton, makeStyles, Typography,
 } from '@material-ui/core';
 import { Menu, Search } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
 
 import useWindowDimensions from '../shared/dimensions';
 
@@ -50,7 +51,7 @@ const Header = () => {
         <Typography className={classes.title} variant="subtitle1">Your Story Matters</Typography>
       </Box>
       <Box p={2}>
-        <IconButton>
+        <IconButton component={Link} to="/search">
           <Search />
         </IconButton>
       </Box>

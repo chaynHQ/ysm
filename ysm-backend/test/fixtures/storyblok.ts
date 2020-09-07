@@ -8,14 +8,29 @@ export const storyblokTagsFixture = {
 export const storyblokDatasourceEntriesCountriesFixture = {
   datasource_entries: [
     {
-      id: 123,
+      id: 101,
       name: 'Global',
       value: 'GLOBAL',
     },
     {
-      id: 234,
+      id: 102,
       name: 'United Kingdom',
       value: 'GB',
+    },
+  ],
+};
+
+export const storyblokDatasourceEntriesLanguagesFixture = {
+  datasource_entries: [
+    {
+      id: 201,
+      name: 'English',
+      value: 'en',
+    },
+    {
+      id: 202,
+      name: 'Spanish',
+      value: 'es',
     },
   ],
 };
@@ -39,6 +54,7 @@ export const storyblokResourcesListFixture = {
         subtitle: '',
         component: 'resource',
         countries: ['GB'],
+        languages: ['en'],
         description: {
           type: 'doc',
           content: [
@@ -86,6 +102,7 @@ export const storyblokResourcesListFixture = {
         subtitle: '',
         component: 'resource',
         countries: ['GLOBAL', 'GB'],
+        languages: ['en', 'es'],
         description: {
           type: 'doc',
           content: [
@@ -133,6 +150,7 @@ export const storyblokResourcesListFixture = {
         subtitle: 'This is a test resource',
         component: 'resource',
         countries: ['GLOBAL'],
+        languages: ['en'],
         description: {
           type: 'doc',
           content: [
@@ -198,6 +216,7 @@ export const storyblokSingleResourceFixture = {
       subtitle: '',
       component: 'resource',
       countries: ['GB'],
+      languages: ['en'],
       description: {
         type: 'doc',
         content: [
@@ -330,6 +349,7 @@ export const storyblokSingleResourceDisabledFixture = {
       subtitle: '',
       component: 'resource',
       countries: ['GB'],
+      languages: ['en'],
       description: {
         type: 'doc',
         content: [

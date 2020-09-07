@@ -25,6 +25,7 @@ export const resourcesListFixture: Resource[] = [
     themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
     tags: ['Health'],
     countries: ['GB'],
+    languages: ['en'],
   },
   {
     id: '9f1b48d5-7299-432d-b3ee-29f1855a4363',
@@ -50,6 +51,7 @@ export const resourcesListFixture: Resource[] = [
     themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
     tags: [],
     countries: ['GLOBAL', 'GB'],
+    languages: ['en', 'es'],
   },
   {
     id: '020e96d7-f1d3-4dc2-954e-3988cdd57efa',
@@ -89,6 +91,7 @@ export const resourcesListFixture: Resource[] = [
     themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
     tags: [],
     countries: ['GLOBAL'],
+    languages: ['en'],
   },
 ];
 
@@ -116,6 +119,7 @@ export const singleResourceFixture: Resource = {
   themes: ['4a594a9c-424e-4668-a94f-23acc2e9561e'],
   tags: ['Health'],
   countries: ['GB'],
+  languages: ['en'],
   content: [
     {
       type: 'external_link',
