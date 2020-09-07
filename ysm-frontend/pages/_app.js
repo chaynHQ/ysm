@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 
 import { Container, Box, makeStyles } from '@material-ui/core';
 import { isMobile } from 'react-device-detect';
 
 import theme from '../styles/theme';
-import { useStore } from '../store/store'
+import { useStore } from '../store/store';
 
 import useWindowDimensions from '../shared/dimensions';
 import Header from '../components/Header';
@@ -45,7 +45,7 @@ function App({ Component, pageProps }) {
     }
   }, []);
 
-  const store = useStore(pageProps.initialReduxState)
+  const store = useStore(pageProps.initialReduxState);
 
   return (
     <>

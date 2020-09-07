@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import React from 'react';
 
 import {
   Button, makeStyles, Typography, Box, Avatar,
@@ -32,9 +32,9 @@ const Home = () => {
       alignItems="center"
     >
       <Box width={width * 0.5} height={width * 0.5} p={4}>
-        <Avatar 
-          className={classes.iconContainer} 
-          alt="Illustration of woman and a butterfly" 
+        <Avatar
+          className={classes.iconContainer}
+          alt="Illustration of woman and a butterfly"
           src="/resource-illustration.png"
         />
       </Box>
@@ -44,11 +44,11 @@ const Home = () => {
         let YSM be your companion because your story matters.
       </Typography>
 
-        <Link href="/your-journey">
-          <Button variant="contained" component="a" color="primary">
-            Start your journey
-          </Button>
-        </Link>
+      <Link href="/your-journey">
+        <Button variant="contained" component="a" color="primary">
+          Start your journey
+        </Button>
+      </Link>
 
       <Box width="50%">
         <Typography align="center" variant="subtitle2" color="textSecondary">

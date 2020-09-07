@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import Document, {
-  Html, Main, NextScript, Head
+  Html, Main, NextScript, Head,
 } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 

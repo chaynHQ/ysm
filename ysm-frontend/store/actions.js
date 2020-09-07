@@ -18,6 +18,7 @@ export const setBookmarks = (data) => ({
   type: SET_BOOKMARKS,
   data,
 });
+
 export const setUserSignIn = (data) => ({
   type: SET_USER_SIGNIN,
   data,
@@ -28,6 +29,7 @@ export const setSettingsAuth = (data) => ({
   data,
 });
 
+// TODO: Remove these from here and include in their own folder
 export function fetchResources() {
   return async (dispatch) => {
     try {
