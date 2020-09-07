@@ -4,6 +4,8 @@ import {
   Box, Typography, Button, TextField,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
+
+// TODO: This does not exist
 import firebase from '../../ysm-frontend-old/src/config/firebase';
 
 import SignIn from './SignIn';
