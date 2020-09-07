@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// TODO: Need to check for existance of BASE_URL
+// TODO: Need to check for existance of VERCEL_URL
 const axiosInstance = axios.create({
-  baseURL: `${process.env.BASE_URL}/api`,
+  baseURL: `${process.env.VERCEL_URL}/api`,
 });
 
 axiosInstance.interceptors.request.use((request) => {
