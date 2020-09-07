@@ -8,10 +8,10 @@ import PropTypes from 'prop-types';
 
 import { setSettingsAuth } from '../store/actions';
 
-const SignIn = ({ redirectUrl, setSettingsAuthOnSuccess }) => {
-  // const location = useLocation();
+const SignIn = ({ redirectUrl, setSettingsAuthOnSuccess }) =>
+// const location = useLocation();
 
-  return (
+  (
     <Box display="flex" flexDirection="column" height={1}>
       {/* <StyledFirebaseAuth
         uiConfig={{
@@ -35,8 +35,6 @@ const SignIn = ({ redirectUrl, setSettingsAuthOnSuccess }) => {
       /> */}
     </Box>
   );
-};
-
 SignIn.propTypes = {
   redirectUrl: PropTypes.string,
   setSettingsAuthOnSuccess: PropTypes.func.isRequired,

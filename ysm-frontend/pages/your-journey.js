@@ -83,7 +83,7 @@ const YourJourney = ({ themes }) => {
       </Typography>
       {themes.map((theme) => (
         <Card key={theme.id} className={classes.card}>
-          <Link href="/your-journey">
+          <Link href={`/themes/${theme.slug}`}>
             <CardActionArea className={classes.cardMedia} component="a">
               <CardMedia
                 className={classes.cardContent}

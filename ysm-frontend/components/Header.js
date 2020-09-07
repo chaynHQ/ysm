@@ -52,10 +52,10 @@ const Header = () => {
       </Box>
 
       <Box p={2}>
-      <Link href="/search" passHref>
-      <IconButton component="a" >
-          <Search />
-        </IconButton>
+        <Link href="/search" passHref>
+          <IconButton component="a">
+            <Search />
+          </IconButton>
         </Link>
       </Box>
     </Box>

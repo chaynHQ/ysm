@@ -123,7 +123,7 @@ const Settings = ({
           </Box>
         )
         : null }
-        {/* <SignIn redirectUrl="/settings" />} */}
+      {/* <SignIn redirectUrl="/settings" />} */}
     </Box>
   );
 };
