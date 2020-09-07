@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 // TODO: This does not exist
 // import firebase from '../../ysm-frontend-old/src/config/firebase';
 
-import SignIn from './SignIn';
+// import SignIn from './SignIn';
 
 import { setSettingsAuth, fetchBookmarks } from '../store/actions';
 
@@ -122,7 +122,8 @@ const Settings = ({
             </Button>
           </Box>
         )
-        : <SignIn redirectUrl="/settings" />}
+        : null }
+        {/* <SignIn redirectUrl="/settings" />} */}
     </Box>
   );
 };
