@@ -8,15 +8,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:url": "BASE_URL=\"http://localhost:3000\" API_URL=\"http://localhost:3001\" next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ext js,jsx ./",
     "lint:fix": "eslint --ext js,jsx --fix ./",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
-    "test:unit": "NODE_ENV=test react-scripts test --pass-with-no-tests",
-    "test:unit:watch": "NODE_ENV=test react-scripts test --watch",
-    "test:unit:watchAll": "NODE_ENV=test react-scripts test --watchAll",
-    "test:cov": "NODE_ENV=test react-scripts test --collect-coverage --watchAll"
+    "test:unit": "NODE_ENV=test jest --pass-with-no-tests",
+    "test:unit:watch": "NODE_ENV=test jest --watch",
+    "test:unit:watchAll": "NODE_ENV=test jest --watchAll",
+    "test:cov": "NODE_ENV=test react-scripts jest --collect-coverage --watchAll"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -58,11 +59,17 @@
     ]
   },
   "devDependencies": {
+    "add": "^2.0.6",
     "babel-eslint": "^10.1.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.4",
     "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.6"
+    "eslint-plugin-react": "^7.20.6",
+    "jest": "^26.4.2",
+    "redux-mock-store": "^1.5.4",
+    "yarn": "^1.22.5"
   }
 }
