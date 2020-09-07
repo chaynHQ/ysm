@@ -4,7 +4,9 @@ import {
   Box, Typography, Button, TextField,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import firebase from '../../ysm-frontend-old/src/config/firebase';
+
+// TODO: This does not exist
+// import firebase from '../../ysm-frontend-old/src/config/firebase';
 
 import SignIn from './SignIn';
 
@@ -18,23 +20,23 @@ const Settings = ({
   const [password, setPassword] = useState('');
 
   const resetPassword = (newPassword) => {
-    firebase.auth().onAuthStateChanged((u) => {
-      if (u) {
-        u.updatePassword(newPassword).then(() => {
-          // Update successful.
-        }).catch((error) => {
-          if (error.code === 'auth/weak-password') {
-            // Show some sort of weak password message
-          } else if (error.code === 'auth/requires-recent-login') {
-            setSettingsAuthOnError(false);
-          } else {
-            throw error;
-          }
-        });
-      } else {
-        // No user is signed in.
-      }
-    });
+    // firebase.auth().onAuthStateChanged((u) => {
+    //   if (u) {
+    //     u.updatePassword(newPassword).then(() => {
+    //       // Update successful.
+    //     }).catch((error) => {
+    //       if (error.code === 'auth/weak-password') {
+    //         // Show some sort of weak password message
+    //       } else if (error.code === 'auth/requires-recent-login') {
+    //         setSettingsAuthOnError(false);
+    //       } else {
+    //         throw error;
+    //       }
+    //     });
+    //   } else {
+    //     // No user is signed in.
+    //   }
+    // });
   };
 
   const resetEmail = (newEmail) => {
