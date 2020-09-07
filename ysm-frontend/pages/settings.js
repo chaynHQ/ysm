@@ -4,7 +4,7 @@ import {
   Box, Typography, Button, TextField,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import firebase from '../config/firebase';
+import firebase from '../../ysm-frontend-old/src/config/firebase';
 
 import SignIn from './SignIn';
 

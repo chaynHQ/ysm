@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -12,15 +11,13 @@ import {
   CardMedia,
   CardActionArea,
 } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
+import Link from 'next/link';
+import LinkUi from '@material-ui/core/Link';
 import {
   ArrowBack,
 } from '@material-ui/icons';
+import { axiosGet } from '../store/axios';
 
-import { fetchThemes } from '../store/actions';
-
-import illustration from '../assets/homepage-illustration.png';
 import SignUpPrompt from './SignUpPrompt';
 
 const useStyles = makeStyles((theme) => ({
@@ -56,14 +53,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const YourJourney = ({ fetchThemesOnRender, themes, hasThemes }) => {
+const YourJourney = ({ themes }) => {
   const classes = useStyles();
-
-  useEffect(() => {
-    if (hasThemes) {
-      fetchThemesOnRender();
-    }
-  }, [fetchThemesOnRender, hasThemes]);
 
   return (
     <Box
@@ -76,11 +67,13 @@ const YourJourney = ({ fetchThemesOnRender, themes, hasThemes }) => {
     >
 
       <Breadcrumbs aria-label="breadcrumb">
-        <Link component={RouterLink} color="inherit" to="/">
-          <Box display="flex" alignItems="center">
-            <ArrowBack className={classes.icon} />
-            Back to Home
-          </Box>
+        <Link href="/">
+          <LinkUi component="a" color="inherit">
+            <Box display="flex" alignItems="center">
+              <ArrowBack className={classes.icon} />
+              Back to Home
+            </Box>
+          </LinkUi>
         </Link>
 
       </Breadcrumbs>
@@ -90,33 +83,44 @@ const YourJourney = ({ fetchThemesOnRender, themes, hasThemes }) => {
       </Typography>
       {themes.map((theme) => (
         <Card key={theme.id} className={classes.card}>
-          <CardActionArea className={classes.cardMedia} component={RouterLink} to={`/your-journey/${theme.slug}`}>
-            <CardMedia
-              className={classes.cardContent}
-              image={illustration}
-            >
-              <CardContent>
-                <Typography variant="h2" className={classes.title} color="textSecondary">
-                  {theme.title}
-                </Typography>
-              </CardContent>
-            </CardMedia>
-          </CardActionArea>
+          <Link href="/your-journey">
+            <CardActionArea className={classes.cardMedia} component="a">
+              <CardMedia
+                className={classes.cardContent}
+                image="/homepage-illustration.png"
+              >
+                <CardContent>
+                  <Typography variant="h2" className={classes.title} color="textSecondary">
+                    {theme.title}
+                  </Typography>
+                </CardContent>
+              </CardMedia>
+            </CardActionArea>
+          </Link>
         </Card>
       ))}
       <Breadcrumbs aria-label="breadcrumb">
-        <Link component={RouterLink} color="inherit" to="/">
-          <Box display="flex" alignItems="center">
-            <ArrowBack className={classes.icon} />
-            Back to Home
-          </Box>
+        <Link href="/">
+          <LinkUi component="a" color="inherit">
+            <Box display="flex" alignItems="center">
+              <ArrowBack className={classes.icon} />
+              Back to Home
+            </Box>
+          </LinkUi>
         </Link>
+
       </Breadcrumbs>
       <SignUpPrompt url="/" />
 
     </Box>
   );
 };
+
+export async function getServerSideProps() {
+  const themes = await axiosGet('themes');
+
+  return { props: { themes } };
+}
 
 YourJourney.propTypes = {
   themes: PropTypes.arrayOf(
@@ -127,7 +131,6 @@ YourJourney.propTypes = {
       ]),
     ),
   ),
-  fetchThemesOnRender: PropTypes.func.isRequired,
   hasThemes: PropTypes.bool,
 };
 
@@ -136,13 +139,4 @@ YourJourney.defaultProps = {
   hasThemes: false,
 };
 
-const mapStateToProps = (state) => ({
-  themes: state.themes,
-  hasThemes: state.themes.length <= 0,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchThemesOnRender: () => dispatch(fetchThemes()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(YourJourney);
+export default YourJourney;

@@ -6,42 +6,33 @@
   "productName": "YSM",
   "author": "Chayn",
   "private": true,
-  "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "@testing-library/jest-dom": "^5.11.2",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "axios": "^0.19.2",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.3",
-    "firebase": "^7.17.1",
-    "prop-types": "^15.7.2",
-    "query-string": "^6.13.1",
-    "react": "^16.13.1",
-    "react-device-detect": "^1.13.1",
-    "react-dom": "^16.13.1",
-    "react-firebaseui": "^4.1.0",
-    "react-html-parser": "^2.0.2",
-    "react-redux": "^7.2.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
-    "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
-    "storyblok-js-client": "^2.5.2"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
+    "dev": "next dev",
+    "dev:url": "BASE_URL=\"http://localhost:3000\" API_URL=\"http://localhost:3001\" next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "eslint --ext js,jsx ./",
     "lint:fix": "eslint --ext js,jsx --fix ./",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
-    "test:unit": "NODE_ENV=test react-scripts test --pass-with-no-tests",
-    "test:unit:watch": "NODE_ENV=test react-scripts test --watch",
-    "test:unit:watchAll": "NODE_ENV=test react-scripts test --watchAll",
-    "test:cov": "NODE_ENV=test react-scripts test --collect-coverage --watchAll",
-    "deploy:dev": "yarn build && firebase deploy --only hosting"
+    "test:unit": "NODE_ENV=test jest --pass-with-no-tests",
+    "test:unit:watch": "NODE_ENV=test jest --watch",
+    "test:unit:watchAll": "NODE_ENV=test jest --watchAll",
+    "test:cov": "NODE_ENV=test react-scripts jest --collect-coverage --watchAll"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "axios": "^0.20.0",
+    "http-proxy-middleware": "^1.0.5",
+    "next": "9.5.2",
+    "prop-types": "^15.7.2",
+    "react": "16.13.1",
+    "react-device-detect": "^1.13.1",
+    "react-dom": "16.13.1",
+    "react-redux": "^7.2.1",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
+    "storyblok-js-client": "^2.5.2"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -58,16 +49,6 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.3",
-    "eslint-plugin-react-hooks": "^4.0.5",
-    "firebase-tools": "^8.7.0",
-    "prettier": "^2.0.5",
-    "redux-mock-store": "^1.5.4"
-  },
   "proxy": "http://localhost:3000",
   "jest": {
     "collectCoverageFrom": [
@@ -76,5 +57,19 @@
       "!**/serviceWorker.js",
       "!src/tests/fixtures/*.js"
     ]
+  },
+  "devDependencies": {
+    "add": "^2.0.6",
+    "babel-eslint": "^10.1.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.4",
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.6",
+    "jest": "^26.4.2",
+    "redux-mock-store": "^1.5.4",
+    "yarn": "^1.22.5"
   }
 }

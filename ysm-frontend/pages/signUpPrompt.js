@@ -7,11 +7,9 @@ import {
   Button,
   Avatar,
 } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
+import Link from 'next/link';
+import LinkUi from '@material-ui/core/Link';
 import useWindowDimensions from '../shared/dimensions';
-
-import smallIllustration from '../assets/resource-illustration.png';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -67,28 +65,32 @@ const SignUpPrompt = () => {
         alignItems="center"
       >
         <Box width={width * 0.3} height={width * 0.3} p={4}>
-          <Avatar className={classes.iconContainer} alt="Illustration of woman and a butterfly" src={smallIllustration} />
+          <Avatar className={classes.iconContainer} alt="Illustration of woman and a butterfly" src="/resource-illustration.png" />
         </Box>
         <Typography variant="h1" align="center">Sign up, it’s free</Typography>
         <Typography align="center">
           Sign up to Your Story Matters and privately save resources for later.
         </Typography>
-        <Button variant="contained" color="primary" component={Link} to="/signin">
-          Create Your Account
-        </Button>
+
+        <Link href="/signin">
+          <Button variant="contained" color="primary" component="a">
+            Create Your Account
+          </Button>
+        </Link>
         <Box width="50%" display="flex" flexDirection="column" alignItems="center">
           <Typography align="center" variant="subtitle1" className={classes.linkSubtitle}>
             Your privacy will be protected.
           </Typography>
-          <Link
-            component={RouterLink}
-            className={classes.link}
-            underline="always"
-            to="/"
-            variant="subtitle1"
-            align="center"
-          >
-            Read our Terms & Privacy Policy
+          <Link href="/">
+            <LinkUi
+              component="a"
+              color="inherit"
+              variant="subtitle1"
+              align="center"
+              className={classes.link}
+            >
+              Read our Terms & Privacy Policy
+            </LinkUi>
           </Link>
         </Box>
       </Box>

@@ -7,7 +7,6 @@ import { Menu, Search } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 
 import useWindowDimensions from '../shared/dimensions';
-import logo from '../assets/logo.png';
 
 const useStyles = makeStyles({
   icon: {
@@ -44,7 +43,11 @@ const Header = () => {
         alignItems="center"
         justifyContent="space-around"
       >
-        <img className={classes.icon} src={logo} alt="YSM logo" />
+        <img
+          className={classes.icon}
+          src="/logo.png"
+          alt="YSM Logo"
+        />
         <Typography className={classes.title} variant="subtitle1">Your Story Matters</Typography>
       </Box>
       <Box p={2}>

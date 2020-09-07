@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+// TODO: Need to check for existance of BASE_URL
 const axiosInstance = axios.create({
-  baseURL: '/api/',
+  baseURL: `${process.env.BASE_URL}/api`,
 });
 
 axiosInstance.interceptors.request.use((request) => {
@@ -14,4 +15,13 @@ axiosInstance.interceptors.response.use((response) => {
   return response;
 });
 
+export const axiosGet = async (url, headers) => {
+  try {
+    const response = await axiosInstance.get(url);
+    return response.data;
+  } catch (err) {
+    console.log('error');
+    console.log(err);
+  }
+};
 export default axiosInstance;
