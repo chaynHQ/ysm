@@ -15,12 +15,12 @@ import {
 import {
   ArrowBack,
 } from '@material-ui/icons';
-import { Link as RouterLink } from 'react-router-dom';
+// import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 
 import { fetchThemes, fetchResources } from '../store/actions';
 import SignUpPrompt from './SignUpPrompt';
-import ResourceCard from './ResourceCard';
+// import ResourceCard from './ResourceCard';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -69,12 +69,12 @@ const Theme = ({
             >
               <CardContent>
                 <Breadcrumbs aria-label="breadcrumb">
-                  <Link component={RouterLink} to="/your-journey">
+                  {/* <Link component={RouterLink} to="/your-journey">
                     <Box display="flex" alignItems="center" className={classes.link}>
                       <ArrowBack className={classes.icon} />
                       Back to Your Journey
                     </Box>
-                  </Link>
+                  </Link> */}
 
                 </Breadcrumbs>
                 <Typography color="textSecondary" variant="h1">{theme.title}</Typography>
@@ -92,22 +92,23 @@ const Theme = ({
             px={2}
           >
             {resources.map((resource) => (
-              <ResourceCard
-                key={resource.id}
-                title={resource.title}
-                subtitle={resource.subtitle}
-                image={resource.image}
-              />
+              <Typography>Resource goes here</Typography>
+              // <ResourceCard
+              //   key={resource.id}
+              //   title={resource.title}
+              //   subtitle={resource.subtitle}
+              //   image={resource.image}
+              // />
             ))}
           </Box>
         )}
       <Breadcrumbs aria-label="breadcrumb">
-        <Link component={RouterLink} color="inherit" to="/your-journey">
+        {/* <Link component={RouterLink} color="inherit" to="/your-journey">
           <Box display="flex" alignItems="center">
             <ArrowBack className={classes.icon} />
             Back to Your Journey
           </Box>
-        </Link>
+        </Link> */}
       </Breadcrumbs>
       <SignUpPrompt />
 
