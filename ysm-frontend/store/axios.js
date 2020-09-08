@@ -4,7 +4,6 @@ import axios from 'axios';
 
 let baseUrl = '';
 if (process && process.env.VERCEL_URL) {
-  console.log('SETTING BASE URL');
   baseUrl = process.env.VERCEL_URL;
   if (!/^https?:\/\//i.test(baseUrl)) {
     baseUrl = `https://${baseUrl}`;
@@ -28,7 +27,6 @@ axiosInstance.interceptors.response.use((response) => {
 export const axiosGet = async (url, options) => {
   try {
     const response = await axiosInstance.get(url, options);
-    console.log('Axios: ', response);
     return response.data;
   } catch (err) {
     console.log('error');
