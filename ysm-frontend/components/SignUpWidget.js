@@ -1,11 +1,16 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 
 import * as firebaseui from 'firebaseui';
 import firebase, { uiConfig } from '../config/firebase';
 
+import { setSettingsAuth } from '../store/actions';
+
 const SignUpWidget = ({ redirectUrl, setSettingsAuthOnSuccess }) => {
+  const router = useRouter();
+
   useEffect(() => {
     // Initialize the FirebaseUI Widget using Firebase.
     const ui = new firebaseui.auth.AuthUI(firebase.auth());
@@ -16,10 +21,10 @@ const SignUpWidget = ({ redirectUrl, setSettingsAuthOnSuccess }) => {
       callbacks: {
         signInSuccessWithAuthResult: (authResult) => {
           const { user } = authResult;
-          // if (location.pathname === '/settings') {
-          //   setSettingsAuthOnSuccess(true);
-          //   return false;
-          // }
+          if (router.pathname === '/settings') {
+            setSettingsAuthOnSuccess(true);
+            return false;
+          }
           if (authResult.additionalUserInfo.isNewUser || !user.emailVerified) {
             user.sendEmailVerification();
           }
