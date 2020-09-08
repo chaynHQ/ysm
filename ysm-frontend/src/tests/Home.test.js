@@ -1,8 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import { mount } from 'enzyme';
-import { BrowserRouter } from 'react-router-dom';
 import React from 'react';
-import Home from '../components/Home';
+import Home from '../pages/index';
 
 const mockStore = configureMockStore();
 
@@ -12,11 +11,9 @@ describe('Home', () => {
 
   beforeEach(() => {
     wrapper = mount(
-      <BrowserRouter>
-        <Home
-          store={store}
-        />
-      </BrowserRouter>,
+      <Home
+        store={store}
+      />,
     );
   });
 
