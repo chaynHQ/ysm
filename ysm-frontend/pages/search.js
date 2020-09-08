@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 import { Search as SearchIcon } from '@material-ui/icons';
 
-import axiosInstance from '../store/axios';
+import { axiosGet } from '../store/axios';
 import ResourceCard from '../components/ResourceCard';
 
 const useStyles = makeStyles({
@@ -28,16 +28,16 @@ const Search = () => {
   const getSearchResults = async (param) => {
     if (param.length >= 1) {
       setSearchStatus('searching');
-      const response = await axiosInstance.get('resources', {
+      const response = await axiosGet('resources', {
         params: {
           q: param,
         },
       });
-      if (response.data.length < 1) {
+      if (response.length < 1) {
         setSearchStatus('noResults');
       } else {
         setSearchStatus('hasResults');
-        setSearchResults(response.data);
+        setSearchResults(response);
       }
     }
   };

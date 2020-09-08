@@ -18,7 +18,7 @@ import {
 } from '@material-ui/icons';
 import { axiosGet } from '../store/axios';
 
-import SignUpPrompt from './SignUpPrompt';
+import SignUpPrompt from '../components/SignUpPrompt';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
