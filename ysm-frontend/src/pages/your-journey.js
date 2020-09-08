@@ -131,12 +131,10 @@ YourJourney.propTypes = {
       ]),
     ),
   ),
-  hasThemes: PropTypes.bool,
 };
 
 YourJourney.defaultProps = {
   themes: [],
-  hasThemes: false,
 };
 
 export default YourJourney;

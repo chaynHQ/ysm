@@ -31,6 +31,7 @@ export const axiosGet = async (url, options) => {
   } catch (err) {
     console.log('error');
     console.log(err);
+    throw err;
   }
 };
 export default axiosInstance;

@@ -26,6 +26,8 @@ rules:
   no-underscore-dangle: 0
   no-restricted-syntax: 1
   no-await-in-loop: 1
+  react/jsx-props-no-spreading: [2, {exceptions: [App, Component]}]
+  react/jsx-fragments: 0
 settings:
   react:
     version: 'latest'

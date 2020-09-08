@@ -142,7 +142,7 @@ ThemePage.defaultProps = {
 export async function getServerSideProps({ params }) {
   const { slug } = params;
   const themes = await axiosGet('themes');
-  const theme = themes.filter((theme) => theme.slug === slug)[0] || null;
+  const theme = themes.filter((t) => t.slug === slug)[0] || null;
 
   let resources = [];
   // TODO: Need a design for the case where there are no resources

@@ -43,34 +43,32 @@ const ResourceCard = ({
     <Card className={classes.card}>
       {/* TODO: MAke this the right link */}
       <Link href="/your-journey">
-        <a>
-          <CardActionArea className={classes.cardMedia}>
-            <CardContent>
-              <Box display="flex" flexDirection="row" justifyContent="space-between">
-                <Box>
-                  <Typography variant="h2" className={classes.title}>
-                    {title}
-                  </Typography>
-                  <Typography>
-                    {subtitle}
-                  </Typography>
-                </Box>
-                <Box>
-                  {image
-                    ? (
-                      <Avatar
-                        alt={image.alt}
-                        src={image.filename}
-                        className={classes.avatar}
-                      />
-                    )
-                    : null}
-                </Box>
+        <CardActionArea component="a" className={classes.cardMedia}>
+          <CardContent>
+            <Box display="flex" flexDirection="row" justifyContent="space-between">
+              <Box>
+                <Typography variant="h2" className={classes.title}>
+                  {title}
+                </Typography>
+                <Typography>
+                  {subtitle}
+                </Typography>
               </Box>
-              <Button className={classes.button} color="secondary" variant="contained" disableElevation size="small" startIcon={<BookmarkBorder />}>Save for later</Button>
-            </CardContent>
-          </CardActionArea>
-        </a>
+              <Box>
+                {image
+                  ? (
+                    <Avatar
+                      alt={image.alt}
+                      src={image.filename}
+                      className={classes.avatar}
+                    />
+                  )
+                  : null}
+              </Box>
+            </Box>
+            <Button className={classes.button} color="secondary" variant="contained" disableElevation size="small" startIcon={<BookmarkBorder />}>Save for later</Button>
+          </CardContent>
+        </CardActionArea>
       </Link>
     </Card>
   );

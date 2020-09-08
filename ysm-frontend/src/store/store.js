@@ -3,7 +3,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import ysmApp from './reducers';
 
-let store;
+let tempStore;
 
 function initStore(initialState) {
   return createStore(
@@ -14,23 +14,23 @@ function initStore(initialState) {
 }
 
 export const initializeStore = (preloadedState) => {
-  let _store = store ?? initStore(preloadedState);
+  let _store = tempStore ?? initStore(preloadedState);
 
   // After navigating to a page with an initial Redux state, merge that state
   // with the current state in the store, and create a new store
-  if (preloadedState && store) {
+  if (preloadedState && tempStore) {
     _store = initStore({
-      ...store.getState(),
+      ...tempStore.getState(),
       ...preloadedState,
     });
     // Reset the current store
-    store = undefined;
+    tempStore = undefined;
   }
 
   // For SSG and SSR always create a new store
   if (typeof window === 'undefined') return _store;
   // Create the store once in the client
-  if (!store) store = _store;
+  if (!tempStore) tempStore = _store;
 
   return _store;
 };

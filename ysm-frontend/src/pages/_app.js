@@ -94,5 +94,5 @@ export default App;
 
 App.propTypes = {
   Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.object.isRequired,
+  pageProps: PropTypes.objectOf(PropTypes.any).isRequired,
 };
