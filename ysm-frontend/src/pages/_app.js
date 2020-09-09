@@ -5,8 +5,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Provider } from 'react-redux';
 
-import { Container, Box, makeStyles } from '@material-ui/core';
-import { isMobile } from 'react-device-detect';
+import { Box, makeStyles } from '@material-ui/core';
 
 import theme from '../styles/theme';
 import { useStore } from '../store/store';
@@ -57,13 +56,13 @@ function App({ Component, pageProps }) {
             justifyContent="center"
           >
             <Box height={height} width={width} overflow="scroll" boxShadow={3}>
-                <Box flexGrow={1} display="flex" flexDirection="column" >
-                  <Header />
-                  <Box height={height * 0.875} overflow="scroll">
-                    <Component {...pageProps} />
-                  </Box>
-                  <Footer />
+              <Box flexGrow={1} display="flex" flexDirection="column">
+                <Header />
+                <Box height={height * 0.875} overflow="scroll">
+                  <Component {...pageProps} />
                 </Box>
+                <Footer />
+              </Box>
             </Box>
           </Box>
         </ThemeProvider>

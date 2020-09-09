@@ -17,7 +17,6 @@ const Footer = () => {
   const [selected, setSelected] = useState('');
 
   useEffect(() => {
-    console.log(router.pathname)
     switch (router.pathname) {
       case '/your-journey':
         setSelected('/your-journey');
