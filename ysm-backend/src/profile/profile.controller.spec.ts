@@ -34,6 +34,7 @@ describe('Profile Controller', () => {
       const profile: Profile = {
         id: 'foo',
         bookmarkedResources: [],
+        resourceState: {},
       };
 
       profileService.get.mockResolvedValueOnce(profile);
@@ -61,6 +62,16 @@ describe('Profile Controller', () => {
       expect(await controller.removeBookmarkForResource('foo', '123456')).toEqual(undefined);
 
       expect(profileService.removeBookmarkForResource).toHaveBeenCalledWith('foo', '123456');
+    });
+  });
+
+  describe('updateResourceState', () => {
+    it('should call the profile service', async () => {
+      profileService.updateResourceState.mockResolvedValueOnce(undefined);
+
+      expect(await controller.updateResourceState('foo', '123456', { a: 1 })).toEqual(undefined);
+
+      expect(profileService.updateResourceState).toHaveBeenCalledWith('foo', '123456', { a: 1 });
     });
   });
 });
