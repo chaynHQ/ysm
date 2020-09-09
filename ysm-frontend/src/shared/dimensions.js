@@ -1,19 +1,23 @@
 import { useState, useEffect } from 'react';
 
-// const isBrowser = () => typeof window !== 'undefined';
+const isBrowser = typeof window !== 'undefined';
 
 function getWindowDimensions() {
-  // TODO: Delete these two once this get's fixed
-  const width = 760;
-  const height = 0;
+  let { innerWidth: width, innerHeight: height } = isBrowser ? window : {};
 
-  // const { innerWidth: width, innerHeight: height } = isBrowser ? window : {};
-  return width > 752 ? {
-    width: 752, height: 731,
-  } : {
-    width,
-    height,
-  };
+  // if width or height doesn't exist, send 0
+  // if (!width || !height) {
+  //   width = 0;
+  //   height = 0;
+  // }
+
+  // if width > 752, send width: 752
+  if (width > 752) {
+    width = 752;
+    height = 731;
+  }
+
+  return { width, height };
 }
 
 export default function useWindowDimensions() {

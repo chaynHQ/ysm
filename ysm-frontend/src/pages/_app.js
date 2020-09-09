@@ -24,15 +24,6 @@ const useStyles = makeStyles({
     margin: 0,
   },
 
-  pageContainerMobile: {
-    height: '100vh',
-    width: '100vw',
-  },
-
-  appContainer: {
-    padding: 0,
-    overflow: 'scroll',
-  },
 });
 
 function App({ Component, pageProps }) {
@@ -65,24 +56,14 @@ function App({ Component, pageProps }) {
             alignItems="center"
             justifyContent="center"
           >
-            <Box boxShadow={3}>
-              <Container
-                className={`${classes.appContainer} ${
-                  isMobile ? classes.pageContainerMobile : null
-                }`}
-                style={{
-                  height,
-                  width,
-                }}
-              >
-                <Box flexGrow={1} display="flex" flexDirection="column" height={1}>
+            <Box height={height} width={width} overflow="scroll" boxShadow={3}>
+                <Box flexGrow={1} display="flex" flexDirection="column" >
                   <Header />
-                  <Box minHeight={height * 0.875} overflow="scroll">
+                  <Box height={height * 0.875} overflow="scroll">
                     <Component {...pageProps} />
                   </Box>
                   <Footer />
                 </Box>
-              </Container>
             </Box>
           </Box>
         </ThemeProvider>

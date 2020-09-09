@@ -66,7 +66,7 @@ const Theme = createMuiTheme({
       label: {
         fontWeight: 900,
         textTransform: 'none',
-      }
+      },
     },
     MuiIconButton: {
       root: {
@@ -105,6 +105,7 @@ const Theme = createMuiTheme({
       },
       label: {
         fontSize: 12,
+        textAlign: 'center',
         '&$selected': {
           fontSize: 12,
         },
