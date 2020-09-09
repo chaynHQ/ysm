@@ -66,10 +66,7 @@ const Theme = createMuiTheme({
       label: {
         fontWeight: 900,
         textTransform: 'none',
-      },
-      secondary: {
-        color: 'green',
-      },
+      }
     },
     MuiIconButton: {
       root: {

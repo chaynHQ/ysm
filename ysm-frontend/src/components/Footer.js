@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import {
-  BottomNavigationAction, BottomNavigation, Box,
+  BottomNavigationAction, BottomNavigation, Box, Typography,
 } from '@material-ui/core';
 import {
   ExitToApp, ImportContacts, LocationOn, Bookmark,
@@ -32,44 +32,39 @@ const Footer = () => {
       <BottomNavigation
         showLabels
         value={selected}
-        onChange={(e, value) => setSelected(value)}
+        onChange={(e, value) => {
+          setSelected(value)
+          router.push(value)
+        }}
       >
-        <Link href="/your-journey" passHref>
           <BottomNavigationAction
-            value="journey"
+            value="/your-journey"
             showLabel
             component="a"
             label="Your Journey"
             icon={<ImportContacts />}
           />
-        </Link>
-        <Link href="/saved" passHref>
           <BottomNavigationAction
             label="Saved Items"
             showLabel
             component="a"
-            value="Saved"
+            value="/saved"
             icon={<Bookmark />}
           />
-        </Link>
-        <Link href="/directory" passHref>
           <BottomNavigationAction
             component="a"
             showLabel
             label="Find Support"
-            value="Directory"
+            value="/directory"
             icon={<LocationOn />}
           />
-        </Link>
-        <Link href="/leave" passHref>
           <BottomNavigationAction
             component="a"
             showLabel
             label="Leave Site"
-            value="Leave"
+            value="/leave"
             icon={<ExitToApp />}
           />
-        </Link>
       </BottomNavigation>
     </Box>
 
