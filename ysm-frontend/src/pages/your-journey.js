@@ -67,7 +67,7 @@ const YourJourney = ({ themes }) => {
     >
 
       <Breadcrumbs aria-label="breadcrumb">
-        <Link href="/">
+        <Link href="/" passHref>
           <LinkUi component="a" color="inherit">
             <Box display="flex" alignItems="center">
               <ArrowBack className={classes.icon} />
@@ -100,7 +100,7 @@ const YourJourney = ({ themes }) => {
         </Card>
       ))}
       <Breadcrumbs aria-label="breadcrumb">
-        <Link href="/">
+        <Link href="/" passHref>
           <LinkUi component="a" color="inherit">
             <Box display="flex" alignItems="center">
               <ArrowBack className={classes.icon} />
