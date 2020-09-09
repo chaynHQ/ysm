@@ -11,6 +11,8 @@ import { isMobile } from 'react-device-detect';
 import theme from '../styles/theme';
 import { useStore } from '../store/store';
 
+import 'firebaseui/dist/firebaseui.css';
+
 import useWindowDimensions from '../shared/dimensions';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -92,5 +94,5 @@ export default App;
 
 App.propTypes = {
   Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.object.isRequired,
+  pageProps: PropTypes.objectOf(PropTypes.any).isRequired,
 };

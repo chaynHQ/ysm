@@ -65,15 +65,18 @@ const SignUpPrompt = () => {
         alignItems="center"
       >
         <Box width={width * 0.3} height={width * 0.3} p={4}>
-          <Avatar className={classes.iconContainer} alt="Illustration of woman and a butterfly" src="/resource-illustration.png" />
+          <Avatar
+            className={classes.iconContainer}
+            alt="Illustration of woman and a butterfly"
+            src="/resource-illustration.png"
+          />
         </Box>
         <Typography variant="h1" align="center">Sign up, it’s free</Typography>
         <Typography align="center">
           Sign up to Your Story Matters and privately save resources for later.
         </Typography>
-
         <Link href="/signin">
-          <Button variant="contained" color="primary" component="a">
+          <Button variant="contained" color="primary" component="a" to="/signin">
             Create Your Account
           </Button>
         </Link>
@@ -81,13 +84,15 @@ const SignUpPrompt = () => {
           <Typography align="center" variant="subtitle1" className={classes.linkSubtitle}>
             Your privacy will be protected.
           </Typography>
+          {/* TODO: NEED PROPER LINK HERE */}
           <Link href="/">
             <LinkUi
               component="a"
-              color="inherit"
+              className={classes.link}
+              underline="always"
+              to="/"
               variant="subtitle1"
               align="center"
-              className={classes.link}
             >
               Read our Terms & Privacy Policy
             </LinkUi>

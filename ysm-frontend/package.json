@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:url": "VERCEL_URL=\"http://localhost:3000\" API_URL=\"http://localhost:3001\" next dev",
+    "dev:url": "VERCEL_URL=\"http://localhost:3001\" API_URL=\"http://localhost:3000\" next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ext js,jsx ./",
@@ -17,12 +17,14 @@
     "test:unit": "NODE_ENV=test jest --pass-with-no-tests",
     "test:unit:watch": "NODE_ENV=test jest --watch",
     "test:unit:watchAll": "NODE_ENV=test jest --watchAll",
-    "test:cov": "NODE_ENV=test react-scripts jest --collect-coverage --watchAll"
+    "test:cov": "NODE_ENV=test jest --collect-coverage --watchAll"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "axios": "^0.20.0",
+    "firebase": "^7.19.1",
+    "firebaseui": "^4.6.1",
     "http-proxy-middleware": "^1.0.5",
     "next": "9.5.2",
     "prop-types": "^15.7.2",
@@ -33,7 +35,9 @@
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "storyblok-js-client": "^2.5.2"
+    "storyblok-js-client": "^2.5.2",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.4"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -57,13 +61,12 @@
       "!src/index.js",
       "!**/serviceWorker.js",
       "!src/tests/fixtures/*.js"
-    ]
+    ],
+    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.js"]
   },
   "devDependencies": {
     "add": "^2.0.6",
     "babel-eslint": "^10.1.0",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.4",
     "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.0",

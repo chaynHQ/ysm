@@ -18,7 +18,7 @@ import {
 } from '@material-ui/icons';
 import { axiosGet } from '../store/axios';
 
-import SignUpPrompt from './SignUpPrompt';
+import SignUpPrompt from '../components/SignUpPrompt';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -83,7 +83,7 @@ const YourJourney = ({ themes }) => {
       </Typography>
       {themes.map((theme) => (
         <Card key={theme.id} className={classes.card}>
-          <Link href="/your-journey">
+          <Link href={`/themes/${theme.slug}`}>
             <CardActionArea className={classes.cardMedia} component="a">
               <CardMedia
                 className={classes.cardContent}
@@ -131,12 +131,10 @@ YourJourney.propTypes = {
       ]),
     ),
   ),
-  hasThemes: PropTypes.bool,
 };
 
 YourJourney.defaultProps = {
   themes: [],
-  hasThemes: false,
 };
 
 export default YourJourney;

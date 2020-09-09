@@ -4,13 +4,15 @@ import {
   Box, Typography, Button, TextField,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-
-// TODO: This does not exist
-// import firebase from '../../ysm-frontend-old/src/config/firebase';
-
-// import SignIn from './SignIn';
+import dynamic from 'next/dynamic';
 
 import { setSettingsAuth, fetchBookmarks } from '../store/actions';
+import firebase from '../config/firebase';
+
+const SignUpWidget = dynamic(
+  () => import('../components/SignUpWidget'),
+  { ssr: false },
+);
 
 const Settings = ({
   setSettingsAuthOnError, settingsAuth, fetchBookmarksOnClick, user,
@@ -20,23 +22,23 @@ const Settings = ({
   const [password, setPassword] = useState('');
 
   const resetPassword = (newPassword) => {
-    // firebase.auth().onAuthStateChanged((u) => {
-    //   if (u) {
-    //     u.updatePassword(newPassword).then(() => {
-    //       // Update successful.
-    //     }).catch((error) => {
-    //       if (error.code === 'auth/weak-password') {
-    //         // Show some sort of weak password message
-    //       } else if (error.code === 'auth/requires-recent-login') {
-    //         setSettingsAuthOnError(false);
-    //       } else {
-    //         throw error;
-    //       }
-    //     });
-    //   } else {
-    //     // No user is signed in.
-    //   }
-    // });
+    firebase.auth().onAuthStateChanged((u) => {
+      if (u) {
+        u.updatePassword(newPassword).then(() => {
+          // Update successful.
+        }).catch((error) => {
+          if (error.code === 'auth/weak-password') {
+            // Show some sort of weak password message
+          } else if (error.code === 'auth/requires-recent-login') {
+            setSettingsAuthOnError(false);
+          } else {
+            throw error;
+          }
+        });
+      } else {
+        // No user is signed in.
+      }
+    });
   };
 
   const resetEmail = (newEmail) => {
@@ -117,13 +119,13 @@ const Settings = ({
                 Update
               </Button>
             </Box>
+            {/* TODO: This needs to be moved to the saved items section */}
             <Button onClick={() => { fetchBookmarksOnClick(); }}>
               Get Bookmarks
             </Button>
           </Box>
         )
-        : null }
-        {/* <SignIn redirectUrl="/settings" />} */}
+        : <SignUpWidget redirectUrl="/settings" />}
     </Box>
   );
 };
