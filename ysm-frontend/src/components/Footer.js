@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 
 import {
   BottomNavigationAction, BottomNavigation, Box,
@@ -20,7 +19,7 @@ const Footer = () => {
   useEffect(() => {
     switch (router.pathname) {
       case '/your-journey':
-        setSelected('journey');
+        setSelected('/your-journey');
         break;
       default:
         setSelected('');
@@ -32,44 +31,39 @@ const Footer = () => {
       <BottomNavigation
         showLabels
         value={selected}
-        onChange={(e, value) => setSelected(value)}
+        onChange={(e, value) => {
+          setSelected(value);
+          router.push(value);
+        }}
       >
-        <Link href="/your-journey" passHref>
-          <BottomNavigationAction
-            value="journey"
-            showLabel
-            component="a"
-            label="Your Journey"
-            icon={<ImportContacts />}
-          />
-        </Link>
-        <Link href="/saved" passHref>
-          <BottomNavigationAction
-            label="Saved Items"
-            showLabel
-            component="a"
-            value="Saved"
-            icon={<Bookmark />}
-          />
-        </Link>
-        <Link href="/directory" passHref>
-          <BottomNavigationAction
-            component="a"
-            showLabel
-            label="Find Support"
-            value="Directory"
-            icon={<LocationOn />}
-          />
-        </Link>
-        <Link href="/leave" passHref>
-          <BottomNavigationAction
-            component="a"
-            showLabel
-            label="Leave Site"
-            value="Leave"
-            icon={<ExitToApp />}
-          />
-        </Link>
+        <BottomNavigationAction
+          value="/your-journey"
+          showLabel
+          component="a"
+          label="Your Journey"
+          icon={<ImportContacts />}
+        />
+        <BottomNavigationAction
+          label="Saved Items"
+          showLabel
+          component="a"
+          value="/saved"
+          icon={<Bookmark />}
+        />
+        <BottomNavigationAction
+          component="a"
+          showLabel
+          label="Find Support"
+          value="/directory"
+          icon={<LocationOn />}
+        />
+        <BottomNavigationAction
+          component="a"
+          showLabel
+          label="Leave Site"
+          value="/leave"
+          icon={<ExitToApp />}
+        />
       </BottomNavigation>
     </Box>
 

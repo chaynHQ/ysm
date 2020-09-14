@@ -5,8 +5,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Provider } from 'react-redux';
 
-import { Container, Box, makeStyles } from '@material-ui/core';
-import { isMobile } from 'react-device-detect';
+import { Box, makeStyles } from '@material-ui/core';
 
 import theme from '../styles/theme';
 import { useStore } from '../store/store';
@@ -24,15 +23,6 @@ const useStyles = makeStyles({
     margin: 0,
   },
 
-  pageContainerMobile: {
-    height: '100vh',
-    width: '100vw',
-  },
-
-  appContainer: {
-    padding: 0,
-    overflow: 'scroll',
-  },
 });
 
 function App({ Component, pageProps }) {
@@ -65,24 +55,14 @@ function App({ Component, pageProps }) {
             alignItems="center"
             justifyContent="center"
           >
-            <Box boxShadow={3}>
-              <Container
-                className={`${classes.appContainer} ${
-                  isMobile ? classes.pageContainerMobile : null
-                }`}
-                style={{
-                  height,
-                  width,
-                }}
-              >
-                <Box flexGrow={1} display="flex" flexDirection="column" height={1}>
-                  <Header />
-                  <Box minHeight={height * 0.875} overflow="scroll">
-                    <Component {...pageProps} />
-                  </Box>
-                  <Footer />
+            <Box height={height} width={width} overflow="scroll" boxShadow={3}>
+              <Box flexGrow={1} display="flex" flexDirection="column">
+                <Header />
+                <Box height={height * 0.875} overflow="scroll">
+                  <Component {...pageProps} />
                 </Box>
-              </Container>
+                <Footer />
+              </Box>
             </Box>
           </Box>
         </ThemeProvider>
