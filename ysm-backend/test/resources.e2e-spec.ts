@@ -1,10 +1,14 @@
 import { INestApplication } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { when } from 'jest-when';
-import { FilterOptions } from 'src/resources/filters.types';
+import { nanoid } from 'nanoid';
 import StoryblokClient, { StoriesParams } from 'storyblok-js-client';
 import request from 'supertest';
 import { mocked } from 'ts-jest/utils';
+import { FIREBASE } from '../src/firebase/firebase-factory';
+import { FirebaseServices } from '../src/firebase/firebase.types';
+import { FilterOptions } from '../src/resources/filters.types';
 import { AppModule } from './../src/app.module';
 import { resourcesListFixture, singleResourceFixture } from './fixtures/resources';
 import {
@@ -15,6 +19,8 @@ import {
   storyblokSingleResourceFixture,
   storyblokTagsFixture,
 } from './fixtures/storyblok';
+import { generateIdToken } from './util/generate-id-token';
+import { mockConfigService } from './util/mock-config-service';
 
 jest.mock('storyblok-js-client');
 const mockedStoryblokClient = mocked(StoryblokClient, true);
@@ -25,11 +31,12 @@ function mockGetStories(
   filterQuery?: any,
   tags?: string,
   searchTerm?: string,
+  previewMode = false,
 ): void {
   const params: StoriesParams = {
     starts_with: 'resources/',
     excluding_fields: 'content_items',
-    version: 'draft',
+    version: previewMode ? 'draft' : 'published',
     sort_by: 'position:asc',
     per_page: 100,
   };
@@ -54,11 +61,20 @@ function mockGetStories(
   });
 }
 
-function mockGetStory(instance: StoryblokClient, slug: string, data: any): void {
-  when(mocked(instance.getStory)).expectCalledWith(`resources/${slug}`).mockResolvedValueOnce({
-    data,
-    headers: null,
-  });
+function mockGetStory(
+  instance: StoryblokClient,
+  slug: string,
+  data: any,
+  previewMode?: boolean,
+): void {
+  when(mocked(instance.getStory))
+    .expectCalledWith(`resources/${slug}`, {
+      version: previewMode ? 'draft' : 'published',
+    })
+    .mockResolvedValueOnce({
+      data,
+      headers: null,
+    });
 }
 
 // This is just a sanity check.
@@ -68,6 +84,15 @@ it(`the STORYBLOK_TOKEN env var should not be a valid token`, () => {
 
 describe('Resources (e2e)', () => {
   let app: INestApplication;
+
+  let firebaseServices: FirebaseServices;
+  const userId = `e2e-resources-${nanoid(8)}`;
+  const userEmail = 'test@example.org';
+  let authToken: string;
+
+  const otherEmail = 'someoneelse@example.org';
+
+  let configService: ConfigService;
 
   afterAll(async () => {
     await app.close();
@@ -84,6 +109,17 @@ describe('Resources (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    configService = app.get<ConfigService>(ConfigService);
+    mockConfigService(configService, 'contentEditorEmails', []);
+
+    firebaseServices = app.get<FirebaseServices>(FIREBASE);
+
+    // Only set auth token once as we don't need it renewed on every test case.
+    if (!authToken) {
+      authToken = await generateIdToken(firebaseServices.auth, userId, userEmail);
+      // console.log(`authToken = ${authToken}`);
+    }
   });
 
   // This is just a sanity check.
@@ -220,37 +256,97 @@ describe('Resources (e2e)', () => {
           .expect(200, resourcesListFixture);
       });
     });
+
+    describe('preview mode', () => {
+      describe('without any auth', () => {
+        it('should return 403 Forbidden', async () => {
+          // Precondition:
+          expect(configService.get<string[]>('contentEditorEmails')).toEqual([]);
+
+          await request(app.getHttpServer())
+            .get('/resources')
+            .set('X-PREVIEW-MODE', 'true')
+            .expect('Content-Type', /json/)
+            .expect(403);
+
+          expect(mockedStoryblokClient.mock.instances[0].getStories).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('with auth', () => {
+        describe("when authed email isn't in list of allowed emails", () => {
+          beforeEach(() => {
+            mockConfigService(configService, 'contentEditorEmails', [otherEmail]);
+          });
+
+          it('should return 403 Forbidden', async () => {
+            // Precondition:
+            expect(configService.get<string[]>('contentEditorEmails')).toEqual([otherEmail]);
+
+            await request(app.getHttpServer())
+              .get('/resources')
+              .set('X-PREVIEW-MODE', 'true')
+              .expect('Content-Type', /json/)
+              .expect(403);
+
+            expect(mockedStoryblokClient.mock.instances[0].getStories).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('when authed email is in list of allowed emails', () => {
+          beforeEach(() => {
+            mockConfigService(configService, 'contentEditorEmails', [userEmail]);
+
+            // NOTE: We don't test any actual content here – just that the expected API call is made to Storyblok via the StoryblokClient. Therefore we can just use the resources list fixture to represent the output.
+            const mockedStoryblokClientInstance = mockedStoryblokClient.mock.instances[0];
+
+            mockGetStories(
+              mockedStoryblokClientInstance,
+              storyblokResourcesListFixture,
+              undefined,
+              undefined,
+              undefined,
+              true,
+            );
+          });
+
+          it('should return the draft list of resources', () => {
+            // Precondition:
+            expect(configService.get<string[]>('contentEditorEmails')).toEqual([userEmail]);
+
+            return request(app.getHttpServer())
+              .get('/resources')
+              .set('Authorization', `Bearer ${authToken}`)
+              .set('X-PREVIEW-MODE', 'true')
+              .expect('Content-Type', /json/)
+              .expect(200, resourcesListFixture);
+          });
+        });
+      });
+    });
   });
 
   describe('GET /resources/:slug', () => {
     describe('when the resource exists and is enabled', () => {
-      let slug;
-
       beforeEach(() => {
-        slug = 'foo';
-
         const mockedStoryblokClientInstance = mockedStoryblokClient.mock.instances[0];
 
-        mockGetStory(mockedStoryblokClientInstance, slug, storyblokSingleResourceFixture);
+        mockGetStory(mockedStoryblokClientInstance, 'foo', storyblokSingleResourceFixture);
       });
 
       it('should return the resource', () => {
         return request(app.getHttpServer())
-          .get(`/resources/${slug}`)
+          .get('/resources/foo')
           .expect('Content-Type', /json/)
           .expect(200, singleResourceFixture);
       });
     });
 
     describe('when the resource exists but is not enabled', () => {
-      let slug;
-
       beforeEach(() => {
-        slug = 'foo';
-
         const mockedStoryblokClientInstance = mockedStoryblokClient.mock.instances[0];
 
-        mockGetStory(mockedStoryblokClientInstance, slug, storyblokSingleResourceDisabledFixture);
+        mockGetStory(mockedStoryblokClientInstance, 'foo', storyblokSingleResourceDisabledFixture);
       });
 
       it('should return a 404 Not Found', () => {
@@ -270,11 +366,76 @@ describe('Resources (e2e)', () => {
         });
       });
 
-      it('should return a 404 Not Found', () => {
+      it('should return 404 Not Found', () => {
         return request(app.getHttpServer())
           .get('/resources/foo')
           .expect('Content-Type', /json/)
           .expect(404);
+      });
+    });
+
+    describe('preview mode', () => {
+      describe('without any auth', () => {
+        it('should return 403 Forbidden', async () => {
+          // Precondition:
+          expect(configService.get<string[]>('contentEditorEmails')).toEqual([]);
+
+          await request(app.getHttpServer())
+            .get('/resources/foo')
+            .set('X-PREVIEW-MODE', 'true')
+            .expect('Content-Type', /json/)
+            .expect(403);
+
+          expect(mockedStoryblokClient.mock.instances[0].getStory).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('with auth', () => {
+        describe("when authed email isn't in list of allowed emails", () => {
+          beforeEach(() => {
+            mockConfigService(configService, 'contentEditorEmails', [otherEmail]);
+          });
+
+          it('should return 403 Forbidden', async () => {
+            // Precondition:
+            expect(configService.get<string[]>('contentEditorEmails')).toEqual([otherEmail]);
+
+            await request(app.getHttpServer())
+              .get('/resources/foo')
+              .set('X-PREVIEW-MODE', 'true')
+              .expect('Content-Type', /json/)
+              .expect(403);
+
+            expect(mockedStoryblokClient.mock.instances[0].getStory).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('when authed email is in list of allowed emails', () => {
+          beforeEach(() => {
+            mockConfigService(configService, 'contentEditorEmails', [userEmail]);
+
+            const mockedStoryblokClientInstance = mockedStoryblokClient.mock.instances[0];
+
+            mockGetStory(
+              mockedStoryblokClientInstance,
+              'foo',
+              storyblokSingleResourceFixture,
+              true,
+            );
+          });
+
+          it('should return the draft resource', () => {
+            // Precondition:
+            expect(configService.get<string[]>('contentEditorEmails')).toEqual([userEmail]);
+
+            return request(app.getHttpServer())
+              .get('/resources/foo')
+              .set('Authorization', `Bearer ${authToken}`)
+              .set('X-PREVIEW-MODE', 'true')
+              .expect('Content-Type', /json/)
+              .expect(200, singleResourceFixture);
+          });
+        });
       });
     });
   });

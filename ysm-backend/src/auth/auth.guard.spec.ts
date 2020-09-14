@@ -1,12 +1,15 @@
 import { createMock, DeepMocked } from '@golevelup/ts-jest';
-import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { ExecutionContext, ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import {
   unverifiedDecodedTokenFixture,
   verifiedDecodedTokenFixture,
 } from '../../test/fixtures/auth';
+import { CURRENT_USER_ID_FIELD } from '../constants';
+import { FIREBASE } from '../firebase/firebase-factory';
 import { FirebaseAuth, FirebaseServices, Firestore } from '../firebase/firebase.types';
 import { AuthGuard } from './auth.guard';
-import { CURRENT_USER_ID_FIELD } from './constants';
+import { AuthService } from './auth.service';
 
 function mockAuthHeader(mock: DeepMocked<ExecutionContext>, value: string): void {
   mock.switchToHttp().getRequest.mockReturnValue({
@@ -16,6 +19,8 @@ function mockAuthHeader(mock: DeepMocked<ExecutionContext>, value: string): void
   });
 }
 
+// Note: this is more of an integration test as we want to test the internals of the AuthService as well.
+
 describe('AuthGuard', () => {
   let guard: AuthGuard;
 
@@ -23,7 +28,7 @@ describe('AuthGuard', () => {
   let mockFirebaseServices: FirebaseServices;
   let mockContext: DeepMocked<ExecutionContext>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     mockFirebaseAuth = createMock<FirebaseAuth>();
     mockFirebaseServices = {
       auth: mockFirebaseAuth,
@@ -34,7 +39,19 @@ describe('AuthGuard', () => {
 
     mockContext = createMock<ExecutionContext>();
 
-    guard = new AuthGuard(mockFirebaseServices);
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        AuthService,
+        {
+          provide: FIREBASE,
+          useValue: mockFirebaseServices,
+        },
+      ],
+    }).compile();
+
+    const authService = module.get<AuthService>(AuthService);
+
+    guard = new AuthGuard(authService);
   });
 
   it('should be defined', () => {
@@ -92,7 +109,7 @@ describe('AuthGuard', () => {
 
   describe('Auth header with valid token', () => {
     describe('but email is not verified', () => {
-      it("throws an UnauthorizedException with the appropriate error message and doesn't set the current user ID", async () => {
+      it("throws a ForbiddenException with the appropriate error message and doesn't set the current user ID", async () => {
         const token = 'foo';
         mockAuthHeader(mockContext, `Bearer ${token}`);
 
@@ -101,7 +118,7 @@ describe('AuthGuard', () => {
         expect.assertions(3);
 
         await expect(guard.canActivate(mockContext)).rejects.toEqual(
-          new UnauthorizedException('Unauthorized: user email not verified'),
+          new ForbiddenException('Forbidden: user email not verified'),
         );
 
         expect(mockFirebaseAuth.verifyIdToken).toHaveBeenCalledWith(token, true);

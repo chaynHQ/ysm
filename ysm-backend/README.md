@@ -21,6 +21,8 @@ For local development, create a new **`.env.development`** file at the root of t
 STORYBLOK_TOKEN={value}  # The API token from Storyblok (must have 'draft' access)
 
 FIREBASE_SERVICE_ACCOUNT={value}  # The service account JSON object serialised into a string and then base64 encoded
+
+CONTENT_EDITOR_EMAILS={value}  # Optional. A comma separated list of email addresses of the users that are allowed to access preview mode (for viewing draft content from Storyblok)
 ```
 
 #### Env config for tests

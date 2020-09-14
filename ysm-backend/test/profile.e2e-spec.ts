@@ -1,16 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import axios from 'axios';
 import { nanoid } from 'nanoid';
 import request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { FIREBASE } from './../src/firebase/firebase-factory';
-import {
-  firebase,
-  FirebaseAuth,
-  FirebaseServices,
-  Firestore,
-} from './../src/firebase/firebase.types';
+import { FirebaseServices, Firestore } from './../src/firebase/firebase.types';
+import { generateIdToken } from './util/generate-id-token';
 
 // IMPORTANT – this e2e…
 // - Generates and uses a real Firebase Auth token.
@@ -18,35 +13,16 @@ import {
 // The Firebase project it will talk to is defined by credentials set in the test environment
 // (see the README for more details).
 
-async function generateIdToken(auth: FirebaseAuth, userId: string): Promise<string> {
-  const firebaseWebApiKey = process.env.FIREBASE_WEB_API_KEY;
-
-  if (!firebaseWebApiKey) {
-    throw new Error(
-      `Missing FIREBASE_WEB_API_KEY env var for e2e tests - place this in .env.test.local`,
-    );
-  }
-
-  const customToken = await firebase.auth().createCustomToken(userId, { email_verified: true });
-
-  const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=${firebaseWebApiKey}`;
-  const result = await axios.post(url, {
-    token: customToken,
-    returnSecureToken: true,
-  });
-
-  return result.data.idToken as string;
-}
-
 async function cleanupProfileDoc(firestore: Firestore, userId: string) {
   return firestore.doc(`profiles/${userId}`).delete();
 }
 
 describe('User Profile (e2e)', () => {
   let app: INestApplication;
-  let firebaseServices: FirebaseServices;
 
-  const userId = `e2e-test-${nanoid(8)}`;
+  let firebaseServices: FirebaseServices;
+  const userId = `e2e-profile-${nanoid(8)}`;
+  const userEmail = 'test@example.org';
   let authToken: string;
 
   afterAll(async () => {
@@ -65,7 +41,7 @@ describe('User Profile (e2e)', () => {
 
     // Only set auth token once as we don't need it renewed on every test case.
     if (!authToken) {
-      authToken = await generateIdToken(firebaseServices.auth, userId);
+      authToken = await generateIdToken(firebaseServices.auth, userId, userEmail);
       // console.log(`authToken = ${authToken}`);
     }
   });

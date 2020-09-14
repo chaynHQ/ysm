@@ -18,11 +18,15 @@ export class ResourcesService {
     return this.filtersService.options(this.storyblok);
   }
 
-  async list(filters: Record<string, string>, searchQuery: string): Promise<Resource[]> {
+  async list(
+    filters: Record<string, string>,
+    searchQuery: string,
+    previewMode: boolean,
+  ): Promise<Resource[]> {
     const params: StoriesParams = {
       starts_with: 'resources/',
       excluding_fields: 'content_items',
-      version: 'draft',
+      version: previewMode ? 'draft' : 'published',
       sort_by: 'position:asc',
       per_page: 100,
       ...this.buildRetrievalParamsForStoryblok(filters, searchQuery),
@@ -32,9 +36,11 @@ export class ResourcesService {
     return response.data.stories.map((s) => this.resourceSerialiserService.serialise(s));
   }
 
-  async get(slug: string): Promise<Resource> {
+  async get(slug: string, previewMode: boolean): Promise<Resource> {
     try {
-      const response = await this.storyblok.getStory(`resources/${slug}`, { version: 'draft' });
+      const response = await this.storyblok.getStory(`resources/${slug}`, {
+        version: previewMode ? 'draft' : 'published',
+      });
 
       if (response.data.story.content.enabled) {
         return this.resourceSerialiserService.serialise(response.data.story);
