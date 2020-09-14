@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { FIREBASE } from '../firebase/firebase-factory';
 import { firebase, FirebaseServices } from '../firebase/firebase.types';
-import { Profile } from './profile.types';
+import { Profile, ResourceState } from './profile.types';
 
 @Injectable()
 export class ProfileService {
@@ -9,16 +9,20 @@ export class ProfileService {
 
   async get(id: string): Promise<Profile> {
     const doc = await this.profileDocRef(id).get();
-    const data = doc.data();
 
     let bookmarkedResources = [];
-    if (data) {
-      bookmarkedResources = data.bookmarkedResources;
+    let resourceState = {};
+
+    if (doc.exists) {
+      const data = doc.data();
+      bookmarkedResources = data.bookmarkedResources || [];
+      resourceState = data.resourceState || {};
     }
 
     return {
       id,
       bookmarkedResources,
+      resourceState,
     };
   }
 
@@ -38,6 +42,22 @@ export class ProfileService {
         bookmarkedResources: firebase.firestore.FieldValue.arrayRemove(resourceId),
       },
       { merge: true },
+    );
+    return this.handleWrite(promise);
+  }
+
+  async updateResourceState(
+    userId: string,
+    resourceId: string,
+    state: ResourceState,
+  ): Promise<void> {
+    const promise = this.profileDocRef(userId).set(
+      {
+        resourceState: {
+          [resourceId]: state,
+        },
+      },
+      { mergeFields: [`resourceState.${resourceId}`] },
     );
     return this.handleWrite(promise);
   }

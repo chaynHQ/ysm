@@ -70,7 +70,11 @@ describe('User Profile (e2e)', () => {
     }
   });
 
-  afterEach(async () => {
+  beforeEach(async () => {
+    await cleanupProfileDoc(firebaseServices.firestore, userId);
+  });
+
+  afterAll(async () => {
     await cleanupProfileDoc(firebaseServices.firestore, userId);
   });
 
@@ -113,6 +117,19 @@ describe('User Profile (e2e)', () => {
           });
       });
     });
+
+    describe('PUT /profile/state/resources/:resourceId', () => {
+      it('should be unauthorized', () => {
+        return request(app.getHttpServer())
+          .put(`/profile/state/resources/12345`)
+          .expect('Content-Type', /json/)
+          .expect(401, {
+            statusCode: 401,
+            message: 'Unauthorized: missing required Authorization token',
+            error: 'Unauthorized',
+          });
+      });
+    });
   });
 
   describe('authenticated', () => {
@@ -125,6 +142,7 @@ describe('User Profile (e2e)', () => {
           .expect(200, {
             id: userId,
             bookmarkedResources: [],
+            resourceState: {},
           });
       });
     });
@@ -146,6 +164,7 @@ describe('User Profile (e2e)', () => {
           .expect(200, {
             id: userId,
             bookmarkedResources: ['12345'],
+            resourceState: {},
           });
 
         // Add another bookmark
@@ -160,6 +179,7 @@ describe('User Profile (e2e)', () => {
           .expect(200, {
             id: userId,
             bookmarkedResources: ['12345', '67890'],
+            resourceState: {},
           });
 
         // Addition should be idempotent
@@ -174,6 +194,7 @@ describe('User Profile (e2e)', () => {
           .expect(200, {
             id: userId,
             bookmarkedResources: ['12345', '67890'],
+            resourceState: {},
           });
 
         // Remove one of the bookmarks
@@ -188,6 +209,7 @@ describe('User Profile (e2e)', () => {
           .expect(200, {
             id: userId,
             bookmarkedResources: ['67890'],
+            resourceState: {},
           });
 
         // Removal should be idempotent
@@ -202,6 +224,127 @@ describe('User Profile (e2e)', () => {
           .expect(200, {
             id: userId,
             bookmarkedResources: ['67890'],
+            resourceState: {},
+          });
+      });
+    });
+
+    describe('updating resource state', () => {
+      it('should update the profile accordingly', async () => {
+        const server = app.getHttpServer();
+        const authHeader = `Bearer ${authToken}`;
+
+        // Update state for a resource
+        await request(server)
+          .put('/profile/state/resources/12345')
+          .send({ a: 1 })
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            bookmarkedResources: [],
+            resourceState: {
+              '12345': { a: 1 },
+            },
+          });
+
+        // Update state for another resource
+        await request(server)
+          .put('/profile/state/resources/67890')
+          .send({ b: 1 })
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            bookmarkedResources: [],
+            resourceState: {
+              '12345': { a: 1 },
+              '67890': { b: 1 },
+            },
+          });
+
+        // Updates are idempotent
+        await request(server)
+          .put('/profile/state/resources/12345')
+          .send({ a: 1 })
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            bookmarkedResources: [],
+            resourceState: {
+              '12345': { a: 1 },
+              '67890': { b: 1 },
+            },
+          });
+
+        // Update state again for the first resource
+        await request(server)
+          .put('/profile/state/resources/12345')
+          .send({ a: 2 })
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            bookmarkedResources: [],
+            resourceState: {
+              '12345': { a: 2 },
+              '67890': { b: 1 },
+            },
+          });
+
+        // Set state to empty object
+        await request(server)
+          .put('/profile/state/resources/67890')
+          .send({})
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            bookmarkedResources: [],
+            resourceState: {
+              '12345': { a: 2 },
+              '67890': {},
+            },
+          });
+
+        // Make sure old fields within resource state are removed
+        await request(server)
+          .put('/profile/state/resources/12345')
+          .send({ aa: 1 })
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            bookmarkedResources: [],
+            resourceState: {
+              '12345': { aa: 1 },
+              '67890': {},
+            },
           });
       });
     });

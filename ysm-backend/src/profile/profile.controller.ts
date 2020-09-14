@@ -1,8 +1,8 @@
-import { Controller, Delete, Get, HttpCode, Param, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { CurrentUserId } from '../auth/current-user-id.decorator';
 import { ProfileService } from './profile.service';
-import { Profile } from './profile.types';
+import { Profile, ResourceState } from './profile.types';
 
 @Controller('profile')
 @UseGuards(AuthGuard)
@@ -30,5 +30,15 @@ export class ProfileController {
     @Param('resourceId') resourceId: string,
   ): Promise<void> {
     return this.profileService.removeBookmarkForResource(currentUserId, resourceId);
+  }
+
+  @Put('state/resources/:resourceId')
+  @HttpCode(204)
+  async updateResourceState(
+    @CurrentUserId() currentUserId: string,
+    @Param('resourceId') resourceId: string,
+    @Body() state: ResourceState,
+  ): Promise<void> {
+    return this.profileService.updateResourceState(currentUserId, resourceId, state);
   }
 }
