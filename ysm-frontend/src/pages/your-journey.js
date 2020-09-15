@@ -61,7 +61,6 @@ const YourJourney = ({ themes }) => {
       display="flex"
       flexDirection="column"
       direction="column"
-      className={classes.container}
       pt={3.5}
       px={2}
     >
