@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
-  Box, Typography, Button, TextField,
+  Box, Button, TextField,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
@@ -77,7 +77,6 @@ const Settings = ({
 
   return (
     <Box display="flex" flexDirection="column" height={1}>
-      <Typography>Settings</Typography>
       { settingsAuth
         ? (
           <Box>
