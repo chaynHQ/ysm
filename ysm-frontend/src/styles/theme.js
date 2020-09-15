@@ -21,7 +21,7 @@ const Theme = createMuiTheme({
       contrastText: '#1D2445',
     },
     info: {
-      main: '#EFA78E',
+      main: '#E2E3E6',
       contrastText: '#1D2445',
     },
     success: {
@@ -115,12 +115,24 @@ const Theme = createMuiTheme({
       root: {
         height: 22,
         width: 22,
+        color: '#717798',
       },
     },
     MuiBreadcrumbs: {
       li: {
         fontSize: 14,
         color: '#D27200',
+      },
+    },
+    MuiDrawer: {
+      paper: {
+        backgroundColor: '#FFF5F0',
+        minWidth: '50%',
+      },
+    },
+    MuiLink: {
+      root: {
+        fontSize: 15,
       },
     },
   },

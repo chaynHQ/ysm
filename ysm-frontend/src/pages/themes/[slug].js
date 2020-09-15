@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactHtmlParser from 'react-html-parser';
 
 import {
   makeStyles,
@@ -75,7 +74,7 @@ const ThemePage = ({
                   color="textSecondary"
                   component="div"
                 >
-                  {ReactHtmlParser(richTextHelper(theme.description))}
+                  {richTextHelper(theme.description)}
                 </Typography>
               </CardContent>
             </CardMedia>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -29,6 +29,8 @@ function App({ Component, pageProps }) {
   const classes = useStyles();
   const { height, width } = useWindowDimensions();
 
+  const containerRef = useRef();
+
   useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -55,9 +57,9 @@ function App({ Component, pageProps }) {
             alignItems="center"
             justifyContent="center"
           >
-            <Box height={height} width={width} overflow="scroll" boxShadow={3}>
+            <Box height={height} width={width} overflow="scroll" boxShadow={3} position="relative" ref={containerRef}>
               <Box flexGrow={1} display="flex" flexDirection="column">
-                <Header />
+                <Header menuContainer={containerRef} />
                 <Box height={height * 0.875} overflow="scroll">
                   <Component {...pageProps} />
                 </Box>

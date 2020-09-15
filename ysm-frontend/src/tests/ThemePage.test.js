@@ -6,6 +6,9 @@ import ThemePage from '../pages/themes/[slug]';
 import themes from './fixtures/themes';
 import allResources from './fixtures/resources';
 import ResourceCard from '../components/ResourceCard';
+import richTextHelper from '../shared/rich-text';
+
+jest.mock('../shared/rich-text');
 
 describe('ThemePage', () => {
   let wrapper;
@@ -14,6 +17,8 @@ describe('ThemePage', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     shallow = createShallow();
+    richTextHelper.mockReturnValueOnce({
+    });
   });
 
   it('renders with correct number of links when theme and resources are both not empty', () => {
