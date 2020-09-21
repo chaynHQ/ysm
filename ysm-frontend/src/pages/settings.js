@@ -211,7 +211,7 @@ Settings.propTypes = {
   setSettingsAuthOnError: PropTypes.func.isRequired,
   setUserSignInOnClick: PropTypes.func.isRequired,
   settingsAuth: PropTypes.bool,
-  user: PropTypes.objectOf(PropTypes.string),
+  user: PropTypes.objectOf(PropTypes.any),
 };
 
 Settings.defaultProps = {
