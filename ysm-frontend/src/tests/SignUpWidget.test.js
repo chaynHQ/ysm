@@ -17,13 +17,11 @@ describe('SignUpWidget', () => {
   it('renders the signup box', () => {
     wrapper = shallow(
       <SignUpWidget
-        store={mockStore({ user: {}})}
+        store={mockStore({ user: {} })}
       />,
     ).dive().dive();
 
-    console.log(wrapper.debug())
     expect(wrapper.find(Box)).toHaveLength(2);
-    expect(wrapper.find(Typography)).toHaveLength(2)
+    expect(wrapper.find(Typography)).toHaveLength(2);
   });
-
 });

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import {
   Box, IconButton, makeStyles, Typography, Drawer, Divider, Icon,
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Header = ({ menuContainer }) => {
+const Header = ({ menuContainer, user }) => {
   const classes = useStyles();
   const { height } = useWindowDimensions();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -127,14 +128,14 @@ const Header = ({ menuContainer }) => {
             </LinkUi>
           </Link>
 
-          {/* TODO: This needs to switch based on if someone is signed in or not */}
           <Link href="/settings" passHref>
             <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
               <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                 <Icon>
                   <AccountCircle />
                 </Icon>
-                My account
+                {Object.keys(user) > 0 ? 'My account' : 'Sign In'}
+
               </Box>
             </LinkUi>
           </Link>
@@ -156,6 +157,14 @@ const Header = ({ menuContainer }) => {
 
 Header.propTypes = {
   menuContainer: PropTypes.objectOf(PropTypes.any).isRequired,
+  user: PropTypes.objectOf(PropTypes.any),
 };
 
-export default Header;
+Header.defaultProps = {
+  user: {},
+};
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps, null)(Header);
