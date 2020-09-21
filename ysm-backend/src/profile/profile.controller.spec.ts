@@ -33,6 +33,7 @@ describe('Profile Controller', () => {
     it('should return the profile', async () => {
       const profile: Profile = {
         id: 'foo',
+        termsAccepted: false,
         bookmarkedResources: [],
         resourceState: {},
       };

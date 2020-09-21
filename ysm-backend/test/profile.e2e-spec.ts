@@ -92,6 +92,32 @@ describe('User Profile (e2e)', () => {
       });
     });
 
+    describe('PUT /profile/terms/accept', () => {
+      it('should be unauthorized', () => {
+        return request(app.getHttpServer())
+          .put(`/profile/terms/accept`)
+          .expect('Content-Type', /json/)
+          .expect(401, {
+            statusCode: 401,
+            message: 'Unauthorized: missing required Authorization token',
+            error: 'Unauthorized',
+          });
+      });
+    });
+
+    describe('PUT /profile/terms/unaccept', () => {
+      it('should be unauthorized', () => {
+        return request(app.getHttpServer())
+          .put(`/profile/terms/unaccept`)
+          .expect('Content-Type', /json/)
+          .expect(401, {
+            statusCode: 401,
+            message: 'Unauthorized: missing required Authorization token',
+            error: 'Unauthorized',
+          });
+      });
+    });
+
     describe('PUT /profile/bookmarks/resources/:resourceId', () => {
       it('should be unauthorized', () => {
         return request(app.getHttpServer())
@@ -141,6 +167,62 @@ describe('User Profile (e2e)', () => {
           .expect('Content-Type', /json/)
           .expect(200, {
             id: userId,
+            termsAccepted: false,
+            bookmarkedResources: [],
+            resourceState: {},
+          });
+      });
+    });
+
+    describe('accepting and unaccepting terms', () => {
+      it('should update the profile accordingly', async () => {
+        const server = app.getHttpServer();
+        const authHeader = `Bearer ${authToken}`;
+
+        // Accept terms
+        await request(server)
+          .put('/profile/terms/accept')
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            termsAccepted: true,
+            bookmarkedResources: [],
+            resourceState: {},
+          });
+
+        // Should be idempotent
+        await request(server)
+          .put('/profile/terms/accept')
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            termsAccepted: true,
+            bookmarkedResources: [],
+            resourceState: {},
+          });
+
+        // Unaccept terms
+        await request(server)
+          .put('/profile/terms/unaccept')
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {},
           });
@@ -163,6 +245,7 @@ describe('User Profile (e2e)', () => {
           .expect('Content-Type', /json/)
           .expect(200, {
             id: userId,
+            termsAccepted: false,
             bookmarkedResources: ['12345'],
             resourceState: {},
           });
@@ -178,6 +261,7 @@ describe('User Profile (e2e)', () => {
           .expect('Content-Type', /json/)
           .expect(200, {
             id: userId,
+            termsAccepted: false,
             bookmarkedResources: ['12345', '67890'],
             resourceState: {},
           });
@@ -193,6 +277,7 @@ describe('User Profile (e2e)', () => {
           .expect('Content-Type', /json/)
           .expect(200, {
             id: userId,
+            termsAccepted: false,
             bookmarkedResources: ['12345', '67890'],
             resourceState: {},
           });
@@ -208,6 +293,7 @@ describe('User Profile (e2e)', () => {
           .expect('Content-Type', /json/)
           .expect(200, {
             id: userId,
+            termsAccepted: false,
             bookmarkedResources: ['67890'],
             resourceState: {},
           });
@@ -223,6 +309,7 @@ describe('User Profile (e2e)', () => {
           .expect('Content-Type', /json/)
           .expect(200, {
             id: userId,
+            termsAccepted: false,
             bookmarkedResources: ['67890'],
             resourceState: {},
           });
@@ -246,6 +333,7 @@ describe('User Profile (e2e)', () => {
           .expect('Content-Type', /json/)
           .expect(200, {
             id: userId,
+            termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {
               '12345': { a: 1 },
@@ -264,6 +352,7 @@ describe('User Profile (e2e)', () => {
           .expect('Content-Type', /json/)
           .expect(200, {
             id: userId,
+            termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {
               '12345': { a: 1 },
@@ -283,6 +372,7 @@ describe('User Profile (e2e)', () => {
           .expect('Content-Type', /json/)
           .expect(200, {
             id: userId,
+            termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {
               '12345': { a: 1 },
@@ -302,6 +392,7 @@ describe('User Profile (e2e)', () => {
           .expect('Content-Type', /json/)
           .expect(200, {
             id: userId,
+            termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {
               '12345': { a: 2 },
@@ -321,6 +412,7 @@ describe('User Profile (e2e)', () => {
           .expect('Content-Type', /json/)
           .expect(200, {
             id: userId,
+            termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {
               '12345': { a: 2 },
@@ -340,10 +432,124 @@ describe('User Profile (e2e)', () => {
           .expect('Content-Type', /json/)
           .expect(200, {
             id: userId,
+            termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {
               '12345': { aa: 1 },
               '67890': {},
+            },
+          });
+      });
+    });
+
+    describe('multiple different updates to the profile', () => {
+      it('should update the profile accordingly', async () => {
+        const server = app.getHttpServer();
+        const authHeader = `Bearer ${authToken}`;
+
+        // Accept terms
+        await request(server)
+          .put('/profile/terms/accept')
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            termsAccepted: true,
+            bookmarkedResources: [],
+            resourceState: {},
+          });
+
+        // Add a bookmark
+        await request(server)
+          .put('/profile/bookmarks/resources/12345')
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            termsAccepted: true,
+            bookmarkedResources: ['12345'],
+            resourceState: {},
+          });
+
+        // Update state for a resource
+        await request(server)
+          .put('/profile/state/resources/12345')
+          .send({ a: 1 })
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            termsAccepted: true,
+            bookmarkedResources: ['12345'],
+            resourceState: {
+              '12345': { a: 1 },
+            },
+          });
+
+        // Remove the bookmark
+        await request(server)
+          .delete('/profile/bookmarks/resources/12345')
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            termsAccepted: true,
+            bookmarkedResources: [],
+            resourceState: {
+              '12345': { a: 1 },
+            },
+          });
+
+        // Set state to empty object
+        await request(server)
+          .put('/profile/state/resources/12345')
+          .send({})
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            termsAccepted: true,
+            bookmarkedResources: [],
+            resourceState: {
+              '12345': {},
+            },
+          });
+
+        // Unaccept terms
+        await request(server)
+          .put('/profile/terms/unaccept')
+          .set('Authorization', authHeader)
+          .expect(204);
+        await request(server)
+          .get('/profile')
+          .set('Authorization', authHeader)
+          .expect('Content-Type', /json/)
+          .expect(200, {
+            id: userId,
+            termsAccepted: false,
+            bookmarkedResources: [],
+            resourceState: {
+              '12345': {},
             },
           });
       });

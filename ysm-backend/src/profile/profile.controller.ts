@@ -14,6 +14,18 @@ export class ProfileController {
     return this.profileService.get(currentUserId);
   }
 
+  @Put('terms/accept')
+  @HttpCode(204)
+  async acceptTerms(@CurrentUserId() currentUserId: string): Promise<void> {
+    return this.profileService.acceptTerms(currentUserId);
+  }
+
+  @Put('terms/unaccept')
+  @HttpCode(204)
+  async unacceptTerms(@CurrentUserId() currentUserId: string): Promise<void> {
+    return this.profileService.unacceptTerms(currentUserId);
+  }
+
   @Put('bookmarks/resources/:resourceId')
   @HttpCode(204)
   async addBookmarkForResource(
