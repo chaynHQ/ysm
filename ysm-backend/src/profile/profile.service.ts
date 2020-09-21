@@ -10,20 +10,43 @@ export class ProfileService {
   async get(id: string): Promise<Profile> {
     const doc = await this.profileDocRef(id).get();
 
+    let termsAccepted = false;
     let bookmarkedResources = [];
     let resourceState = {};
 
     if (doc.exists) {
       const data = doc.data();
+      termsAccepted = data.termsAccepted || false;
       bookmarkedResources = data.bookmarkedResources || [];
       resourceState = data.resourceState || {};
     }
 
     return {
       id,
+      termsAccepted,
       bookmarkedResources,
       resourceState,
     };
+  }
+
+  async acceptTerms(userId: string): Promise<void> {
+    const promise = this.profileDocRef(userId).set(
+      {
+        termsAccepted: true,
+      },
+      { merge: true },
+    );
+    return this.handleWrite(promise);
+  }
+
+  async unacceptTerms(userId: string): Promise<void> {
+    const promise = this.profileDocRef(userId).set(
+      {
+        termsAccepted: false,
+      },
+      { merge: true },
+    );
+    return this.handleWrite(promise);
   }
 
   async addBookmarkForResource(userId: string, resourceId: string): Promise<void> {
