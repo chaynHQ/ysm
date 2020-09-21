@@ -11,6 +11,8 @@ import firebase, { uiConfig } from '../config/firebase';
 
 import { setSettingsAuth, setUserSignIn } from '../store/actions';
 
+import { axiosPut, axiosGet } from '../store/axios';
+
 const useStyles = makeStyles({
   icon: {
     width: 60,
@@ -34,32 +36,47 @@ const SignUpWidget = ({
   useEffect(() => {
     if (Object.keys(user).length < 1) {
     // Initialize the FirebaseUI Widget using Firebase.
-      const firebaseAuth = firebaseui.auth.AuthUI;
-      const UI = firebaseAuth.getInstance() || new firebaseAuth(firebase.auth());
+      const FirebaseAuth = firebaseui.auth.AuthUI;
+      const UI = FirebaseAuth.getInstance() || new FirebaseAuth(firebase.auth());
       // The start method will wait until the DOM is loaded.
       UI.start('#firebaseui-auth-container', {
         ...uiConfig,
-        signInSuccessUrl: redirectUrl || '/your-journey',
         callbacks: {
-          signInSuccessWithAuthResult: (authResult) => {
+          signInSuccessWithAuthResult: async (authResult) => {
             const signedInUser = authResult.user;
             setUserSignInOnSuccess(signedInUser);
+
             if (authResult.additionalUserInfo.isNewUser || !signedInUser.emailVerified) {
-              user.sendEmailVerification();
+              signedInUser.sendEmailVerification();
               setShowVerificationStep(true);
+              setShowTermsStep(false);
               setUserSignInOnSuccess({});
-              return false;
+            } else if (signedInUser.emailVerified) {
+              const serverUser = await axiosGet('/profile',
+                {
+                  headers: {
+                    authorization: `Bearer ${signedInUser.xa}`,
+                  },
+                });
+
+              if (serverUser.termsAccepted) {
+                if (router.pathname === '/settings') {
+                  setSettingsAuthOnSuccess(true);
+                } else {
+                  router.push(redirectUrl || '/');
+                }
+              } if (!serverUser.termsAccepted) {
+                setShowTermsStep(true);
+                setShowVerificationStep(false);
+                setUserSignInOnSuccess({});
+              }
             }
-            if (router.pathname === '/settings') {
-              setSettingsAuthOnSuccess(true);
-              return false;
-            }
-            return true;
+            return false;
           },
         },
       });
     }
-  });
+  }, []);
 
   let signUpStage;
 
@@ -67,7 +84,16 @@ const SignUpWidget = ({
     signUpStage = (
       <>
         <Box className="mdl-card mdl-shadow--2dp firebaseui-container">
-          <form>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              axiosPut('/profile/terms/accept', { currentUserId: user.xa }, {
+                headers: {
+                  authorization: `Bearer ${user.xa}`,
+                },
+              });
+            }}
+          >
             <Box className="firebaseui-card-header">
               <h1 className="firebaseui-title">
                 Notifications and Privacy Policy
@@ -105,6 +131,7 @@ const SignUpWidget = ({
 
                 <label
                   className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+                  htmlFor="acceptCheckBox"
                 >
                   <input
                     id="acceptCheckBox"
@@ -157,14 +184,22 @@ const SignUpWidget = ({
                 Terms of Service.
                 <br />
                 <br />
-                Clicking on the button below will sign you out, and then pop open
-                a window where you can request deletion of your account.
+                Clicking on the button below will sign you out.
               </Box>
             </Box>
           </Box>
           <Box className="firebaseui-card-actions">
             <Box className="firebaseui-form-actions">
               <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  axiosPut('/profile/terms/unaccept', { currentUserId: user.xa }, {
+                    headers: {
+                      authorization: `Bearer ${user.xa}`,
+                    },
+
+                  });
+                }}
                 className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
               >
                 Reject
@@ -194,15 +229,16 @@ const SignUpWidget = ({
   } else if (Object.keys(user).length < 1) {
     signUpStage = (
       <>
-        <Typography>If you are signing up for the first time, you can give us any name like &quot;New Sunshine&quot;</Typography>
+        <Typography>
+          If you are signing up for the first time, you can give us any name like
+          &quot;New Sunshine&quot;
+        </Typography>
         <Typography>And if you’re signing in, welcome back queen!</Typography>
 
         {/* TODO: NEED TO ADD PRIVACY POLICY & T&C's Link */}
         <Box id="firebaseui-auth-container" />
       </>
     );
-  } else {
-    router.push('/');
   }
 
   return (

@@ -17,7 +17,7 @@ describe('Settings Page', () => {
   it('renders the signin box when settingsAuth is false', () => {
     wrapper = shallow(
       <Settings
-      store={mockStore({user: {settingsAuth: false}})}
+        store={mockStore({ user: { settingsAuth: false } })}
       />,
     ).dive().dive().dive();
 
@@ -27,7 +27,7 @@ describe('Settings Page', () => {
   it('renders with correct number of links', () => {
     wrapper = shallow(
       <Settings
-      store={mockStore({user: {settingsAuth: true}})}
+        store={mockStore({ user: { settingsAuth: true } })}
       />,
     ).dive().dive();
 
@@ -35,5 +35,4 @@ describe('Settings Page', () => {
     expect(wrapper.find(Button)).toHaveLength(3);
     expect(wrapper.find(Link)).toHaveLength(2);
   });
-
 });
