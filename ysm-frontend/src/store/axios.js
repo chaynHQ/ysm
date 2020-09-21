@@ -29,7 +29,18 @@ export const axiosGet = async (url, options) => {
     const response = await axiosInstance.get(url, options);
     return response.data;
   } catch (err) {
-    console.log('error');
+    console.log('error in axios GET');
+    console.log(err);
+    throw err;
+  }
+};
+
+export const axiosPut = async (url, data, options) => {
+  try {
+    const response = await axiosInstance.put(url, data, options);
+    return response.data;
+  } catch (err) {
+    console.log('error in axios PUT');
     console.log(err);
     throw err;
   }

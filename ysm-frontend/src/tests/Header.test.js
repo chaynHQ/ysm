@@ -24,7 +24,7 @@ describe('Header', () => {
         menuContainer={{}}
         store={store}
       />,
-    );
+    ).dive().dive();
   });
 
   it('renders with correct number of links', () => {
