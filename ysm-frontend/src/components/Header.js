@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Header = ({ menuContainer, user }) => {
+const Header = ({ menuContainer, isSignedin }) => {
   const classes = useStyles();
   const { height } = useWindowDimensions();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -128,14 +128,13 @@ const Header = ({ menuContainer, user }) => {
             </LinkUi>
           </Link>
 
-          <Link href="/settings" passHref>
+          <Link href={isSignedin ? '/settings' : '/sign-in'} passHref>
             <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
               <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                 <Icon>
                   <AccountCircle />
                 </Icon>
-                {Object.keys(user) > 0 ? 'My account' : 'Sign In'}
-
+                {isSignedin ? 'My account' : 'Sign Up'}
               </Box>
             </LinkUi>
           </Link>
@@ -157,14 +156,11 @@ const Header = ({ menuContainer, user }) => {
 
 Header.propTypes = {
   menuContainer: PropTypes.objectOf(PropTypes.any).isRequired,
-  user: PropTypes.objectOf(PropTypes.any),
+  isSignedin: PropTypes.bool.isRequired,
 };
 
-Header.defaultProps = {
-  user: {},
-};
 const mapStateToProps = (state) => ({
-  user: state.user,
+  isSignedin: Object.keys(state.user) > 0,
 });
 
 export default connect(mapStateToProps, null)(Header);
