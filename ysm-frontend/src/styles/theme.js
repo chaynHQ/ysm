@@ -5,28 +5,29 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const Theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#1D2445',
-      contrastText: '#FFF5F0',
+      light: '#F7E3D7',
+      main: '#F9C8B0',
+      dark: '#FD9E8C',
+      // #EFE9E5
+      // #FEF6F1
     },
     secondary: {
-      main: '#FFF5F0',
-      contrastText: '#1D2445',
+      light: '#717798',
+      main: '#3A4167',
+      dark: '#242A4A',
+      // #E2E3E6
     },
     error: {
-      main: '#EEB15C',
-      contrastText: '#1D2445',
-    },
-    warning: {
-      main: '#D44A6A',
-      contrastText: '#1D2445',
+      main: '#EC836F',
     },
     info: {
-      main: '#E2E3E6',
-      contrastText: '#1D2445',
+      main: '#A8B5F8',
     },
-    success: {
-      main: '#8BD4BE',
-      contrastText: '#1D2445',
+    warning: {
+      main: '#4D4D4D',
+      light: '#898989',
+      dark: '#000000',
+      // #CDCDCD
     },
   },
   typography: {
@@ -37,8 +38,9 @@ const Theme = createMuiTheme({
       fontWeight: 700,
     },
     h2: {
-      fontSize: 17,
+      fontSize: 16,
       fontWeight: 700,
+      color: '#3A4167',
     },
     body1: {
       fontSize: 16,
@@ -80,7 +82,7 @@ const Theme = createMuiTheme({
     MuiTypography: {
       root: {
         marginBottom: 16,
-        color: '#242A4A',
+        color: '#717798',
       },
       colorTextPrimary: {
         color: '#1D2445',
@@ -133,6 +135,19 @@ const Theme = createMuiTheme({
     MuiLink: {
       root: {
         fontSize: 15,
+      },
+    },
+    MuiInputBase: {
+      root: {
+        borderRadius: 6,
+      },
+      input: {
+        backgroundColor: '#FFF',
+      },
+    },
+    MuiOutlinedInput: {
+      notchedOutline: {
+        borderColor: '#DADDED',
       },
     },
   },

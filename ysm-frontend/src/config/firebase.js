@@ -5,7 +5,9 @@ const config = {
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_DOMAIN,
 };
 
-firebase.initializeApp(config);
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+}
 
 export default firebase;
 

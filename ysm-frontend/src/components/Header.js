@@ -126,6 +126,8 @@ const Header = ({ menuContainer }) => {
               </Box>
             </LinkUi>
           </Link>
+
+          {/* TODO: This needs to switch based on if someone is signed in or not */}
           <Link href="/settings" passHref>
             <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
               <Box display="flex" alignItems="flex-end" pl={2} py={1}>

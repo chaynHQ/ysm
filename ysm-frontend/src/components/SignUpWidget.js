@@ -205,7 +205,6 @@ const SignUpWidget = ({
     router.push('/');
   }
 
-
   return (
     <Box
       display="flex"

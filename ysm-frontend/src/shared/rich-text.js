@@ -5,6 +5,6 @@ const richTextResolver = new RichTextResolver();
 
 export default function richTextHelper(content, transform) {
   return ReactHtmlParser(
-    richTextResolver.render(content), { transform: (node) => transform(node) },
+    richTextResolver.render(content), { transform: transform ? (node) => transform(node) : null },
   );
 }
