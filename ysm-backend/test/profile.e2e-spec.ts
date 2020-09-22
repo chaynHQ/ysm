@@ -1,10 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { nanoid } from 'nanoid';
 import request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { FIREBASE } from './../src/firebase/firebase-factory';
 import { FirebaseServices, Firestore } from './../src/firebase/firebase.types';
+import { authUser } from './util/auth-user';
+import { deleteUser } from './util/delete-user';
 import { generateIdToken } from './util/generate-id-token';
 
 // IMPORTANT – this e2e…
@@ -13,19 +14,19 @@ import { generateIdToken } from './util/generate-id-token';
 // The Firebase project it will talk to is defined by credentials set in the test environment
 // (see the README for more details).
 
-async function cleanupProfileDoc(firestore: Firestore, userId: string) {
-  return firestore.doc(`profiles/${userId}`).delete();
+async function cleanupProfileDoc(firestore: Firestore, uid: string) {
+  return firestore.doc(`profiles/${uid}`).delete();
 }
 
 describe('User Profile (e2e)', () => {
   let app: INestApplication;
 
   let firebaseServices: FirebaseServices;
-  const userId = `e2e-profile-${nanoid(8)}`;
-  const userEmail = 'test@example.org';
   let authToken: string;
 
   afterAll(async () => {
+    await deleteUser(firebaseServices.auth, authUser.uid);
+
     await app.close();
   });
 
@@ -41,17 +42,16 @@ describe('User Profile (e2e)', () => {
 
     // Only set auth token once as we don't need it renewed on every test case.
     if (!authToken) {
-      authToken = await generateIdToken(firebaseServices.auth, userId, userEmail);
-      // console.log(`authToken = ${authToken}`);
+      authToken = await generateIdToken(firebaseServices.auth, authUser.uid, authUser.email);
     }
   });
 
   beforeEach(async () => {
-    await cleanupProfileDoc(firebaseServices.firestore, userId);
+    await cleanupProfileDoc(firebaseServices.firestore, authUser.uid);
   });
 
   afterAll(async () => {
-    await cleanupProfileDoc(firebaseServices.firestore, userId);
+    await cleanupProfileDoc(firebaseServices.firestore, authUser.uid);
   });
 
   describe('unauthenticated', () => {
@@ -142,7 +142,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', `Bearer ${authToken}`)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {},
@@ -165,7 +165,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: true,
             bookmarkedResources: [],
             resourceState: {},
@@ -181,7 +181,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: true,
             bookmarkedResources: [],
             resourceState: {},
@@ -197,7 +197,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {},
@@ -220,7 +220,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: ['12345'],
             resourceState: {},
@@ -236,7 +236,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: ['12345', '67890'],
             resourceState: {},
@@ -252,7 +252,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: ['12345', '67890'],
             resourceState: {},
@@ -268,7 +268,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: ['67890'],
             resourceState: {},
@@ -284,7 +284,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: ['67890'],
             resourceState: {},
@@ -308,7 +308,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {
@@ -327,7 +327,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {
@@ -347,7 +347,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {
@@ -367,7 +367,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {
@@ -387,7 +387,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {
@@ -407,7 +407,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {
@@ -433,7 +433,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: true,
             bookmarkedResources: [],
             resourceState: {},
@@ -449,7 +449,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: true,
             bookmarkedResources: ['12345'],
             resourceState: {},
@@ -466,7 +466,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: true,
             bookmarkedResources: ['12345'],
             resourceState: {
@@ -484,7 +484,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: true,
             bookmarkedResources: [],
             resourceState: {
@@ -503,7 +503,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: true,
             bookmarkedResources: [],
             resourceState: {
@@ -521,7 +521,7 @@ describe('User Profile (e2e)', () => {
           .set('Authorization', authHeader)
           .expect('Content-Type', /json/)
           .expect(200, {
-            id: userId,
+            id: authUser.uid,
             termsAccepted: false,
             bookmarkedResources: [],
             resourceState: {

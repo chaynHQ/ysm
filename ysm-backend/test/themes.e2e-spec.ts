@@ -2,7 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { when } from 'jest-when';
-import { nanoid } from 'nanoid';
 import StoryblokClient, { StoriesParams } from 'storyblok-js-client';
 import request from 'supertest';
 import { mocked } from 'ts-jest/utils';
@@ -11,6 +10,8 @@ import { FirebaseServices } from '../src/firebase/firebase.types';
 import { AppModule } from './../src/app.module';
 import { storyblokThemesListFixture } from './fixtures/storyblok';
 import { themesListFixture } from './fixtures/themes';
+import { authUser } from './util/auth-user';
+import { deleteUser } from './util/delete-user';
 import { generateIdToken } from './util/generate-id-token';
 import { mockConfigService } from './util/mock-config-service';
 
@@ -32,13 +33,13 @@ describe('Themes (e2e)', () => {
   let app: INestApplication;
 
   let firebaseServices: FirebaseServices;
-  const userId = `e2e-themes-${nanoid(8)}`;
-  const userEmail = 'test@example.org';
   let authToken: string;
 
   let configService: ConfigService;
 
   afterAll(async () => {
+    await deleteUser(firebaseServices.auth, authUser.uid);
+
     await app.close();
   });
 
@@ -61,8 +62,7 @@ describe('Themes (e2e)', () => {
 
     // Only set auth token once as we don't need it renewed on every test case.
     if (!authToken) {
-      authToken = await generateIdToken(firebaseServices.auth, userId, userEmail);
-      // console.log(`authToken = ${authToken}`);
+      authToken = await generateIdToken(firebaseServices.auth, authUser.uid, authUser.email);
     }
   });
 
@@ -115,7 +115,7 @@ describe('Themes (e2e)', () => {
 
       describe('with allowed auth', () => {
         beforeEach(() => {
-          mockConfigService(configService, 'contentEditorEmails', [userEmail]);
+          mockConfigService(configService, 'contentEditorEmails', [authUser.email]);
 
           const mockedStoryblokClientInstance = mockedStoryblokClient.mock.instances[0];
 
@@ -124,7 +124,7 @@ describe('Themes (e2e)', () => {
 
         it('should return the draft list of resources', () => {
           // Precondition:
-          expect(configService.get<string[]>('contentEditorEmails')).toEqual([userEmail]);
+          expect(configService.get<string[]>('contentEditorEmails')).toEqual([authUser.email]);
 
           return request(app.getHttpServer())
             .get('/themes')

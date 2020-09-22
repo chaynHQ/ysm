@@ -2,7 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { when } from 'jest-when';
-import { nanoid } from 'nanoid';
 import StoryblokClient, { StoriesParams } from 'storyblok-js-client';
 import request from 'supertest';
 import { mocked } from 'ts-jest/utils';
@@ -19,6 +18,8 @@ import {
   storyblokSingleResourceFixture,
   storyblokTagsFixture,
 } from './fixtures/storyblok';
+import { authUser } from './util/auth-user';
+import { deleteUser } from './util/delete-user';
 import { generateIdToken } from './util/generate-id-token';
 import { mockConfigService } from './util/mock-config-service';
 
@@ -86,8 +87,6 @@ describe('Resources (e2e)', () => {
   let app: INestApplication;
 
   let firebaseServices: FirebaseServices;
-  const userId = `e2e-resources-${nanoid(8)}`;
-  const userEmail = 'test@example.org';
   let authToken: string;
 
   const otherEmail = 'someoneelse@example.org';
@@ -95,6 +94,8 @@ describe('Resources (e2e)', () => {
   let configService: ConfigService;
 
   afterAll(async () => {
+    await deleteUser(firebaseServices.auth, authUser.uid);
+
     await app.close();
   });
 
@@ -117,8 +118,7 @@ describe('Resources (e2e)', () => {
 
     // Only set auth token once as we don't need it renewed on every test case.
     if (!authToken) {
-      authToken = await generateIdToken(firebaseServices.auth, userId, userEmail);
-      // console.log(`authToken = ${authToken}`);
+      authToken = await generateIdToken(firebaseServices.auth, authUser.uid, authUser.email);
     }
   });
 
@@ -295,7 +295,7 @@ describe('Resources (e2e)', () => {
 
         describe('when authed email is in list of allowed emails', () => {
           beforeEach(() => {
-            mockConfigService(configService, 'contentEditorEmails', [userEmail]);
+            mockConfigService(configService, 'contentEditorEmails', [authUser.email]);
 
             // NOTE: We don't test any actual content here – just that the expected API call is made to Storyblok via the StoryblokClient. Therefore we can just use the resources list fixture to represent the output.
             const mockedStoryblokClientInstance = mockedStoryblokClient.mock.instances[0];
@@ -312,7 +312,7 @@ describe('Resources (e2e)', () => {
 
           it('should return the draft list of resources', () => {
             // Precondition:
-            expect(configService.get<string[]>('contentEditorEmails')).toEqual([userEmail]);
+            expect(configService.get<string[]>('contentEditorEmails')).toEqual([authUser.email]);
 
             return request(app.getHttpServer())
               .get('/resources')
@@ -412,7 +412,7 @@ describe('Resources (e2e)', () => {
 
         describe('when authed email is in list of allowed emails', () => {
           beforeEach(() => {
-            mockConfigService(configService, 'contentEditorEmails', [userEmail]);
+            mockConfigService(configService, 'contentEditorEmails', [authUser.email]);
 
             const mockedStoryblokClientInstance = mockedStoryblokClient.mock.instances[0];
 
@@ -426,7 +426,7 @@ describe('Resources (e2e)', () => {
 
           it('should return the draft resource', () => {
             // Precondition:
-            expect(configService.get<string[]>('contentEditorEmails')).toEqual([userEmail]);
+            expect(configService.get<string[]>('contentEditorEmails')).toEqual([authUser.email]);
 
             return request(app.getHttpServer())
               .get('/resources/foo')
