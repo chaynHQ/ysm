@@ -3,7 +3,7 @@ import { FirebaseAuth } from '../../src/firebase/firebase.types';
 
 export async function generateIdToken(
   auth: FirebaseAuth,
-  userId: string,
+  uid: string,
   email: string,
 ): Promise<string> {
   const firebaseWebApiKey = process.env.FIREBASE_WEB_API_KEY;
@@ -14,7 +14,7 @@ export async function generateIdToken(
     );
   }
 
-  const customToken = await auth.createCustomToken(userId, { email, email_verified: true });
+  const customToken = await auth.createCustomToken(uid, { email, email_verified: true });
 
   const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=${firebaseWebApiKey}`;
   const result = await axios.post(url, {
