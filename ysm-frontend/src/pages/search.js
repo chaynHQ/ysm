@@ -57,6 +57,7 @@ const Search = () => {
         title={resource.title}
         subtitle={resource.subtitle}
         image={resource.image}
+        slug={resource.slug}
       />
     ));
   }

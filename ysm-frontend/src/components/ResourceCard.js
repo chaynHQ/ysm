@@ -25,13 +25,10 @@ const useStyles = makeStyles(() => ({
     height: '70px',
     width: '70px',
   },
-  button: {
-    fontSize: '12px',
-  },
 }));
 
 const ResourceCard = ({
-  title, subtitle, image,
+  title, subtitle, image, slug,
 }) => {
   const classes = useStyles();
 
@@ -39,7 +36,7 @@ const ResourceCard = ({
 
     <Card variant="outlined">
       {/* TODO: Make this the right link */}
-      <Link href="/your-journey">
+      <Link href={`/resource/${slug}`}>
         <CardActionArea component="a" className={classes.cardMedia}>
           <CardContent>
             <Box display="flex" flexDirection="row" justifyContent="space-between">
@@ -75,6 +72,7 @@ ResourceCard.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string,
   image: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+  slug: PropTypes.string.isRequired,
 };
 
 ResourceCard.defaultProps = {

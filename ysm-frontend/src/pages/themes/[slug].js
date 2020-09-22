@@ -57,7 +57,7 @@ const ThemePage = ({
     >
       <Grid container justify="space-between" direction="row">
         <Breadcrumbs aria-label="breadcrumb">
-          <Link href="/" passHref>
+          <Link href="/your-journey" passHref>
             <LinkUi component="a" color="inherit">
               <Box display="flex" alignItems="center">
                 <ArrowBack className={classes.icon} />
@@ -100,6 +100,7 @@ const ThemePage = ({
                 title={resource.title}
                 subtitle={resource.subtitle}
                 image={resource.image}
+                slug={resource.slug}
               />
             ))}
           </Box>
