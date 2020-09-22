@@ -11,9 +11,11 @@ export class PagesService {
     private pageSerialiserService: PageSerialiserService,
   ) {}
 
-  async get(slug: string): Promise<Page> {
+  async get(slug: string, previewMode: boolean): Promise<Page> {
     try {
-      const response = await this.storyblok.getStory(`pages/${slug}`, { version: 'draft' });
+      const response = await this.storyblok.getStory(`pages/${slug}`, {
+        version: previewMode ? 'draft' : 'published',
+      });
 
       return this.pageSerialiserService.serialise(response.data.story);
     } catch (e) {

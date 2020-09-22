@@ -1,4 +1,6 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { PreviewMode } from '../preview-mode/preview-mode.decorator';
+import { PreviewModeGuard } from '../preview-mode/preview-mode.guard';
 import { PagesService } from './pages.service';
 import { Page } from './pages.types';
 
@@ -7,7 +9,8 @@ export class PagesController {
   constructor(private pagesService: PagesService) {}
 
   @Get(':slug')
-  async get(@Param('slug') slug: string): Promise<Page> {
-    return this.pagesService.get(slug);
+  @UseGuards(PreviewModeGuard)
+  async get(@Param('slug') slug: string, @PreviewMode() previewMode: boolean): Promise<Page> {
+    return this.pagesService.get(slug, previewMode);
   }
 }

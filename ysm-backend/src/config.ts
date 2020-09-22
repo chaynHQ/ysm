@@ -10,6 +10,7 @@ export interface Config {
   firebase: {
     serviceAccount: Record<string, string>;
   };
+  contentEditorEmails: string[];
 }
 
 export default (): Config => ({
@@ -20,6 +21,7 @@ export default (): Config => ({
   firebase: {
     serviceAccount: getFirebaseServiceAccount(),
   },
+  contentEditorEmails: getContentEditorEmails(),
 });
 
 function getFirebaseServiceAccount() {
@@ -33,4 +35,21 @@ function getFirebaseServiceAccount() {
 
   const decoded = Buffer.from(data, 'base64').toString('utf-8');
   return JSON.parse(decoded);
+}
+
+function getContentEditorEmails() {
+  const value = process.env.CONTENT_EDITOR_EMAILS;
+
+  if (!value && process.env.NODE_ENV !== 'test') {
+    console.log(
+      `No content editor emails configured. If you'd like to specify some approved content editors (who can view draft content) then set the env var CONTENT_EDITOR_EMAILS with a comma separated list of email addresses.`,
+    );
+
+    return [];
+  }
+
+  return value
+    .split(',')
+    .map((v) => v.toLowerCase().trim())
+    .filter((v) => !!v);
 }

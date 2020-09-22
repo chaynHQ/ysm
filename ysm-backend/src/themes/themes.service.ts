@@ -11,10 +11,10 @@ export class ThemesService {
     private themeSerialiserService: ThemeSerialiserService,
   ) {}
 
-  async list(): Promise<Theme[]> {
+  async list(previewMode: boolean): Promise<Theme[]> {
     const params: StoriesParams = {
       starts_with: 'themes/',
-      version: 'draft',
+      version: previewMode ? 'draft' : 'published',
     };
 
     const response = await this.storyblok.getStories(params);
