@@ -18,9 +18,6 @@ import {
 import Link from 'next/link';
 
 const useStyles = makeStyles(() => ({
-  card: {
-    margin: 6,
-  },
   cardMedia: {
     height: '100%',
   },
@@ -40,8 +37,8 @@ const ResourceCard = ({
 
   return (
 
-    <Card className={classes.card}>
-      {/* TODO: MAke this the right link */}
+    <Card variant="outlined">
+      {/* TODO: Make this the right link */}
       <Link href="/your-journey">
         <CardActionArea component="a" className={classes.cardMedia}>
           <CardContent>
@@ -66,7 +63,7 @@ const ResourceCard = ({
                   : null}
               </Box>
             </Box>
-            <Button className={classes.button} color="secondary" variant="contained" disableElevation size="small" startIcon={<BookmarkBorder />}>Save for later</Button>
+            <Button className={classes.button} variant="outlined" disableElevation size="small" startIcon={<BookmarkBorder />}>Save for later</Button>
           </CardContent>
         </CardActionArea>
       </Link>

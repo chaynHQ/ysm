@@ -6,12 +6,15 @@ import {
   Typography,
   Box,
   Breadcrumbs,
+  Grid,
+  IconButton,
   Card,
+  CardActionArea,
   CardContent,
-  CardMedia,
+  Avatar,
 } from '@material-ui/core';
 import {
-  ArrowBack,
+  ArrowBack, Search,
 } from '@material-ui/icons';
 
 import Link from 'next/link';
@@ -28,18 +31,19 @@ const useStyles = makeStyles((theme) => ({
     width: 20,
     height: 20,
   },
-  cardContent: {
-    height: '100%',
-    display: 'flex',
-    boxShadow: 'inset 0 0 0 1000px rgba(36, 42, 74, 0.3)',
-  },
   link: {
     color: '#ffffff',
+  },
+  card: {
+    paddingRight: 16,
+    paddingLeft: 16,
+    paddingBottom: 0,
+    paddingTop: 16,
   },
 }));
 
 const ThemePage = ({
-  resources, theme,
+  resources, theme, themes,
 }) => {
   const classes = useStyles();
 
@@ -48,37 +52,39 @@ const ThemePage = ({
       display="flex"
       flexDirection="column"
       direction="column"
-      className={classes.container}
+      pt={3.5}
+      px={2}
     >
+      <Grid container justify="space-between" direction="row">
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link href="/" passHref>
+            <LinkUi component="a" color="inherit">
+              <Box display="flex" alignItems="center">
+                <ArrowBack className={classes.icon} />
+              </Box>
+            </LinkUi>
+          </Link>
+
+        </Breadcrumbs>
+        <Link href="/search" passHref>
+          <IconButton component="a">
+            <Search />
+          </IconButton>
+        </Link>
+      </Grid>
       { !theme
         ? <Typography>Theme does not exist</Typography>
         : (
-          <Card raised={false} square>
-            <CardMedia
-              className={classes.cardContent}
-              image={theme.image ? theme.image.filename : null}
+          <>
+            <Typography color="textSecondary" align="center" variant="h1">{theme.title}</Typography>
+            <Typography
+              color="textSecondary"
+              component="div"
+              align="center"
             >
-              <CardContent>
-                <Breadcrumbs aria-label="breadcrumb">
-                  <Link href="/your-journey">
-                    <LinkUi component="a" color="inherit">
-                      <Box display="flex" alignItems="center" className={classes.link}>
-                        <ArrowBack className={classes.icon} />
-                        Back to Your Journey
-                      </Box>
-                    </LinkUi>
-                  </Link>
-                </Breadcrumbs>
-                <Typography color="textSecondary" variant="h1">{theme.title}</Typography>
-                <Typography
-                  color="textSecondary"
-                  component="div"
-                >
-                  {richTextHelper(theme.description)}
-                </Typography>
-              </CardContent>
-            </CardMedia>
-          </Card>
+              {richTextHelper(theme.description)}
+            </Typography>
+          </>
         )}
 
       { resources.length < 1
@@ -98,6 +104,40 @@ const ThemePage = ({
             ))}
           </Box>
         )}
+
+      <Box>
+        <Typography variant="h2">Explore other themes </Typography>
+
+        {themes.map((t) => (
+          <Card variant="outlined" key={t.id}>
+            <Link href={t.slug}>
+              <CardActionArea component="a">
+                <CardContent className={classes.card}>
+                  <Box display="flex">
+                    {t.image
+                      ? (
+                        <Avatar
+                          variant="square"
+                          alt={t.image.alt}
+                          src={t.image.filename}
+                        />
+                      )
+                      : null}
+                    <Box width={1}>
+                      <Typography align="center">
+                        {t.title}
+                      </Typography>
+                    </Box>
+
+                  </Box>
+                </CardContent>
+              </CardActionArea>
+            </Link>
+          </Card>
+        ))}
+
+      </Box>
+
       <Breadcrumbs aria-label="breadcrumb">
         <Link href="/your-journey">
           <LinkUi component="a" color="inherit">
@@ -108,7 +148,8 @@ const ThemePage = ({
           </LinkUi>
         </Link>
       </Breadcrumbs>
-      <SignUpPrompt />
+
+      <SignUpPrompt url="/" />
 
     </Box>
   );
@@ -131,17 +172,36 @@ ThemePage.propTypes = {
       PropTypes.object,
     ]),
   ),
+  themes: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+        PropTypes.array,
+        PropTypes.bool,
+      ]),
+    ),
+  ),
 };
 
 ThemePage.defaultProps = {
   resources: [],
   theme: null,
+  themes: [],
 };
 
 export async function getServerSideProps({ params }) {
   const { slug } = params;
-  const themes = await axiosGet('themes');
-  const theme = themes.filter((t) => t.slug === slug)[0] || null;
+  const allThemes = await axiosGet('themes');
+
+  const splitThemes = allThemes.reduce((output, t) => {
+    if (t.slug === slug) output[0].push(t);
+    else output[1].push(t);
+    return output;
+  }, [[], []]);
+
+  const theme = splitThemes[0][0];
+  const themes = splitThemes[1];
 
   let resources = [];
   // TODO: Need a design for the case where there are no resources
@@ -152,7 +212,7 @@ export async function getServerSideProps({ params }) {
     );
   }
 
-  return { props: { theme, resources } };
+  return { props: { theme, resources, themes } };
 }
 
 export default ThemePage;

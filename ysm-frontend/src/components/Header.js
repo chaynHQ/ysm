@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import {
-  Menu, Search, Clear, Home, Info, MenuBook, AccountCircle, ExitToApp,
+  Menu, Clear, Home, Info, MenuBook, AccountCircle, ExitToApp,
 } from '@material-ui/icons';
 import Link from 'next/link';
 
@@ -56,14 +56,14 @@ const Header = ({ menuContainer, isSignedin }) => {
         />
         <Typography className={classes.title}>Your Story Matters</Typography>
       </Box>
-
+      {/* TODO: Will actually be breathing timer */}
       <Box p={2}>
-        <Link href="/search" passHref>
-          <IconButton component="a">
-            <Search />
-          </IconButton>
-        </Link>
+        <IconButton onClick={() => { setDrawerOpen(true); }}>
+          <Menu />
+        </IconButton>
+
       </Box>
+
       <Drawer
         open={drawerOpen}
         onClose={() => { setDrawerOpen(false); }}

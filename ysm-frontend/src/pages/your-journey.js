@@ -5,18 +5,21 @@ import {
   makeStyles,
   Typography,
   Box,
+  Grid,
   Breadcrumbs,
   Card,
   CardContent,
   CardMedia,
   CardActionArea,
+  IconButton,
 } from '@material-ui/core';
 import Link from 'next/link';
 import LinkUi from '@material-ui/core/Link';
 import {
-  ArrowBack,
+  ArrowBack, Search,
 } from '@material-ui/icons';
 import { axiosGet } from '../store/axios';
+import richTextHelper from '../shared/rich-text';
 
 import SignUpPrompt from '../components/SignUpPrompt';
 
@@ -27,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     height: 20,
   },
   card: {
-    height: 200,
+    height: 340,
     margin: 6,
   },
   cardMedia: {
@@ -36,9 +39,14 @@ const useStyles = makeStyles((theme) => ({
   cardContent: {
     height: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     display: 'flex',
-    boxShadow: 'inset 0 0 0 1000px rgba(36, 42, 74, 0.3)',
+    flexDirection: 'column',
+    paddingRight: 14,
+    paddingLeft: 14,
+    paddingBottom: 0,
+    paddingTop: 26,
+
   },
   iconContainer: {
     backgroundColor: '#EADED6',
@@ -55,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
 
 const YourJourney = ({ themes }) => {
   const classes = useStyles();
-
   return (
     <Box
       display="flex"
@@ -64,40 +71,58 @@ const YourJourney = ({ themes }) => {
       pt={3.5}
       px={2}
     >
+      <Grid container justify="space-between" direction="row">
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link href="/your-journey" passHref>
+            <LinkUi component="a" color="inherit">
+              <Box display="flex" alignItems="center">
+                <ArrowBack className={classes.icon} />
+              </Box>
+            </LinkUi>
+          </Link>
 
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link href="/" passHref>
-          <LinkUi component="a" color="inherit">
-            <Box display="flex" alignItems="center">
-              <ArrowBack className={classes.icon} />
-              Back to Home
-            </Box>
-          </LinkUi>
+        </Breadcrumbs>
+        <Link href="/search" passHref>
+          <IconButton component="a">
+            <Search />
+          </IconButton>
         </Link>
+      </Grid>
 
-      </Breadcrumbs>
-      <Typography variant="h1">Your Journey</Typography>
-      <Typography>
+      <Typography variant="h1" align="center" color="secondary.dark">Your Journey</Typography>
+      <Typography align="center">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ac
       </Typography>
       {themes.map((theme) => (
-        <Card key={theme.id} className={classes.card}>
+        <Card
+          key={theme.id}
+          className={classes.card}
+          variant="outlined"
+        >
           <Link href={`/themes/${theme.slug}`}>
-            <CardActionArea className={classes.cardMedia} component="a">
-              <CardMedia
-                className={classes.cardContent}
-                image="/homepage-illustration.png"
-              >
-                <CardContent>
-                  <Typography variant="h2" className={classes.title} color="textSecondary">
-                    {theme.title}
-                  </Typography>
-                </CardContent>
-              </CardMedia>
+            <CardActionArea component="a">
+              <CardContent className={classes.cardContent}>
+                <Typography variant="h2" align="center" color="textSecondary">
+                  {theme.title}
+                </Typography>
+                <Typography align="center">
+                  {richTextHelper(theme.description)}
+                </Typography>
+                {theme.image
+                  ? (
+                    <CardMedia
+                      height="200"
+                      component="img"
+                      image={theme.image.filename}
+                    />
+                  ) : null }
+              </CardContent>
+
             </CardActionArea>
           </Link>
         </Card>
       ))}
+
       <Breadcrumbs aria-label="breadcrumb">
         <Link href="/" passHref>
           <LinkUi component="a" color="inherit">
