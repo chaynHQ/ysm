@@ -21,6 +21,9 @@ const Footer = () => {
       case '/your-journey':
         setSelected('/your-journey');
         break;
+      case '/saved':
+        setSelected('/saved');
+        break;
       default:
         setSelected('');
     }

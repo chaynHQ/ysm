@@ -50,7 +50,6 @@ export function fetchBookmarks() {
             authorization: `Bearer ${getState().user.xa}`,
           },
         });
-      dispatch(setBookmarks(response.data));
     } catch (err) {
       console.log('error');
       console.log(err);
