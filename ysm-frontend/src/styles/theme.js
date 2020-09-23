@@ -8,7 +8,7 @@ const Theme = createMuiTheme({
       light: '#FEF6F1', // main background
       main: '#F7E3D7',
       dark: '#F9C8B0',
-      contrastText: '#717798', // Main Text
+      contrastText: '#242A4A', // Main Text
       // #EFE9E5
       // #FD9E8C
     },
@@ -62,8 +62,10 @@ const Theme = createMuiTheme({
   overrides: {
     MuiButton: {
       root: {
-        paddingLeft: 30,
-        paddingRight: 30,
+        paddingLeft: 40,
+        paddingRight: 40,
+        paddingTop: 15,
+        paddingBottom: 15,
         borderRadius: 6,
       },
       label: {
@@ -73,7 +75,6 @@ const Theme = createMuiTheme({
     },
     MuiIconButton: {
       root: {
-        color: '#000000',
         width: 20,
         height: 20,
         fontSize: 22,
@@ -88,7 +89,7 @@ const Theme = createMuiTheme({
         color: '#717798', // Body Text
       },
       colorTextSecondary: {
-        color: '#242A4A', // Header Text
+        color: '#242A4A', // Header Text & some body text
       },
     },
     MuiBottomNavigation: {

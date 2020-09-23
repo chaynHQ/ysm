@@ -80,7 +80,7 @@ const SignUpPrompt = ({ isSignedin }) => {
               Sign up to Your Story Matters and privately save resources for later.
             </Typography>
             <Link href="/signin">
-              <Button variant="contained" color="primary" component="a" to="/signin">
+              <Button variant="contained" disableElevation color="primary" component="a" to="/signin">
                 Create Your Account
               </Button>
             </Link>
@@ -92,10 +92,9 @@ const SignUpPrompt = ({ isSignedin }) => {
               <Link href="/">
                 <LinkUi
                   component="a"
-                  className={classes.link}
+                  color="textPrimary"
                   underline="always"
                   to="/"
-                  variant="subtitle1"
                   align="center"
                 >
                   Read our Terms & Privacy Policy

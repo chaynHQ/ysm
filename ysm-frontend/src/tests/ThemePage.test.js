@@ -1,7 +1,7 @@
 import { createShallow } from '@material-ui/core/test-utils';
 import React from 'react';
 import Link from '@material-ui/core/Link';
-import { Card } from '@material-ui/core';
+import { Card, Typography } from '@material-ui/core';
 import ThemePage from '../pages/themes/[slug]';
 import themes from './fixtures/themes';
 import allResources from './fixtures/resources';
@@ -35,7 +35,6 @@ describe('ThemePage', () => {
     ).dive();
 
     expect(wrapper.find(Link)).toHaveLength(2);
-    expect(wrapper.find(Card)).toHaveLength(1);
     expect(wrapper.find(ResourceCard)).toHaveLength(2);
   });
 
@@ -47,7 +46,7 @@ describe('ThemePage', () => {
     expect(wrapper.find(Card)).toHaveLength(0);
   });
 
-  it('displays only the header card when theme exists, but resources does not', () => {
+  it('displays only the header when theme exists, but resources does not', () => {
     const theme = themes[0];
     wrapper = shallow(
       <ThemePage
@@ -56,6 +55,6 @@ describe('ThemePage', () => {
       />,
     ).dive();
 
-    expect(wrapper.find(Card)).toHaveLength(1);
+    expect(wrapper.find(Typography)).toHaveLength(4);
   });
 });

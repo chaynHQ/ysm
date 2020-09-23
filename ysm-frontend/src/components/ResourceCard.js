@@ -35,13 +35,12 @@ const ResourceCard = ({
   return (
 
     <Card variant="outlined">
-      {/* TODO: Make this the right link */}
       <Link href={`/resource/${slug}`}>
         <CardActionArea component="a" className={classes.cardMedia}>
           <CardContent>
             <Box display="flex" flexDirection="row" justifyContent="space-between">
               <Box>
-                <Typography variant="h2" className={classes.title}>
+                <Typography variant="h2">
                   {title}
                 </Typography>
                 <Typography>

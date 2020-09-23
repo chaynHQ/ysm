@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import {
-  Menu, Clear, Home, Info, MenuBook, AccountCircle, ExitToApp,
+  Menu, Clear, Home, Info, MenuBook, AccountCircle, ExitToApp, NaturePeople,
 } from '@material-ui/icons';
 import Link from 'next/link';
 
@@ -59,7 +59,7 @@ const Header = ({ menuContainer, isSignedin }) => {
       {/* TODO: Will actually be breathing timer */}
       <Box p={2}>
         <IconButton onClick={() => { setDrawerOpen(true); }}>
-          <Menu />
+          <NaturePeople />
         </IconButton>
 
       </Box>
