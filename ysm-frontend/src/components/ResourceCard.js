@@ -18,9 +18,6 @@ import {
 import Link from 'next/link';
 
 const useStyles = makeStyles(() => ({
-  card: {
-    margin: 6,
-  },
   cardMedia: {
     height: '100%',
   },
@@ -28,26 +25,22 @@ const useStyles = makeStyles(() => ({
     height: '70px',
     width: '70px',
   },
-  button: {
-    fontSize: '12px',
-  },
 }));
 
 const ResourceCard = ({
-  title, subtitle, image,
+  title, subtitle, image, slug,
 }) => {
   const classes = useStyles();
 
   return (
 
-    <Card className={classes.card}>
-      {/* TODO: MAke this the right link */}
-      <Link href="/your-journey">
+    <Card variant="outlined">
+      <Link href={`/resource/${slug}`}>
         <CardActionArea component="a" className={classes.cardMedia}>
           <CardContent>
             <Box display="flex" flexDirection="row" justifyContent="space-between">
               <Box>
-                <Typography variant="h2" className={classes.title}>
+                <Typography variant="h2">
                   {title}
                 </Typography>
                 <Typography>
@@ -66,7 +59,7 @@ const ResourceCard = ({
                   : null}
               </Box>
             </Box>
-            <Button className={classes.button} color="secondary" variant="contained" disableElevation size="small" startIcon={<BookmarkBorder />}>Save for later</Button>
+            <Button className={classes.button} variant="outlined" disableElevation size="small" startIcon={<BookmarkBorder />}>Save for later</Button>
           </CardContent>
         </CardActionArea>
       </Link>
@@ -78,6 +71,7 @@ ResourceCard.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string,
   image: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+  slug: PropTypes.string.isRequired,
 };
 
 ResourceCard.defaultProps = {

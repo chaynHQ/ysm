@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import {
   makeStyles,
@@ -44,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUpPrompt = () => {
+const SignUpPrompt = ({ isSignedin }) => {
   const classes = useStyles();
   const { width } = useWindowDimensions();
 
@@ -57,51 +59,61 @@ const SignUpPrompt = () => {
       pt={3.5}
       px={2}
     >
-      <Box
-        display="flex"
-        flexDirection="column"
-        height={1}
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Box width={width * 0.3} height={width * 0.3} p={4}>
-          <Avatar
-            className={classes.iconContainer}
-            alt="Illustration of woman and a butterfly"
-            src="/resource-illustration.png"
-          />
-        </Box>
-        <Typography variant="h1" align="center">Sign up, it’s free</Typography>
-        <Typography align="center">
-          Sign up to Your Story Matters and privately save resources for later.
-        </Typography>
-        <Link href="/signin">
-          <Button variant="contained" color="primary" component="a" to="/signin">
-            Create Your Account
-          </Button>
-        </Link>
-        <Box width="50%" display="flex" flexDirection="column" alignItems="center">
-          <Typography align="center" variant="subtitle1" className={classes.linkSubtitle}>
-            Your privacy will be protected.
-          </Typography>
-          {/* TODO: NEED PROPER LINK HERE */}
-          <Link href="/">
-            <LinkUi
-              component="a"
-              className={classes.link}
-              underline="always"
-              to="/"
-              variant="subtitle1"
-              align="center"
-            >
-              Read our Terms & Privacy Policy
-            </LinkUi>
-          </Link>
-        </Box>
-      </Box>
+      {isSignedin ? null
+        : (
+          <Box
+            display="flex"
+            flexDirection="column"
+            height={1}
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Box width={width * 0.3} height={width * 0.3} p={4}>
+              <Avatar
+                className={classes.iconContainer}
+                alt="Illustration of woman and a butterfly"
+                src="/resource-illustration.png"
+              />
+            </Box>
+            <Typography variant="h1" align="center">Sign up, it’s free</Typography>
+            <Typography align="center">
+              Sign up to Your Story Matters and privately save resources for later.
+            </Typography>
+            <Link href="/signin">
+              <Button variant="contained" disableElevation color="primary" component="a" to="/signin">
+                Create Your Account
+              </Button>
+            </Link>
+            <Box width="50%" display="flex" flexDirection="column" alignItems="center">
+              <Typography align="center" variant="subtitle1" className={classes.linkSubtitle}>
+                Your privacy will be protected.
+              </Typography>
+              {/* TODO: NEED PROPER LINK HERE */}
+              <Link href="/">
+                <LinkUi
+                  component="a"
+                  color="textPrimary"
+                  underline="always"
+                  to="/"
+                  align="center"
+                >
+                  Read our Terms & Privacy Policy
+                </LinkUi>
+              </Link>
+            </Box>
+          </Box>
+        ) }
 
     </Box>
   );
 };
 
-export default SignUpPrompt;
+SignUpPrompt.propTypes = {
+  isSignedin: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  isSignedin: state.user ? Object.keys(state.user) > 0 : false,
+});
+
+export default connect(mapStateToProps, null)(SignUpPrompt);

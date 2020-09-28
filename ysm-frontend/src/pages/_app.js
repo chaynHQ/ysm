@@ -19,7 +19,6 @@ import Footer from '../components/Footer';
 const useStyles = makeStyles({
   screenContainer: {
     height: '100vh',
-    backgroundColor: '#FFF5F0',
     margin: 0,
   },
 
@@ -52,6 +51,7 @@ function App({ Component, pageProps }) {
           <CssBaseline />
 
           <Box
+            bgcolor="primary.light"
             className={classes.screenContainer}
             display="flex"
             alignItems="center"

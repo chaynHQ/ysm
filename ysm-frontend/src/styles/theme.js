@@ -5,16 +5,17 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const Theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#F7E3D7',
-      main: '#F9C8B0',
-      dark: '#FD9E8C',
+      light: '#FEF6F1', // main background
+      main: '#F7E3D7',
+      dark: '#F9C8B0',
+      contrastText: '#242A4A', // Main Text
       // #EFE9E5
-      // #FEF6F1
+      // #FD9E8C
     },
     secondary: {
       light: '#717798',
       main: '#3A4167',
-      dark: '#242A4A',
+      dark: '#242A4A', // header text
       // #E2E3E6
     },
     error: {
@@ -36,33 +37,35 @@ const Theme = createMuiTheme({
     h1: {
       fontSize: 22,
       fontWeight: 700,
+      color: '#242A4A',
     },
     h2: {
       fontSize: 16,
       fontWeight: 700,
-      color: '#3A4167',
+      color: '#242A4A',
     },
     body1: {
       fontSize: 16,
+      color: '#717798',
     },
     body2: {
       fontSize: 16,
-      color: '#FFF5F0',
+      color: '#717798',
     },
     subtitle1: {
       fontSize: 14,
-      color: '#717798',
     },
     subtitle2: {
       fontSize: 14,
-      color: '#FFF5F0',
     },
   },
   overrides: {
     MuiButton: {
       root: {
-        paddingLeft: 30,
-        paddingRight: 30,
+        paddingLeft: 40,
+        paddingRight: 40,
+        paddingTop: 15,
+        paddingBottom: 15,
         borderRadius: 6,
       },
       label: {
@@ -72,7 +75,6 @@ const Theme = createMuiTheme({
     },
     MuiIconButton: {
       root: {
-        color: '#000000',
         width: 20,
         height: 20,
         fontSize: 22,
@@ -82,13 +84,12 @@ const Theme = createMuiTheme({
     MuiTypography: {
       root: {
         marginBottom: 16,
-        color: '#717798',
       },
       colorTextPrimary: {
-        color: '#1D2445',
+        color: '#717798', // Body Text
       },
       colorTextSecondary: {
-        color: '#FFFFFF',
+        color: '#242A4A', // Header Text & some body text
       },
     },
     MuiBottomNavigation: {
@@ -150,7 +151,18 @@ const Theme = createMuiTheme({
         borderColor: '#DADDED',
       },
     },
+    MuiPaper: {
+      root: {
+        backgroundColor: 'inherit',
+      },
+    },
+    MuiCard: {
+      root: {
+        margin: 6,
+      },
+    },
   },
+
 });
 
 export default Theme;
