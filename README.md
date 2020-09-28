@@ -8,7 +8,6 @@ A companion app for survivors of sexual assault.
 
 This repo consists of:
 
-- [`ysm-backend`](ysm-backend/README.md)
 - [`ysm-frontend`](ysm-frontend/README.md)
 
 Each folder is designed to be opened in a code editor on it's own – i.e. all config, linting rules, scripts, etc. are self contained for that folder only, and nothing at the top level (root folder). VSCode workspace settings per folder are provided for things like linting and code pretty-fying.
