@@ -1,7 +1,7 @@
 import { HYDRATE } from 'next-redux-wrapper';
 import { combineReducers } from 'redux';
 import {
-  SET_BOOKMARKS, SET_RESOURCES, SET_SETTINGS_AUTH, SET_THEMES, SET_USER_SIGNIN,
+  SET_BOOKMARKS, SET_RESOURCE, SET_RESOURCES, SET_SETTINGS_AUTH, SET_THEMES, SET_USER_SIGNIN,
 } from './types';
 
 const themes = (state = [], action) => {
@@ -28,6 +28,9 @@ const resources = (state = [], action) => {
         } return 1;
       });
       return action.data;
+    case SET_RESOURCE:
+      state.push(action.data);
+      return state;
     default:
       return state;
   }
