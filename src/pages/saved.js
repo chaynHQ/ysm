@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
 import {
-  Box, makeStyles, Button, Typography, Card, CardContent, CardActionArea, Breadcrumbs
+  Box, Card, CardActionArea, CardContent, makeStyles, Typography,
 } from '@material-ui/core';
-
-import {
-  AccountCircle,
-} from '@material-ui/icons';
-
-import Link from 'next/link';
 import LinkUi from '@material-ui/core/Link';
-
-import { axiosGet } from '../store/axios';
+import { AccountCircle } from '@material-ui/icons';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import ResourceCard from '../components/ResourceCard';
 import { setSettingsAuth, setUserSignIn } from '../store/actions';
+import { axiosGet } from '../store/axios';
 
 const useStyles = makeStyles(() => ({
   link: {
@@ -24,27 +19,29 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#ffffff',
   },
 }));
-const Saved = ({ isSignedin, user }) => {
+const Saved = ({
+  isSignedin, user, setUserSignInOnClick, setSettingsAuthOnError,
+}) => {
   const classes = useStyles();
-  const [bookmarks, setBookmarks]= useState([]);
-  
-  useEffect(()=>{
+  const [bookmarks, setBookmarks] = useState([]);
+
+  useEffect(() => {
     const getUser = async () => {
       const userData = await axiosGet('/profile',
-      {
-        headers: {
-          authorization: `Bearer ${user.xa}`,
-        },
-      });
-      setBookmarks(userData.bookmarkedResources)
-      return userData.bookmarkedResources
+        {
+          headers: {
+            authorization: `Bearer ${user.xa}`,
+          },
+        });
+      setBookmarks(userData.bookmarkedResources);
+      return userData.bookmarkedResources;
+    };
+    if (isSignedin) {
+      getUser();
     }
-    if(isSignedin){
-      getUser()
-    }
-  }, [])
+  }, []);
 
-  console.log(bookmarks)
+  console.log(bookmarks);
 
   return (
     <Box
@@ -54,55 +51,85 @@ const Saved = ({ isSignedin, user }) => {
       alignItems="center"
     >
 
-    { isSignedin ?
-    <Box display="flex" justifyContent="space-between" width={1} px={3} pt={2} bgcolor="#FFEAE3">
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link href="/" passHref>
-          <LinkUi component="a" color="textSecondary">
-            <Box display="flex" alignItems="center">
-              <AccountCircle className={classes.icon} />
-              My Account
-            </Box>
-          </LinkUi>
-        </Link>
-      </Breadcrumbs>
-      <Typography
-        color="textSecondary"
-        onClick={() => {
-          setUserSignInOnClick({});
-          setSettingsAuthOnError(false);
-        }}
-      >
-        Log out
-      </Typography>
-    </Box>
+      { isSignedin
+        ? (
+          <Box display="flex" justifyContent="space-between" width={1} px={3} pt={2} bgcolor="#FFEAE3">
+            <Link href="/settings" passHref>
+              <LinkUi component="a" color="textSecondary">
+                <Box display="flex" alignItems="center">
+                  <AccountCircle className={classes.icon} />
+                  My Account
+                </Box>
+              </LinkUi>
+            </Link>
+            <LinkUi
+              color="textSecondary"
+              onClick={() => {
+                setUserSignInOnClick({});
+                setSettingsAuthOnError(false);
+              }}
+            >
+              Log out
+            </LinkUi>
+          </Box>
+        )
         : null }
-        <Box       pt={3.5}
-      px={2}>
-        <Typography variant="h1">Saved for Later</Typography>
-        <Typography>{ !isSignedin || bookmarks.length < 1 ? "You haven't saved any resources yet!": null } </Typography>
-        { isSignedin && bookmarks.length < 1 ? <Typography>Start exploring: <Link href={`/your-journey`}><LinkUi                       underline="always"
-                      className={classes.link}>Your Journey</LinkUi></Link></Typography>: null } 
+      <Box
+        pt={3.5}
+        px={2}
+      >
+        <Typography variant="h1" align="center">Saved for Later</Typography>
+        <Typography>
+          { isSignedin && bookmarks.length < 1 ? "You haven't saved any resources yet!" : null }
+          {' '}
+        </Typography>
 
-        {!isSignedin ?
-        <Card variant="outlined" className={classes.card}>
-          <Link href={`/sign-in`}>
-            <CardActionArea component="a" >
-              <CardContent>
-                  <Typography color="textSecondary">
-                    <LinkUi
-                      underline="always"
-                      className={classes.link}
-                    >
-                      Sign up for an account or Sign in 
-                    </LinkUi> to start saving resources.
-                  </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Link>
-        </Card>
-        :null }
-      
+        { isSignedin && bookmarks.length < 1 ? (
+          <Typography>
+            Start exploring:
+            <Link href="/your-journey">
+              <LinkUi
+                underline="always"
+                className={classes.link}
+              >
+                Your Journey
+              </LinkUi>
+            </Link>
+          </Typography>
+        )
+          : bookmarks.map((resource) => (
+            <ResourceCard
+              id={resource.id}
+              title={resource.title}
+              subtitle={resource.subtitle}
+              image={resource.image}
+              slug={resource.slug}
+            />
+          )) }
+
+        {!isSignedin
+          ? (
+            <Card variant="outlined" className={classes.card}>
+              <Link href="/sign-in">
+                <CardActionArea component="a">
+                  <CardContent>
+                    <Typography color="textSecondary">
+                      <LinkUi
+                        underline="always"
+                        className={classes.link}
+                      >
+                        Sign up for an account or Sign in
+                      </LinkUi>
+                      {' '}
+                      to start saving resources.
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Link>
+            </Card>
+          )
+          : null }
+
       </Box>
 
     </Box>
@@ -110,15 +137,11 @@ const Saved = ({ isSignedin, user }) => {
 };
 
 Saved.propTypes = {
-  fetchBookmarksOnClick: PropTypes.func.isRequired,
   setSettingsAuthOnError: PropTypes.func.isRequired,
   setUserSignInOnClick: PropTypes.func.isRequired,
-  isSignedin: PropTypes.bool.isRequired,
+  isSignedin: PropTypes.bool.isRequired.isRequired,
+  user: PropTypes.objectOf(PropTypes.any).isRequired,
 };
-
-//   Saved.defaultProps = {
-
-//   };
 
 const mapStateToProps = (state) => ({
   user: state.user,
@@ -126,7 +149,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchBookmarksOnRender: () => dispatch(fetchBookmarks()),
   setSettingsAuthOnError: (bool) => dispatch(setSettingsAuth(bool)),
   setUserSignInOnClick: (user) => dispatch(setUserSignIn(user)),
 

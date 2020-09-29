@@ -1,12 +1,10 @@
 import mockAxios from 'axios';
-
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as types from '../store/types';
 import * as actions from '../store/actions';
-
-import themes from './fixtures/themes';
+import * as types from '../store/types';
 import resources from './fixtures/resources';
+import themes from './fixtures/themes';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -65,24 +63,6 @@ describe('async actions', () => {
     mockAxios.get.mockImplementationOnce(() => Promise.resolve({ data: resources }));
 
     return store.dispatch(actions.fetchResources()).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-
-  it('creates SET_BOOKMARKS when fetching bookmarks has been done', async () => {
-    const bookmarks = {
-
-    };
-
-    const expectedActions = [{
-      type: types.SET_BOOKMARKS,
-      data: bookmarks,
-    },
-    ];
-    const store = mockStore({ user: {} });
-    mockAxios.get.mockImplementationOnce(() => Promise.resolve({ data: {} }));
-
-    return store.dispatch(actions.fetchBookmarks()).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

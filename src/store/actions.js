@@ -1,6 +1,6 @@
 import axiosInstance from './axios';
 import {
-  SET_THEMES, SET_RESOURCES, SET_USER_SIGNIN, SET_SETTINGS_AUTH, SET_BOOKMARKS,
+  SET_BOOKMARKS, SET_RESOURCES, SET_SETTINGS_AUTH, SET_THEMES, SET_USER_SIGNIN,
 } from './types';
 
 /*
@@ -38,21 +38,6 @@ export function fetchResources() {
     } catch (err) {
       console.log(err);
       console.log('error');
-    }
-  };
-}
-export function fetchBookmarks() {
-  return async (dispatch, getState) => {
-    try {
-      const response = await axiosInstance.get('profile',
-        {
-          headers: {
-            authorization: `Bearer ${getState().user.xa}`,
-          },
-        });
-    } catch (err) {
-      console.log('error');
-      console.log(err);
     }
   };
 }
