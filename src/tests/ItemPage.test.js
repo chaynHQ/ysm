@@ -6,7 +6,6 @@ import Item from '../components/Item';
 
 import resources from './fixtures/resources';
 
-
 Router.useRouter = jest.fn();
 Router.useRouter.mockImplementation(() => ({ route: '/resource/', query: { resource_slug: 'resource_slug' } }));
 
