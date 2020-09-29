@@ -23,6 +23,9 @@
     "node": "12.x",
     "yarn": "1.x"
   },
+  "cacheDirectories": [
+    ".next/cache"
+  ],
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
