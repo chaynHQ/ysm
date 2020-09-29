@@ -104,6 +104,7 @@ const Saved = ({
               subtitle={resource.subtitle}
               image={resource.image}
               slug={resource.slug}
+              savingRedirectUrl="/saved"
             />
           )) }
 

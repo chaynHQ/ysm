@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
-
 import {
-  Box, TextField, makeStyles, Typography, InputAdornment, Button, LinearProgress,
+  Box, Button, InputAdornment, LinearProgress, makeStyles, TextField, Typography,
 } from '@material-ui/core';
 import { Search as SearchIcon } from '@material-ui/icons';
-
-import { axiosGet } from '../store/axios';
+import React, { useState } from 'react';
 import ResourceCard from '../components/ResourceCard';
+import { axiosGet } from '../store/axios';
 
 const useStyles = makeStyles({
   icon: {
@@ -58,6 +56,7 @@ const Search = () => {
         subtitle={resource.subtitle}
         image={resource.image}
         slug={resource.slug}
+        savingRedirectUrl="/search"
       />
     ));
   }

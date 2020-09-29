@@ -1,29 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import {
-  makeStyles,
-  Typography,
-  Box,
+  Avatar, Box,
   Breadcrumbs,
-  Grid,
-  IconButton,
+
   Card,
   CardActionArea,
-  CardContent,
-  Avatar,
+  CardContent, Grid,
+  IconButton, makeStyles,
+  Typography,
 } from '@material-ui/core';
-import {
-  ArrowBack, Search,
-} from '@material-ui/icons';
-
-import Link from 'next/link';
 import LinkUi from '@material-ui/core/Link';
-import { axiosGet } from '../../store/axios';
-import richTextHelper from '../../shared/rich-text';
-
-import SignUpPrompt from '../../components/SignUpPrompt';
+import { ArrowBack, Search } from '@material-ui/icons';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React from 'react';
 import ResourceCard from '../../components/ResourceCard';
+import SignUpPrompt from '../../components/SignUpPrompt';
+import richTextHelper from '../../shared/rich-text';
+import { axiosGet } from '../../store/axios';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -101,6 +94,7 @@ const ThemePage = ({
                 subtitle={resource.subtitle}
                 image={resource.image}
                 slug={resource.slug}
+                savingRedirectUrl={`/themes/${theme.slug}`}
               />
             ))}
           </Box>
@@ -207,8 +201,8 @@ export async function getServerSideProps({ params }) {
   let resources = [];
   // TODO: Need a design for the case where there are no resources
   if (theme) {
-    const allResourses = await axiosGet('resources');
-    resources = allResourses.filter(
+    const allResources = await axiosGet('resources');
+    resources = allResources.filter(
       (resource) => resource.themes && resource.themes.includes(theme.id),
     );
   }
