@@ -10,7 +10,6 @@ import {
 import LinkUi from '@material-ui/core/Link';
 import { ArrowForward, BookmarkBorder } from '@material-ui/icons';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import richTextHelper from '../shared/rich-text';
@@ -27,7 +26,6 @@ const useStyles = makeStyles(() => ({
 
 const ResourceContents = ({ resource }) => {
   const classes = useStyles();
-  const router = useRouter();
 
   return (
     <Box
@@ -48,12 +46,12 @@ const ResourceContents = ({ resource }) => {
         <Typography variant="h2" align="left">Start Exploring</Typography>
         <ol>
           {resource.content.map((item) => (
-            <LinkUi color="textSecondary" key={item.id} underline="always" href={`/resource/${router.query.resourceSlug}/item/${item.id}`}><li>{item.title}</li></LinkUi>
+            <LinkUi color="textSecondary" key={item.id} underline="always" href={`/resource/${resource.slug}/item/${item.id}`}><li>{item.title}</li></LinkUi>
           ))}
         </ol>
 
         <Card variant="outlined" className={classes.card}>
-          <Link href={`/resource/${router.query.resourceSlug}/item/${resource.content[0].id}`}>
+          <Link href={`/resource/${resource.slug}/item/${resource.content[0].id}`}>
             <CardActionArea component="a" className={classes.cardMedia}>
               <CardContent>
                 <Grid container justify="space-between" direction="row">
