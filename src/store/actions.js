@@ -1,6 +1,6 @@
 import axiosInstance from './axios';
 import {
-  SET_THEMES, SET_RESOURCES, SET_USER_SIGNIN, SET_SETTINGS_AUTH, SET_BOOKMARKS,
+  SET_BOOKMARKS, SET_RESOURCE, SET_RESOURCES, SET_SETTINGS_AUTH, SET_THEMES, SET_USER_SIGNIN,
 } from './types';
 
 /*
@@ -12,6 +12,10 @@ export const setThemes = (data) => ({
 });
 export const setResources = (data) => ({
   type: SET_RESOURCES,
+  data,
+});
+export const setResource = (data) => ({
+  type: SET_RESOURCE,
   data,
 });
 export const setBookmarks = (data) => ({
@@ -29,15 +33,29 @@ export const setSettingsAuth = (data) => ({
   data,
 });
 
-// TODO: Remove these from here and include in their own folder
 export function fetchResources() {
   return async (dispatch) => {
     try {
       const response = await axiosInstance.get('resources');
       dispatch(setResources(response.data));
+      return response.data;
     } catch (err) {
       console.log(err);
       console.log('error');
+      throw err;
+    }
+  };
+}
+export function fetchResource(slug) {
+  return async (dispatch) => {
+    try {
+      const response = await axiosInstance.get(`resources/${slug}`);
+      dispatch(setResource(response.data));
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      console.log('error');
+      throw err;
     }
   };
 }
@@ -51,9 +69,11 @@ export function fetchBookmarks() {
           },
         });
       dispatch(setBookmarks(response.data));
+      return response.data;
     } catch (err) {
       console.log('error');
       console.log(err);
+      throw err;
     }
   };
 }
@@ -62,10 +82,12 @@ export function fetchThemes() {
   return async (dispatch) => {
     try {
       const response = await axiosInstance.get('themes');
-      dispatch(setThemes(response.data));
+      await dispatch(setThemes(response.data));
+      return response.data;
     } catch (err) {
       console.log('error');
       console.log(err);
+      throw err;
     }
   };
 }

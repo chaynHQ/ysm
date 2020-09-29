@@ -1,14 +1,22 @@
-import { createShallow } from '@material-ui/core/test-utils';
-import React from 'react';
+import { Typography } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
-import { Card, Typography } from '@material-ui/core';
-import ThemePage from '../pages/themes/[slug]';
-import themes from './fixtures/themes';
-import allResources from './fixtures/resources';
+import { createShallow } from '@material-ui/core/test-utils';
+import * as Router from 'next/router';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import ResourceCard from '../components/ResourceCard';
+import ThemePage from '../pages/themes/[slug]';
 import richTextHelper from '../shared/rich-text';
+import resources from './fixtures/resources';
+import themes from './fixtures/themes';
 
 jest.mock('../shared/rich-text');
+
+Router.useRouter = jest.fn();
+jest.mock('react-redux', () => ({
+  ...jest.requireActual('react-redux'),
+  useSelector: jest.fn(),
+}));
 
 describe('ThemePage', () => {
   let wrapper;
@@ -19,19 +27,14 @@ describe('ThemePage', () => {
     shallow = createShallow();
     richTextHelper.mockReturnValueOnce({
     });
+    useSelector.mockImplementation((callback) => callback({ themes, resources }));
   });
 
   it('renders with correct number of links when theme and resources are both not empty', () => {
-    const theme = themes[0];
-    const resources = allResources.filter(
-      (resource) => resource.themes && resource.themes.includes(theme.id),
-    );
+    Router.useRouter.mockImplementation(() => ({ route: '/theme/', query: { slug: 'theme-with-resources' } }));
 
     wrapper = shallow(
-      <ThemePage
-        theme={theme}
-        resources={resources}
-      />,
+      <ThemePage />,
     ).dive();
 
     expect(wrapper.find(Link)).toHaveLength(2);
@@ -39,20 +42,19 @@ describe('ThemePage', () => {
   });
 
   it('displays no cards when theme does not exist', () => {
+    Router.useRouter.mockImplementation(() => ({ route: '/theme/', query: { slug: 'theme-that-doesnt-exist' } }));
+
     wrapper = shallow(
       <ThemePage />,
     ).dive();
-
-    expect(wrapper.find(Card)).toHaveLength(0);
+    expect(wrapper.find(ResourceCard)).toHaveLength(0);
   });
 
   it('displays only the header when theme exists, but resources does not', () => {
-    const theme = themes[0];
-    wrapper = shallow(
-      <ThemePage
-        theme={theme}
+    Router.useRouter.mockImplementation(() => ({ route: '/theme/', query: { slug: 'theme-without-resources' } }));
 
-      />,
+    wrapper = shallow(
+      <ThemePage />,
     ).dive();
 
     expect(wrapper.find(Typography)).toHaveLength(4);

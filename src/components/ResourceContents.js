@@ -1,22 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useRouter } from 'next/router';
-
 import {
-  makeStyles,
-  Typography,
   Box,
   Button,
   Card,
   CardActionArea,
   CardContent,
-  Grid,
+  Grid, makeStyles,
+  Typography,
 } from '@material-ui/core';
-import {
-  BookmarkBorder, ArrowForward,
-} from '@material-ui/icons';
-import Link from 'next/link';
 import LinkUi from '@material-ui/core/Link';
+import { ArrowForward, BookmarkBorder } from '@material-ui/icons';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React from 'react';
 import richTextHelper from '../shared/rich-text';
 import SignUpPrompt from './SignUpPrompt';
 
@@ -31,7 +26,7 @@ const useStyles = makeStyles(() => ({
 
 const ResourceContents = ({ resource }) => {
   const classes = useStyles();
-  const router = useRouter();
+
   return (
     <Box
       display="flex"
@@ -51,12 +46,12 @@ const ResourceContents = ({ resource }) => {
         <Typography variant="h2" align="left">Start Exploring</Typography>
         <ol>
           {resource.content.map((item) => (
-            <LinkUi color="textSecondary" key={item.id} underline="always" href={`/resource/${router.query.slug}/item/${item.id}`}><li>{item.title}</li></LinkUi>
+            <LinkUi color="textSecondary" key={item.id} underline="always" href={`/resource/${resource.slug}/item/${item.id}`}><li>{item.title}</li></LinkUi>
           ))}
         </ol>
 
         <Card variant="outlined" className={classes.card}>
-          <Link href={`/resource/${router.query.resourceSlug}/item/${resource.content[0].id}`}>
+          <Link href={`/resource/${resource.slug}/item/${resource.content[0].id}`}>
             <CardActionArea component="a" className={classes.cardMedia}>
               <CardContent>
                 <Grid container justify="space-between" direction="row">
