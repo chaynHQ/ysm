@@ -1,27 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import {
-  makeStyles,
-  Typography,
   Box,
-  Grid,
   Breadcrumbs,
   Card,
-  CardContent,
-  CardMedia,
   CardActionArea,
-  IconButton,
-} from '@material-ui/core';
-import Link from 'next/link';
-import LinkUi from '@material-ui/core/Link';
-import {
-  ArrowBack, Search,
-} from '@material-ui/icons';
-import { axiosGet } from '../store/axios';
-import richTextHelper from '../shared/rich-text';
+  CardContent,
 
+  CardMedia,
+
+  Grid,
+  IconButton,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
+import LinkUi from '@material-ui/core/Link';
+import { ArrowBack, Search } from '@material-ui/icons';
+import Link from 'next/link';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import SignUpPrompt from '../components/SignUpPrompt';
+import richTextHelper from '../shared/rich-text';
+import { fetchThemes } from '../store/actions';
+import { wrapper } from '../store/store';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -61,8 +60,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const YourJourney = ({ themes }) => {
+const YourJourney = () => {
   const classes = useStyles();
+  const themes = useSelector((state) => state.themes);
   return (
     <Box
       display="flex"
@@ -140,25 +140,12 @@ const YourJourney = ({ themes }) => {
   );
 };
 
-export async function getServerSideProps() {
-  const themes = await axiosGet('themes');
-
-  return { props: { themes } };
-}
-
-YourJourney.propTypes = {
-  themes: PropTypes.arrayOf(
-    PropTypes.objectOf(
-      PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.object,
-      ]),
-    ),
-  ),
-};
-
-YourJourney.defaultProps = {
-  themes: [],
-};
+export const getServerSideProps = wrapper.getServerSideProps(
+  async ({ store }) => {
+    if (store.getState().themes.length < 1) {
+      await store.dispatch(fetchThemes());
+    }
+  },
+);
 
 export default YourJourney;

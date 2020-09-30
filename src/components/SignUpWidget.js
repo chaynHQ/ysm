@@ -41,13 +41,13 @@ const SignUpWidget = ({
         callbacks: {
           signInSuccessWithAuthResult: async (authResult) => {
             const signedInUser = authResult.user;
-            setUserSignInOnSuccess(signedInUser);
+            await setUserSignInOnSuccess(signedInUser);
 
             if (authResult.additionalUserInfo.isNewUser || !signedInUser.emailVerified) {
               signedInUser.sendEmailVerification();
               setShowVerificationStep(true);
               setShowTermsStep(false);
-              setUserSignInOnSuccess({});
+              await setUserSignInOnSuccess({});
             } else if (signedInUser.emailVerified) {
               const serverUser = await axiosGet('/profile',
                 {
@@ -60,12 +60,13 @@ const SignUpWidget = ({
                 if (router.pathname === '/settings') {
                   setSettingsAuthOnSuccess(true);
                 } else {
+                  console.log('ABOUT TO REDIRECT');
                   router.push(redirectUrl || '/');
                 }
               } if (!serverUser.termsAccepted) {
                 setShowTermsStep(true);
                 setShowVerificationStep(false);
-                setUserSignInOnSuccess({});
+                await setUserSignInOnSuccess({});
               }
             }
             return false;

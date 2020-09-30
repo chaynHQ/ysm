@@ -1,27 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import {
-  makeStyles,
-  Typography,
   Box,
   Breadcrumbs,
-  Grid,
+
   Card,
   CardActionArea,
-  CardContent,
+  CardContent, Grid, makeStyles,
+  Typography,
 } from '@material-ui/core';
-import {
-  ArrowBack, ArrowForward,
-} from '@material-ui/icons';
-
-import Link from 'next/link';
 import LinkUi from '@material-ui/core/Link';
+import { ArrowBack, ArrowForward } from '@material-ui/icons';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-
-import { axiosGet } from '../../../../store/axios';
-
+import React from 'react';
+import { useSelector } from 'react-redux';
 import Item from '../../../../components/Item';
+import { fetchResource } from '../../../../store/actions';
+import { wrapper } from '../../../../store/store';
 
 const useStyles = makeStyles(() => ({
   link: {
@@ -39,11 +33,14 @@ const useStyles = makeStyles(() => ({
 
 }));
 
-const ItemPage = ({
-  item, resourceTitle, resourceSlug, nextItem,
-}) => {
+const ItemPage = () => {
   const classes = useStyles();
   const router = useRouter();
+  const { resourceSlug, itemId } = router.query;
+
+  const resource = useSelector((state) => state.resources.find((r) => r.slug === resourceSlug));
+  const item = resource.content.find((i) => i.id === itemId);
+  const nextItem = resource.content[resource.content.findIndex((i) => i.id === itemId) + 1];
 
   return (
     <Box
@@ -64,7 +61,7 @@ const ItemPage = ({
                 underline="always"
                 className={classes.link}
               >
-                {resourceTitle}
+                {resource.title}
               </LinkUi>
             </Typography>
           </Box>
@@ -75,7 +72,7 @@ const ItemPage = ({
       <Item item={item} />
 
       <Card variant="outlined" className={classes.card}>
-        <Link href={nextItem ? `/resource/${router.query.resource_slug}/item/${nextItem.id}` : `/resource/${router.query.resource_slug}`}>
+        <Link href={nextItem ? `/resource/${router.query.resourceSlug}/item/${nextItem.id}` : `/resource/${router.query.resourceSlug}`}>
           <CardActionArea component="a" className={classes.cardMedia}>
             <CardContent>
               <Grid container justify="space-between" direction="row">
@@ -86,7 +83,7 @@ const ItemPage = ({
                     underline="always"
                     className={classes.link}
                   >
-                    {nextItem ? nextItem.title : resourceTitle}
+                    {nextItem ? nextItem.title : resource.title}
                   </LinkUi>
                 </Typography>
                 <ArrowForward />
@@ -100,30 +97,13 @@ const ItemPage = ({
   );
 };
 
-ItemPage.propTypes = {
-  item: PropTypes.objectOf(PropTypes.any).isRequired,
-  resourceTitle: PropTypes.string.isRequired,
-  resourceSlug: PropTypes.string.isRequired,
-  nextItem: PropTypes.objectOf(PropTypes.any),
+export const getServerSideProps = wrapper.getServerSideProps(
 
-};
-
-ItemPage.defaultProps = {
-  nextItem: null,
-};
-
-export async function getServerSideProps({ params }) {
-  const { resourceSlug, itemId } = params;
-  const resource = await axiosGet(`resources/${resourceSlug}`);
-
-  const item = resource.content.find((i) => i.id === itemId);
-  const nextItem = resource.content[resource.content.findIndex((i) => i.id === itemId) + 1];
-
-  return {
-    props: {
-      item, resourceTitle: resource.title, resourceSlug, nextItem: nextItem || null,
-    },
-  };
-}
+  async ({ store, params }) => {
+    if (store.getState().resources.filter((r) => r.slug === params.resourceSlug).length < 1) {
+      await store.dispatch(fetchResource(params.resourceSlug));
+    }
+  },
+);
 
 export default ItemPage;

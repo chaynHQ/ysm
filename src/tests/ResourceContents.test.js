@@ -1,8 +1,7 @@
 import { createShallow } from '@material-ui/core/test-utils';
-import React from 'react';
 import * as Router from 'next/router';
+import React from 'react';
 import ResourceContents from '../components/ResourceContents';
-
 import resources from './fixtures/resources';
 
 Router.useRouter = jest.fn();

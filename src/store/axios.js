@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-// TODO: Need to check for existance of VERCEL_URL
+// TODO: Need to check for existance of BASE_URL
 
 let baseUrl = '';
-if (process && process.env.VERCEL_URL) {
-  baseUrl = process.env.VERCEL_URL;
+if (process && process.env.BASE_URL) {
+  baseUrl = process.env.BASE_URL;
   if (!/^https?:\/\//i.test(baseUrl)) {
     baseUrl = `https://${baseUrl}`;
   }

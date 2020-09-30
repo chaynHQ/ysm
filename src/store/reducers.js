@@ -1,23 +1,15 @@
+import { HYDRATE } from 'next-redux-wrapper';
 import { combineReducers } from 'redux';
-import richTextHelper from '../shared/rich-text';
 import {
-  SET_BOOKMARKS, SET_RESOURCES, SET_SETTINGS_AUTH, SET_THEMES, SET_USER_SIGNIN,
+  SET_BOOKMARKS, SET_RESOURCE, SET_RESOURCES, SET_SETTINGS_AUTH, SET_THEMES, SET_USER_SIGNIN,
 } from './types';
 
 const themes = (state = [], action) => {
-  const newState = [];
   switch (action.type) {
+    case HYDRATE:
+      return action.payload.themes;
     case SET_THEMES:
-      action.data.forEach((data) => {
-        newState.push({
-          description: richTextHelper(data.description),
-          id: data.id,
-          slug: data.slug,
-          title: data.title,
-          image: data.image,
-        });
-      });
-      return newState;
+      return action.data;
     default:
       return state;
   }
@@ -25,6 +17,8 @@ const themes = (state = [], action) => {
 
 const resources = (state = [], action) => {
   switch (action.type) {
+    case HYDRATE:
+      return action.payload.resources;
     case SET_RESOURCES:
       action.data.sort((a, b) => {
         if (a.featured === b.featured) {
@@ -34,6 +28,9 @@ const resources = (state = [], action) => {
         } return 1;
       });
       return action.data;
+    case SET_RESOURCE:
+      state.push(action.data);
+      return state;
     default:
       return state;
   }
@@ -41,6 +38,8 @@ const resources = (state = [], action) => {
 
 const user = (state = {}, action) => {
   switch (action.type) {
+    case HYDRATE:
+      return action.payload.user;
     case SET_USER_SIGNIN:
       return { ...action.data };
     case SET_SETTINGS_AUTH:

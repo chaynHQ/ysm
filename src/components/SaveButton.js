@@ -8,7 +8,9 @@ import { axiosPut } from '../store/axios';
 
 const SaveButton = ({ resourceSlug, redirectUrl }) => {
   const router = useRouter();
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state);
+
+  console.log(user);
 
   return (
     <Button
