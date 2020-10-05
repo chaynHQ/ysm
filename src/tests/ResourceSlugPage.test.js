@@ -1,19 +1,10 @@
 import { createShallow } from '@material-ui/core/test-utils';
-import * as Router from 'next/router';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import Item from '../components/Item';
 import ResourceContents from '../components/ResourceContents';
 import ResourcePage from '../pages/resource/[resourceSlug]';
 import resources from './fixtures/resources';
 import themes from './fixtures/themes';
-
-Router.useRouter = jest.fn();
-
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useSelector: jest.fn(),
-}));
 
 describe('Resource Slug Page', () => {
   let wrapper;
@@ -21,23 +12,24 @@ describe('Resource Slug Page', () => {
 
   beforeEach(() => {
     shallow = createShallow();
-    useSelector.mockImplementation((callback) => callback({ themes, resources }));
   });
 
   it('renders when there is one resource', () => {
-    Router.useRouter.mockImplementation(() => ({ route: '/resource/', query: { resourceSlug: 'mental-health-services' } }));
+    const resource = resources.find((r) => r.slug === 'mental-health-services');
+    const theme = themes[0];
 
     wrapper = shallow(
-      <ResourcePage />,
+      <ResourcePage resource={resource} theme={theme} />,
     );
     expect(wrapper.find(Item)).toHaveLength(1);
   });
 
   it('renders when there are two resources', () => {
-    Router.useRouter.mockImplementation(() => ({ route: '/resource/', query: { resourceSlug: 'mental-health-services-no-image' } }));
+    const resource = resources.find((r) => r.slug === 'mental-health-services-no-image');
+    const theme = themes[0];
 
     wrapper = shallow(
-      <ResourcePage />,
+      <ResourcePage resource={resource} theme={theme} />,
     );
 
     expect(wrapper.find(ResourceContents)).toHaveLength(1);

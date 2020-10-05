@@ -40,8 +40,9 @@ export function fetchResources() {
       dispatch(setResources(response.data));
       return response.data;
     } catch (err) {
+      console.log('error fetching resources');
       console.log(err);
-      console.log('error');
+
       throw err;
     }
   };
@@ -53,8 +54,9 @@ export function fetchResource(slug) {
       dispatch(setResource(response.data));
       return response.data;
     } catch (err) {
+      console.log('error fetching single resource');
       console.log(err);
-      console.log('error');
+
       throw err;
     }
   };
@@ -67,7 +69,7 @@ export function fetchThemes() {
       await dispatch(setThemes(response.data));
       return response.data;
     } catch (err) {
-      console.log('error');
+      console.log('error fetching themes');
       console.log(err);
       throw err;
     }

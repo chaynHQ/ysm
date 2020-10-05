@@ -8,10 +8,9 @@ import { axiosPut } from '../store/axios';
 
 const SaveButton = ({ resourceSlug, redirectUrl }) => {
   const router = useRouter();
-  const user = useSelector((state) => state);
+  const user = useSelector((state) => state.user);
 
-  console.log(user);
-
+  // TODO: Unsaving
   return (
     <Button
       variant="outlined"
@@ -20,7 +19,7 @@ const SaveButton = ({ resourceSlug, redirectUrl }) => {
       startIcon={<BookmarkBorder />}
       onClick={() => {
         if (user.xa) {
-          axiosPut(`/bookmarks/resources/${resourceSlug}`, { currentUserId: user.xa, resourceId: resourceSlug }, {
+          axiosPut(`/profile/bookmarks/resources/${resourceSlug}`, { currentUserId: user.xa, resourceId: resourceSlug }, {
             headers: {
               authorization: `Bearer ${user.xa}`,
             },
@@ -44,4 +43,5 @@ SaveButton.propTypes = {
 SaveButton.defaultProps = {
   redirectUrl: null,
 };
+
 export default SaveButton;

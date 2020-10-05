@@ -11,9 +11,8 @@ import {
 import LinkUi from '@material-ui/core/Link';
 import { ArrowBack, Search } from '@material-ui/icons';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import ResourceCard from '../../components/ResourceCard';
 import SignUpPrompt from '../../components/SignUpPrompt';
 import richTextHelper from '../../shared/rich-text';
@@ -37,20 +36,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ThemePage = () => {
+const ThemePage = ({ themes, theme, resources }) => {
   const classes = useStyles();
-  const router = useRouter();
-  const { slug } = router.query;
-
-  const theme = useSelector((state) => state.themes.find((t) => t.slug === slug));
-  const themes = useSelector((state) => state.themes.filter((t) => t.slug !== slug));
-
-  let resources = [];
-  if (theme) {
-    resources = useSelector((state) => state.resources.filter(
-      (resource) => resource.themes && resource.themes.includes(theme.id),
-    ));
-  }
 
   return (
     <Box
@@ -117,7 +104,7 @@ const ThemePage = () => {
 
         {themes.map((t) => (
           <Card variant="outlined" key={t.id}>
-            <Link href={t.slug}>
+            <Link href="/theme/slug" as={`/theme/${t.slug}`}>
               <CardActionArea component="a">
                 <CardContent className={classes.card}>
                   <Box display="flex">
@@ -163,14 +150,65 @@ const ThemePage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  async ({ store }) => {
+  async ({ store, params }) => {
+    let allThemes = null;
+    let resources = null;
     if (store.getState().themes.length < 1) {
       await store.dispatch(fetchThemes());
+    } else {
+      allThemes = store.getState().themes;
     }
     if (store.getState().resources.length < 1) {
       await store.dispatch(fetchResources());
+    } else {
+      resources = store.getState().resources;
     }
+
+    const theme = allThemes.find((t) => t.slug === params.slug);
+
+    return {
+      props: {
+        theme,
+        themes: allThemes.filter((t) => t.slug !== params.slug),
+        resources: resources.filter(
+          (resource) => resource.themes && resource.themes.includes(theme.id),
+        ),
+      },
+    };
   },
 );
+
+ThemePage.propTypes = {
+  themes: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+      ]),
+    ),
+  ),
+  resources: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+        PropTypes.array,
+        PropTypes.bool,
+      ]),
+    ),
+  ),
+  theme: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+    ]),
+  ),
+};
+
+ThemePage.defaultProps = {
+  themes: [],
+  theme: null,
+  resources: [],
+};
 
 export default ThemePage;

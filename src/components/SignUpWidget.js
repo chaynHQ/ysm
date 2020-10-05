@@ -60,7 +60,6 @@ const SignUpWidget = ({
                 if (router.pathname === '/settings') {
                   setSettingsAuthOnSuccess(true);
                 } else {
-                  console.log('ABOUT TO REDIRECT');
                   router.push(redirectUrl || '/');
                 }
               } if (!serverUser.termsAccepted) {

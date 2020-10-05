@@ -16,9 +16,16 @@ const themes = (state = [], action) => {
 };
 
 const resources = (state = [], action) => {
+  let nextState = [];
   switch (action.type) {
     case HYDRATE:
-      return action.payload.resources;
+      nextState = action.payload.resources;
+      state.forEach((resource) => {
+        if (nextState.filter((r) => r.id === resource.id).length === 0) {
+          nextState.push(resource);
+        }
+      });
+      return nextState;
     case SET_RESOURCES:
       action.data.sort((a, b) => {
         if (a.featured === b.featured) {
@@ -37,9 +44,17 @@ const resources = (state = [], action) => {
 };
 
 const user = (state = {}, action) => {
+  let nextState = {};
   switch (action.type) {
     case HYDRATE:
-      return action.payload.user;
+      nextState = {
+        ...state, // use previous state
+        ...action.payload.user, // apply delta from hydration
+      };
+      if (state.user) {
+        nextState.user = state.user;
+      } // preserve user value on client side navigation
+      return nextState;
     case SET_USER_SIGNIN:
       return { ...action.data };
     case SET_SETTINGS_AUTH:

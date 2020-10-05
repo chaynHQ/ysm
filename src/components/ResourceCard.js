@@ -28,7 +28,7 @@ const ResourceCard = ({
   return (
 
     <Card variant="outlined">
-      <Link href={`/resource/${slug}`}>
+      <Link href="/resource/[resourceSlug]" as={`/resource/${slug}`}>
         <CardActionArea component="a" className={classes.cardMedia}>
           <CardContent>
             <Box display="flex" flexDirection="row" justifyContent="space-between">

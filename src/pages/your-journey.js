@@ -15,8 +15,8 @@ import {
 import LinkUi from '@material-ui/core/Link';
 import { ArrowBack, Search } from '@material-ui/icons';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import SignUpPrompt from '../components/SignUpPrompt';
 import richTextHelper from '../shared/rich-text';
 import { fetchThemes } from '../store/actions';
@@ -60,9 +60,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const YourJourney = () => {
+const YourJourney = ({ themes }) => {
   const classes = useStyles();
-  const themes = useSelector((state) => state.themes);
   return (
     <Box
       display="flex"
@@ -73,7 +72,7 @@ const YourJourney = () => {
     >
       <Grid container justify="space-between" direction="row">
         <Breadcrumbs aria-label="breadcrumb">
-          <Link href="/your-journey" passHref>
+          <Link href="/" passHref>
             <LinkUi component="a" color="inherit">
               <Box display="flex" alignItems="center">
                 <ArrowBack className={classes.icon} />
@@ -99,7 +98,7 @@ const YourJourney = () => {
           className={classes.card}
           variant="outlined"
         >
-          <Link href={`/themes/${theme.slug}`}>
+          <Link href="/themes/[slug]" as={`/themes/${theme.slug}`}>
             <CardActionArea component="a">
               <CardContent className={classes.cardContent}>
                 <Typography variant="h2" align="center" color="textSecondary">
@@ -142,10 +141,29 @@ const YourJourney = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async ({ store }) => {
+    let themes = null;
     if (store.getState().themes.length < 1) {
-      await store.dispatch(fetchThemes());
+      themes = await store.dispatch(fetchThemes());
+    } else {
+      themes = store.getState().themes;
     }
+    return { props: { themes } };
   },
 );
+
+YourJourney.propTypes = {
+  themes: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+      ]),
+    ),
+  ),
+};
+
+YourJourney.defaultProps = {
+  themes: [],
+};
 
 export default YourJourney;

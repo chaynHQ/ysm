@@ -14,15 +14,15 @@ const axiosInstance = axios.create({
   baseURL: `${baseUrl}/api/`,
 });
 
-axiosInstance.interceptors.request.use((request) => {
-  console.log('Starting Request', request);
-  return request;
-});
+// axiosInstance.interceptors.request.use((request) => {
+//   console.log('Starting Request', request);
+//   return request;
+// });
 
-axiosInstance.interceptors.response.use((response) => {
-  console.log('Response:', response);
-  return response;
-});
+// axiosInstance.interceptors.response.use((response) => {
+//   console.log('Response:', response);
+//   return response;
+// });
 
 export const axiosGet = async (url, options) => {
   try {
@@ -36,8 +36,10 @@ export const axiosGet = async (url, options) => {
 };
 
 export const axiosPut = async (url, data, options) => {
+  console.log('IN AXIOS PuT');
   try {
     const response = await axiosInstance.put(url, data, options);
+    console.log(response);
     return response.data;
   } catch (err) {
     console.log('error in axios PUT');

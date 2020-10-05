@@ -41,8 +41,6 @@ const Saved = ({
     }
   }, []);
 
-  console.log(bookmarks);
-
   return (
     <Box
       display="flex"
@@ -147,6 +145,7 @@ Saved.propTypes = {
 const mapStateToProps = (state) => ({
   user: state.user,
   isSignedin: state.user ? Object.keys(state.user).length > 0 : false,
+  state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
