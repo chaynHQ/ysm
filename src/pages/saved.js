@@ -6,9 +6,9 @@ import { AccountCircle } from '@material-ui/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import ResourceCard from '../components/ResourceCard';
-import { setSettingsAuth, setUserSignIn } from '../store/actions';
+import { fetchResource, setSettingsAuth, setUserSignIn } from '../store/actions';
 import { axiosGet } from '../store/axios';
 
 const useStyles = makeStyles(() => ({
@@ -24,8 +24,21 @@ const Saved = ({
 }) => {
   const classes = useStyles();
   const [bookmarks, setBookmarks] = useState([]);
+  const dispatch = useDispatch();
+  const resources = useSelector((state) => state.resources);
 
   useEffect(() => {
+    const getResource = async (slug) => {
+      let resource = resources.find(
+        (r) => r.slug === slug,
+      );
+      if (resource) {
+        return resource;
+      }
+      resource = await dispatch(fetchResource(slug));
+      return resource;
+    };
+
     const getUser = async () => {
       const userData = await axiosGet('/profile',
         {
@@ -33,8 +46,17 @@ const Saved = ({
             authorization: `Bearer ${user.xa}`,
           },
         });
-      setBookmarks(userData.bookmarkedResources);
-      return userData.bookmarkedResources;
+
+      const promises = userData.bookmarkedResources.map(async (b) => {
+        const res = await getResource(b);
+        return res;
+      });
+
+      const tempBookmarks = await Promise.all(promises);
+
+      setBookmarks(tempBookmarks);
+
+      return tempBookmarks;
     };
     if (isSignedin) {
       getUser();
@@ -73,8 +95,10 @@ const Saved = ({
         )
         : null }
       <Box
+        width={1}
         pt={3.5}
         px={2}
+
       >
         <Typography variant="h1" align="center">Saved for Later</Typography>
         <Typography>

@@ -7,6 +7,7 @@ import {
 const themes = (state = [], action) => {
   switch (action.type) {
     case HYDRATE:
+      // TODO: Hydrate this properly like with resources
       return action.payload.themes;
     case SET_THEMES:
       return action.data;
