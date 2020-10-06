@@ -154,12 +154,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
     let allThemes = null;
     let resources = null;
     if (store.getState().themes.length < 1) {
-      await store.dispatch(fetchThemes());
+      allThemes = await store.dispatch(fetchThemes());
     } else {
       allThemes = store.getState().themes;
     }
     if (store.getState().resources.length < 1) {
-      await store.dispatch(fetchResources());
+      resources = await store.dispatch(fetchResources());
     } else {
       resources = store.getState().resources;
     }

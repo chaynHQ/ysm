@@ -36,10 +36,19 @@ export const axiosGet = async (url, options) => {
 };
 
 export const axiosPut = async (url, data, options) => {
-  console.log('IN AXIOS PuT');
   try {
     const response = await axiosInstance.put(url, data, options);
-    console.log(response);
+    return response.data;
+  } catch (err) {
+    console.log('error in axios PUT');
+    console.log(err);
+    throw err;
+  }
+};
+
+export const axiosDelete = async (url, options) => {
+  try {
+    const response = await axiosInstance.delete(url, options);
     return response.data;
   } catch (err) {
     console.log('error in axios PUT');

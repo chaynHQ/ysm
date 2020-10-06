@@ -9,7 +9,6 @@ import React, { useEffect, useState } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import ResourceCard from '../components/ResourceCard';
 import { fetchResource, setSettingsAuth, setUserSignIn } from '../store/actions';
-import { axiosGet } from '../store/axios';
 
 const useStyles = makeStyles(() => ({
   link: {
@@ -28,7 +27,7 @@ const Saved = ({
   const resources = useSelector((state) => state.resources);
 
   useEffect(() => {
-    const getResource = async (slug) => {
+    const getResourceData = async (slug) => {
       let resource = resources.find(
         (r) => r.slug === slug,
       );
@@ -39,29 +38,22 @@ const Saved = ({
       return resource;
     };
 
-    const getUser = async () => {
-      const userData = await axiosGet('/profile',
-        {
-          headers: {
-            authorization: `Bearer ${user.xa}`,
-          },
-        });
-
-      const promises = userData.bookmarkedResources.map(async (b) => {
-        const res = await getResource(b);
+    const getBookmarkData = async () => {
+      const promises = user.bookmarkedResources.map(async (b) => {
+        const res = await getResourceData(b);
         return res;
       });
 
       const tempBookmarks = await Promise.all(promises);
-
       setBookmarks(tempBookmarks);
 
       return tempBookmarks;
     };
-    if (isSignedin) {
-      getUser();
+
+    if (isSignedin && user.bookmarkedResources) {
+      getBookmarkData();
     }
-  }, []);
+  }, [user]);
 
   return (
     <Box

@@ -1,7 +1,7 @@
 import { HYDRATE } from 'next-redux-wrapper';
 import { combineReducers } from 'redux';
 import {
-  SET_BOOKMARKS, SET_RESOURCE, SET_RESOURCES, SET_SETTINGS_AUTH, SET_THEMES, SET_USER_SIGNIN,
+  SET_PROFILE, SET_RESOURCE, SET_RESOURCES, SET_SETTINGS_AUTH, SET_THEMES, SET_USER_SIGNIN,
 } from './types';
 
 const themes = (state = [], action) => {
@@ -60,8 +60,8 @@ const user = (state = {}, action) => {
       return { ...action.data };
     case SET_SETTINGS_AUTH:
       return { ...state, settingsAuth: action.data };
-    case SET_BOOKMARKS:
-      return { ...state, bookmarks: action.data };
+    case SET_PROFILE:
+      return { ...state, ...action.data };
     default:
       return state;
   }
