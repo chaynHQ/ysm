@@ -35,9 +35,10 @@ const ResourcePage = ({ resource, theme }) => (
 );
 
 export async function getServerSideProps({ params }) {
-  const themes = await axiosGet('themes');
-
-  const resource = await axiosGet(`resources/${params.resourceSlug}`);
+  const [themes, resource] = await Promise.all([
+    axiosGet('themes'),
+    axiosGet(`resources/${params.resourceSlug}`),
+  ]);
 
   return { props: { resource, theme: themes.find((t) => resource.themes.includes(t.id)) } };
 }

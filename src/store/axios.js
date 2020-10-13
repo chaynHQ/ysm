@@ -51,7 +51,7 @@ export const axiosDelete = async (url, options) => {
     const response = await axiosInstance.delete(url, options);
     return response.data;
   } catch (err) {
-    console.log('error in axios PUT');
+    console.log('error in axios DELETE');
     console.log(err);
     throw err;
   }

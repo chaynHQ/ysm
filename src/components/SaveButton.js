@@ -24,9 +24,8 @@ const SaveButton = ({
                 headers: {
                   authorization: `Bearer ${user.xa}`,
                 },
-                data: { currentUserId: user.xa, resourceId: resourceSlug },
-              });
-              deleteBookmarkOnClick(resourceSlug, user.xa);
+                data: { resourceId: resourceSlug },
+              }).then(deleteBookmarkOnClick(resourceSlug, user.xa));
             }}
           >
             <Bookmark color="error" />
@@ -40,12 +39,11 @@ const SaveButton = ({
             startIcon={<BookmarkBorder />}
             onClick={() => {
               if (isSignedIn) {
-                axiosPut(`/profile/bookmarks/resources/${resourceSlug}`, { currentUserId: user.xa, resourceId: resourceSlug }, {
+                axiosPut(`/profile/bookmarks/resources/${resourceSlug}`, { resourceId: resourceSlug }, {
                   headers: {
                     authorization: `Bearer ${user.xa}`,
                   },
-                });
-                setBookmarkOnClick(resourceSlug, user.xa);
+                }).then(setBookmarkOnClick(resourceSlug, user.xa));
               } else {
                 router.push(`/sign-in?redirectUrl=${redirectUrl}`, '/sign-in');
               }

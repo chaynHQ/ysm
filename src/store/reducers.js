@@ -49,11 +49,12 @@ const user = (state = {}, action) => {
       return { ...state, ...action.data };
     case DELETE_BOOKMARK:
       bookmarkedResources = state.bookmarkedResources.filter((slug) => slug !== action.data);
-
       return { ...state, bookmarkedResources };
     case SET_BOOKMARK:
       bookmarkedResources = state.bookmarkedResources || [];
-      bookmarkedResources.push(action.data);
+      if (bookmarkedResources.indexOf(action.data) < 0) {
+        bookmarkedResources.push(action.data);
+      }
       return { ...state, bookmarkedResources };
     default:
       return state;
