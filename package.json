@@ -20,6 +20,7 @@
     "test:cov": "NODE_ENV=test jest --collect-coverage --watchAll"
   },
   "engines": {
+    "node": "12.x",
     "yarn": "1.x"
   },
   "cacheDirectories": [
