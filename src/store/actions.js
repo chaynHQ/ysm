@@ -1,6 +1,13 @@
 import axiosInstance from './axios';
 import {
-  SET_PROFILE, SET_RESOURCE, SET_RESOURCES, SET_SETTINGS_AUTH, SET_THEMES, SET_USER_SIGNIN,
+  DELETE_BOOKMARK,
+  SET_BOOKMARK,
+  SET_PROFILE,
+  SET_RESOURCE,
+  SET_RESOURCES,
+  SET_SETTINGS_AUTH,
+  SET_THEMES,
+  SET_USER_SIGNIN,
 } from './types';
 
 /*
@@ -21,6 +28,17 @@ export const setResource = (data) => ({
 export const setProfile = (data) => ({
   type: SET_PROFILE,
   data,
+});
+
+export const deleteBookmark = (data) => ({
+  type: DELETE_BOOKMARK,
+  data,
+});
+
+export const setBookmark = (data) => ({
+  type: SET_BOOKMARK,
+  data,
+
 });
 
 export const setUserSignIn = (data) => ({
@@ -89,44 +107,6 @@ export function fetchProfile(token) {
       return response.data;
     } catch (err) {
       console.log('error fetching profile');
-      console.log(err);
-      throw err;
-    }
-  };
-}
-
-export function setBookmark(resourceSlug, token) {
-  return async (dispatch) => {
-    try {
-      const response = await axiosInstance.put(`/profile/bookmarks/resources/${resourceSlug}`,
-        { currentUserId: token, resourceId: resourceSlug }, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
-      dispatch(fetchProfile(token));
-      return response.data;
-    } catch (err) {
-      console.log('error setting bookmark');
-      console.log(err);
-      throw err;
-    }
-  };
-}
-export function deleteBookmark(resourceSlug, token) {
-  return async (dispatch) => {
-    try {
-      const response = await axiosInstance.delete(`/profile/bookmarks/resources/${resourceSlug}`,
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-          data: { currentUserId: token, resourceId: resourceSlug },
-        });
-      dispatch(fetchProfile(token));
-      return response.data;
-    } catch (err) {
-      console.log('error deleting bookmark');
       console.log(err);
       throw err;
     }

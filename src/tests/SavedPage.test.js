@@ -5,11 +5,6 @@ import configureMockStore from 'redux-mock-store';
 import SavedPage from '../pages/saved';
 
 const mockStore = configureMockStore();
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useSelector: jest.fn(),
-  useDispatch: jest.fn(),
-}));
 
 describe('Saved Resources Page', () => {
   let wrapper;

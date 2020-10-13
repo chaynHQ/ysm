@@ -6,9 +6,10 @@ import { AccountCircle } from '@material-ui/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import ResourceCard from '../components/ResourceCard';
-import { fetchResource, setSettingsAuth, setUserSignIn } from '../store/actions';
+import { setSettingsAuth, setUserSignIn } from '../store/actions';
+import { axiosGet } from '../store/axios';
 
 const useStyles = makeStyles(() => ({
   link: {
@@ -23,18 +24,10 @@ const Saved = ({
 }) => {
   const classes = useStyles();
   const [bookmarks, setBookmarks] = useState([]);
-  const dispatch = useDispatch();
-  const resources = useSelector((state) => state.resources);
 
   useEffect(() => {
     const getResourceData = async (slug) => {
-      let resource = resources.find(
-        (r) => r.slug === slug,
-      );
-      if (resource) {
-        return resource;
-      }
-      resource = await dispatch(fetchResource(slug));
+      const resource = await axiosGet(`resources/${slug}`);
       return resource;
     };
 
@@ -154,14 +147,13 @@ const Saved = ({
 Saved.propTypes = {
   setSettingsAuthOnError: PropTypes.func.isRequired,
   setUserSignInOnClick: PropTypes.func.isRequired,
-  isSignedin: PropTypes.bool.isRequired.isRequired,
+  isSignedin: PropTypes.bool.isRequired,
   user: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user: state.user,
   isSignedin: state.user ? Object.keys(state.user).length > 0 : false,
-  state,
 });
 
 const mapDispatchToProps = (dispatch) => ({

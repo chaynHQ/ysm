@@ -84,32 +84,4 @@ describe('async actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
-  it('creates SET_PROFILE when setting bookmarks has been done', async () => {
-    const expectedActions = [{
-      type: types.SET_PROFILE,
-      data: { xa: 'some-long-jwt-token', bookmarkedResources: ['fake-slug'] },
-    },
-    ];
-    const store = mockStore();
-    mockAxios.put.mockImplementationOnce(() => Promise.resolve({ data: { xa: 'some-long-jwt-token', bookmarkedResources: [] } }));
-    mockAxios.get.mockImplementationOnce(() => Promise.resolve({ data: { xa: 'some-long-jwt-token', bookmarkedResources: ['fake-slug'] } }));
-
-    return store.dispatch(actions.setBookmark('fake-slug', 'some-long-jwt-token')).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-  it('creates SET_PROFILE when deleting bookmarks has been done', async () => {
-    const expectedActions = [{
-      type: types.SET_PROFILE,
-      data: { xa: 'some-long-jwt-token', bookmarkedResources: [] },
-    },
-    ];
-    const store = mockStore();
-    mockAxios.delete.mockImplementationOnce(() => Promise.resolve({ data: { xa: 'some-long-jwt-token', bookmarkedResources: [] } }));
-    mockAxios.get.mockImplementationOnce(() => Promise.resolve({ data: { xa: 'some-long-jwt-token', bookmarkedResources: [] } }));
-
-    return store.dispatch(actions.deleteBookmark('fake-slug', 'some-long-jwt-token')).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
 });

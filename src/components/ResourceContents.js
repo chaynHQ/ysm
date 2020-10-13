@@ -47,20 +47,21 @@ const ResourceContents = ({ resource }) => {
         <Typography variant="h2" align="left">Start Exploring</Typography>
         <ol>
           {resource.content.map((item) => (
-            <LinkUi
-              color="textSecondary"
-              key={item.id}
-              underline="always"
-              href="resource/resourseSlug/item/itemId"
-              as={`/resource/${resource.slug}/item/${item.id}`}
-            >
-              <li>{item.title}</li>
-            </LinkUi>
+            <Link key={item.id} passHref href="/resource/resourceSlug/item/itemId" as={`/resource/${resource.slug}/item/${resource.content[0].id}`}>
+
+              <LinkUi
+                color="textSecondary"
+                underline="always"
+              >
+                <li>{item.title}</li>
+              </LinkUi>
+            </Link>
           ))}
         </ol>
 
         <Card variant="outlined" className={classes.card}>
-          <Link href="/resource/resourceSlug/item/itemId" as={`/resource/${resource.slug}/item/${resource.content[0].id}`}>
+          <Link passHref href="/resource/resourceSlug/item/itemId" as={`/resource/${resource.slug}/item/${resource.content[0].id}`}>
+
             <CardActionArea component="a" className={classes.cardMedia}>
               <CardContent>
                 <Grid container justify="space-between" direction="row">

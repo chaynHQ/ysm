@@ -16,8 +16,7 @@ import React from 'react';
 import ResourceCard from '../../components/ResourceCard';
 import SignUpPrompt from '../../components/SignUpPrompt';
 import richTextHelper from '../../shared/rich-text';
-import { fetchResources, fetchThemes } from '../../store/actions';
-import { wrapper } from '../../store/store';
+import { axiosGet } from '../../store/axios';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -148,35 +147,21 @@ const ThemePage = ({ themes, theme, resources }) => {
     </Box>
   );
 };
+export async function getServerSideProps({ params }) {
+  const { slug } = params;
+  const themes = await axiosGet('themes');
+  const theme = themes.filter((t) => t.slug === slug)[0] || null;
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  async ({ store, params }) => {
-    let allThemes = null;
-    let resources = null;
-    if (store.getState().themes.length < 1) {
-      allThemes = await store.dispatch(fetchThemes());
-    } else {
-      allThemes = store.getState().themes;
-    }
-    if (store.getState().resources.length < 1) {
-      resources = await store.dispatch(fetchResources());
-    } else {
-      resources = store.getState().resources;
-    }
+  let resources = [];
+  if (theme) {
+    const allResourses = await axiosGet('resources');
+    resources = allResourses.filter(
+      (resource) => resource.themes && resource.themes.includes(theme.id),
+    );
+  }
 
-    const theme = allThemes.find((t) => t.slug === params.slug);
-
-    return {
-      props: {
-        theme,
-        themes: allThemes.filter((t) => t.slug !== params.slug),
-        resources: resources.filter(
-          (resource) => resource.themes && resource.themes.includes(theme.id),
-        ),
-      },
-    };
-  },
-);
+  return { props: { theme, themes, resources } };
+}
 
 ThemePage.propTypes = {
   themes: PropTypes.arrayOf(

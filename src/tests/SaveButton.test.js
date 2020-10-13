@@ -1,10 +1,12 @@
 import { Button, IconButton } from '@material-ui/core';
 import { createShallow } from '@material-ui/core/test-utils';
+import mockAxios from 'axios';
 import * as Router from 'next/router';
 import React from 'react';
-import * as redux from 'react-redux';
-import { useSelector } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
 import SaveButton from '../components/SaveButton';
+
+const mockStore = configureMockStore();
 
 Router.useRouter = jest.fn();
 Router.useRouter.mockImplementation(() => ({
@@ -21,90 +23,72 @@ jest.mock('next/router', () => ({
   }),
 }));
 
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useSelector: jest.fn(),
-  useDispatch: jest.fn(),
-}));
-
 describe("SaveButton when resource isn't saved", () => {
   let wrapper;
   let shallow;
-  let mockDispatchFn;
+  const setBookmarkOnClick = jest.fn();
+  setBookmarkOnClick.mockImplementation(() => {});
 
   beforeEach(() => {
     shallow = createShallow();
-    const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
-    mockDispatchFn = jest.fn();
-    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    mockAxios.put.mockImplementationOnce(() => Promise.resolve({}));
   });
 
-  it('renders a button when resource is saved', () => {
-    useSelector.mockImplementation((callback) => callback({ user: { xa: 'some-token' } }));
-
+  it("renders a button when resource isn't saved", () => {
+    const store = mockStore({ user: { xa: 'some-token' } });
     wrapper = shallow(
       <SaveButton
         resourceSlug="resource_slug"
         redirectUrl="redirect_slug"
+        store={store}
       />,
-    );
+    ).dive().dive();
     expect(wrapper.find(Button)).toHaveLength(1);
   });
 
   it('dispatches if signed in', () => {
-    useSelector.mockImplementation((callback) => callback({ user: { xa: 'some-token' } }));
-
+    const store = mockStore({ user: { xa: 'some-token' } });
     wrapper = shallow(
       <SaveButton
         resourceSlug="resource_slug"
         redirectUrl="redirect_slug"
+        store={store}
+        setBookmarkOnClick={setBookmarkOnClick()}
       />,
-    );
+    ).dive().dive();
     wrapper.find(Button).simulate('click');
-    expect(mockDispatchFn.mock.calls.length).toBe(1);
-  });
-
-  it('does not dispatch if not signed in', () => {
-    useSelector.mockImplementation((callback) => callback({ user: {} }));
-
-    wrapper = shallow(
-      <SaveButton
-        resourceSlug="resource_slug"
-        redirectUrl="redirect_slug"
-      />,
-    );
-    wrapper.find(Button).simulate('click');
-
-    expect(mockDispatchFn.mock.calls.length).toBe(0);
+    expect(setBookmarkOnClick.mock.calls.length).toBe(1);
   });
 });
 
 describe('SaveButton when resource is saved', () => {
   let wrapper;
   let shallow;
-  let mockDispatchFn;
+
+  const deleteBookmarkOnClick = jest.fn();
+  deleteBookmarkOnClick.mockImplementationOnce(() => { });
 
   beforeEach(() => {
     shallow = createShallow();
-    useSelector.mockImplementation((callback) => callback({ user: { xa: 'some-token', bookmarkedResources: ['resource_slug'] } }));
-    const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
-    mockDispatchFn = jest.fn();
-    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    const store = mockStore({ user: { xa: 'some-token', bookmarkedResources: ['resource_slug'] } });
+    mockAxios.delete.mockImplementationOnce(() => Promise.resolve({}));
 
     wrapper = shallow(
       <SaveButton
         resourceSlug="resource_slug"
         redirectUrl="redirect_slug"
+        store={store}
+        deleteBookmarkOnClick={deleteBookmarkOnClick()}
       />,
-    );
-  });
-
-  it('renders an button when resource is saved', () => {
-    expect(wrapper.find(IconButton)).toHaveLength(1);
+    ).dive().dive();
   });
 
   it('dispatches on click', () => {
     wrapper.find(IconButton).simulate('click');
-    expect(mockDispatchFn.mock.calls.length).toBe(1);
+    expect(deleteBookmarkOnClick.mock.calls.length).toBe(1);
+  });
+
+  it('renders an IconButton when resource is saved', () => {
+    expect(wrapper.find(IconButton)).toHaveLength(1);
   });
 });

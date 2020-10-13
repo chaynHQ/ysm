@@ -6,8 +6,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Item from '../../components/Item';
 import ResourceContents from '../../components/ResourceContents';
-import { fetchResource, fetchThemes } from '../../store/actions';
-import { wrapper } from '../../store/store';
+import { axiosGet } from '../../store/axios';
 
 const ResourcePage = ({ resource, theme }) => (
   <Box
@@ -29,31 +28,19 @@ const ResourcePage = ({ resource, theme }) => (
 
     </Breadcrumbs>
     {resource.content && resource.content.length === 1
-      ? <Item item={resource.content[0]} />
+      ? <Item item={resource.content[0]} canBeSaved />
       : <ResourceContents resource={resource} />}
 
   </Box>
 );
 
-export const getServerSideProps = wrapper.getServerSideProps(
+export async function getServerSideProps({ params }) {
+  const themes = await axiosGet('themes');
 
-  async ({ store, params }) => {
-    let themes = null;
-    let resource = null;
-    if (store.getState().themes.length < 1) {
-      themes = await store.dispatch(fetchThemes());
-    } else {
-      themes = store.getState().themes;
-    }
-    if (store.getState().resources.filter((r) => r.slug === params.resourceSlug).length < 1) {
-      resource = await store.dispatch(fetchResource(params.resourceSlug));
-    } else {
-      resource = store.getState().resources.find((r) => r.slug === params.resourceSlug);
-    }
+  const resource = await axiosGet(`resources/${params.resourceSlug}`);
 
-    return { props: { resource, theme: themes.find((t) => resource.themes.includes(t.id)) } };
-  },
-);
+  return { props: { resource, theme: themes.find((t) => resource.themes.includes(t.id)) } };
+}
 
 ResourcePage.propTypes = {
   resource:

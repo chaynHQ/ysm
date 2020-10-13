@@ -13,8 +13,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Item from '../../../../components/Item';
-import { fetchResource } from '../../../../store/actions';
-import { wrapper } from '../../../../store/store';
+import { axiosGet } from '../../../../store/axios';
 
 const useStyles = makeStyles(() => ({
   link: {
@@ -66,7 +65,7 @@ const ItemPage = ({ resource, item, nextItem }) => {
 
       <Card variant="outlined" className={classes.card}>
         <Link
-          href={nextItem ? 'resource/resourceSlug/item/itemId' : '/resource/resourceSlug'}
+          href={nextItem ? '/resource/resourceSlug/item/itemId' : '/resource/resourceSlug'}
           as={nextItem ? `/resource/${resource.slug}/item/${nextItem.id}` : `/resource/${resource.slug}`}
         >
           <CardActionArea component="a" className={classes.cardMedia}>
@@ -92,24 +91,15 @@ const ItemPage = ({ resource, item, nextItem }) => {
     </Box>
   );
 };
+export async function getServerSideProps({ params }) {
+  const resource = await axiosGet(`resources/${params.resourceSlug}`);
+  const item = resource.content.find((i) => i.id === params.itemId);
+  const nextItem = resource.content[resource.content.findIndex(
+    (i) => i.id === params.itemId,
+  ) + 1];
 
-export const getServerSideProps = wrapper.getServerSideProps(
-
-  async ({ store, params }) => {
-    let resources = null;
-    if (store.getState().resources.filter((r) => r.slug === params.resourceSlug).length < 1) {
-      resources = await store.dispatch(fetchResource(params.resourceSlug));
-    } else {
-      resources = store.getState().resources;
-    }
-    const resource = resources.find((r) => r.slug === params.resourceSlug);
-    const item = resource.content.find((i) => i.id === params.itemId);
-    const nextItem = resource.content[resource.content.findIndex(
-      (i) => i.id === params.itemId,
-    ) + 1];
-    return { props: { resource, item, nextItem } };
-  },
-);
+  return { props: { resource, item, nextItem: nextItem || null } };
+}
 
 ItemPage.propTypes = {
   resource:

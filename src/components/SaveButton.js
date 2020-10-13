@@ -3,13 +3,14 @@ import { Bookmark, BookmarkBorder } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { deleteBookmark, setBookmark } from '../store/actions';
+import { axiosDelete, axiosPut } from '../store/axios';
 
-const SaveButton = ({ resourceSlug, redirectUrl }) => {
+const SaveButton = ({
+  resourceSlug, redirectUrl, user, isSignedIn, deleteBookmarkOnClick, setBookmarkOnClick,
+}) => {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
 
   const saved = user.bookmarkedResources && user.bookmarkedResources.includes(resourceSlug);
 
@@ -19,7 +20,13 @@ const SaveButton = ({ resourceSlug, redirectUrl }) => {
         ? (
           <IconButton
             onClick={() => {
-              dispatch(deleteBookmark(resourceSlug, user.xa));
+              axiosDelete(`/profile/bookmarks/resources/${resourceSlug}`, {
+                headers: {
+                  authorization: `Bearer ${user.xa}`,
+                },
+                data: { currentUserId: user.xa, resourceId: resourceSlug },
+              });
+              deleteBookmarkOnClick(resourceSlug, user.xa);
             }}
           >
             <Bookmark color="error" />
@@ -32,8 +39,13 @@ const SaveButton = ({ resourceSlug, redirectUrl }) => {
             size="small"
             startIcon={<BookmarkBorder />}
             onClick={() => {
-              if (user.xa) {
-                dispatch(setBookmark(resourceSlug, user.xa));
+              if (isSignedIn) {
+                axiosPut(`/profile/bookmarks/resources/${resourceSlug}`, { currentUserId: user.xa, resourceId: resourceSlug }, {
+                  headers: {
+                    authorization: `Bearer ${user.xa}`,
+                  },
+                });
+                setBookmarkOnClick(resourceSlug, user.xa);
               } else {
                 router.push(`/sign-in?redirectUrl=${redirectUrl}`, '/sign-in');
               }
@@ -49,10 +61,24 @@ const SaveButton = ({ resourceSlug, redirectUrl }) => {
 SaveButton.propTypes = {
   resourceSlug: PropTypes.string.isRequired,
   redirectUrl: PropTypes.string,
+  user: PropTypes.objectOf(PropTypes.any).isRequired,
+  isSignedIn: PropTypes.bool.isRequired,
+  setBookmarkOnClick: PropTypes.func.isRequired,
+  deleteBookmarkOnClick: PropTypes.func.isRequired,
 };
 
 SaveButton.defaultProps = {
   redirectUrl: null,
 };
 
-export default SaveButton;
+const mapStateToProps = (state) => ({
+  user: state.user,
+  isSignedIn: state.user ? Object.keys(state.user).length > 0 : false,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  deleteBookmarkOnClick: (slug, token) => dispatch(deleteBookmark(slug, token)),
+  setBookmarkOnClick: (slug, token) => dispatch(setBookmark(slug, token)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SaveButton);

@@ -1,14 +1,17 @@
-import { HYDRATE } from 'next-redux-wrapper';
 import { combineReducers } from 'redux';
 import {
-  SET_PROFILE, SET_RESOURCE, SET_RESOURCES, SET_SETTINGS_AUTH, SET_THEMES, SET_USER_SIGNIN,
+  DELETE_BOOKMARK,
+  SET_BOOKMARK,
+  SET_PROFILE,
+  SET_RESOURCE,
+  SET_RESOURCES,
+  SET_SETTINGS_AUTH,
+  SET_THEMES,
+  SET_USER_SIGNIN,
 } from './types';
 
 const themes = (state = [], action) => {
   switch (action.type) {
-    case HYDRATE:
-      // TODO: Hydrate this properly like with resources
-      return action.payload.themes;
     case SET_THEMES:
       return action.data;
     default:
@@ -17,16 +20,7 @@ const themes = (state = [], action) => {
 };
 
 const resources = (state = [], action) => {
-  let nextState = [];
   switch (action.type) {
-    case HYDRATE:
-      nextState = action.payload.resources;
-      state.forEach((resource) => {
-        if (nextState.filter((r) => r.id === resource.id).length === 0) {
-          nextState.push(resource);
-        }
-      });
-      return nextState;
     case SET_RESOURCES:
       action.data.sort((a, b) => {
         if (a.featured === b.featured) {
@@ -45,23 +39,22 @@ const resources = (state = [], action) => {
 };
 
 const user = (state = {}, action) => {
-  let nextState = {};
+  let bookmarkedResources = [];
   switch (action.type) {
-    case HYDRATE:
-      nextState = {
-        ...state, // use previous state
-        ...action.payload.user, // apply delta from hydration
-      };
-      if (state.user) {
-        nextState.user = state.user;
-      } // preserve user value on client side navigation
-      return nextState;
     case SET_USER_SIGNIN:
       return { ...action.data };
     case SET_SETTINGS_AUTH:
       return { ...state, settingsAuth: action.data };
     case SET_PROFILE:
       return { ...state, ...action.data };
+    case DELETE_BOOKMARK:
+      bookmarkedResources = state.bookmarkedResources.filter((slug) => slug !== action.data);
+
+      return { ...state, bookmarkedResources };
+    case SET_BOOKMARK:
+      bookmarkedResources = state.bookmarkedResources || [];
+      bookmarkedResources.push(action.data);
+      return { ...state, bookmarkedResources };
     default:
       return state;
   }

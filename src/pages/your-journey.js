@@ -19,8 +19,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SignUpPrompt from '../components/SignUpPrompt';
 import richTextHelper from '../shared/rich-text';
-import { fetchThemes } from '../store/actions';
-import { wrapper } from '../store/store';
+import { axiosGet } from '../store/axios';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -139,17 +138,11 @@ const YourJourney = ({ themes }) => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  async ({ store }) => {
-    let themes = null;
-    if (store.getState().themes.length < 1) {
-      themes = await store.dispatch(fetchThemes());
-    } else {
-      themes = store.getState().themes;
-    }
-    return { props: { themes } };
-  },
-);
+export async function getServerSideProps() {
+  const themes = await axiosGet('themes');
+
+  return { props: { themes } };
+}
 
 YourJourney.propTypes = {
   themes: PropTypes.arrayOf(
