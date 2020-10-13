@@ -1,13 +1,17 @@
-import { HYDRATE } from 'next-redux-wrapper';
 import { combineReducers } from 'redux';
 import {
-  SET_BOOKMARKS, SET_RESOURCE, SET_RESOURCES, SET_SETTINGS_AUTH, SET_THEMES, SET_USER_SIGNIN,
+  DELETE_BOOKMARK,
+  SET_BOOKMARK,
+  SET_PROFILE,
+  SET_RESOURCE,
+  SET_RESOURCES,
+  SET_SETTINGS_AUTH,
+  SET_THEMES,
+  SET_USER_SIGNIN,
 } from './types';
 
 const themes = (state = [], action) => {
   switch (action.type) {
-    case HYDRATE:
-      return action.payload.themes;
     case SET_THEMES:
       return action.data;
     default:
@@ -17,8 +21,6 @@ const themes = (state = [], action) => {
 
 const resources = (state = [], action) => {
   switch (action.type) {
-    case HYDRATE:
-      return action.payload.resources;
     case SET_RESOURCES:
       action.data.sort((a, b) => {
         if (a.featured === b.featured) {
@@ -37,15 +39,23 @@ const resources = (state = [], action) => {
 };
 
 const user = (state = {}, action) => {
+  let bookmarkedResources = [];
   switch (action.type) {
-    case HYDRATE:
-      return action.payload.user;
     case SET_USER_SIGNIN:
-      return { ...state, ...action.data };
+      return { ...action.data };
     case SET_SETTINGS_AUTH:
       return { ...state, settingsAuth: action.data };
-    case SET_BOOKMARKS:
-      return { ...state, bookmarks: action.data };
+    case SET_PROFILE:
+      return { ...state, ...action.data };
+    case DELETE_BOOKMARK:
+      bookmarkedResources = state.bookmarkedResources.filter((slug) => slug !== action.data);
+      return { ...state, bookmarkedResources };
+    case SET_BOOKMARK:
+      bookmarkedResources = state.bookmarkedResources || [];
+      if (bookmarkedResources.indexOf(action.data) < 0) {
+        bookmarkedResources.push(action.data);
+      }
+      return { ...state, bookmarkedResources };
     default:
       return state;
   }

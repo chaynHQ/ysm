@@ -14,15 +14,15 @@ const axiosInstance = axios.create({
   baseURL: `${baseUrl}/api/`,
 });
 
-axiosInstance.interceptors.request.use((request) => {
-  console.log('Starting Request', request);
-  return request;
-});
+// axiosInstance.interceptors.request.use((request) => {
+//   console.log('Starting Request', request);
+//   return request;
+// });
 
-axiosInstance.interceptors.response.use((response) => {
-  console.log('Response:', response);
-  return response;
-});
+// axiosInstance.interceptors.response.use((response) => {
+//   console.log('Response:', response);
+//   return response;
+// });
 
 export const axiosGet = async (url, options) => {
   try {
@@ -41,6 +41,17 @@ export const axiosPut = async (url, data, options) => {
     return response.data;
   } catch (err) {
     console.log('error in axios PUT');
+    console.log(err);
+    throw err;
+  }
+};
+
+export const axiosDelete = async (url, options) => {
+  try {
+    const response = await axiosInstance.delete(url, options);
+    return response.data;
+  } catch (err) {
+    console.log('error in axios DELETE');
     console.log(err);
     throw err;
   }

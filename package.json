@@ -36,7 +36,6 @@
     "firebaseui": "^4.6.1",
     "http-proxy-middleware": "^1.0.5",
     "next": "9.5.2",
-    "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-device-detect": "^1.13.1",

@@ -1,21 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import {
-  makeStyles,
-  Typography,
-  Box,
+  Avatar, Box,
   Card,
-  CardContent,
-  CardActionArea,
-  Avatar,
-  Button,
-} from '@material-ui/core';
-import {
-  BookmarkBorder,
-} from '@material-ui/icons';
 
+  CardActionArea, CardContent, makeStyles,
+  Typography,
+} from '@material-ui/core';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React from 'react';
+import SaveButton from './SaveButton';
 
 const useStyles = makeStyles(() => ({
   cardMedia: {
@@ -28,14 +21,14 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ResourceCard = ({
-  title, subtitle, image, slug,
+  title, subtitle, image, slug, savingRedirectUrl,
 }) => {
   const classes = useStyles();
 
   return (
 
     <Card variant="outlined">
-      <Link href={`/resource/${slug}`}>
+      <Link href="/resource/[resourceSlug]" as={`/resource/${slug}`}>
         <CardActionArea component="a" className={classes.cardMedia}>
           <CardContent>
             <Box display="flex" flexDirection="row" justifyContent="space-between">
@@ -59,10 +52,12 @@ const ResourceCard = ({
                   : null}
               </Box>
             </Box>
-            <Button className={classes.button} variant="outlined" disableElevation size="small" startIcon={<BookmarkBorder />}>Save for later</Button>
           </CardContent>
         </CardActionArea>
       </Link>
+      <CardContent>
+        <SaveButton resourceSlug={slug} redirectUrl={savingRedirectUrl} />
+      </CardContent>
     </Card>
   );
 };
@@ -72,11 +67,13 @@ ResourceCard.propTypes = {
   subtitle: PropTypes.string,
   image: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
   slug: PropTypes.string.isRequired,
+  savingRedirectUrl: PropTypes.string,
 };
 
 ResourceCard.defaultProps = {
   subtitle: '',
   image: null,
+  savingRedirectUrl: null,
 };
 
 export default ResourceCard;

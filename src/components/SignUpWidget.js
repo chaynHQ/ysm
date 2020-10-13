@@ -1,17 +1,14 @@
+import {
+  Box, Button, makeStyles, Typography,
+} from '@material-ui/core';
+import * as firebaseui from 'firebaseui';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { useRouter } from 'next/router';
-import {
-  Box, Typography, makeStyles, Button,
-} from '@material-ui/core';
-
-import * as firebaseui from 'firebaseui';
 import firebase, { uiConfig } from '../config/firebase';
-
 import { setSettingsAuth, setUserSignIn } from '../store/actions';
-
-import { axiosPut, axiosGet } from '../store/axios';
+import { axiosGet, axiosPut } from '../store/axios';
 
 const useStyles = makeStyles({
   icon: {
@@ -44,13 +41,13 @@ const SignUpWidget = ({
         callbacks: {
           signInSuccessWithAuthResult: async (authResult) => {
             const signedInUser = authResult.user;
-            setUserSignInOnSuccess(signedInUser);
+            await setUserSignInOnSuccess(signedInUser);
 
             if (authResult.additionalUserInfo.isNewUser || !signedInUser.emailVerified) {
               signedInUser.sendEmailVerification();
               setShowVerificationStep(true);
               setShowTermsStep(false);
-              setUserSignInOnSuccess({});
+              await setUserSignInOnSuccess({});
             } else if (signedInUser.emailVerified) {
               const serverUser = await axiosGet('/profile',
                 {
@@ -68,7 +65,7 @@ const SignUpWidget = ({
               } if (!serverUser.termsAccepted) {
                 setShowTermsStep(true);
                 setShowVerificationStep(false);
-                setUserSignInOnSuccess({});
+                await setUserSignInOnSuccess({});
               }
             }
             return false;
@@ -92,6 +89,7 @@ const SignUpWidget = ({
                   authorization: `Bearer ${user.xa}`,
                 },
               });
+              router.push(redirectUrl || '/');
             }}
           >
             <Box className="firebaseui-card-header">

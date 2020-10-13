@@ -15,7 +15,7 @@ describe('ResourceContents', () => {
     shallow = createShallow();
   });
 
-  it('renders when there are two resources', () => {
+  it('renders', () => {
     wrapper = shallow(
       <ResourceContents
         resource={resources[1]}

@@ -1,6 +1,6 @@
 import {
   Box,
-  Button,
+
   Card,
   CardActionArea,
   CardContent,
@@ -8,11 +8,12 @@ import {
   Typography,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
-import { ArrowForward, BookmarkBorder } from '@material-ui/icons';
+import { ArrowForward } from '@material-ui/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
 import richTextHelper from '../shared/rich-text';
+import SaveButton from './SaveButton';
 import SignUpPrompt from './SignUpPrompt';
 
 const useStyles = makeStyles(() => ({
@@ -38,7 +39,7 @@ const ResourceContents = ({ resource }) => {
     >
 
       <Typography variant="h1" align="center">{resource.title}</Typography>
-      <Button variant="outlined" disableElevation size="small" startIcon={<BookmarkBorder />}>Save for later</Button>
+      <SaveButton resourceSlug={resource.slug} />
       <Typography component={Box} color="textSecondary">
         {richTextHelper(resource.description)}
       </Typography>
@@ -46,12 +47,21 @@ const ResourceContents = ({ resource }) => {
         <Typography variant="h2" align="left">Start Exploring</Typography>
         <ol>
           {resource.content.map((item) => (
-            <LinkUi color="textSecondary" key={item.id} underline="always" href={`/resource/${resource.slug}/item/${item.id}`}><li>{item.title}</li></LinkUi>
+            <Link key={item.id} passHref href="/resource/[resourceSlug]/item/[itemId]" as={`/resource/${resource.slug}/item/${item.id}`}>
+
+              <LinkUi
+                color="textSecondary"
+                underline="always"
+              >
+                <li>{item.title}</li>
+              </LinkUi>
+            </Link>
           ))}
         </ol>
 
         <Card variant="outlined" className={classes.card}>
-          <Link href={`/resource/${resource.slug}/item/${resource.content[0].id}`}>
+          <Link passHref href="/resource/[resourceSlug]/item/[itemId]" as={`/resource/${resource.slug}/item/${resource.content[0].id}`}>
+
             <CardActionArea component="a" className={classes.cardMedia}>
               <CardContent>
                 <Grid container justify="space-between" direction="row">

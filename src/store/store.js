@@ -1,4 +1,4 @@
-import { createWrapper } from 'next-redux-wrapper';
+import { useMemo } from 'react';
 import { applyMiddleware, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import ysmApp from './reducers';
@@ -35,4 +35,7 @@ export const initializeStore = (preloadedState) => {
   return _store;
 };
 
-export const wrapper = createWrapper(initializeStore, { debug: true });
+export function useStore(initialState) {
+  const store = useMemo(() => initializeStore(initialState), [initialState]);
+  return store;
+}

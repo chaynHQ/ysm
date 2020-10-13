@@ -1,6 +1,13 @@
 import axiosInstance from './axios';
 import {
-  SET_BOOKMARKS, SET_RESOURCE, SET_RESOURCES, SET_SETTINGS_AUTH, SET_THEMES, SET_USER_SIGNIN,
+  DELETE_BOOKMARK,
+  SET_BOOKMARK,
+  SET_PROFILE,
+  SET_RESOURCE,
+  SET_RESOURCES,
+  SET_SETTINGS_AUTH,
+  SET_THEMES,
+  SET_USER_SIGNIN,
 } from './types';
 
 /*
@@ -18,9 +25,20 @@ export const setResource = (data) => ({
   type: SET_RESOURCE,
   data,
 });
-export const setBookmarks = (data) => ({
-  type: SET_BOOKMARKS,
+export const setProfile = (data) => ({
+  type: SET_PROFILE,
   data,
+});
+
+export const deleteBookmark = (data) => ({
+  type: DELETE_BOOKMARK,
+  data,
+});
+
+export const setBookmark = (data) => ({
+  type: SET_BOOKMARK,
+  data,
+
 });
 
 export const setUserSignIn = (data) => ({
@@ -40,8 +58,9 @@ export function fetchResources() {
       dispatch(setResources(response.data));
       return response.data;
     } catch (err) {
+      console.log('error fetching resources');
       console.log(err);
-      console.log('error');
+
       throw err;
     }
   };
@@ -53,26 +72,9 @@ export function fetchResource(slug) {
       dispatch(setResource(response.data));
       return response.data;
     } catch (err) {
+      console.log('error fetching single resource');
       console.log(err);
-      console.log('error');
-      throw err;
-    }
-  };
-}
-export function fetchBookmarks() {
-  return async (dispatch, getState) => {
-    try {
-      const response = await axiosInstance.get('profile',
-        {
-          headers: {
-            authorization: `Bearer ${getState().user.xa}`,
-          },
-        });
-      dispatch(setBookmarks(response.data));
-      return response.data;
-    } catch (err) {
-      console.log('error');
-      console.log(err);
+
       throw err;
     }
   };
@@ -85,7 +87,26 @@ export function fetchThemes() {
       await dispatch(setThemes(response.data));
       return response.data;
     } catch (err) {
-      console.log('error');
+      console.log('error fetching themes');
+      console.log(err);
+      throw err;
+    }
+  };
+}
+
+export function fetchProfile(token) {
+  return async (dispatch) => {
+    try {
+      const response = await axiosInstance.get('profile',
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+      await dispatch(setProfile(response.data));
+      return response.data;
+    } catch (err) {
+      console.log('error fetching profile');
       console.log(err);
       throw err;
     }

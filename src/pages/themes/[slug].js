@@ -11,14 +11,12 @@ import {
 import LinkUi from '@material-ui/core/Link';
 import { ArrowBack, Search } from '@material-ui/icons';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import ResourceCard from '../../components/ResourceCard';
 import SignUpPrompt from '../../components/SignUpPrompt';
 import richTextHelper from '../../shared/rich-text';
-import { fetchResources, fetchThemes } from '../../store/actions';
-import { wrapper } from '../../store/store';
+import { axiosGet } from '../../store/axios';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -37,20 +35,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ThemePage = () => {
+const ThemePage = ({ themes, theme, resources }) => {
   const classes = useStyles();
-  const router = useRouter();
-  const { slug } = router.query;
-
-  const theme = useSelector((state) => state.themes.find((t) => t.slug === slug));
-  const themes = useSelector((state) => state.themes.filter((t) => t.slug !== slug));
-
-  let resources = [];
-  if (theme) {
-    resources = useSelector((state) => state.resources.filter(
-      (resource) => resource.themes && resource.themes.includes(theme.id),
-    ));
-  }
 
   return (
     <Box
@@ -106,6 +92,7 @@ const ThemePage = () => {
                 subtitle={resource.subtitle}
                 image={resource.image}
                 slug={resource.slug}
+                savingRedirectUrl={`/themes/${theme.slug}`}
               />
             ))}
           </Box>
@@ -116,7 +103,7 @@ const ThemePage = () => {
 
         {themes.map((t) => (
           <Card variant="outlined" key={t.id}>
-            <Link href={t.slug}>
+            <Link href="/theme/[slug]" as={`/theme/${t.slug}`}>
               <CardActionArea component="a">
                 <CardContent className={classes.card}>
                   <Box display="flex">
@@ -160,16 +147,53 @@ const ThemePage = () => {
     </Box>
   );
 };
+export async function getServerSideProps({ params }) {
+  const { slug } = params;
+  const themes = await axiosGet('themes');
+  const theme = themes.filter((t) => t.slug === slug)[0] || null;
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  async ({ store }) => {
-    if (store.getState().themes.length < 1) {
-      await store.dispatch(fetchThemes());
-    }
-    if (store.getState().resources.length < 1) {
-      await store.dispatch(fetchResources());
-    }
-  },
-);
+  let resources = [];
+  if (theme) {
+    const allResourses = await axiosGet('resources');
+    resources = allResourses.filter(
+      (resource) => resource.themes && resource.themes.includes(theme.id),
+    );
+  }
+
+  return { props: { theme, themes, resources } };
+}
+
+ThemePage.propTypes = {
+  themes: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+      ]),
+    ),
+  ),
+  resources: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object,
+        PropTypes.array,
+        PropTypes.bool,
+      ]),
+    ),
+  ),
+  theme: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+    ]),
+  ),
+};
+
+ThemePage.defaultProps = {
+  themes: [],
+  theme: null,
+  resources: [],
+};
 
 export default ThemePage;
