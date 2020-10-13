@@ -103,7 +103,7 @@ const ThemePage = ({ themes, theme, resources }) => {
 
         {themes.map((t) => (
           <Card variant="outlined" key={t.id}>
-            <Link href="/theme/slug" as={`/theme/${t.slug}`}>
+            <Link href="/theme/[slug]" as={`/theme/${t.slug}`}>
               <CardActionArea component="a">
                 <CardContent className={classes.card}>
                   <Box display="flex">
