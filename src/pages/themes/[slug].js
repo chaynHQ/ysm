@@ -12,8 +12,9 @@ import LinkUi from '@material-ui/core/Link';
 import { ArrowBack, Search } from '@material-ui/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import ResourceCard from '../../components/ResourceCard';
+import SearchModal from '../../components/SearchModal';
 import SignUpPrompt from '../../components/SignUpPrompt';
 import richTextHelper from '../../shared/rich-text';
 import { axiosGet } from '../../store/axios';
@@ -35,8 +36,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ThemePage = ({ themes, theme, resources }) => {
+const ThemePage = ({
+  themes, theme, resources, container,
+}) => {
   const classes = useStyles();
+  const [showSearchModal, setShowSearchModal] = useState(false);
 
   return (
     <Box
@@ -57,11 +61,10 @@ const ThemePage = ({ themes, theme, resources }) => {
           </Link>
 
         </Breadcrumbs>
-        <Link href="/search" passHref>
-          <IconButton component="a">
-            <Search />
-          </IconButton>
-        </Link>
+        <IconButton component="a" onClick={() => setShowSearchModal(true)}>
+          <Search />
+          <SearchModal shown={showSearchModal} container={container} />
+        </IconButton>
       </Grid>
       { !theme
         ? <Typography>Theme does not exist</Typography>
@@ -164,6 +167,7 @@ export async function getServerSideProps({ params }) {
 }
 
 ThemePage.propTypes = {
+  container: PropTypes.objectOf(PropTypes.any).isRequired,
   themes: PropTypes.arrayOf(
     PropTypes.objectOf(
       PropTypes.oneOfType([
