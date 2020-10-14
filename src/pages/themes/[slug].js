@@ -103,7 +103,7 @@ const ThemePage = ({ themes, theme, resources }) => {
 
         {themes.map((t) => (
           <Card variant="outlined" key={t.id}>
-            <Link href="/theme/[slug]" as={`/theme/${t.slug}`}>
+            <Link href="/themes/[slug]" as={`/themes/${t.slug}`}>
               <CardActionArea component="a">
                 <CardContent className={classes.card}>
                   <Box display="flex">
@@ -149,7 +149,8 @@ const ThemePage = ({ themes, theme, resources }) => {
 };
 export async function getServerSideProps({ params }) {
   const { slug } = params;
-  const themes = await axiosGet('themes');
+  const allThemes = await axiosGet('themes');
+  const themes = allThemes.filter((t) => t.slug !== slug);
   const theme = themes.filter((t) => t.slug === slug)[0] || null;
 
   let resources = [];
