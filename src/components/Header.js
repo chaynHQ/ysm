@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
 import {
-  Box, IconButton, makeStyles, Typography, Drawer, Divider, Icon,
+  Box, Button, Dialog, DialogContent, DialogTitle, Divider, Drawer, Icon, IconButton, makeStyles, SvgIcon, Typography,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import {
-  Menu, Clear, Home, Info, MenuBook, AccountCircle, ExitToApp, NaturePeople,
+  AccountCircle, Clear, ExitToApp, Home, Info, Menu, MenuBook,
 } from '@material-ui/icons';
 import Link from 'next/link';
-
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import BreatheIcon from '../../public/breathe.svg';
 import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles({
@@ -22,13 +21,101 @@ const useStyles = makeStyles({
     paddingLeft: 4,
     marginBottom: 0,
   },
+  breathingExercise: {
+    borderRadius: 4,
+    width: '100%',
+    maxWidth: 360,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    padding: '1.33em',
+    letterSpacing: 1,
+  // -webkit-animation: 'bgcolor 10s infinite ease-in-out',
+  // animation: 'bgcolor 10s infinite ease-in-out',
+  // -webkit-animation-play-state: 'paused',
+  // animationPlayState: 'paused',
+  },
+  breath: {
+    width: 260,
+    height: 260,
+    margin: 10,
+    padding: 10,
+    backgroundColor: '#d5ecf4',
+    borderRadius: '50%',
+    boxSizing: 'border - box',
+  // -webkit-animation: 'bgcolor2 10s infinite ease-in-out',
+  // animation: 'bgcolor2 10s infinite ease-in-out',
+  },
+  breathContent: {
+    width: 240,
+    height: 240,
+    margin: '0 auto',
+    backgroundColor: '#eeb15c',
+    borderRadius: '50%',
+  // -webkit-transform: 'scale(0.1)',
+  // transform: 'scale(0.1)',
+  // -webkit-animation: 'scale 10s infinite ease-in-out',
+  // animation: 'scale 10s infinite ease-in-out',
+  // -webkit-animation-play-state: 'paused',
+  // animationPlayState: 'paused',
+  // -webkit-transform-origin: '50% 50%',
+  // transformOrigin: '50% 50%',
+  },
+// @-webkit-keyframes scale: {
+//   50% {
+//     backgroundColor: '#eda644',
+//     -webkit-transform: 'scale(1)',
+//   }
+// },
+// @keyframes scale: {
+//   50% {
+//     backgroundColor: '#eda644',
+//     transform: 'scale(1)',
+//   }
+// },
+// @-webkit-keyframes bgcolor: {
+//   50% {
+//     backgroundColor: '#d4e4f4',
+//   }
+// },
+// @keyframes bgcolor: {
+//   50% {
+//     backgroundColor: '#d4e4f4',
+//   }
+// },
+// @-webkit-keyframes bgcolor2: {
+//   50% {
+//     backgroundColor:' #c3def4',
+//   }
+// },
+// @keyframes bgcolor2: {
+//   50% {
+//     backgroundColor: '#c3def4',
+//   }
+// }
 });
 
 const Header = ({ menuContainer, isSignedin }) => {
   const classes = useStyles();
   const { height } = useWindowDimensions();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [timerRunning, setTimerRunning] = useState(false);
 
+  const message = 'Get comfortable and start breathing when ready';
+  let timerMessage = 'Breathe Out';
+
+  const toggleTimerMessage = () => {
+    if (timerMessage === 'Breathe In') {
+      timerMessage = 'Breathe Out';
+    } else {
+      timerMessage = 'Breathe In';
+    }
+  };
+
+  const startTimer = () => {
+    toggleTimerMessage();
+    setTimerRunning(true);
+  };
   return (
     <Box
       display="flex"
@@ -56,13 +143,56 @@ const Header = ({ menuContainer, isSignedin }) => {
         />
         <Typography className={classes.title}>Your Story Matters</Typography>
       </Box>
-      {/* TODO: Will actually be breathing timer */}
       <Box p={2}>
-        <IconButton onClick={() => { setDrawerOpen(true); }}>
-          <NaturePeople />
+        <IconButton onClick={() => { setModalOpen(true); }}>
+          <SvgIcon component={BreatheIcon} />
         </IconButton>
 
       </Box>
+
+      <Dialog
+        open={modalOpen}
+        onClose={() => { setModalOpen(false); }}
+      >
+        <DialogTitle disableTypography>
+          <Box display="flex" justifyContent="center" width={1}>
+            <Typography variant="h1">Take a break</Typography>
+            <IconButton alignSelf="flex-start" onClick={() => { setModalOpen(false); }}>
+              <Clear />
+            </IconButton>
+          </Box>
+        </DialogTitle>
+        <DialogContent>
+          <Typography align="center">Feeling overwhelmed?</Typography>
+          <Box
+            className={classes.breathingExercise}
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignContent="space-between"
+            bgcolor="primary.light"
+          >
+            <Typography align="center">{message}</Typography>
+
+            <Box class={classes.breath}>
+              {/* <Box ref="breathContent" className={classes.breathContent} /> */}
+              <Box className={classes.breathContent} />
+            </Box>
+
+            <Box
+              mt={3}
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignContent="center"
+            >
+              {timerRunning ? <Typography>{timerMessage}</Typography>
+                : <Button onClick={() => { startTimer(); }}>Start</Button> }
+
+            </Box>
+          </Box>
+        </DialogContent>
+      </Dialog>
 
       <Drawer
         open={drawerOpen}
