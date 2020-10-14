@@ -44,7 +44,7 @@ const ItemPage = ({ resource, item, nextItem }) => {
     >
 
       <Breadcrumbs aria-label="breadcrumb">
-        <Link href="/resource/[resourceSlug]" as={`/resource/${resource.slug}`} passHref>
+        <Link href="/resources/[resourceSlug]" as={`/resources/${resource.slug}`} passHref>
           <Box display="flex" alignItems="center" justifyContent="center">
             <ArrowBack className={classes.icon} />
             <Typography color="textSecondary" className={classes.breadcrumbs}>
@@ -65,8 +65,8 @@ const ItemPage = ({ resource, item, nextItem }) => {
 
       <Card variant="outlined" className={classes.card}>
         <Link
-          href={nextItem ? '/resource/[resourceSlug]/item/[itemId]' : '/resource/[resourceSlug]'}
-          as={nextItem ? `/resource/${resource.slug}/item/${nextItem.id}` : `/resource/${resource.slug}`}
+          href={nextItem ? '/resources/[resourceSlug]/items/[itemId]' : '/resources/[resourceSlug]'}
+          as={nextItem ? `/resources/${resource.slug}/items/${nextItem.id}` : `/resources/${resource.slug}`}
         >
           <CardActionArea component="a" className={classes.cardMedia}>
             <CardContent>

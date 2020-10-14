@@ -2,7 +2,7 @@ import { createShallow } from '@material-ui/core/test-utils';
 import React from 'react';
 import Item from '../components/Item';
 import ResourceContents from '../components/ResourceContents';
-import ResourcePage from '../pages/resource/[resourceSlug]';
+import ResourcePage from '../pages/resources/[resourceSlug]';
 import resources from './fixtures/resources';
 import themes from './fixtures/themes';
 
