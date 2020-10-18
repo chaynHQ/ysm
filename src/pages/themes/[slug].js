@@ -151,7 +151,7 @@ export async function getServerSideProps({ params }) {
   const { slug } = params;
   const allThemes = await axiosGet('themes');
   const themes = allThemes.filter((t) => t.slug !== slug);
-  const theme = themes.filter((t) => t.slug === slug)[0] || null;
+  const theme = allThemes.find((t) => t.slug === slug);
 
   let resources = [];
   if (theme) {
