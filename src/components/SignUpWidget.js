@@ -193,7 +193,7 @@ const SignUpWidget = ({
               <Button
                 onClick={async (e) => {
                   e.preventDefault();
-                  if (Object.keys(user).length > 1) {
+                  if (Object.keys(localUser).length > 1) {
                     await setUserSignInOnSuccess({});
                     await firebase.auth().signOut();
                     axiosPut('/profile/terms/unaccept', { currentUserId: localUser.xa }, {
