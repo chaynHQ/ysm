@@ -71,7 +71,7 @@ SaveButton.defaultProps = {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  isSignedIn: state.user ? Object.keys(state.user).length > 0 : false,
+  isSignedIn: state.user ? Object.keys(state.user).length > 1 : false,
 });
 
 const mapDispatchToProps = (dispatch) => ({

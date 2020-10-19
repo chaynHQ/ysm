@@ -27,6 +27,7 @@ const SignUpWidget = ({
   const classes = useStyles();
   const [showVerificationStep, setShowVerificationStep] = useState(false);
   const [showTermsStep, setShowTermsStep] = useState(false);
+  const [localUser, setLocalUser] = useState({});
 
   // TODO: Put in background iamge
 
@@ -41,13 +42,14 @@ const SignUpWidget = ({
         callbacks: {
           signInSuccessWithAuthResult: async (authResult) => {
             const signedInUser = authResult.user;
-            await setUserSignInOnSuccess(signedInUser);
+            setLocalUser(signedInUser);
 
             if (authResult.additionalUserInfo.isNewUser || !signedInUser.emailVerified) {
               signedInUser.sendEmailVerification();
               setShowVerificationStep(true);
               setShowTermsStep(false);
               await setUserSignInOnSuccess({});
+              await firebase.auth().signOut();
             } else if (signedInUser.emailVerified) {
               const serverUser = await axiosGet('/profile',
                 {
@@ -55,8 +57,8 @@ const SignUpWidget = ({
                     authorization: `Bearer ${signedInUser.xa}`,
                   },
                 });
-
               if (serverUser.termsAccepted) {
+                setUserSignInOnSuccess(signedInUser);
                 if (router.pathname === '/settings') {
                   setSettingsAuthOnSuccess(true);
                 } else {
@@ -65,7 +67,6 @@ const SignUpWidget = ({
               } if (!serverUser.termsAccepted) {
                 setShowTermsStep(true);
                 setShowVerificationStep(false);
-                await setUserSignInOnSuccess({});
               }
             }
             return false;
@@ -84,9 +85,10 @@ const SignUpWidget = ({
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              axiosPut('/profile/terms/accept', { currentUserId: user.xa }, {
+              setUserSignInOnSuccess(localUser);
+              axiosPut('/profile/terms/accept', { currentUserId: localUser.xa }, {
                 headers: {
-                  authorization: `Bearer ${user.xa}`,
+                  authorization: `Bearer ${localUser.xa}`,
                 },
               });
               router.push(redirectUrl || '/');
@@ -189,14 +191,19 @@ const SignUpWidget = ({
           <Box className="firebaseui-card-actions">
             <Box className="firebaseui-form-actions">
               <Button
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.preventDefault();
-                  axiosPut('/profile/terms/unaccept', { currentUserId: user.xa }, {
-                    headers: {
-                      authorization: `Bearer ${user.xa}`,
-                    },
+                  if (Object.keys(user).length > 1) {
+                    await setUserSignInOnSuccess({});
+                    await firebase.auth().signOut();
+                    axiosPut('/profile/terms/unaccept', { currentUserId: localUser.xa }, {
+                      headers: {
+                        authorization: `Bearer ${localUser.xa}`,
+                      },
 
-                  });
+                    });
+                  }
+                  router.push(redirectUrl || '/');
                 }}
                 className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
               >
@@ -224,7 +231,7 @@ const SignUpWidget = ({
         <Typography><b>Please check your email.</b></Typography>
       </Box>
     );
-  } else if (Object.keys(user).length < 1) {
+  } else if (Object.keys(localUser).length < 1) {
     signUpStage = (
       <>
         <Typography>
@@ -234,7 +241,7 @@ const SignUpWidget = ({
         <Typography>And if you’re signing in, welcome back queen!</Typography>
 
         {/* TODO: NEED TO ADD PRIVACY POLICY & T&C's Link */}
-        <Box id="firebaseui-auth-container" />
+        <Box id="firebaseui-auth-container" display={showTermsStep || showVerificationStep ? 'none' : 'block'} />
       </>
     );
   }

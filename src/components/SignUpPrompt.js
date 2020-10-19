@@ -109,7 +109,7 @@ SignUpPrompt.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  isSignedin: state.user ? Object.keys(state.user).length > 0 : false,
+  isSignedin: state.user ? Object.keys(state.user).length > 1 : false,
 });
 
 export default connect(mapStateToProps, null)(SignUpPrompt);

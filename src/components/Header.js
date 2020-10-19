@@ -157,7 +157,7 @@ Header.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  isSignedin: state.user ? Object.keys(state.user) > 0 : false,
+  isSignedin: state.user ? Object.keys(state.user) > 1 : false,
 });
 
 export default connect(mapStateToProps, null)(Header);
