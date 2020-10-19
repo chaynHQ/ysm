@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
 import {
-  Box, IconButton, makeStyles, Typography, Drawer, Divider, Icon,
+  Box, Divider, Drawer, Icon, IconButton, makeStyles, Typography,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import {
-  Menu, Clear, Home, Info, MenuBook, AccountCircle, ExitToApp, NaturePeople,
+  AccountCircle, Clear, ExitToApp, Home, Info, Menu, MenuBook, NaturePeople,
 } from '@material-ui/icons';
 import Link from 'next/link';
-
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles({

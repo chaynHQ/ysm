@@ -142,11 +142,11 @@ const Theme = createMuiTheme({
       root: {
         borderRadius: 6,
       },
-      input: {
-        backgroundColor: '#FFF',
-      },
     },
     MuiOutlinedInput: {
+      root: {
+        borderRadius: 120,
+      },
       notchedOutline: {
         borderColor: '#DADDED',
       },
@@ -159,6 +159,13 @@ const Theme = createMuiTheme({
     MuiCard: {
       root: {
         margin: 6,
+      },
+    },
+    MuiDialog: {
+      paper: {
+        padding: 20,
+        borderRadius: 6,
+        backgroundColor: '#FCEFE5CC',
       },
     },
   },

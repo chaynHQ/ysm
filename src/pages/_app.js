@@ -45,7 +45,6 @@ function App({ Component, pageProps }) {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-
           <Box
             bgcolor="primary.light"
             className={classes.screenContainer}
@@ -57,7 +56,7 @@ function App({ Component, pageProps }) {
               <Box flexGrow={1} display="flex" flexDirection="column">
                 <Header menuContainer={containerRef} />
                 <Box height={height * 0.875} overflow="scroll">
-                  <Component {...pageProps} />
+                  <Component {...pageProps} container={containerRef} />
                 </Box>
                 <Footer />
               </Box>
