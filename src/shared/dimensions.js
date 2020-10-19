@@ -1,19 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
 
 const isBrowser = typeof window !== 'undefined';
 
 function getWindowDimensions() {
   let { innerWidth: width, innerHeight: height } = isBrowser ? window : {};
 
-  // if width or height doesn't exist, send 0
-  // if (!width || !height) {
-  //   width = 0;
-  //   height = 0;
-  // }
-
-  // if width > 752, send width: 752
-  if (width > 752) {
+  if (width > 752 && !isMobile) {
     width = 752;
+  }
+
+  if (height > 731 && !isMobile) {
     height = 731;
   }
 
