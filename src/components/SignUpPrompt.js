@@ -1,16 +1,13 @@
+import {
+  Avatar, Box,
+  Button, makeStyles,
+  Typography,
+} from '@material-ui/core';
+import LinkUi from '@material-ui/core/Link';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-
-import {
-  makeStyles,
-  Typography,
-  Box,
-  Button,
-  Avatar,
-} from '@material-ui/core';
-import Link from 'next/link';
-import LinkUi from '@material-ui/core/Link';
 import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles((theme) => ({
@@ -79,8 +76,8 @@ const SignUpPrompt = ({ isSignedin }) => {
             <Typography align="center">
               Sign up to Your Story Matters and privately save resources for later.
             </Typography>
-            <Link href="/signin">
-              <Button variant="contained" disableElevation color="primary" component="a" to="/signin">
+            <Link href="/sign-in">
+              <Button variant="contained" disableElevation color="primary" component="a" to="/sign-in">
                 Create Your Account
               </Button>
             </Link>
@@ -94,7 +91,7 @@ const SignUpPrompt = ({ isSignedin }) => {
                   component="a"
                   color="textPrimary"
                   underline="always"
-                  to="/"
+                  to="/privacy"
                   align="center"
                 >
                   Read our Terms & Privacy Policy
