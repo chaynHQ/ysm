@@ -45,7 +45,6 @@ function App({ Component, pageProps }) {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-
           <Box
             bgcolor="primary.light"
             className={classes.screenContainer}

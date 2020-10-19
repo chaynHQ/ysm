@@ -16,7 +16,8 @@ import LinkUi from '@material-ui/core/Link';
 import { ArrowBack, Search } from '@material-ui/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
+import SearchModal from '../components/SearchModal';
 import SignUpPrompt from '../components/SignUpPrompt';
 import richTextHelper from '../shared/rich-text';
 import { axiosGet } from '../store/axios';
@@ -59,8 +60,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const YourJourney = ({ themes }) => {
+const YourJourney = ({ themes, container }) => {
   const classes = useStyles();
+  const [showSearchModal, setShowSearchModal] = useState(false);
   return (
     <Box
       display="flex"
@@ -80,11 +82,15 @@ const YourJourney = ({ themes }) => {
           </Link>
 
         </Breadcrumbs>
-        <Link href="/search" passHref>
-          <IconButton component="a">
-            <Search />
-          </IconButton>
-        </Link>
+        <IconButton component="a" onClick={() => { setShowSearchModal(true); }}>
+          <Search />
+        </IconButton>
+        <SearchModal
+          shown={showSearchModal}
+          container={container}
+          closeModal={() => { setShowSearchModal(false); }}
+        />
+
       </Grid>
 
       <Typography variant="h1" align="center" color="secondary.dark">Your Journey</Typography>
@@ -145,6 +151,7 @@ export async function getServerSideProps() {
 }
 
 YourJourney.propTypes = {
+  container: PropTypes.objectOf(PropTypes.any).isRequired,
   themes: PropTypes.arrayOf(
     PropTypes.objectOf(
       PropTypes.oneOfType([

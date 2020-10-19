@@ -28,7 +28,7 @@ describe('ThemePage', () => {
     );
 
     wrapper = shallow(
-      <ThemePage themes={themes} resources={resources} theme={theme} />,
+      <ThemePage themes={themes} resources={resources} theme={theme} container={{}} />,
     ).dive();
 
     expect(wrapper.find(Link)).toHaveLength(2);
@@ -40,7 +40,7 @@ describe('ThemePage', () => {
     const themes = allThemes.filter((t) => t.slug !== 'theme-that-doesnt-exist');
 
     wrapper = shallow(
-      <ThemePage themes={themes} resources={[]} theme={theme} />,
+      <ThemePage themes={themes} resources={[]} theme={theme} container={{}} />,
     ).dive();
     expect(wrapper.find(ResourceCard)).toHaveLength(0);
   });
@@ -50,7 +50,7 @@ describe('ThemePage', () => {
     const themes = allThemes.filter((t) => t.slug !== 'theme-without-resources');
 
     wrapper = shallow(
-      <ThemePage themes={themes} resources={[]} theme={theme} />,
+      <ThemePage themes={themes} resources={[]} theme={theme} container={{}} />,
     ).dive();
 
     expect(wrapper.find(Typography)).toHaveLength(5);
