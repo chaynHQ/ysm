@@ -47,6 +47,8 @@ const SignUpPrompt = ({ isSignedin }) => {
   const classes = useStyles();
   const { width } = useWindowDimensions();
 
+  console.log(isSignedin);
+
   return (
     <Box
       display="flex"
@@ -85,7 +87,6 @@ const SignUpPrompt = ({ isSignedin }) => {
               <Typography align="center" variant="subtitle1" className={classes.linkSubtitle}>
                 Your privacy will be protected.
               </Typography>
-              {/* TODO: NEED PROPER LINK HERE */}
               <Link href="/">
                 <LinkUi
                   component="a"
@@ -110,7 +111,7 @@ SignUpPrompt.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  isSignedin: state.user ? Object.keys(state.user) > 0 : false,
+  isSignedin: state.user ? Object.keys(state.user).length > 0 : false,
 });
 
 export default connect(mapStateToProps, null)(SignUpPrompt);
