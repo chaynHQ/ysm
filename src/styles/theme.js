@@ -13,7 +13,7 @@ const Theme = createMuiTheme({
       // #FD9E8C
     },
     secondary: {
-      light: '#717798',
+      light: '#E2E3E6',
       main: '#3A4167',
       dark: '#242A4A', // header text
       // #E2E3E6
@@ -22,7 +22,7 @@ const Theme = createMuiTheme({
       main: '#EC836F',
     },
     info: {
-      main: '#A8B5F8',
+      main: '#E2E3E6', // Static Pages header card background colour
     },
     warning: {
       main: '#4D4D4D',

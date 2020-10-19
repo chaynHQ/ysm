@@ -47,8 +47,6 @@ const SignUpPrompt = ({ isSignedin }) => {
   const classes = useStyles();
   const { width } = useWindowDimensions();
 
-  console.log(isSignedin);
-
   return (
     <Box
       display="flex"
