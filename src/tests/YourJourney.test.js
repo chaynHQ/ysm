@@ -17,6 +17,7 @@ describe('YourJourney', () => {
     wrapper = shallow(
       <YourJourney
         themes={themes}
+        container={{}}
       />,
     );
     expect(wrapper.find(Link)).toHaveLength(2);

@@ -63,8 +63,13 @@ const ThemePage = ({
         </Breadcrumbs>
         <IconButton component="a" onClick={() => setShowSearchModal(true)}>
           <Search />
-          <SearchModal shown={showSearchModal} container={container} />
         </IconButton>
+        <SearchModal
+          shown={showSearchModal}
+          container={container}
+          closeModal={() => setShowSearchModal(false)}
+        />
+
       </Grid>
       { !theme
         ? <Typography>Theme does not exist</Typography>

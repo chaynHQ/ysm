@@ -82,10 +82,15 @@ const YourJourney = ({ themes, container }) => {
           </Link>
 
         </Breadcrumbs>
-        <IconButton component="a" onClick={() => setShowSearchModal(true)}>
+        <IconButton component="a" onClick={() => { setShowSearchModal(true); }}>
           <Search />
-          <SearchModal shown={showSearchModal} container={container} />
         </IconButton>
+        <SearchModal
+          shown={showSearchModal}
+          container={container}
+          closeModal={() => { setShowSearchModal(false); }}
+        />
+
       </Grid>
 
       <Typography variant="h1" align="center" color="secondary.dark">Your Journey</Typography>

@@ -142,11 +142,11 @@ const Theme = createMuiTheme({
       root: {
         borderRadius: 6,
       },
-      input: {
-        backgroundColor: '#FFF',
-      },
     },
     MuiOutlinedInput: {
+      root: {
+        borderRadius: 120,
+      },
       notchedOutline: {
         borderColor: '#DADDED',
       },

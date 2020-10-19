@@ -1,7 +1,14 @@
 import {
-  Box, Button, Dialog, InputAdornment, LinearProgress, makeStyles, TextField, Typography,
+  Box,
+  Button,
+  Dialog,
+  IconButton,
+  InputAdornment,
+  LinearProgress,
+  TextField,
+  Typography,
 } from '@material-ui/core';
-import { Search as SearchIcon } from '@material-ui/icons';
+import { ArrowBack, Clear } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import useWindowDimensions from '../shared/dimensions';
@@ -9,20 +16,8 @@ import { axiosGet } from '../store/axios';
 import theme from '../styles/theme';
 import ResourceCard from './ResourceCard';
 
-const useStyles = makeStyles({
-  icon: {
-    width: 20,
-    height: 20,
-  },
-  title: {
-    paddingLeft: 4,
-    marginBottom: 0,
-  },
-});
-
-const Search = ({ shown, container }) => {
+const Search = ({ shown, container, closeModal }) => {
   const { height, width } = useWindowDimensions();
-  const classes = useStyles();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searchStatus, setSearchStatus] = useState('noSearch');
@@ -51,18 +46,23 @@ const Search = ({ shown, container }) => {
   } else if (searchStatus === 'noResults') {
     content = <Typography>No results</Typography>;
   } else if (searchStatus === 'searching') {
-    content = <LinearProgress />;
+    content = <LinearProgress color="secondary" />;
   } else if (searchStatus === 'hasResults') {
-    content = searchResults.map((resource) => (
-      <ResourceCard
-        id={resource.id}
-        title={resource.title}
-        subtitle={resource.subtitle}
-        image={resource.image}
-        slug={resource.slug}
-        savingRedirectUrl="/search"
-      />
-    ));
+    content = (
+      <>
+        <Typography variant="h1">Results: </Typography>
+        {searchResults.map((resource) => (
+          <ResourceCard
+            id={resource.id}
+            title={resource.title}
+            subtitle={resource.subtitle}
+            image={resource.image}
+            slug={resource.slug}
+            savingRedirectUrl="/search"
+          />
+        ))}
+      </>
+    );
   }
 
   return (
@@ -83,38 +83,48 @@ const Search = ({ shown, container }) => {
       }}
       maxWidth="xl"
     >
-      <Box height={height} width={width} p={2}>
+      <Box height={height} width={width} display="flex" flexDirection="column">
         <Box
           display="flex"
-          flexDirection="column"
-          direction="column"
-          height={height * 0.125}
+          alignItems="center"
+          boxShadow={2}
+          p={2}
         >
-          <TextField
-            placeholder="Placeholder"
-            autoFocus
-            fullWidth
-            margin="normal"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Button onClick={() => { getSearchResults(searchTerm); }}>
-                    Search
-                  </Button>
-                </InputAdornment>
-              ),
-            }}
-            variant="outlined"
-            onKeyPress={(event) => (event.key === 'Enter' ? getSearchResults(searchTerm) : null)}
-            onChange={(event) => setSearchTerm(event.target.value)}
-          />
+
+          <IconButton onClick={() => { closeModal(false); }}>
+            <ArrowBack />
+          </IconButton>
+          <Box flexGrow={1} pl={3}>
+            <TextField
+              placeholder="Search YSM..."
+              autoFocus
+              fullWidth
+              margin="none"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {
+                    searchStatus === 'hasResults' || searchStatus === 'searching'
+                      ? (
+                        <IconButton onClick={() => { setSearchResults([]); setSearchStatus('noSearch'); setSearchTerm(''); }}><Clear /></IconButton>
+
+                      ) : (
+                        <Button onClick={() => { getSearchResults(searchTerm); }}>
+                          Search
+                        </Button>
+                      )
+              }
+                  </InputAdornment>
+                ),
+              }}
+              variant="outlined"
+              value={searchTerm}
+              onKeyPress={(event) => (event.key === 'Enter' ? getSearchResults(searchTerm) : null)}
+              onChange={(event) => setSearchTerm(event.target.value)}
+            />
+          </Box>
         </Box>
-        <Box height={height * 0.875} overflow="scroll">
+        <Box p={2} flexGrow={1} overflow="scroll">
           {content}
         </Box>
       </Box>
@@ -126,6 +136,7 @@ const Search = ({ shown, container }) => {
 Search.propTypes = {
   container: PropTypes.objectOf(PropTypes.any).isRequired,
   shown: PropTypes.bool,
+  closeModal: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {
