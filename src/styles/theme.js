@@ -44,6 +44,9 @@ const Theme = createMuiTheme({
       fontWeight: 700,
       color: '#242A4A',
     },
+    h6: {
+      lineHeight: 18,
+    },
     body1: {
       fontSize: 16,
       color: '#717798',
@@ -97,12 +100,17 @@ const Theme = createMuiTheme({
         backgroundColor: '#EFE9E5',
         alignItems: 'flex-start',
         height: '100%',
-
+        padding: 8,
       },
     },
     MuiBottomNavigationAction: {
       root: {
+        paddingTop: 0,
+        paddingBottom: 0,
+        paddingRight: 12,
+        paddingLeft: 12,
         '&$selected': {
+          paddingTop: 0,
           color: '#D27200',
         },
       },

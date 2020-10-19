@@ -53,14 +53,17 @@ function App({ Component, pageProps }) {
             alignItems="center"
             justifyContent="center"
           >
-            <Box height={height} width={width} overflow="scroll" boxShadow={3} position="relative" ref={containerRef}>
-              <Box flexGrow={1} display="flex" flexDirection="column">
-                <Header menuContainer={containerRef} />
-                <Box height={height * 0.875} overflow="scroll">
-                  <Component {...pageProps} />
-                </Box>
-                <Footer />
+            <Box height={height} width={width} overflow="hidden" boxShadow={3} position="relative" ref={containerRef} display="flex" flexDirection="column">
+              <Header menuContainer={containerRef} />
+              <Box
+                display="flex"
+                flexDirection="column"
+                flexGrow={1}
+                overflow="scroll"
+              >
+                <Component {...pageProps} />
               </Box>
+              <Footer />
             </Box>
           </Box>
         </ThemeProvider>

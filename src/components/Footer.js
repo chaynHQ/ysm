@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-
+import { BottomNavigation, BottomNavigationAction, Box } from '@material-ui/core';
 import {
-  BottomNavigationAction, BottomNavigation, Box,
-} from '@material-ui/core';
-import {
-  ExitToApp, ImportContacts, LocationOn, Bookmark,
+  Bookmark, ExitToApp, ImportContacts, LocationOn,
 } from '@material-ui/icons';
-
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import useWindowDimensions from '../shared/dimensions';
 
 const Footer = () => {
@@ -30,7 +26,7 @@ const Footer = () => {
   }, [router]);
 
   return (
-    <Box height={height * 0.075}>
+    <Box>
       <BottomNavigation
         showLabels
         value={selected}
