@@ -32,6 +32,7 @@
     "axios": "^0.20.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.4",
+    "eslint-config-react-app": "^5.2.1",
     "firebase": "^7.19.1",
     "firebaseui": "^4.6.1",
     "http-proxy-middleware": "^1.0.5",
@@ -75,7 +76,6 @@
     ]
   },
   "devDependencies": {
-    "add": "^2.0.6",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",
@@ -83,7 +83,6 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",
     "jest": "^26.4.2",
-    "redux-mock-store": "^1.5.4",
-    "yarn": "^1.22.5"
+    "redux-mock-store": "^1.5.4"
   }
 }
