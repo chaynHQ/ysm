@@ -49,19 +49,19 @@ const SignUpWidget = ({
             setShowTermsStep(false);
             await firebase.auth().signOut();
           } else if (signedInUser.emailVerified) {
-            const serverUser = await axiosGet('/profile',
+            const profile = await axiosGet('/profile',
               {
                 headers: {
                   authorization: `Bearer ${signedInUser.xa}`,
                 },
               });
-            if (serverUser.termsAccepted) {
+            if (profile.termsAccepted) {
               if (router.pathname === '/settings') {
                 setSettingsAuthOnSuccess(true);
               } else {
                 router.push(redirectUrl || '/');
               }
-            } if (!serverUser.termsAccepted) {
+            } if (!profile.termsAccepted) {
               setShowTermsStep(true);
               setShowVerificationStep(false);
             }
@@ -74,13 +74,13 @@ const SignUpWidget = ({
 
   useEffect(() => {
     const checkTermsAcceptance = async (u) => {
-      const serverUser = await axiosGet('/profile',
+      const profile = await axiosGet('/profile',
         {
           headers: {
             authorization: `Bearer ${u.xa}`,
           },
         });
-      return serverUser.termsAccepted;
+      return profile.termsAccepted;
     };
     if (user) {
       if (!user.emailVerified) {

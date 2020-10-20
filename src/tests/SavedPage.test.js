@@ -6,6 +6,14 @@ import SavedPage from '../pages/saved';
 
 const mockStore = configureMockStore();
 
+jest.mock('../config/firebase');
+
+jest.mock('react-firebase-hooks/auth', () => ({
+  useAuthState: () => ([
+    undefined, {}, {}]
+  ),
+}));
+
 describe('Saved Resources Page', () => {
   let wrapper;
   let shallow;

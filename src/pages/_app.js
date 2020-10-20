@@ -63,7 +63,7 @@ function App({ Component, pageProps }) {
       // If there is a user but they aren't verified log them out
       firebase.auth().signOut();
     }
-  }, [user, router]);
+  }, [user]);
 
   const store = useStore(pageProps.initialReduxState);
 

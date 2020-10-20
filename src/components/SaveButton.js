@@ -10,13 +10,13 @@ import { deleteBookmark, setBookmark } from '../store/actions';
 import { axiosDelete, axiosPut } from '../store/axios';
 
 const SaveButton = ({
-  resourceSlug, redirectUrl, deleteBookmarkOnClick, setBookmarkOnClick, serverUser,
+  resourceSlug, redirectUrl, deleteBookmarkOnClick, setBookmarkOnClick, profile,
 }) => {
   const router = useRouter();
   const [user] = useAuthState(firebase.auth());
 
-  const saved = serverUser.bookmarkedResources
-    && serverUser.bookmarkedResources.includes(resourceSlug);
+  const saved = profile.bookmarkedResources
+    && profile.bookmarkedResources.includes(resourceSlug);
 
   return (
     <>
@@ -63,7 +63,7 @@ const SaveButton = ({
 SaveButton.propTypes = {
   resourceSlug: PropTypes.string.isRequired,
   redirectUrl: PropTypes.string,
-  serverUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  profile: PropTypes.objectOf(PropTypes.any).isRequired,
   setBookmarkOnClick: PropTypes.func.isRequired,
   deleteBookmarkOnClick: PropTypes.func.isRequired,
 };
@@ -73,7 +73,7 @@ SaveButton.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  serverUser: state.user,
+  profile: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({

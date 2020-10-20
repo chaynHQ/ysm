@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#ffffff',
   },
 }));
-const Saved = ({ serverUser }) => {
+const Saved = ({ profile }) => {
   const classes = useStyles();
   const [bookmarks, setBookmarks] = useState([]);
   const [user] = useAuthState(firebase.auth());
@@ -32,7 +32,7 @@ const Saved = ({ serverUser }) => {
     };
 
     const getBookmarkData = async () => {
-      const promises = serverUser.bookmarkedResources.map(async (b) => {
+      const promises = profile.bookmarkedResources.map(async (b) => {
         const res = await getResourceData(b);
         return res;
       });
@@ -43,7 +43,7 @@ const Saved = ({ serverUser }) => {
       return tempBookmarks;
     };
 
-    if (user && serverUser.bookmarkedResources) {
+    if (user && profile.bookmarkedResources) {
       getBookmarkData();
     }
   }, [user]);
@@ -145,11 +145,11 @@ const Saved = ({ serverUser }) => {
 };
 
 Saved.propTypes = {
-  serverUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  profile: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  serverUser: state.user,
+  profile: state.user,
 });
 
 export default connect(mapStateToProps, null)(Saved);

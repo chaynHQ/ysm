@@ -9,8 +9,13 @@ import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import Header from '../components/Header';
 
-jest.mock('react-firebase-hooks/auth');
 jest.mock('../config/firebase');
+
+jest.mock('react-firebase-hooks/auth', () => ({
+  useAuthState: () => ([
+    undefined, {}, {}]
+  ),
+}));
 const mockStore = configureMockStore();
 
 describe('Header', () => {
@@ -37,48 +42,36 @@ describe('Header', () => {
 
   it('opens and closes drawer on Exit app click', () => {
     wrapper.find(Menu).closest(IconButton).simulate('click');
-    wrapper.update();
-    expect(wrapper.find(Drawer).props().open).toEqual(true);
     wrapper.find(ExitToApp).closest(LinkUi).simulate('click');
     wrapper.update();
     expect(wrapper.find(Drawer).props().open).toEqual(false);
   });
   it('opens and closes drawer on Home click', () => {
     wrapper.find(Menu).closest(IconButton).simulate('click');
-    wrapper.update();
-    expect(wrapper.find(Drawer).props().open).toEqual(true);
     wrapper.find(Home).closest(LinkUi).simulate('click');
     wrapper.update();
     expect(wrapper.find(Drawer).props().open).toEqual(false);
   });
   it('opens and closes drawer on About click', () => {
     wrapper.find(Menu).closest(IconButton).simulate('click');
-    wrapper.update();
-    expect(wrapper.find(Drawer).props().open).toEqual(true);
     wrapper.find(Info).closest(LinkUi).simulate('click');
     wrapper.update();
     expect(wrapper.find(Drawer).props().open).toEqual(false);
   });
   it('opens and closes drawer on Privacy click', () => {
     wrapper.find(Menu).closest(IconButton).simulate('click');
-    wrapper.update();
-    expect(wrapper.find(Drawer).props().open).toEqual(true);
     wrapper.find(MenuBook).closest(LinkUi).simulate('click');
     wrapper.update();
     expect(wrapper.find(Drawer).props().open).toEqual(false);
   });
   it('opens and closes drawer on Profile click', () => {
     wrapper.find(Menu).closest(IconButton).simulate('click');
-    wrapper.update();
-    expect(wrapper.find(Drawer).props().open).toEqual(true);
     wrapper.find(AccountCircle).closest(LinkUi).simulate('click');
     wrapper.update();
     expect(wrapper.find(Drawer).props().open).toEqual(false);
   });
   it('opens and closes drawer on Close Menu click', () => {
     wrapper.find(Menu).closest(IconButton).simulate('click');
-    wrapper.update();
-    expect(wrapper.find(Drawer).props().open).toEqual(true);
     wrapper.find(Clear).closest(IconButton).simulate('click');
     wrapper.update();
     expect(wrapper.find(Drawer).props().open).toEqual(false);
