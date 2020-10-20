@@ -1,16 +1,13 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-
 import {
-  makeStyles,
+  Avatar, Box,
+  Button, makeStyles,
   Typography,
-  Box,
-  Button,
-  Avatar,
 } from '@material-ui/core';
-import Link from 'next/link';
 import LinkUi from '@material-ui/core/Link';
+import Link from 'next/link';
+import React from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import firebase from '../config/firebase';
 import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles((theme) => ({
@@ -46,9 +43,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUpPrompt = ({ isSignedin }) => {
+const isBrowser = typeof window !== 'undefined';
+
+const SignUpPrompt = () => {
   const classes = useStyles();
   const { width } = useWindowDimensions();
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   return (
     <Box
@@ -59,7 +59,7 @@ const SignUpPrompt = ({ isSignedin }) => {
       pt={3.5}
       px={2}
     >
-      {isSignedin ? null
+      {user ? null
         : (
           <Box
             display="flex"
@@ -79,8 +79,8 @@ const SignUpPrompt = ({ isSignedin }) => {
             <Typography align="center">
               Sign up to Your Story Matters and privately save resources for later.
             </Typography>
-            <Link href="/signin">
-              <Button variant="contained" disableElevation color="primary" component="a" to="/signin">
+            <Link href="/sign-in">
+              <Button variant="contained" disableElevation color="primary" component="a" to="/sign-in">
                 Create Your Account
               </Button>
             </Link>
@@ -88,13 +88,12 @@ const SignUpPrompt = ({ isSignedin }) => {
               <Typography align="center" variant="subtitle1" className={classes.linkSubtitle}>
                 Your privacy will be protected.
               </Typography>
-              {/* TODO: NEED PROPER LINK HERE */}
               <Link href="/">
                 <LinkUi
                   component="a"
                   color="textPrimary"
                   underline="always"
-                  to="/"
+                  to="/privacy"
                   align="center"
                 >
                   Read our Terms & Privacy Policy
@@ -108,12 +107,4 @@ const SignUpPrompt = ({ isSignedin }) => {
   );
 };
 
-SignUpPrompt.propTypes = {
-  isSignedin: PropTypes.bool.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  isSignedin: state.user ? Object.keys(state.user) > 0 : false,
-});
-
-export default connect(mapStateToProps, null)(SignUpPrompt);
+export default SignUpPrompt;

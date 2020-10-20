@@ -13,7 +13,7 @@ const Theme = createMuiTheme({
       // #FD9E8C
     },
     secondary: {
-      light: '#717798',
+      light: '#E2E3E6',
       main: '#3A4167',
       dark: '#242A4A', // header text
       // #E2E3E6
@@ -22,7 +22,7 @@ const Theme = createMuiTheme({
       main: '#EC836F',
     },
     info: {
-      main: '#A8B5F8',
+      main: '#E2E3E6', // Static Pages header card background colour
     },
     warning: {
       main: '#4D4D4D',
@@ -43,6 +43,9 @@ const Theme = createMuiTheme({
       fontSize: 16,
       fontWeight: 700,
       color: '#242A4A',
+    },
+    h6: {
+      lineHeight: 18,
     },
     body1: {
       fontSize: 16,
@@ -97,12 +100,17 @@ const Theme = createMuiTheme({
         backgroundColor: '#EFE9E5',
         alignItems: 'flex-start',
         height: '100%',
-
+        padding: 8,
       },
     },
     MuiBottomNavigationAction: {
       root: {
+        paddingTop: 0,
+        paddingBottom: 0,
+        paddingRight: 12,
+        paddingLeft: 12,
         '&$selected': {
+          paddingTop: 0,
           color: '#D27200',
         },
       },

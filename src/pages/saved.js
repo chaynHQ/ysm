@@ -6,9 +6,10 @@ import { AccountCircle } from '@material-ui/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import ResourceCard from '../components/ResourceCard';
-import { setSettingsAuth, setUserSignIn } from '../store/actions';
+import firebase from '../config/firebase';
 import { axiosGet } from '../store/axios';
 
 const useStyles = makeStyles(() => ({
@@ -19,11 +20,13 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#ffffff',
   },
 }));
-const Saved = ({
-  isSignedin, user, setUserSignInOnClick, setSettingsAuthOnError,
-}) => {
+
+const isBrowser = typeof window !== 'undefined';
+
+const Saved = ({ profile }) => {
   const classes = useStyles();
   const [bookmarks, setBookmarks] = useState([]);
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   useEffect(() => {
     const getResourceData = async (slug) => {
@@ -32,7 +35,7 @@ const Saved = ({
     };
 
     const getBookmarkData = async () => {
-      const promises = user.bookmarkedResources.map(async (b) => {
+      const promises = profile.bookmarkedResources.map(async (b) => {
         const res = await getResourceData(b);
         return res;
       });
@@ -43,7 +46,7 @@ const Saved = ({
       return tempBookmarks;
     };
 
-    if (isSignedin && user.bookmarkedResources) {
+    if (user && profile.bookmarkedResources) {
       getBookmarkData();
     }
   }, [user]);
@@ -56,7 +59,7 @@ const Saved = ({
       alignItems="center"
     >
 
-      { isSignedin
+      { user
         ? (
           <Box display="flex" justifyContent="space-between" width={1} px={3} pt={2} bgcolor="#FFEAE3">
             <Link href="/settings" passHref>
@@ -70,8 +73,8 @@ const Saved = ({
             <LinkUi
               color="textSecondary"
               onClick={() => {
-                setUserSignInOnClick({});
-                setSettingsAuthOnError(false);
+                firebase.auth().signOut();
+                setBookmarks([]);
               }}
             >
               Log out
@@ -87,11 +90,11 @@ const Saved = ({
       >
         <Typography variant="h1" align="center">Saved for Later</Typography>
         <Typography>
-          { isSignedin && bookmarks.length < 1 ? "You haven't saved any resources yet!" : null }
+          { user && bookmarks.length < 1 ? "You haven't saved any resources yet!" : null }
           {' '}
         </Typography>
 
-        { isSignedin && bookmarks.length < 1 ? (
+        { user && bookmarks.length < 1 ? (
           <Typography>
             Start exploring:
             <Link href="/your-journey">
@@ -115,7 +118,7 @@ const Saved = ({
             />
           )) }
 
-        {!isSignedin
+        {!user
           ? (
             <Card variant="outlined" className={classes.card}>
               <Link href="/sign-in">
@@ -145,21 +148,11 @@ const Saved = ({
 };
 
 Saved.propTypes = {
-  setSettingsAuthOnError: PropTypes.func.isRequired,
-  setUserSignInOnClick: PropTypes.func.isRequired,
-  isSignedin: PropTypes.bool.isRequired,
-  user: PropTypes.objectOf(PropTypes.any).isRequired,
+  profile: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
-  isSignedin: state.user ? Object.keys(state.user).length > 0 : false,
+  profile: state.user,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setSettingsAuthOnError: (bool) => dispatch(setSettingsAuth(bool)),
-  setUserSignInOnClick: (user) => dispatch(setUserSignIn(user)),
-
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Saved);
+export default connect(mapStateToProps, null)(Saved);

@@ -3,12 +3,16 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'firebaseui/dist/firebaseui.css';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Provider } from 'react-redux';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import firebase from '../config/firebase';
 import useWindowDimensions from '../shared/dimensions';
+import { axiosGet } from '../store/axios';
 import { useStore } from '../store/store';
 import theme from '../styles/theme';
 
@@ -20,9 +24,13 @@ const useStyles = makeStyles({
 
 });
 
+const isBrowser = typeof window !== 'undefined';
+
 function App({ Component, pageProps }) {
+  const router = useRouter();
   const classes = useStyles();
   const { height, width } = useWindowDimensions();
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const containerRef = useRef();
 
@@ -33,6 +41,31 @@ function App({ Component, pageProps }) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
+
+  useEffect(() => {
+    // This effect is called everytime the user changes because firebase has updated the token
+    // or if the router changes (i.e the user navigates)
+    const checkTermsAcceptance = async (u) => {
+      const serverUser = await axiosGet('/profile',
+        {
+          headers: {
+            authorization: `Bearer ${u.xa}`,
+          },
+        });
+      return serverUser.termsAccepted;
+    };
+    if (user && user.emailVerified) {
+      checkTermsAcceptance(user).then((termsAccepted) => {
+        // If there is a verified user but they haven't accepted the terms, reroute them to sign-in
+        if (!termsAccepted) {
+          router.push('/sign-in');
+        }
+      });
+    } else if (user && !user.emailVerified) {
+      // If there is a user but they aren't verified log them out
+      firebase.auth().signOut();
+    }
+  }, [user]);
 
   const store = useStore(pageProps.initialReduxState);
 
@@ -52,14 +85,17 @@ function App({ Component, pageProps }) {
             alignItems="center"
             justifyContent="center"
           >
-            <Box height={height} width={width} overflow="scroll" boxShadow={3} position="relative" ref={containerRef}>
-              <Box flexGrow={1} display="flex" flexDirection="column">
-                <Header menuContainer={containerRef} />
-                <Box height={height * 0.875} overflow="scroll">
-                  <Component {...pageProps} container={containerRef} />
-                </Box>
-                <Footer />
+            <Box height={height} width={width} overflow="hidden" boxShadow={3} position="relative" ref={containerRef} display="flex" flexDirection="column">
+              <Header menuContainer={containerRef} />
+              <Box
+                display="flex"
+                flexDirection="column"
+                flexGrow={1}
+                overflow="scroll"
+              >
+                <Component {...pageProps} container={containerRef} />
               </Box>
+              <Footer />
             </Box>
           </Box>
         </ThemeProvider>

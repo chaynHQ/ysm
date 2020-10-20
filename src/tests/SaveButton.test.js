@@ -23,6 +23,14 @@ jest.mock('next/router', () => ({
   }),
 }));
 
+jest.mock('../config/firebase');
+
+jest.mock('react-firebase-hooks/auth', () => ({
+  useAuthState: () => ([
+    {}, {}, {}]
+  ),
+}));
+
 describe("SaveButton when resource isn't saved", () => {
   let wrapper;
   let shallow;

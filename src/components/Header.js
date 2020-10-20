@@ -8,7 +8,8 @@ import {
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import firebase from '../config/firebase';
 import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles({
@@ -22,10 +23,13 @@ const useStyles = makeStyles({
   },
 });
 
-const Header = ({ menuContainer, isSignedin }) => {
+const isBrowser = typeof window !== 'undefined';
+
+const Header = ({ menuContainer }) => {
   const classes = useStyles();
   const { height } = useWindowDimensions();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   return (
     <Box
@@ -35,7 +39,6 @@ const Header = ({ menuContainer, isSignedin }) => {
       justifyContent="space-between"
       width={1}
       bgcolor="#EFE9E5"
-      height={height * 0.05}
     >
       <Box p={2}>
         <IconButton onClick={() => { setDrawerOpen(true); }}>
@@ -80,7 +83,7 @@ const Header = ({ menuContainer, isSignedin }) => {
           height={height * 0.05}
           px={2}
         >
-          <Box display="flex">
+          <Box display="flex" pr={2}>
             {' '}
             <img
               className={classes.icon}
@@ -126,13 +129,13 @@ const Header = ({ menuContainer, isSignedin }) => {
             </LinkUi>
           </Link>
 
-          <Link href={isSignedin ? '/settings' : '/sign-in'} passHref>
+          <Link href={user ? '/settings' : '/sign-in'} passHref>
             <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
               <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                 <Icon>
                   <AccountCircle />
                 </Icon>
-                {isSignedin ? 'My account' : 'Sign Up'}
+                {user ? 'My account' : 'Sign Up'}
               </Box>
             </LinkUi>
           </Link>
@@ -154,11 +157,6 @@ const Header = ({ menuContainer, isSignedin }) => {
 
 Header.propTypes = {
   menuContainer: PropTypes.objectOf(PropTypes.any).isRequired,
-  isSignedin: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  isSignedin: state.user ? Object.keys(state.user) > 0 : false,
-});
-
-export default connect(mapStateToProps, null)(Header);
+export default Header;
