@@ -43,10 +43,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const isBrowser = typeof window !== 'undefined';
+
 const SignUpPrompt = () => {
   const classes = useStyles();
   const { width } = useWindowDimensions();
-  const [user] = useAuthState(firebase.auth());
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   return (
     <Box

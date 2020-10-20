@@ -9,11 +9,13 @@ import firebase from '../config/firebase';
 import { deleteBookmark, setBookmark } from '../store/actions';
 import { axiosDelete, axiosPut } from '../store/axios';
 
+const isBrowser = typeof window !== 'undefined';
+
 const SaveButton = ({
   resourceSlug, redirectUrl, deleteBookmarkOnClick, setBookmarkOnClick, profile,
 }) => {
   const router = useRouter();
-  const [user] = useAuthState(firebase.auth());
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const saved = profile.bookmarkedResources
     && profile.bookmarkedResources.includes(resourceSlug);

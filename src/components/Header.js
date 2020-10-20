@@ -23,11 +23,13 @@ const useStyles = makeStyles({
   },
 });
 
+const isBrowser = typeof window !== 'undefined';
+
 const Header = ({ menuContainer }) => {
   const classes = useStyles();
   const { height } = useWindowDimensions();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [user] = useAuthState(firebase.auth());
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   return (
     <Box

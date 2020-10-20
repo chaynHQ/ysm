@@ -20,10 +20,13 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#ffffff',
   },
 }));
+
+const isBrowser = typeof window !== 'undefined';
+
 const Saved = ({ profile }) => {
   const classes = useStyles();
   const [bookmarks, setBookmarks] = useState([]);
-  const [user] = useAuthState(firebase.auth());
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   useEffect(() => {
     const getResourceData = async (slug) => {

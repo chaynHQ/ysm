@@ -21,12 +21,14 @@ const useStyles = makeStyles({
   },
 });
 
+const isBrowser = typeof window !== 'undefined';
+
 const SignUpWidget = ({
   redirectUrl, setSettingsAuthOnSuccess,
 }) => {
   const router = useRouter();
   const classes = useStyles();
-  const [user] = useAuthState(firebase.auth());
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const [showVerificationStep, setShowVerificationStep] = useState(false);
   const [showTermsStep, setShowTermsStep] = useState(false);
 
