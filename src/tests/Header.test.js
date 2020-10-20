@@ -1,14 +1,16 @@
-import configureMockStore from 'redux-mock-store';
-import { createShallow } from '@material-ui/core/test-utils';
-import React from 'react';
-import { IconButton, Drawer } from '@material-ui/core';
+import { Drawer, IconButton } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
-import Link from 'next/link';
+import { createShallow } from '@material-ui/core/test-utils';
 import {
-  Menu, Clear, Home, Info, MenuBook, AccountCircle, ExitToApp,
+  AccountCircle, Clear, ExitToApp, Home, Info, Menu, MenuBook,
 } from '@material-ui/icons';
+import Link from 'next/link';
+import React from 'react';
+import configureMockStore from 'redux-mock-store';
 import Header from '../components/Header';
 
+jest.mock('react-firebase-hooks/auth');
+jest.mock('../config/firebase');
 const mockStore = configureMockStore();
 
 describe('Header', () => {
@@ -24,7 +26,7 @@ describe('Header', () => {
         menuContainer={{}}
         store={store}
       />,
-    ).dive().dive();
+    ).dive();
   });
 
   it('renders with correct number of links', () => {

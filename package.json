@@ -40,6 +40,7 @@
     "react": "16.13.1",
     "react-device-detect": "^1.14.0",
     "react-dom": "16.13.1",
+    "react-firebase-hooks": "^2.2.0",
     "react-html-parser": "^2.0.2",
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",

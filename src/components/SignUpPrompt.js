@@ -5,9 +5,9 @@ import {
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import firebase from '../config/firebase';
 import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,9 +43,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUpPrompt = ({ isSignedin }) => {
+const SignUpPrompt = () => {
   const classes = useStyles();
   const { width } = useWindowDimensions();
+  const [user] = useAuthState(firebase.auth());
 
   return (
     <Box
@@ -56,7 +57,7 @@ const SignUpPrompt = ({ isSignedin }) => {
       pt={3.5}
       px={2}
     >
-      {isSignedin ? null
+      {user ? null
         : (
           <Box
             display="flex"
@@ -104,12 +105,4 @@ const SignUpPrompt = ({ isSignedin }) => {
   );
 };
 
-SignUpPrompt.propTypes = {
-  isSignedin: PropTypes.bool.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  isSignedin: state.user ? Object.keys(state.user).length > 1 : false,
-});
-
-export default connect(mapStateToProps, null)(SignUpPrompt);
+export default SignUpPrompt;

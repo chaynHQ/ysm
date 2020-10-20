@@ -3,16 +3,20 @@ import { Bookmark, BookmarkBorder } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
+import firebase from '../config/firebase';
 import { deleteBookmark, setBookmark } from '../store/actions';
 import { axiosDelete, axiosPut } from '../store/axios';
 
 const SaveButton = ({
-  resourceSlug, redirectUrl, user, isSignedIn, deleteBookmarkOnClick, setBookmarkOnClick,
+  resourceSlug, redirectUrl, deleteBookmarkOnClick, setBookmarkOnClick, serverUser,
 }) => {
   const router = useRouter();
+  const [user] = useAuthState(firebase.auth());
 
-  const saved = user.bookmarkedResources && user.bookmarkedResources.includes(resourceSlug);
+  const saved = serverUser.bookmarkedResources
+    && serverUser.bookmarkedResources.includes(resourceSlug);
 
   return (
     <>
@@ -38,7 +42,7 @@ const SaveButton = ({
             size="small"
             startIcon={<BookmarkBorder />}
             onClick={() => {
-              if (isSignedIn) {
+              if (user) {
                 axiosPut(`/profile/bookmarks/resources/${resourceSlug}`, { resourceId: resourceSlug }, {
                   headers: {
                     authorization: `Bearer ${user.xa}`,
@@ -59,8 +63,7 @@ const SaveButton = ({
 SaveButton.propTypes = {
   resourceSlug: PropTypes.string.isRequired,
   redirectUrl: PropTypes.string,
-  user: PropTypes.objectOf(PropTypes.any).isRequired,
-  isSignedIn: PropTypes.bool.isRequired,
+  serverUser: PropTypes.objectOf(PropTypes.any).isRequired,
   setBookmarkOnClick: PropTypes.func.isRequired,
   deleteBookmarkOnClick: PropTypes.func.isRequired,
 };
@@ -70,8 +73,7 @@ SaveButton.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
-  isSignedIn: state.user ? Object.keys(state.user).length > 1 : false,
+  serverUser: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
