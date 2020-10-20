@@ -24,11 +24,13 @@ const useStyles = makeStyles({
 
 });
 
+const isBrowser = typeof window !== 'undefined';
+
 function App({ Component, pageProps }) {
   const router = useRouter();
   const classes = useStyles();
   const { height, width } = useWindowDimensions();
-  const [user] = useAuthState(firebase.auth());
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const containerRef = useRef();
 
