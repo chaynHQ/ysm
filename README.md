@@ -27,12 +27,21 @@ A [NextJs](https://nextjs.org/) VueJS app with PWA mode enabled and [Jest](https
 yarn
 ```
 
+### Create .env.local file
+
+Include the following environment variables in a .env.local file
+
+- NEXT_PUBLIC_FIREBASE_KEY
+- NEXT_PUBLIC_FIREBASE_DOMAIN
+- NEXT_PUBLIC_ROLLBAR_SERVER_TOKEN
+- NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN
+
 ### Run locally
 
 Start the app in development mode (with hot-code reloading, error reporting, etc.):
 
 ```bash
-yarn dev
+yarn dev:url
 ```
 
 ### Run unit tests

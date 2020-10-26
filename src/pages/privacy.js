@@ -1,9 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-
-import { axiosGet } from '../store/axios';
-
+import React from 'react';
 import StaticPage from '../components/StaticPage';
+import { axiosGet } from '../store/axios';
 
 const Privacy = ({ content }) => (
   <StaticPage content={content} />

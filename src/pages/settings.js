@@ -1,19 +1,16 @@
+import {
+  Box, Breadcrumbs, Button, Card, CardActions, CardContent, makeStyles, TextField, Typography,
+} from '@material-ui/core';
+import LinkUi from '@material-ui/core/Link';
+import { ArrowBack } from '@material-ui/icons';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import {
-  Box, Button, TextField, Typography, makeStyles, Breadcrumbs, Card, CardActions, CardContent,
-} from '@material-ui/core';
-import Link from 'next/link';
-import LinkUi from '@material-ui/core/Link';
-import {
-  ArrowBack,
-} from '@material-ui/icons';
-import PropTypes from 'prop-types';
-import dynamic from 'next/dynamic';
-
-import { setSettingsAuth, setUserSignIn } from '../store/actions';
-
 import firebase from '../config/firebase';
+import rollbar from '../shared/rollbar';
+import { setSettingsAuth, setUserSignIn } from '../store/actions';
 
 const SignUpWidget = dynamic(
   () => import('../components/SignUpWidget'),
@@ -48,6 +45,7 @@ const Settings = ({
           } else if (error.code === 'auth/requires-recent-login') {
             setSettingsAuthOnError(false);
           } else {
+            rollbar.error('Error updating password', error);
             throw error;
           }
         });
@@ -66,6 +64,7 @@ const Settings = ({
           if (error.code === 'auth/requires-recent-login') {
             setSettingsAuthOnError(false);
           } else {
+            rollbar.error('Error updating email', error);
             throw error;
           }
         });
@@ -83,6 +82,7 @@ const Settings = ({
         }).then(() => {
           // Update successful.
         }).catch((error) => {
+          rollbar.error('Error updating display name', error);
           throw error;
         });
       } else {
