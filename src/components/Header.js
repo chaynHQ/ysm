@@ -38,7 +38,7 @@ const Header = ({ menuContainer }) => {
       alignItems="center"
       justifyContent="space-between"
       width={1}
-      bgcolor="#EFE9E5"
+      bgcolor="primary.light"
     >
       <Box p={2}>
         <IconButton onClick={() => { setDrawerOpen(true); }}>

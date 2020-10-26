@@ -97,7 +97,7 @@ const Theme = createMuiTheme({
     },
     MuiBottomNavigation: {
       root: {
-        backgroundColor: '#EFE9E5',
+        backgroundColor: '#FEF6F1',
         alignItems: 'flex-start',
         height: '100%',
         padding: 8,
