@@ -35,6 +35,7 @@ Include the following environment variables in a .env.local file
 - NEXT_PUBLIC_FIREBASE_DOMAIN
 - NEXT_PUBLIC_ROLLBAR_SERVER_TOKEN
 - NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN
+- NEXT_PUBLIC_ROLLBAR_ENV
 
 ### Run locally
 
