@@ -1,10 +1,8 @@
-import React from 'react';
-
 import {
-  Button, makeStyles, Typography, Box, Avatar,
+  Avatar, Box, Button, makeStyles, Typography,
 } from '@material-ui/core';
 import Link from 'next/link';
-
+import React from 'react';
 import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles({
@@ -52,7 +50,7 @@ const Home = () => {
 
       <Box width="50%">
         <Typography align="center" variant="subtitle2" color="textSecondary">
-          If you&apos;re in crisis call the emergency services
+          If you&apos;re in crisis call the emergency services in your area.
         </Typography>
       </Box>
     </Box>
