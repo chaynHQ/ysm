@@ -29,7 +29,7 @@ const Item = ({ item, canBeSaved }) => {
       {canBeSaved ? <SaveButton resourceSlug={item.slug} /> : null}
 
       {item.type === 'external_link'
-        ? <LinkUi href={item.link} color="inherit">Go to resource</LinkUi>
+        ? <LinkUi href={item.link} target="_blank" color="inherit">Go to resource</LinkUi>
         : richTextHelper(item.content, (node) => richTextTransformer(node))}
 
     </Box>
