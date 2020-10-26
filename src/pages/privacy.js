@@ -8,7 +8,7 @@ const Privacy = ({ content }) => (
 );
 
 export async function getServerSideProps() {
-  const content = await axiosGet('pages/privac');
+  const content = await axiosGet('pages/privacy');
 
   return { props: { content } };
 }
