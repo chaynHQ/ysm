@@ -23,7 +23,7 @@ Error.getInitialProps = ({ req, res, err }) => {
   }
 
   const rollbarEnv = process.env.NEXT_PUBLIC_ROLLBAR_ENV;
-  const rollbarToken = process.env.NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN;
+  const rollbarToken = process.env.NEXT_PUBLIC_ROLLBAR_SERVER_TOKEN;
 
   // Only require Rollbar and report error if we're on the server & it's not a local 404.
   if (!process.browser && statusCode !== 404) {
