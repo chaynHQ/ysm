@@ -168,7 +168,7 @@ const SignUpWidget = ({
               If you are signing up for the first time, you can give us any name like
               &quot;New Sunshine&quot;
             </Typography>
-            <Typography>And if you’re signing in, welcome back queen!</Typography>
+            <Typography>And if you’re signing in, welcome back friend!</Typography>
 
             {/* TODO: NEED TO ADD PRIVACY POLICY & T&C's Link */}
             <Box id="firebaseui-auth-container" display={showTermsStep || showVerificationStep ? 'none' : 'block'} />
