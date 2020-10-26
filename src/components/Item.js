@@ -5,24 +5,36 @@ import React from 'react';
 import richTextHelper from '../shared/rich-text';
 import SaveButton from './SaveButton';
 
-const Item = ({ item, canBeSaved }) => (
-  <Box
-    display="flex"
-    flexDirection="column"
-    direction="column"
-    pt={3.5}
-    px={2}
-  >
-    <Typography variant="h1" align="center">{item.title}</Typography>
+const Item = ({ item, canBeSaved }) => {
+  const richTextTransformer = (node) => {
+    if (node.type === 'tag' && node.name === 'p' && node.children[0] && node.children[0].name === 'img') {
+      const img = node.children[0];
+      return (
+        <img src={img.attribs.src} alt={img.attribs.alt} />
+      );
+    }
 
-    {canBeSaved ? <SaveButton resourceSlug={item.slug} /> : null}
+    return undefined;
+  };
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      direction="column"
+      pt={3.5}
+      px={2}
+    >
+      <Typography variant="h1" align="center">{item.title}</Typography>
 
-    {item.type === 'external_link'
-      ? <LinkUi href={item.link} color="inherit">Go to resource</LinkUi>
-      : richTextHelper(item.content)}
+      {canBeSaved ? <SaveButton resourceSlug={item.slug} /> : null}
 
-  </Box>
-);
+      {item.type === 'external_link'
+        ? <LinkUi href={item.link} color="inherit">Go to resource</LinkUi>
+        : richTextHelper(item.content, (node) => richTextTransformer(node))}
+
+    </Box>
+  );
+};
 
 Item.propTypes = {
   item: PropTypes.objectOf(PropTypes.any).isRequired,
