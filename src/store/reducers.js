@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import {
   DELETE_BOOKMARK,
   SET_BOOKMARK,
+  SET_PREVIEW_MODE,
   SET_PROFILE,
   SET_RESOURCE,
   SET_RESOURCES,
@@ -56,6 +57,8 @@ const user = (state = {}, action) => {
         bookmarkedResources.push(action.data);
       }
       return { ...state, bookmarkedResources };
+    case SET_PREVIEW_MODE:
+      return { ...state, previewMode: action.data };
     default:
       return state;
   }

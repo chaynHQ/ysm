@@ -1,17 +1,22 @@
 import { axiosGet } from '../../store/axios';
 
 export default async function handler(req, res) {
-  // NOTE AT THE OMOMENT THIS ONLY CHECKS IF IT SHOULD BE TURNED ON
+  // NOTE AT THE MOMENT THIS ONLY CHECKS IF IT SHOULD BE TURNED ON
 
   try {
-    await axiosGet('/themes',
+    const previewModeCheck = await axiosGet('/',
       {
         headers: {
           'X-PREVIEW-MODE': 'preview',
           authorization: `Bearer ${req.query.token}`,
         },
       });
-  } catch {
+    if (previewModeCheck.previewMode) {
+      res.status(200).json({ message: "Preview mode turned on! The content you'll see now will include anything marked as saved but not published in storyblok.", allowed: true });
+    } else {
+      res.status(200).json({ message: "Preview mode couldn't be turned on. Please try again or get in touch with the dev team.", allowed: false });
+    }
+  } catch (err) {
     res.clearPreviewData();
     res.status(200).json({ message: 'Preview mode cannot be turned on because your email is not on the list of approved content editors. Please get in touch with the dev team.', allowed: false });
   }

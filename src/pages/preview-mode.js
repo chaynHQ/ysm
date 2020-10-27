@@ -3,18 +3,25 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useDispatch, useSelector } from 'react-redux';
 import firebase from '../config/firebase';
+import { setPreviewMode } from '../store/actions';
 import { axiosGet } from '../store/axios';
 
 const isBrowser = typeof window !== 'undefined';
 
 const PreviewMode = () => {
-  // ACTUALLY GET THIS FROM THE REACT STATE
-  const [checked, setChecked] = useState(false);
+  const dispatch = useDispatch();
   const router = useRouter();
+
+  // ACTUALLY GET THIS FROM THE REACT STATE
+  // const [checked, setChecked] = useState(false);
+  const previewMode = useSelector((state) => state.user.previewMode || false);
+
+  const [message, setMessage] = useState('');
+
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const loggedIn = (user && Object.keys(user).length > 0);
-  const [message, setMessage] = useState('');
 
   useEffect(() => {
     if (!loggedIn) {
@@ -31,9 +38,9 @@ const PreviewMode = () => {
               <Typography variant="h1">Toggle Preview Mode</Typography>
               <Box pl={2}>
                 <Checkbox
-                  checked={checked}
+                  checked={previewMode}
                   onChange={async () => {
-                    if (!checked) {
+                    if (!previewMode) {
                       const res = await axiosGet('/preview', {
                         params: {
                           token: user.xa,
@@ -41,11 +48,12 @@ const PreviewMode = () => {
                       });
                       setMessage(res.message);
                       if (res.allowed) {
-                        setChecked(!checked);
-                      // And set it in redux state
+                        dispatch(setPreviewMode(true));
+                      } else {
+                        dispatch(setPreviewMode(false));
                       }
                     } else {
-                    // Remove preview mode
+                      dispatch(setPreviewMode(false));
                     }
                   }}
                 />
