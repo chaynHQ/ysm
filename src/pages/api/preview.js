@@ -1,23 +1,21 @@
-import { useAuthState } from 'react-firebase-hooks/auth';
-import firebase from '../../config/firebase';
 import { axiosGet } from '../../store/axios';
-
-const isBrowser = typeof window !== 'undefined';
 
 export default async function handler(req, res) {
   // NOTE AT THE OMOMENT THIS ONLY CHECKS IF IT SHOULD BE TURNED ON
-  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
-  console.log('SETTING PREVIEW');
 
-  const userAllowedCheck = await axiosGet('/profile',
-    {
-      headers: {
-        'X-PREVIEW-MODE': 'preview',
-        authorization: `Bearer ${user.xa}`,
-      },
-    });
+  try {
+    await axiosGet('/themes',
+      {
+        headers: {
+          'X-PREVIEW-MODE': 'preview',
+          authorization: `Bearer ${req.query.token}`,
+        },
+      });
+  } catch {
+    res.clearPreviewData();
+    res.status(200).json({ message: 'Preview mode cannot be turned on because your email is not on the list of approved content editors. Please get in touch with the dev team.', allowed: false });
+  }
 
-  console.log(userAllowedCheck);
   // CHECK THAT IT IS THE RIGHT USER
   // if they are turn preview mode on
   // Set it in redux state &
