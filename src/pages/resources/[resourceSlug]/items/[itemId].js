@@ -49,6 +49,7 @@ const ItemPage = ({ resource, item, nextItem }) => {
             <ArrowBack className={classes.icon} />
             <Typography color="textSecondary" className={classes.breadcrumbs}>
               Part of:
+              {' '}
               <LinkUi
                 underline="always"
                 className={classes.link}

@@ -106,7 +106,7 @@ const ThemePage = ({
           </Box>
         )}
 
-      <Box>
+      <Box py={4}>
         <Typography variant="h2">Explore other themes </Typography>
 
         {themes.map((t) => (

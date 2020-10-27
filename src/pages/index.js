@@ -11,7 +11,6 @@ const useStyles = makeStyles({
     backgroundPosition: 'center',
   },
   iconContainer: {
-    backgroundColor: '#dadded',
     width: '100%',
     height: '100%',
   },
@@ -29,6 +28,7 @@ const Home = () => {
       justifyContent="center"
       alignItems="center"
     >
+      {/* TODO: Include the correct image */}
       <Box width={width * 0.5} height={width * 0.5} p={4}>
         <Avatar
           className={classes.iconContainer}

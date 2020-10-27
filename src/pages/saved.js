@@ -97,6 +97,7 @@ const Saved = ({ profile }) => {
         { user && bookmarks.length < 1 ? (
           <Typography>
             Start exploring:
+            {' '}
             <Link href="/your-journey">
               <LinkUi
                 underline="always"
