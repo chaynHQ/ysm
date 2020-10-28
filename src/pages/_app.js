@@ -21,6 +21,11 @@ const useStyles = makeStyles({
     height: '100vh',
     margin: 0,
   },
+  background: {
+    background: 'url(\'./background.png\')',
+    backgroundSize: '100% 100%',
+    backgroundRepeat: 'no-repeat',
+  },
 
 });
 
@@ -92,6 +97,7 @@ function App({ Component, pageProps }) {
                 flexDirection="column"
                 flexGrow={1}
                 overflow="scroll"
+                className={classes.background}
               >
                 <Component {...pageProps} container={containerRef} />
               </Box>

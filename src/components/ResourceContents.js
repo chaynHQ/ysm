@@ -66,7 +66,8 @@ const ResourceContents = ({ resource }) => {
               <CardContent>
                 <Grid container justify="space-between" direction="row">
                   <Typography color="textSecondary">
-                    Start here:
+                    Start here!
+                    {' '}
                     <LinkUi
                       underline="always"
                       className={classes.link}
