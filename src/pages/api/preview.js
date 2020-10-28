@@ -11,7 +11,7 @@ export default async function handler(req, res) {
       });
     if (previewModeCheck.previewMode) {
       res.setPreviewData({});
-      res.status(200).json({ message: "Preview mode turned on! The content you'll see now will include anything marked as saved but not published in storyblok.", allowed: true });
+      res.status(200).json({ message: "Preview mode turned on! You'll now see all the latest content including any new draft content that's not yet published.", allowed: true });
     } else {
       res.clearPreviewData();
       res.status(200).json({ message: "Preview mode couldn't be turned on. Please try again or get in touch with the dev team.", allowed: false });
