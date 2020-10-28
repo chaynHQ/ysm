@@ -53,7 +53,7 @@ const Theme = createMuiTheme({
     },
     body2: {
       fontSize: 16,
-      color: '#717798',
+      color: '#242A4A',
     },
     subtitle1: {
       fontSize: 14,
@@ -97,7 +97,7 @@ const Theme = createMuiTheme({
     },
     MuiBottomNavigation: {
       root: {
-        backgroundColor: '#EFE9E5',
+        backgroundColor: '#FEF6F1',
         alignItems: 'flex-start',
         height: '100%',
         padding: 8,

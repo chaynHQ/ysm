@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import firebase, { uiConfig } from '../config/firebase';
+import rollbar from '../shared/rollbar';
 import { setSettingsAuth } from '../store/actions';
 import { axiosGet, axiosPut } from '../store/axios';
 
@@ -31,47 +32,82 @@ const SignUpWidget = ({
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const [showVerificationStep, setShowVerificationStep] = useState(false);
   const [showTermsStep, setShowTermsStep] = useState(false);
+  const [showErrorText, setShowErrorText] = useState(false);
+  const [errorText, setErrorText] = useState('');
+
+  const handleError = (error) => {
+    setShowVerificationStep(false);
+    setShowTermsStep(false);
+    setShowErrorText(true);
+    switch (error.code) {
+      case 'auth/unsupported-persistence-type':
+        setErrorText('There may be a problem with your cookies or storage that is stopping us from signing you in. Please check your settings.');
+        break;
+      case 'auth/network-request-failed':
+        setErrorText('It looks like there is an issue with your network or connection that is preventing us from signing you in. Please check your settings.');
+        break;
+      case 'auth/too-many-requests':
+        setErrorText('It looks like there have been a lot of sign in attempts from this computer in the past hour so we are blocking any more attempts for security reasons. Please try again later.');
+        break;
+      case 'auth/user-disabled':
+        setErrorText('The account associated with this email address has been disabled. Please contact us through our about page if you are not sure why.');
+        break;
+      case 'server/signin':
+        setErrorText("Sorry, something went wrong when signing you in! We've been notified about this. Please try again later on.");
+        rollbar.error('Server-side sign in error', error);
+        break;
+      default:
+        setErrorText("Sorry, something went wrong when signing you in! We've been notified about this. Please try again later on.");
+        rollbar.error('Client-side sign in error', error);
+    }
+  };
 
   // TODO: Put in background image
 
   useEffect(() => {
-    // Initialize the FirebaseUI Widget using Firebase.
     const FirebaseAuth = firebaseui.auth.AuthUI;
     const UI = FirebaseAuth.getInstance() || new FirebaseAuth(firebase.auth());
 
-    UI.start('#firebaseui-auth-container', {
-      ...uiConfig,
-      callbacks: {
-        signInSuccessWithAuthResult: async (authResult) => {
-          const signedInUser = authResult.user;
+    try {
+      UI.start('#firebaseui-auth-container', {
+        ...uiConfig,
+        callbacks: {
+          signInFailure(error) {
+            handleError(error);
+          },
+          signInSuccessWithAuthResult: async (authResult) => {
+            const signedInUser = authResult.user;
 
-          if (authResult.additionalUserInfo.isNewUser || !signedInUser.emailVerified) {
-            signedInUser.sendEmailVerification();
-            setShowVerificationStep(true);
-            setShowTermsStep(false);
-            await firebase.auth().signOut();
-          } else if (signedInUser.emailVerified) {
-            const profile = await axiosGet('/profile',
-              {
-                headers: {
-                  authorization: `Bearer ${signedInUser.xa}`,
-                },
-              });
-            if (profile.termsAccepted) {
-              if (router.pathname === '/settings') {
-                setSettingsAuthOnSuccess(true);
-              } else {
-                router.push(redirectUrl || '/');
+            if (authResult.additionalUserInfo.isNewUser || !signedInUser.emailVerified) {
+              signedInUser.sendEmailVerification();
+              setShowVerificationStep(true);
+              setShowTermsStep(false);
+              await firebase.auth().signOut();
+            } else if (signedInUser.emailVerified) {
+              const profile = await axiosGet('/profile',
+                {
+                  headers: {
+                    authorization: `Bearer ${signedInUser.xa}`,
+                  },
+                });
+              if (profile.termsAccepted) {
+                if (router.pathname === '/settings') {
+                  setSettingsAuthOnSuccess(true);
+                } else {
+                  router.push(redirectUrl || '/');
+                }
+              } if (!profile.termsAccepted) {
+                setShowTermsStep(true);
+                setShowVerificationStep(false);
               }
-            } if (!profile.termsAccepted) {
-              setShowTermsStep(true);
-              setShowVerificationStep(false);
             }
-          }
-          return false;
+            return false;
+          },
         },
-      },
-    });
+      });
+    } catch (error) {
+      handleError(error);
+    }
   }, []);
 
   useEffect(() => {
@@ -118,6 +154,13 @@ const SignUpWidget = ({
         src="/logo.png"
         alt="YSM Logo"
       />
+
+      {showErrorText ? (
+        <Box boxShadow={1} mt={5} p={5} py={4} bgcolor="primary.dark" display="flex" alignItems="center">
+          <Typography variant="h2" align="center" color="secondary">{errorText}</Typography>
+        </Box>
+      ) : null}
+
       {!showTermsStep && !showVerificationStep
         ? (
           <>
@@ -125,7 +168,7 @@ const SignUpWidget = ({
               If you are signing up for the first time, you can give us any name like
               &quot;New Sunshine&quot;
             </Typography>
-            <Typography>And if you’re signing in, welcome back queen!</Typography>
+            <Typography>And if you’re signing in, welcome back friend!</Typography>
 
             {/* TODO: NEED TO ADD PRIVACY POLICY & T&C's Link */}
             <Box id="firebaseui-auth-container" display={showTermsStep || showVerificationStep ? 'none' : 'block'} />

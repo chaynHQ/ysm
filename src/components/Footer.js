@@ -29,8 +29,15 @@ const Footer = () => {
         showLabels
         value={selected}
         onChange={(e, value) => {
-          setSelected(value);
-          router.push(value);
+          if (value === '/leave') {
+            window.open('http://www.wikipedia.org/', '_newtab');
+            window.location.replace(
+              'https://www.google.com/search?tbm=isch&q=cute+baby+animal+memes',
+            );
+          } else {
+            setSelected(value);
+            router.push(value);
+          }
         }}
       >
         <BottomNavigationAction
@@ -51,11 +58,11 @@ const Footer = () => {
           component="a"
           showLabel
           label="Find Support"
-          value="/preview-mode"
+          value="/directory"
           icon={<LocationOn />}
         />
         <BottomNavigationAction
-          component="a"
+          component="button"
           showLabel
           label="Leave Site"
           value="/leave"
