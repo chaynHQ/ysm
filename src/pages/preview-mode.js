@@ -51,7 +51,8 @@ const PreviewMode = () => {
                         dispatch(setPreviewMode(false));
                       }
                     } else {
-                      setMessage('Preview Mode has been turned off.');
+                      const res = await axiosGet('/preview');
+                      setMessage(res.message);
                       dispatch(setPreviewMode(false));
                     }
                   }}
