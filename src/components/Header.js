@@ -23,6 +23,7 @@ const useStyles = makeStyles({
   },
 });
 
+// TODO: REPLACE ALL OF THESE
 const isBrowser = typeof window !== 'undefined';
 
 const Header = ({ menuContainer }) => {

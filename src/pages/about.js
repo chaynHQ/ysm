@@ -1,22 +1,45 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-
+import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useSelector } from 'react-redux';
+import StaticPage from '../components/StaticPage';
+import firebase from '../config/firebase';
+import isBrowser from '../shared/browserCheck';
 import { axiosGet } from '../store/axios';
 
-import StaticPage from '../components/StaticPage';
+const About = ({ propContent }) => {
+  const previewMode = useSelector((state) => state.user.previewMode);
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
+  const [content, setContent] = useState(propContent);
 
-const About = ({ content }) => (
-  <StaticPage content={content} />
-);
+  useEffect(() => {
+    if (previewMode) {
+      axiosGet('pages/about-us', {
+        headers: {
+          'X-PREVIEW-MODE': 'preview',
+          authorization: `Bearer ${user.xa}`,
+        },
+      }).then((pageContent) => { setContent(pageContent); });
+    }
+  }, []);
 
-export async function getServerSideProps() {
-  const content = await axiosGet('pages/about-us');
+  if (content) {
+    return (<StaticPage content={content} />);
+  }
+  return null;
+};
 
-  return { props: { content } };
+export async function getServerSideProps({ preview }) {
+  let propContent = null;
+  if (!preview) {
+    propContent = await axiosGet('pages/about-us');
+  }
+
+  return { props: { propContent } };
 }
 
 About.propTypes = {
-  content: PropTypes.objectOf(PropTypes.any).isRequired,
+  propContent: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default About;

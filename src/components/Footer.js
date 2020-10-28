@@ -51,7 +51,7 @@ const Footer = () => {
           component="a"
           showLabel
           label="Find Support"
-          value="/directory"
+          value="/preview-mode"
           icon={<LocationOn />}
         />
         <BottomNavigationAction

@@ -14,8 +14,6 @@ const PreviewMode = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  // ACTUALLY GET THIS FROM THE REACT STATE
-  // const [checked, setChecked] = useState(false);
   const previewMode = useSelector((state) => state.user.previewMode || false);
 
   const [message, setMessage] = useState('');
@@ -35,7 +33,7 @@ const PreviewMode = () => {
         ? (
           <Box display="flex" flexDirection="column">
             <Box display="flex" flexDirection="row">
-              <Typography variant="h1">Toggle Preview Mode</Typography>
+              <Typography variant="h1">Preview Mode</Typography>
               <Box pl={2}>
                 <Checkbox
                   checked={previewMode}
@@ -53,6 +51,7 @@ const PreviewMode = () => {
                         dispatch(setPreviewMode(false));
                       }
                     } else {
+                      setMessage('Preview Mode has been turned off.');
                       dispatch(setPreviewMode(false));
                     }
                   }}

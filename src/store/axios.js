@@ -14,10 +14,10 @@ const axiosInstance = axios.create({
   baseURL: `${baseUrl}/api/`,
 });
 
-// axiosInstance.interceptors.request.use((request) => {
-//   console.log('Starting Request', request);
-//   return request;
-// });
+axiosInstance.interceptors.request.use((request) => {
+  console.log('Starting Request', request);
+  return request;
+});
 
 // axiosInstance.interceptors.response.use((response) => {
 //   console.log('Response:', response);
