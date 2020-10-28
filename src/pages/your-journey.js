@@ -117,7 +117,17 @@ const YourJourney = ({ propThemes, container }) => {
 
             <Typography variant="h1" align="center" color="secondary.dark">Your Journey</Typography>
             <Typography align="center">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ac
+              Life after trauma can be a tricky and confusing place.
+              In this section there are resources aimed at helping us navigate what to do next,
+              whether this be rebuilding our confidence, determining how to or who to tell about
+              the assault, or finding a sense of justice. Click through to find accessible
+              resources, articles, and notes to support us emotionally, physically, and mentally.
+              If there is a particular resource that would be helpful to come back to,
+              feel free to save it for later.
+            </Typography>
+            {' '}
+            <Typography align="center">
+              Your journey starts now, and YSM is here to help along the way.
             </Typography>
             {themes.map((theme) => (
               <Card
