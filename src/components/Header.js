@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from '../config/firebase';
+import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles({
@@ -22,8 +23,6 @@ const useStyles = makeStyles({
     marginBottom: 0,
   },
 });
-
-const isBrowser = typeof window !== 'undefined';
 
 const Header = ({ menuContainer }) => {
   const classes = useStyles();

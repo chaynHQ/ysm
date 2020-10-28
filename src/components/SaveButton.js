@@ -6,10 +6,9 @@ import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
+import isBrowser from '../shared/browserCheck';
 import { deleteBookmark, setBookmark } from '../store/actions';
 import { axiosDelete, axiosPut } from '../store/axios';
-
-const isBrowser = typeof window !== 'undefined';
 
 const SaveButton = ({
   resourceSlug, redirectUrl, deleteBookmarkOnClick, setBookmarkOnClick, profile,

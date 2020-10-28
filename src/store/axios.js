@@ -14,10 +14,10 @@ const axiosInstance = axios.create({
   baseURL: `${baseUrl}/api/`,
 });
 
-// axiosInstance.interceptors.request.use((request) => {
-//   console.log('Starting Request', request);
-//   return request;
-// });
+axiosInstance.interceptors.request.use((request) => {
+  console.log('Starting Request', request);
+  return request;
+});
 
 // axiosInstance.interceptors.response.use((response) => {
 //   console.log('Response:', response);
@@ -30,7 +30,8 @@ export const axiosGet = async (url, options) => {
     return response.data;
   } catch (err) {
     console.log('error in axios GET');
-    console.log(err);
+    // console.log(url);
+    console.log(err.message);
     throw err;
   }
 };

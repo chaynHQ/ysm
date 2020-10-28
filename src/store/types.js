@@ -7,3 +7,4 @@ export const SET_BOOKMARKS = 'SET_BOOKMARKS';
 export const SET_PROFILE = 'SET_PROFILE';
 export const DELETE_BOOKMARK = 'DELETE_BOOKMARK';
 export const SET_BOOKMARK = 'SET_BOOKMARK';
+export const SET_PREVIEW_MODE = 'SET_PREVIEW_MODE';

@@ -10,9 +10,14 @@ import {
 import LinkUi from '@material-ui/core/Link';
 import { ArrowBack, ArrowForward } from '@material-ui/icons';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useSelector } from 'react-redux';
 import Item from '../../../../components/Item';
+import firebase from '../../../../config/firebase';
+import isBrowser from '../../../../shared/browserCheck';
 import { axiosGet } from '../../../../store/axios';
 
 const useStyles = makeStyles(() => ({
@@ -31,8 +36,41 @@ const useStyles = makeStyles(() => ({
 
 }));
 
-const ItemPage = ({ resource, item, nextItem }) => {
+const ItemPage = ({ propResource }) => {
+  const router = useRouter();
   const classes = useStyles();
+  const previewMode = useSelector((state) => state.user.previewMode);
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
+
+  const { itemId, resourceSlug } = router.query;
+  const [resource, setResource] = useState(propResource);
+  const [item, setItem] = useState(
+    propResource ? propResource.content.find((i) => i.id === itemId) : null,
+  );
+  const [nextItem, setNextItem] = useState(
+    propResource
+      ? propResource.content[propResource.content.findIndex(
+        (i) => i.id === itemId,
+      ) + 1] || null
+      : null,
+  );
+
+  useEffect(() => {
+    if (previewMode) {
+      const headers = {
+        'X-PREVIEW-MODE': 'preview',
+        authorization: `Bearer ${user.xa}`,
+      };
+
+      axiosGet(`resources/${resourceSlug}`, headers).then((previewResource) => {
+        setResource(previewResource);
+        setItem(previewResource.content.find((i) => i.id === itemId));
+        setNextItem(previewResource.content[previewResource.content.findIndex(
+          (i) => i.id === itemId,
+        ) + 1] || null);
+      });
+    }
+  }, []);
 
   return (
     <Box
@@ -42,68 +80,71 @@ const ItemPage = ({ resource, item, nextItem }) => {
       pt={3.5}
       px={2}
     >
+      {resource && item
+        ? (
+          <>
+            <Breadcrumbs aria-label="breadcrumb">
+              <Link href="/resources/[resourceSlug]" as={`/resources/${resource.slug}`} passHref>
+                <Box display="flex" alignItems="center" justifyContent="center">
+                  <ArrowBack className={classes.icon} />
+                  <Typography color="textSecondary" className={classes.breadcrumbs}>
+                    Part of:
+                    <LinkUi
+                      underline="always"
+                      className={classes.link}
+                    >
+                      {resource.title}
+                    </LinkUi>
+                  </Typography>
+                </Box>
+              </Link>
 
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link href="/resources/[resourceSlug]" as={`/resources/${resource.slug}`} passHref>
-          <Box display="flex" alignItems="center" justifyContent="center">
-            <ArrowBack className={classes.icon} />
-            <Typography color="textSecondary" className={classes.breadcrumbs}>
-              Part of:
-              {' '}
-              <LinkUi
-                underline="always"
-                className={classes.link}
+            </Breadcrumbs>
+
+            <Item item={item} />
+
+            <Card variant="outlined" className={classes.card}>
+              <Link
+                href={nextItem ? '/resources/[resourceSlug]/items/[itemId]' : '/resources/[resourceSlug]'}
+                as={nextItem ? `/resources/${resource.slug}/items/${nextItem.id}` : `/resources/${resource.slug}`}
               >
-                {resource.title}
-              </LinkUi>
-            </Typography>
-          </Box>
-        </Link>
-
-      </Breadcrumbs>
-
-      <Item item={item} />
-
-      <Card variant="outlined" className={classes.card}>
-        <Link
-          href={nextItem ? '/resources/[resourceSlug]/items/[itemId]' : '/resources/[resourceSlug]'}
-          as={nextItem ? `/resources/${resource.slug}/items/${nextItem.id}` : `/resources/${resource.slug}`}
-        >
-          <CardActionArea component="a" className={classes.cardMedia}>
-            <CardContent>
-              <Grid container justify="space-between" direction="row">
-                <Typography color="textSecondary">
-                  {nextItem ? 'Continue: ' : 'That was the last note on: '}
-                  {' '}
-                  <LinkUi
-                    underline="always"
-                    className={classes.link}
-                  >
-                    {nextItem ? nextItem.title : resource.title}
-                  </LinkUi>
-                </Typography>
-                <ArrowForward />
-              </Grid>
-            </CardContent>
-          </CardActionArea>
-        </Link>
-      </Card>
+                <CardActionArea component="a" className={classes.cardMedia}>
+                  <CardContent>
+                    <Grid container justify="space-between" direction="row">
+                      <Typography color="textSecondary">
+                        {nextItem ? 'Continue: ' : 'That was the last note on: '}
+                        {' '}
+                        <LinkUi
+                          underline="always"
+                          className={classes.link}
+                        >
+                          {nextItem ? nextItem.title : resource.title}
+                        </LinkUi>
+                      </Typography>
+                      <ArrowForward />
+                    </Grid>
+                  </CardContent>
+                </CardActionArea>
+              </Link>
+            </Card>
+          </>
+        )
+        : null }
 
     </Box>
   );
 };
-export async function getServerSideProps({ params }) {
-  const resource = await axiosGet(`resources/${params.resourceSlug}`);
-  const item = resource.content.find((i) => i.id === params.itemId);
-  const nextItem = resource.content[resource.content.findIndex(
-    (i) => i.id === params.itemId,
-  ) + 1];
+export async function getServerSideProps(context) {
+  let propResource = null;
+  if (!context.preview) {
+    propResource = await axiosGet(`resources/${context.params.resourceSlug}`);
+  }
 
-  return { props: { resource, item, nextItem: nextItem || null } };
+  return { props: { propResource } };
 }
 
 ItemPage.propTypes = {
-  resource:
+  propResource:
     PropTypes.objectOf(
       PropTypes.oneOfType([
         PropTypes.string,
@@ -112,18 +153,10 @@ ItemPage.propTypes = {
         PropTypes.bool,
       ]),
     ),
-  item: PropTypes.objectOf(
-    PropTypes.any,
-  ),
-  nextItem: PropTypes.objectOf(
-    PropTypes.any,
-  ),
 };
 
 ItemPage.defaultProps = {
-  resource: null,
-  item: null,
-  nextItem: null,
+  propResource: null,
 };
 
 export default ItemPage;
