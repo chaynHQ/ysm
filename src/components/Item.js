@@ -10,7 +10,7 @@ const Item = ({ item, canBeSaved }) => {
     if (node.type === 'tag' && node.name === 'p' && node.children[0] && node.children[0].name === 'img') {
       const img = node.children[0];
       return (
-        <img src={img.attribs.src} alt={img.attribs.alt} />
+        <img src={img.attribs.src} alt={img.attribs.alt} style={{ width: '100%' }} />
       );
     }
 

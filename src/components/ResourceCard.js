@@ -15,8 +15,7 @@ const useStyles = makeStyles(() => ({
     height: '100%',
   },
   avatar: {
-    height: '70px',
-    width: '70px',
+    width: '100%',
   },
 }));
 
@@ -32,7 +31,7 @@ const ResourceCard = ({
         <CardActionArea component="a" className={classes.cardMedia}>
           <CardContent>
             <Box display="flex" flexDirection="row" justifyContent="space-between">
-              <Box>
+              <Box width={2 / 3}>
                 <Typography variant="h2">
                   {title}
                 </Typography>
@@ -40,7 +39,7 @@ const ResourceCard = ({
                   {subtitle}
                 </Typography>
               </Box>
-              <Box>
+              <Box width={1 / 3}>
                 {image
                   ? (
                     <Avatar
