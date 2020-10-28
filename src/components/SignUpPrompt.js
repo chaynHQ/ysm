@@ -8,6 +8,7 @@ import Link from 'next/link';
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from '../config/firebase';
+import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles((theme) => ({
@@ -42,8 +43,6 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
   },
 }));
-
-const isBrowser = typeof window !== 'undefined';
 
 const SignUpPrompt = () => {
   const classes = useStyles();

@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import firebase from '../config/firebase';
+import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 import { axiosGet } from '../store/axios';
 import { useStore } from '../store/store';
@@ -28,8 +29,6 @@ const useStyles = makeStyles({
   },
 
 });
-
-const isBrowser = typeof window !== 'undefined';
 
 function App({ Component, pageProps }) {
   const router = useRouter();
