@@ -61,8 +61,6 @@ const SignUpWidget = ({
     }
   };
 
-  // TODO: Put in background image
-
   useEffect(() => {
     const FirebaseAuth = firebaseui.auth.AuthUI;
     const UI = FirebaseAuth.getInstance() || new FirebaseAuth(firebase.auth());
