@@ -21,9 +21,11 @@ export default async function handler(req, res) {
       res.clearPreviewData();
       res.status(200).json({ message: 'Preview mode cannot be turned on because your email is not on the list of approved content editors. Please get in touch with the dev team.', allowed: false });
     }
-  } else {
-    res.status(200).json({ message: 'Preview mode is now turned off.', allowed: false });
-
+  } else if (req.query.revokeAccess) {
     res.clearPreviewData();
+    res.status(200).json({ message: 'Preview mode is now turned off.', allowed: false });
+  } else {
+    res.clearPreviewData();
+    res.status(200).json({ message: 'Preview mode is now turned off.', allowed: false });
   }
 }

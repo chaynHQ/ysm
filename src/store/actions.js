@@ -2,7 +2,7 @@ import axiosInstance from './axios';
 import {
   DELETE_BOOKMARK,
   SET_BOOKMARK,
-  SET_PREVIEW_MODE,
+
   SET_PROFILE,
   SET_RESOURCE,
   SET_RESOURCES,
@@ -49,11 +49,6 @@ export const setUserSignIn = (data) => ({
 
 export const setSettingsAuth = (data) => ({
   type: SET_SETTINGS_AUTH,
-  data,
-});
-
-export const setPreviewMode = (data) => ({
-  type: SET_PREVIEW_MODE,
   data,
 });
 

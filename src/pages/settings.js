@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import firebase from '../config/firebase';
 import rollbar from '../shared/rollbar';
 import { setSettingsAuth, setUserSignIn } from '../store/actions';
+import { axiosGet } from '../store/axios';
 
 const SignUpWidget = dynamic(
   () => import('../components/SignUpWidget'),
@@ -111,6 +112,11 @@ const Settings = ({
                 onClick={() => {
                   setUserSignInOnClick({});
                   setSettingsAuthOnError(false);
+                  axiosGet('/preview', {
+                    params: {
+                      revokeAccess: true,
+                    },
+                  });
                 }}
               >
                 Log out

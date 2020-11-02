@@ -6,16 +6,14 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useSelector } from 'react-redux';
 import Item from '../../components/Item';
 import ResourceContents from '../../components/ResourceContents';
 import firebase from '../../config/firebase';
 import isBrowser from '../../shared/browserCheck';
 import { axiosGet } from '../../store/axios';
 
-const ResourcePage = ({ propResource, propTheme }) => {
+const ResourcePage = ({ propResource, propTheme, previewMode }) => {
   const router = useRouter();
-  const previewMode = useSelector((state) => state.user.previewMode);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const { resourceSlug } = router.query;
@@ -23,7 +21,7 @@ const ResourcePage = ({ propResource, propTheme }) => {
   const [resource, setResource] = useState(propResource);
 
   useEffect(() => {
-    if (previewMode) {
+    if (previewMode && user) {
       const headers = {
         'X-PREVIEW-MODE': 'preview',
         authorization: `Bearer ${user.xa}`,
@@ -36,7 +34,7 @@ const ResourcePage = ({ propResource, propTheme }) => {
         });
       });
     }
-  }, []);
+  }, [user]);
 
   return (
     <Box
@@ -71,14 +69,14 @@ const ResourcePage = ({ propResource, propTheme }) => {
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps({ preview, params }) {
   let themes = [];
   let propResource = null;
 
-  if (!context.preview) {
+  if (!preview) {
     [themes, propResource] = await Promise.all([
       axiosGet('themes'),
-      axiosGet(`resources/${context.params.resourceSlug}`),
+      axiosGet(`resources/${params.resourceSlug}`),
     ]);
   }
 
@@ -86,6 +84,7 @@ export async function getServerSideProps(context) {
     props: {
       propResource,
       propTheme: themes.find((t) => propResource.themes.includes(t.id)) || null,
+      previewMode: preview || false,
     },
   };
 }
@@ -106,10 +105,12 @@ ResourcePage.propTypes = {
       PropTypes.object,
     ]),
   ),
+  previewMode: PropTypes.bool,
 };
 
 ResourcePage.defaultProps = {
   propResource: null,
   propTheme: null,
+  previewMode: false,
 };
 export default ResourcePage;
