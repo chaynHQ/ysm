@@ -41,6 +41,7 @@ const SaveButton = ({
             variant="outlined"
             disableElevation
             size="small"
+            color="secondary"
             startIcon={<BookmarkBorder />}
             onClick={() => {
               if (user) {
