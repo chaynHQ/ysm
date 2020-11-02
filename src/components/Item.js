@@ -1,5 +1,16 @@
 import {
-  Accordion, AccordionDetails, AccordionSummary, Box, Button, Typography,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Checkbox,
+  Divider,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
@@ -18,7 +29,7 @@ const Item = ({ item, canBeSaved }) => {
 
     return undefined;
   };
-  console.log(item);
+
   return (
     <Box
       display="flex"
@@ -34,6 +45,7 @@ const Item = ({ item, canBeSaved }) => {
         alignItems="center"
       >
         <Typography variant="h1" align="center">{item.title}</Typography>
+        {richTextHelper(item.description)}
 
         {canBeSaved ? <SaveButton resourceSlug={item.slug} /> : null}
       </Box>
@@ -66,23 +78,40 @@ const Item = ({ item, canBeSaved }) => {
                 // TODO: Data not currently available
                 break;
               case 'accordion':
-                content = item.items.map((accordion) => (
-                  <Accordion>
+                content = item.items.map((value) => (
+                  <Accordion key={value.id}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                     >
-                      <Typography>{accordion.title}</Typography>
+                      <Typography>{value.title}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <Box display="flex" flexDirection="column">
-                        {richTextHelper(accordion.content)}
+                        {richTextHelper(value.content)}
                       </Box>
                     </AccordionDetails>
                   </Accordion>
                 ));
                 break;
               case 'checklist':
-                content = <Typography>This is an checklist list</Typography>;
+                content = (
+                  <List>
+                    {item.items.map((value) => (
+                      <>
+                        <ListItem key={value.id}>
+                          <ListItemIcon>
+                            <Checkbox
+                              edge="start"
+                              disableRipple
+                            />
+                          </ListItemIcon>
+                          <ListItemText>{richTextHelper(value.content)}</ListItemText>
+                        </ListItem>
+                        <Divider />
+                      </>
+                    ))}
+                  </List>
+                );
                 break;
               default:
                 return null;
