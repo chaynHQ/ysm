@@ -12,6 +12,7 @@ import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
 import { setSettingsAuth } from '../store/actions';
 import { axiosGet, axiosPut } from '../store/axios';
+import NewsletterSignup from './NewsletterSignup';
 
 const useStyles = makeStyles({
   icon: {
@@ -31,6 +32,7 @@ const SignUpWidget = ({
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const [showVerificationStep, setShowVerificationStep] = useState(false);
   const [showTermsStep, setShowTermsStep] = useState(false);
+  const [showNewsletterStep, setShowNewsletterStep] = useState(false);
   const [showErrorText, setShowErrorText] = useState(false);
   const [errorText, setErrorText] = useState('');
 
@@ -202,7 +204,9 @@ const SignUpWidget = ({
                       authorization: `Bearer ${user.xa}`,
                     },
                   });
-                  router.push(redirectUrl || '/');
+                  setShowNewsletterStep(true);
+                  setShowTermsStep(false);
+                  // router.push(redirectUrl || '/');
                 }}
               >
                 <Box className="firebaseui-card-header">
@@ -324,6 +328,14 @@ const SignUpWidget = ({
             </Box>
           </>
         ) : null }
+
+      {showNewsletterStep
+        ? (
+          <Box>
+            <NewsletterSignup />
+          </Box>
+        )
+        : null}
     </Box>
   );
 };
