@@ -1,5 +1,4 @@
-import { Box, Typography } from '@material-ui/core';
-import LinkUi from '@material-ui/core/Link';
+import { Box, Button, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import richTextHelper from '../shared/rich-text';
@@ -20,17 +19,43 @@ const Item = ({ item, canBeSaved }) => {
     <Box
       display="flex"
       flexDirection="column"
-      direction="column"
       pt={3.5}
       px={2}
+      alignItems="center"
     >
-      <Typography variant="h1" align="center">{item.title}</Typography>
+      <Box
+        display="flex"
+        flexDirection="column"
+        pb={2}
+        alignItems="center"
+      >
+        <Typography variant="h1" align="center">{item.title}</Typography>
 
-      {canBeSaved ? <SaveButton resourceSlug={item.slug} /> : null}
+        {canBeSaved ? <SaveButton resourceSlug={item.slug} /> : null}
+      </Box>
 
-      {item.type === 'external_link'
-        ? <LinkUi href={item.link} target="_blank" color="inherit">Go to resource</LinkUi>
-        : richTextHelper(item.content, (node) => richTextTransformer(node))}
+      { (() => {
+        switch (item.type) {
+          case 'external_link':
+            return (
+              <Button
+                variant="outlined"
+                disableElevation
+                size="small"
+                onClick={() => {
+                  window.open(item.link, '_newtab');
+                }}
+                color="secondary"
+              >
+                Read the Resource
+              </Button>
+            );
+          case 'note':
+            return richTextHelper(item.content, (node) => richTextTransformer(node));
+          default:
+            return null;
+        }
+      })()}
 
     </Box>
   );
