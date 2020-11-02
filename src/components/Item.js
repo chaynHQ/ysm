@@ -1,4 +1,7 @@
-import { Box, Button, Typography } from '@material-ui/core';
+import {
+  Accordion, AccordionDetails, AccordionSummary, Box, Button, Typography,
+} from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import React from 'react';
 import richTextHelper from '../shared/rich-text';
@@ -15,6 +18,7 @@ const Item = ({ item, canBeSaved }) => {
 
     return undefined;
   };
+  console.log(item);
   return (
     <Box
       display="flex"
@@ -35,6 +39,7 @@ const Item = ({ item, canBeSaved }) => {
       </Box>
 
       { (() => {
+        let content = null;
         switch (item.type) {
           case 'external_link':
             return (
@@ -52,6 +57,37 @@ const Item = ({ item, canBeSaved }) => {
             );
           case 'note':
             return richTextHelper(item.content, (node) => richTextTransformer(node));
+          case 'list':
+            switch (item.render_as) {
+              case 'plain':
+                // TODO: Data not currently available
+                break;
+              case 'cards':
+                // TODO: Data not currently available
+                break;
+              case 'accordion':
+                content = item.items.map((accordion) => (
+                  <Accordion>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                    >
+                      <Typography>{accordion.title}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Box display="flex" flexDirection="column">
+                        {richTextHelper(accordion.content)}
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
+                ));
+                break;
+              case 'checklist':
+                content = <Typography>This is an checklist list</Typography>;
+                break;
+              default:
+                return null;
+            }
+            return content;
           default:
             return null;
         }
