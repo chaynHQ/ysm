@@ -10,8 +10,8 @@ import { useSelector } from 'react-redux';
 import Item from '../../components/Item';
 import ResourceContents from '../../components/ResourceContents';
 import firebase from '../../config/firebase';
+import { axiosGet } from '../../shared/axios';
 import isBrowser from '../../shared/browserCheck';
-import { axiosGet } from '../../store/axios';
 
 const ResourcePage = ({ propResource, propTheme }) => {
   const router = useRouter();

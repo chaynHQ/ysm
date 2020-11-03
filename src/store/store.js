@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
-import { applyMiddleware, createStore } from 'redux';
-import thunkMiddleware from 'redux-thunk';
+import { createStore } from 'redux';
 import ysmApp from './reducers';
 
 let tempStore;
@@ -9,7 +8,6 @@ function initStore(initialState) {
   return createStore(
     ysmApp,
     initialState,
-    applyMiddleware(thunkMiddleware),
   );
 }
 

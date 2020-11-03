@@ -8,10 +8,10 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import firebase, { uiConfig } from '../config/firebase';
+import { axiosGet, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
 import { setSettingsAuth } from '../store/actions';
-import { axiosGet, axiosPut } from '../store/axios';
 
 const useStyles = makeStyles({
   icon: {

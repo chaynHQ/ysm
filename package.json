@@ -48,7 +48,6 @@
     "react-player": "^2.6.2",
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
     "rollbar": "^2.19.4",
     "storyblok-js-client": "^2.5.2",
     "yarn": "^1.22.10"
