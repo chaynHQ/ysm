@@ -37,6 +37,7 @@ function App({ Component, pageProps }) {
   const { height, width } = useWindowDimensions();
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const [isLoading, setIsLoading] = useState(false);
+  const [showBackground, setShowBackground] = useState(true);
 
   const containerRef = useRef();
   const scrollTopRef = useRef();
@@ -86,6 +87,15 @@ function App({ Component, pageProps }) {
     });
   });
 
+  useEffect(() => {
+    const routesWithoutBackgrounds = ['/settings', '/saved', '/resources/[resourceSlug]', '/themes/[slug]'];
+    if (routesWithoutBackgrounds.includes(router.pathname)) {
+      setShowBackground(false);
+    } else {
+      setShowBackground(true);
+    }
+  }, [router]);
+
   const store = useStore(pageProps.initialReduxState);
 
   return (
@@ -111,12 +121,17 @@ function App({ Component, pageProps }) {
                 flexDirection="column"
                 flexGrow={1}
                 overflow="scroll"
-                className={classes.background}
+                className={showBackground ? classes.background : null}
               >
                 <Box ref={scrollTopRef} />
                 {
                   isLoading ? <Loading />
-                    : <Component {...pageProps} container={containerRef} />
+                    : (
+                      <Component
+                        {...pageProps}
+                        container={containerRef}
+                      />
+                    )
 }
               </Box>
               <Footer />
