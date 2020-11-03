@@ -16,6 +16,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactPlayer from 'react-player';
 import richTextHelper from '../shared/rich-text';
 import SaveButton from './SaveButton';
 
@@ -30,6 +31,8 @@ const Item = ({ item, canBeSaved }) => {
 
     return undefined;
   };
+
+  console.log(item);
 
   return (
     <Box
@@ -139,6 +142,18 @@ const Item = ({ item, canBeSaved }) => {
                 return null;
             }
             return content;
+          case 'audio':
+            return (
+              <ReactPlayer
+                url={item.url}
+                controls
+                width="100%"
+                height="100px"
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+              />
+            );
+          case 'video':
+            break;
           default:
             return null;
         }
