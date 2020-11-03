@@ -37,6 +37,6 @@ describe('Item', () => {
         }}
       />,
     );
-    expect(richTextHelper).toHaveBeenCalledTimes(1);
+    expect(richTextHelper).toHaveBeenCalledTimes(3);
   });
 });
