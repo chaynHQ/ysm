@@ -115,7 +115,7 @@ const YourJourney = ({ propThemes, container }) => {
 
             </Grid>
 
-            <Typography variant="h1" align="center" color="secondary.dark">Your Journey</Typography>
+            <Typography variant="h1" align="center">Your Journey</Typography>
             <Typography align="center">
               Browse accessible resources curated by a team of survivors.
               Save what you love and come back anytime.

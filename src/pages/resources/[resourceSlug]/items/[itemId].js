@@ -127,6 +127,7 @@ const ItemPage = ({ propResource }) => {
                         <LinkUi
                           underline="always"
                           className={classes.link}
+                          component="span"
                         >
                           {nextItem ? nextItem.title : resource.title}
                         </LinkUi>

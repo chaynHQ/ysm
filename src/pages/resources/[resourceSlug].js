@@ -66,7 +66,7 @@ const ResourcePage = ({ propResource, propTheme }) => {
             </Breadcrumbs>
             <Box>
               {resource.content && resource.content.length === 1
-                ? <Item item={resource.content[0]} canBeSaved />
+                ? <Item item={{ ...resource.content[0], slug: resource.slug }} canBeSaved />
                 : <ResourceContents resource={resource} />}
             </Box>
           </>
