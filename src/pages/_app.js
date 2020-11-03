@@ -37,6 +37,7 @@ function App({ Component, pageProps }) {
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const containerRef = useRef();
+  const scrollTopRef = useRef();
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -71,6 +72,14 @@ function App({ Component, pageProps }) {
     }
   }, [user]);
 
+  useEffect(() => {
+    router.events.on('routeChangeComplete', () => {
+      scrollTopRef.current.scrollIntoView({
+        behavior: 'smooth',
+      });
+    });
+  });
+
   const store = useStore(pageProps.initialReduxState);
 
   return (
@@ -98,6 +107,7 @@ function App({ Component, pageProps }) {
                 overflow="scroll"
                 className={classes.background}
               >
+                <Box ref={scrollTopRef} />
                 <Component {...pageProps} container={containerRef} />
               </Box>
               <Footer />
