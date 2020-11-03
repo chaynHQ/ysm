@@ -129,7 +129,7 @@ const SignUpWidget = ({
             if (!termsAccepted) {
               setShowVerificationStep(false);
               setShowTermsStep(true);
-            } else {
+            } else if (router.pathname !== '/settings') {
               router.push(redirectUrl || '/');
             }
           },

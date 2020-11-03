@@ -56,6 +56,16 @@ const ItemPage = ({ propResource }) => {
   );
 
   useEffect(() => {
+    setResource(propResource);
+    setItem(propResource ? propResource.content.find((i) => i.id === itemId) : null);
+    setNextItem(propResource
+      ? propResource.content[propResource.content.findIndex(
+        (i) => i.id === itemId,
+      ) + 1] || null
+      : null);
+  }, [itemId, resourceSlug]);
+
+  useEffect(() => {
     if (previewMode) {
       const headers = {
         'X-PREVIEW-MODE': 'preview',
@@ -70,7 +80,7 @@ const ItemPage = ({ propResource }) => {
         ) + 1] || null);
       });
     }
-  }, []);
+  }, [itemId, resourceSlug]);
 
   return (
     <Box
@@ -117,6 +127,7 @@ const ItemPage = ({ propResource }) => {
                         <LinkUi
                           underline="always"
                           className={classes.link}
+                          component="span"
                         >
                           {nextItem ? nextItem.title : resource.title}
                         </LinkUi>

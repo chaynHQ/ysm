@@ -4,9 +4,7 @@ import {
   AccordionSummary,
   Box,
   Button,
-  Card,
-  CardContent,
-
+  Card, CardContent,
   Checkbox,
   Divider,
   List,
@@ -32,6 +30,7 @@ const Item = ({ item, canBeSaved }) => {
 
     return undefined;
   };
+
   return (
     <Box
       pt={3.5}
@@ -78,7 +77,7 @@ const Item = ({ item, canBeSaved }) => {
                   <List>
                     {item.items.map((value) => (
                       <>
-                        <ListItem key={value.id}>
+                        <ListItem key={value._uid}>
                           <ListItemText
                             primary={value.title}
                             secondary={richTextHelper(value.content)}
@@ -92,20 +91,17 @@ const Item = ({ item, canBeSaved }) => {
                 break;
               case 'cards':
                 content = item.items.map((value) => (
-                  <>
-                    <Card key={value.id} variant="outlined">
-                      <CardContent>
-                        <Typography>{value.title}</Typography>
-                        {richTextHelper(value.content)}
-
-                      </CardContent>
-                    </Card>
-                  </>
+                  <Card key={value._uid} variant="outlined">
+                    <CardContent key={value._uid}>
+                      <Typography>{value.title}</Typography>
+                      {richTextHelper(value.content)}
+                    </CardContent>
+                  </Card>
                 ));
                 break;
               case 'accordion':
                 content = item.items.map((value) => (
-                  <Accordion key={value.id}>
+                  <Accordion key={value._uid}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                     >
@@ -124,7 +120,7 @@ const Item = ({ item, canBeSaved }) => {
                   <List>
                     {item.items.map((value) => (
                       <>
-                        <ListItem key={value.id}>
+                        <ListItem key={value._uid}>
                           <ListItemIcon>
                             <Checkbox
                               edge="start"
@@ -133,7 +129,7 @@ const Item = ({ item, canBeSaved }) => {
                           </ListItemIcon>
                           <ListItemText>{richTextHelper(value.content)}</ListItemText>
                         </ListItem>
-                        <Divider />
+                        <Divider key={`divider ${value._uid}`} />
                       </>
                     ))}
                   </List>

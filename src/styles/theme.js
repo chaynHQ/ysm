@@ -179,6 +179,7 @@ const Theme = createMuiTheme({
     MuiCard: {
       root: {
         margin: 6,
+        borderRadius: 6,
       },
     },
     MuiDialog: {

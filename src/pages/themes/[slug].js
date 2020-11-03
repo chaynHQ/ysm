@@ -51,9 +51,15 @@ const ThemePage = ({
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const { slug } = router.query;
+
   const [themes, setThemes] = useState(propThemes.filter((t) => t.slug !== slug));
   const [theme, setTheme] = useState(propThemes.find((t) => t.slug === slug));
   const [resources, setResources] = useState([]);
+
+  useEffect(() => {
+    setThemes(propThemes.filter((t) => t.slug !== slug));
+    setTheme(propThemes.find((t) => t.slug === slug));
+  }, [slug]);
 
   useEffect(() => {
     if (theme) {
@@ -61,7 +67,7 @@ const ThemePage = ({
         (resource) => resource.themes && resource.themes.includes(theme.id),
       ));
     }
-  }, []);
+  }, [slug]);
 
   useEffect(() => {
     if (previewMode) {
@@ -85,7 +91,7 @@ const ThemePage = ({
         });
       });
     }
-  }, []);
+  }, [slug]);
 
   return (
     <Box
