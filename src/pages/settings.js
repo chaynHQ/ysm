@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
     width: 20,
     height: 20,
   },
+  card: {
+    borderRadius: 10,
+    backgroundColor: 'white',
+  },
 }));
 
 const Settings = ({
@@ -156,7 +160,7 @@ const Settings = ({
             </Box>
 
             <Box mx={5} mb={5}>
-              <Card>
+              <Card className={classes.card}>
                 <CardContent>
                   <Typography align="center" variant="h2">Set a new password</Typography>
                   <Typography align="center">Must be at least 6 characters long. You will be logged out and will need to sign in again.</Typography>
@@ -183,7 +187,7 @@ const Settings = ({
             <Box />
 
             <Box mx={5} mb={5}>
-              <Card>
+              <Card className={classes.card}>
                 <CardContent>
                   <Typography align="center" variant="h2">Want to delete your account?</Typography>
                   <Typography align="center">Account deletion is final. You won’t be able to restore your account or recuperate your saved items if you delete your account.</Typography>
@@ -191,7 +195,7 @@ const Settings = ({
                 </CardContent>
                 <CardActions>
                   <Box display="flex" flexDirection="column" width={1} mb={5} px={5}>
-                    <LinkUi component="a" variant="h2" align="center" href={`mailto:team@ysm.io?subject=Request Account Deletion&body=Request Deletion for ${user.name} (Email: ${user.email})`}>
+                    <LinkUi color="error" underline="always" component="a" variant="h2" align="center" href={`mailto:team@ysm.io?subject=Request Account Deletion&body=Request Deletion for ${user.name} (Email: ${user.email})`}>
                       Request Account Deletion
                     </LinkUi>
                   </Box>
