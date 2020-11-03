@@ -4,6 +4,9 @@ import {
   AccordionSummary,
   Box,
   Button,
+  Card,
+  CardContent,
+
   Checkbox,
   Divider,
   List,
@@ -29,14 +32,11 @@ const Item = ({ item, canBeSaved }) => {
 
     return undefined;
   };
-
   return (
     <Box
-      display="flex"
-      flexDirection="column"
       pt={3.5}
       px={2}
-      alignItems="center"
+
     >
       <Box
         display="flex"
@@ -55,27 +55,53 @@ const Item = ({ item, canBeSaved }) => {
         switch (item.type) {
           case 'external_link':
             return (
-              <Button
-                variant="outlined"
-                disableElevation
-                size="small"
-                onClick={() => {
-                  window.open(item.link, '_newtab');
-                }}
-                color="secondary"
-              >
-                Read the Resource
-              </Button>
+              <Box display="flex" justifyContent="center">
+                <Button
+                  variant="outlined"
+                  disableElevation
+                  size="small"
+                  onClick={() => {
+                    window.open(item.link, '_newtab');
+                  }}
+                  color="secondary"
+                >
+                  Read the Resource
+                </Button>
+              </Box>
             );
           case 'note':
             return richTextHelper(item.content, (node) => richTextTransformer(node));
           case 'list':
             switch (item.render_as) {
               case 'plain':
-                // TODO: Data not currently available
+                content = (
+                  <List>
+                    {item.items.map((value) => (
+                      <>
+                        <ListItem key={value.id}>
+                          <ListItemText
+                            primary={value.title}
+                            secondary={richTextHelper(value.content)}
+                          />
+                        </ListItem>
+                        <Divider />
+                      </>
+                    ))}
+                  </List>
+                );
                 break;
               case 'cards':
-                // TODO: Data not currently available
+                content = item.items.map((value) => (
+                  <>
+                    <Card key={value.id} variant="outlined">
+                      <CardContent>
+                        <Typography>{value.title}</Typography>
+                        {richTextHelper(value.content)}
+
+                      </CardContent>
+                    </Card>
+                  </>
+                ));
                 break;
               case 'accordion':
                 content = item.items.map((value) => (
