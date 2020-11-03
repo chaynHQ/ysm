@@ -3,6 +3,7 @@ import {
 } from '@material-ui/core';
 import { createShallow } from '@material-ui/core/test-utils';
 import React from 'react';
+import ReactPlayer from 'react-player';
 import Item from '../components/Item';
 import richTextHelper from '../shared/rich-text';
 
@@ -139,5 +140,35 @@ describe('Item', () => {
     expect(wrapper.find(List)).toHaveLength(1);
     expect(wrapper.find(ListItem)).toHaveLength(item.items.length);
     expect(wrapper.find(Checkbox)).toHaveLength(item.items.length);
+  });
+
+  it('renders the content when type is audio', () => {
+    const item = {
+      type: 'audio',
+      title: 'Item title',
+      url: 'some-url',
+    };
+    wrapper = shallow(
+      <Item
+        item={item}
+      />,
+    );
+
+    expect(wrapper.find(ReactPlayer)).toHaveLength(1);
+  });
+
+  it('renders the content when type is video', () => {
+    const item = {
+      type: 'video',
+      title: 'Item title',
+      url: 'some-url',
+    };
+    wrapper = shallow(
+      <Item
+        item={item}
+      />,
+    );
+
+    expect(wrapper.find(ReactPlayer)).toHaveLength(1);
   });
 });
