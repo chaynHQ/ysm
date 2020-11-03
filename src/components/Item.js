@@ -11,15 +11,30 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Typography,
+
+  makeStyles, Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactPlayer from 'react-player';
 import richTextHelper from '../shared/rich-text';
 import SaveButton from './SaveButton';
 
+const useStyles = makeStyles(() => ({
+  videoWrapper: {
+    position: 'relative',
+    paddingTop: '56.25%', // For correct youtube aspect ratio
+  },
+  videoPlayer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+}));
+
 const Item = ({ item, canBeSaved }) => {
+  const classes = useStyles();
   const richTextTransformer = (node) => {
     if (node.type === 'tag' && node.name === 'p' && node.children[0] && node.children[0].name === 'img') {
       const img = node.children[0];
@@ -139,6 +154,27 @@ const Item = ({ item, canBeSaved }) => {
                 return null;
             }
             return content;
+          case 'audio':
+            return (
+              <ReactPlayer
+                url={item.url}
+                controls
+                width="100%"
+                height="100px"
+              />
+            );
+          case 'video':
+            return (
+              <div className={classes.videoWrapper}>
+                <ReactPlayer
+                  className={classes.videoPlayer}
+                  url={item.url}
+                  controls
+                  width="100%"
+                  height="100%"
+                />
+              </div>
+            );
           default:
             return null;
         }
