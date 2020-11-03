@@ -6,7 +6,7 @@ import {
   InputAdornment,
   LinearProgress,
   TextField,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import { ArrowBack, Clear } from '@material-ui/icons';
 import PropTypes from 'prop-types';

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import rollbar from '../shared/rollbar';
+import rollbar from './rollbar';
 
 // TODO: Need to check for existance of BASE_URL
 
