@@ -1,4 +1,4 @@
-import { axiosGet } from '../../store/axios';
+import { axiosGet } from '../../shared/axios';
 
 export default async function handler(req, res) {
   if (req.query.token) {

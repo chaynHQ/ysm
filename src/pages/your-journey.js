@@ -22,9 +22,9 @@ import { useSelector } from 'react-redux';
 import SearchModal from '../components/SearchModal';
 import SignUpPrompt from '../components/SignUpPrompt';
 import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import richTextHelper from '../shared/rich-text';
-import { axiosGet } from '../store/axios';
 
 const useStyles = makeStyles((theme) => ({
   icon: {

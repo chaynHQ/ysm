@@ -12,9 +12,9 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
-import { axiosGet } from '../store/axios';
 import { useStore } from '../store/store';
 import theme from '../styles/theme';
 

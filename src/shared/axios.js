@@ -5,7 +5,11 @@ import rollbar from '../shared/rollbar';
 
 let baseUrl = '';
 if (process && process.env.BASE_URL) {
-  baseUrl = process.env.BASE_URL;
+  if (process.env.BASE_URL) {
+    baseUrl = process.env.BASE_URL;
+  } else {
+    throw new Error('BASE_URL env variable missing');
+  }
   if (!/^https?:\/\//i.test(baseUrl)) {
     baseUrl = `https://${baseUrl}`;
   }

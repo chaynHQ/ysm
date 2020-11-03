@@ -5,9 +5,9 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import { setPreviewMode } from '../store/actions';
-import { axiosGet } from '../store/axios';
 
 const PreviewMode = () => {
   const dispatch = useDispatch();

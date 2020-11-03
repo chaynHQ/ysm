@@ -17,8 +17,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useSelector } from 'react-redux';
 import Item from '../../../../components/Item';
 import firebase from '../../../../config/firebase';
+import { axiosGet } from '../../../../shared/axios';
 import isBrowser from '../../../../shared/browserCheck';
-import { axiosGet } from '../../../../store/axios';
 
 const useStyles = makeStyles(() => ({
   link: {

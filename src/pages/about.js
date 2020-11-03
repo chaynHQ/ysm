@@ -4,8 +4,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useSelector } from 'react-redux';
 import StaticPage from '../components/StaticPage';
 import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
-import { axiosGet } from '../store/axios';
 
 const About = ({ propContent }) => {
   const previewMode = useSelector((state) => state.user.previewMode);
