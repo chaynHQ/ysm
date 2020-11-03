@@ -23,6 +23,11 @@ const ResourcePage = ({ propResource, propTheme }) => {
   const [resource, setResource] = useState(propResource);
 
   useEffect(() => {
+    setTheme(propTheme);
+    setResource(propResource);
+  }, [resourceSlug]);
+
+  useEffect(() => {
     if (previewMode) {
       const headers = {
         'X-PREVIEW-MODE': 'preview',
@@ -36,7 +41,7 @@ const ResourcePage = ({ propResource, propTheme }) => {
         });
       });
     }
-  }, []);
+  }, [resourceSlug]);
 
   return (
     <Box
