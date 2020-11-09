@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
     height: 20,
   },
   card: {
-    height: 340,
     margin: 6,
   },
   cardMedia: {
@@ -136,7 +135,6 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
                       {theme.image
                         ? (
                           <CardMedia
-                            height="200"
                             component="img"
                             image={theme.image.filename}
                           />
