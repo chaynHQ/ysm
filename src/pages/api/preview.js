@@ -26,6 +26,8 @@ export default async function handler(req, res) {
     res.clearPreviewData();
     res.status(200).json({ message: 'Preview mode is now turned off.', allowed: false });
   } else {
+    res.clearPreviewData();
+    res.status(200).json({ message: 'Preview mode is now turned off.', allowed: false });
     rollbar.error('Trying to set preview mode with incorrect data', req.query);
   }
 }
