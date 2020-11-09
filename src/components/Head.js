@@ -20,6 +20,9 @@ const Head = ({
       <meta property="og:description" content={ogDescription || description} />
       <meta property="og:title" content={ogTitle || title} />
       <meta property="og:image" content={ogImage} />
+      <meta name="twitter:title" content={ogTitle || title} />
+      <meta name="twitter:description" content={ogDescription || description} />
+      <meta name="twitter:image" content={ogImage} />
     </NextHead>
   );
 };
