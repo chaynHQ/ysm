@@ -37,10 +37,9 @@ const useStyles = makeStyles(() => ({
 
 }));
 
-const ItemPage = ({ propResource }) => {
+const ItemPage = ({ propResource, previewMode }) => {
   const router = useRouter();
   const classes = useStyles();
-  const previewMode = useSelector((state) => state.user.previewMode);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const { itemId, resourceSlug } = router.query;
@@ -57,23 +56,24 @@ const ItemPage = ({ propResource }) => {
   );
 
   useEffect(() => {
-    setResource(propResource);
-    setItem(propResource ? propResource.content.find((i) => i.id === itemId) : null);
-    setNextItem(propResource
-      ? propResource.content[propResource.content.findIndex(
-        (i) => i.id === itemId,
-      ) + 1] || null
-      : null);
+    if (previewMode && user) {
+      setResource(propResource);
+      setItem(propResource ? propResource.content.find((i) => i.id === itemId) : null);
+      setNextItem(propResource
+        ? propResource.content[propResource.content.findIndex(
+          (i) => i.id === itemId,
+        ) + 1] || null
+        : null);
+    }
   }, [itemId, resourceSlug]);
 
   useEffect(() => {
-    if (previewMode) {
+    if (previewMode && user) {
       const headers = {
         'X-PREVIEW-MODE': 'preview',
         authorization: `Bearer ${user.xa}`,
       };
-
-      axiosGet(`resources/${resourceSlug}`, headers).then((previewResource) => {
+      axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
         setResource(previewResource);
         setItem(previewResource.content.find((i) => i.id === itemId));
         setNextItem(previewResource.content[previewResource.content.findIndex(
@@ -81,7 +81,7 @@ const ItemPage = ({ propResource }) => {
         ) + 1] || null);
       });
     }
-  }, [itemId, resourceSlug]);
+  }, [user, itemId, resourceSlug]);
 
   return (
     <Box
@@ -147,13 +147,13 @@ const ItemPage = ({ propResource }) => {
     </Box>
   );
 };
-export async function getServerSideProps(context) {
+export async function getServerSideProps({ preview, params }) {
   let propResource = null;
-  if (!context.preview) {
-    propResource = await axiosGet(`resources/${context.params.resourceSlug}`);
+  if (!preview) {
+    propResource = await axiosGet(`resources/${params.resourceSlug}`);
   }
 
-  return { props: { propResource } };
+  return { props: { propResource, previewMode: preview || false } };
 }
 
 ItemPage.propTypes = {
@@ -166,10 +166,12 @@ ItemPage.propTypes = {
         PropTypes.bool,
       ]),
     ),
+  previewMode: PropTypes.bool,
 };
 
 ItemPage.defaultProps = {
   propResource: null,
+  previewMode: false,
 };
 
 export default ItemPage;

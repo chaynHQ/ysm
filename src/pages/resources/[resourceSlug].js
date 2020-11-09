@@ -14,9 +14,8 @@ import firebase from '../../config/firebase';
 import { axiosGet } from '../../shared/axios';
 import isBrowser from '../../shared/browserCheck';
 
-const ResourcePage = ({ propResource, propTheme }) => {
+const ResourcePage = ({ propResource, propTheme, previewMode }) => {
   const router = useRouter();
-  const previewMode = useSelector((state) => state.user.previewMode);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const { resourceSlug } = router.query;
@@ -24,12 +23,14 @@ const ResourcePage = ({ propResource, propTheme }) => {
   const [resource, setResource] = useState(propResource);
 
   useEffect(() => {
-    setTheme(propTheme);
-    setResource(propResource);
+    if (previewMode && user) {
+      setTheme(propTheme);
+      setResource(propResource);
+    }
   }, [resourceSlug]);
 
   useEffect(() => {
-    if (previewMode) {
+    if (previewMode && user) {
       const headers = {
         'X-PREVIEW-MODE': 'preview',
         authorization: `Bearer ${user.xa}`,
@@ -42,7 +43,7 @@ const ResourcePage = ({ propResource, propTheme }) => {
         });
       });
     }
-  }, [resourceSlug]);
+  }, [user, resourceSlug]);
 
   return (
     <Box
@@ -78,14 +79,14 @@ const ResourcePage = ({ propResource, propTheme }) => {
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps({ preview, params }) {
   let themes = [];
   let propResource = null;
 
-  if (!context.preview) {
+  if (!preview) {
     [themes, propResource] = await Promise.all([
       axiosGet('themes'),
-      axiosGet(`resources/${context.params.resourceSlug}`),
+      axiosGet(`resources/${params.resourceSlug}`),
     ]);
   }
 
@@ -93,6 +94,7 @@ export async function getServerSideProps(context) {
     props: {
       propResource,
       propTheme: themes.find((t) => propResource.themes.includes(t.id)) || null,
+      previewMode: preview || false,
     },
   };
 }
@@ -113,10 +115,12 @@ ResourcePage.propTypes = {
       PropTypes.object,
     ]),
   ),
+  previewMode: PropTypes.bool,
 };
 
 ResourcePage.defaultProps = {
   propResource: null,
   propTheme: null,
+  previewMode: false,
 };
 export default ResourcePage;

@@ -37,7 +37,7 @@ describe('Header', () => {
   it('renders with correct number of links', () => {
     expect(wrapper.find(IconButton)).toHaveLength(3); // Open & close menu + search
     expect(wrapper.find(LinkUi)).toHaveLength(5); // Five links in the menu
-    expect(wrapper.find(Link)).toHaveLength(5); // Five in the menu
+    expect(wrapper.find(Link)).toHaveLength(4); // Four in the menu (One less because of leave site)
   });
 
   it('opens and closes drawer on Exit app click', () => {

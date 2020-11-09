@@ -43,12 +43,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ThemePage = ({
-  propThemes, propResources, container,
+  propThemes, propResources, container, previewMode,
 }) => {
   const classes = useStyles();
   const router = useRouter();
   const [showSearchModal, setShowSearchModal] = useState(false);
-  const previewMode = useSelector((state) => state.user.previewMode);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const { slug } = router.query;
@@ -71,7 +70,7 @@ const ThemePage = ({
   }, [slug]);
 
   useEffect(() => {
-    if (previewMode) {
+    if (previewMode && user) {
       const headers = {
         'X-PREVIEW-MODE': 'preview',
         authorization: `Bearer ${user.xa}`,
@@ -92,7 +91,7 @@ const ThemePage = ({
         });
       });
     }
-  }, [slug]);
+  }, [slug, user]);
 
   return (
     <Box
@@ -216,7 +215,7 @@ export async function getServerSideProps({ preview }) {
     propResources = await axiosGet('resources');
   }
 
-  return { props: { propThemes, propResources } };
+  return { props: { propThemes, propResources, previewMode: preview || false } };
 }
 
 ThemePage.propTypes = {
@@ -239,11 +238,13 @@ ThemePage.propTypes = {
       ]),
     ),
   ),
+  previewMode: PropTypes.bool,
 };
 
 ThemePage.defaultProps = {
   propThemes: [],
   propResources: [],
+  previewMode: false,
 };
 
 export default ThemePage;
