@@ -2,13 +2,13 @@ import { Box, makeStyles } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'firebaseui/dist/firebaseui.css';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Provider } from 'react-redux';
 import Footer from '../components/Footer';
+import Head from '../components/Head';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import firebase from '../config/firebase';
@@ -100,10 +100,10 @@ function App({ Component, pageProps }) {
 
   return (
     <>
-      <Head>
-        <title>YSM - Your Story Matters</title>
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      </Head>
+      <Head
+        title="Your Story Matters"
+        ogImage="logo.png"
+      />
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />

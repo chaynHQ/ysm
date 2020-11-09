@@ -1,31 +1,41 @@
 import NextHead from 'next/head';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 const Head = ({
-  title, ogImage, ogTitle,
-}) => (
-  <NextHead>
-    <title>
-      {title}
-      {' '}
-      | YSM
-    </title>
-    {/* <meta property="og:url" content={window.location.href} /> */}
-    <meta property="og:title" content={ogTitle || title} />
-    {/* CHECK THAT LOCAL IMAGE ACTUALY WORKS */}
-    <meta property="og:image" content={ogImage} />
-  </NextHead>
-);
+  title, description, ogDescription, ogImage, ogTitle,
+}) => {
+  const router = useRouter();
+  return (
+    <NextHead>
+      <title>
+        {title}
+        {' '}
+        | YSM
+      </title>
+      <meta name="description" content={description} />
+      <meta property="og:url" content={`${process.env.BASE_URL} ${router.pathname}`} />
+      <meta property="og:type" content="website" />
+      <meta property="og:description" content={ogDescription || description} />
+      <meta property="og:title" content={ogTitle || title} />
+      <meta property="og:image" content={ogImage} />
+    </NextHead>
+  );
+};
 
 Head.propTypes = {
   title: PropTypes.string.isRequired,
+  description: PropTypes.string,
   ogImage: PropTypes.string.isRequired,
   ogTitle: PropTypes.string,
+  ogDescription: PropTypes.string,
 };
 
 Head.defaultProps = {
   ogTitle: null,
+  description: 'Browse accessible resources curated by a team of survivors. Save what you love and come back anytime.',
+  ogDescription: null,
 };
 
 export default Head;

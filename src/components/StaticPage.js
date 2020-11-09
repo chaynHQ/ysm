@@ -58,7 +58,10 @@ const StaticPage = ({ content }) => {
 
   return (
     <>
-      <Head title={content.title} ogImage="logo.png" />
+      <Head
+        title={content.title}
+        ogImage="logo.png"
+      />
       <Box
         display="flex"
         flexDirection="column"

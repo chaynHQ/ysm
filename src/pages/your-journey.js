@@ -94,7 +94,10 @@ const YourJourney = ({ propThemes, container }) => {
       {themes
         ? (
           <>
-            <Head title="Your Journey" ogImage="logo.png" />
+            <Head
+              title="Your Journey"
+              ogImage="logo.png"
+            />
             <Grid container justify="space-between" direction="row">
               <Breadcrumbs aria-label="breadcrumb">
                 <Link href="/" passHref>
