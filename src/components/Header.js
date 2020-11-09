@@ -12,6 +12,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from '../config/firebase';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
+import leaveSite from '../shared/leave';
 
 const useStyles = makeStyles({
   icon: {
@@ -138,16 +139,14 @@ const Header = ({ menuContainer }) => {
               </Box>
             </LinkUi>
           </Link>
-          <Link href="/about" passHref>
-            <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
-              <Box display="flex" alignItems="flex-end" pl={2} py={1}>
-                <Icon>
-                  <ExitToApp />
-                </Icon>
-                Leave this site
-              </Box>
-            </LinkUi>
-          </Link>
+          <LinkUi component="a" color="inherit" onClick={() => { leaveSite(); }}>
+            <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+              <Icon>
+                <ExitToApp />
+              </Icon>
+              Leave this site
+            </Box>
+          </LinkUi>
         </Box>
       </Drawer>
     </Box>

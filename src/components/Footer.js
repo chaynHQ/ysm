@@ -6,6 +6,7 @@ import {
 } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import leaveSite from '../shared/leave';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -40,10 +41,7 @@ const Footer = () => {
         value={selected}
         onChange={(e, value) => {
           if (value === '/leave') {
-            window.open('http://www.wikipedia.org/', '_newtab');
-            window.location.replace(
-              'https://www.google.com/search?tbm=isch&q=cute+baby+animal+memes',
-            );
+            leaveSite();
           } else {
             setSelected(value);
             router.push(value);

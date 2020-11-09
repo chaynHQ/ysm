@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
 import rollbar from '../shared/rollbar';
 import { setSettingsAuth, setUserSignIn } from '../store/actions';
 
@@ -115,6 +116,11 @@ const Settings = ({
                 onClick={() => {
                   setUserSignInOnClick({});
                   setSettingsAuthOnError(false);
+                  axiosGet('/preview', {
+                    params: {
+                      revokeAccess: true,
+                    },
+                  });
                 }}
               >
                 Log out
