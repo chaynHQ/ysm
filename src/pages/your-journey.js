@@ -18,7 +18,6 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useSelector } from 'react-redux';
 import SearchModal from '../components/SearchModal';
 import SignUpPrompt from '../components/SignUpPrompt';
 import firebase from '../config/firebase';
@@ -64,15 +63,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const YourJourney = ({ propThemes, container }) => {
+const YourJourney = ({ propThemes, container, previewMode }) => {
   const classes = useStyles();
   const [showSearchModal, setShowSearchModal] = useState(false);
-  const previewMode = useSelector((state) => state.user.previewMode);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const [themes, setThemes] = useState(propThemes);
 
   useEffect(() => {
-    if (previewMode) {
+    if (previewMode && user) {
       axiosGet('themes', {
         headers: {
           'X-PREVIEW-MODE': 'preview',
@@ -80,7 +78,7 @@ const YourJourney = ({ propThemes, container }) => {
         },
       }).then((allThemes) => { setThemes(allThemes); });
     }
-  }, []);
+  }, [user]);
 
   return (
     <Box
@@ -175,7 +173,7 @@ export async function getServerSideProps({ preview }) {
     propThemes = await axiosGet('themes');
   }
 
-  return { props: { propThemes } };
+  return { props: { propThemes, previewMode: preview || false } };
 }
 
 YourJourney.propTypes = {
@@ -188,10 +186,12 @@ YourJourney.propTypes = {
       ]),
     ),
   ),
+  previewMode: PropTypes.bool,
 };
 
 YourJourney.defaultProps = {
   propThemes: [],
+  previewMode: false,
 };
 
 export default YourJourney;

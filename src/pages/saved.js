@@ -74,6 +74,11 @@ const Saved = ({ profile }) => {
               onClick={() => {
                 firebase.auth().signOut();
                 setBookmarks([]);
+                axiosGet('/preview', {
+                  params: {
+                    revokeAccess: true,
+                  },
+                });
               }}
             >
               Log out
