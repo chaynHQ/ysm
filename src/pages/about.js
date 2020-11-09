@@ -12,12 +12,15 @@ const About = ({ propContent, previewMode }) => {
 
   useEffect(() => {
     if (previewMode && user) {
-      axiosGet('pages/about-us', {
-        headers: {
-          'X-PREVIEW-MODE': 'preview',
-          authorization: `Bearer ${user.xa}`,
-        },
-      }).then((pageContent) => { setContent(pageContent); });
+      user
+        .getIdToken()
+        .then((idToken) => axiosGet('pages/about-us', {
+          headers: {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          },
+        }))
+        .then((pageContent) => { setContent(pageContent); });
     }
   }, [user]);
 

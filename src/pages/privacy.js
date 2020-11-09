@@ -12,12 +12,15 @@ const Privacy = ({ propContent, previewMode }) => {
 
   useEffect(() => {
     if (previewMode && user) {
-      axiosGet('pages/privacy', {
-        headers: {
-          'X-PREVIEW-MODE': 'preview',
-          authorization: `Bearer ${user.xa}`,
-        },
-      }).then((pageContent) => { setContent(pageContent); });
+      user
+        .getIdToken()
+        .then((idToken) => axiosGet('pages/privacy', {
+          headers: {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          },
+        }))
+        .then((pageContent) => { setContent(pageContent); });
     }
   }, [user]);
 
