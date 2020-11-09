@@ -125,7 +125,11 @@ const ThemePage = ({
         ? <Typography>Theme does not exist</Typography>
         : (
           <>
-            <Head title={theme.title} ogImage={theme.image ? theme.image.filename : '/logo.png'} />
+            <Head
+              title={theme.title}
+              ogImage={theme.image ? theme.image.filename : null}
+              ogImageAlt={theme.image ? theme.image.alt : null}
+            />
             <Typography color="textSecondary" align="center" variant="h1">{theme.title}</Typography>
             <Typography
               color="textSecondary"

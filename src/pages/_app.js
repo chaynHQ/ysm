@@ -102,7 +102,6 @@ function App({ Component, pageProps }) {
     <>
       <Head
         title="Your Story Matters"
-        ogImage="logo.png"
       />
       <Provider store={store}>
         <ThemeProvider theme={theme}>

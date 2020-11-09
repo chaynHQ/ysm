@@ -55,7 +55,11 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
       { theme && resource
         ? (
           <>
-            <Head title={resource.title} ogImage={resource.image ? resource.image.filename : '/logo.png'} />
+            <Head
+              title={resource.title}
+              ogImage={resource.image ? resource.image.filename : null}
+              ogImageAlt={resource.image ? resource.image.alt : null}
+            />
             <Breadcrumbs aria-label="breadcrumb">
               <Link href="/themes/slug" as={`/themes/${theme.slug}`} passHref>
                 <LinkUi component="a" color="inherit">

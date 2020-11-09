@@ -93,7 +93,11 @@ const ItemPage = ({ propResource, previewMode }) => {
       {resource && item
         ? (
           <>
-            <Head title={item.title} ogImage={resource.image ? resource.image.filename : '/logo.png'} />
+            <Head
+              title={item.title}
+              ogImage={resource.image ? resource.image.filename : null}
+              ogImageAlt={resource.image ? resource.image.alt : null}
+            />
             <Breadcrumbs aria-label="breadcrumb">
               <Link href="/resources/[resourceSlug]" as={`/resources/${resource.slug}`} passHref>
                 <Box display="flex" alignItems="center" justifyContent="center">

@@ -60,7 +60,6 @@ const StaticPage = ({ content }) => {
     <>
       <Head
         title={content.title}
-        ogImage="logo.png"
       />
       <Box
         display="flex"

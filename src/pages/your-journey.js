@@ -94,7 +94,6 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
           <>
             <Head
               title="Your Journey"
-              ogImage="logo.png"
             />
             <Grid container justify="space-between" direction="row">
               <Breadcrumbs aria-label="breadcrumb">
