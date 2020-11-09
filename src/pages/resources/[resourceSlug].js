@@ -28,7 +28,7 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
   }, [resourceSlug]);
 
   useEffect(() => {
-    if (previewMode) {
+    if (previewMode && user) {
       const headers = {
         'X-PREVIEW-MODE': 'preview',
         authorization: `Bearer ${user.xa}`,

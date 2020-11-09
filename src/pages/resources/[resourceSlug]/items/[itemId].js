@@ -66,13 +66,12 @@ const ItemPage = ({ propResource, previewMode }) => {
   }, [itemId, resourceSlug]);
 
   useEffect(() => {
-    if (previewMode) {
+    if (previewMode && user) {
       const headers = {
         'X-PREVIEW-MODE': 'preview',
         authorization: `Bearer ${user.xa}`,
       };
-
-      axiosGet(`resources/${resourceSlug}`, headers).then((previewResource) => {
+      axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
         setResource(previewResource);
         setItem(previewResource.content.find((i) => i.id === itemId));
         setNextItem(previewResource.content[previewResource.content.findIndex(
