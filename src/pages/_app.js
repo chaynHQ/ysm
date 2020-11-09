@@ -23,8 +23,13 @@ const useStyles = makeStyles({
     height: '100vh',
     margin: 0,
   },
-  background: {
-    background: 'url(\'./background.png\')',
+  backgroundBlue: {
+    background: 'url(\'/backgroundBlue.png\')',
+    backgroundSize: '100% 100%',
+    backgroundRepeat: 'no-repeat',
+  },
+  backgroundPeach: {
+    background: 'url(\'/backgroundPeach.png\')',
     backgroundSize: '100% 100%',
     backgroundRepeat: 'no-repeat',
   },
@@ -37,7 +42,7 @@ function App({ Component, pageProps }) {
   const { height, width } = useWindowDimensions();
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const [isLoading, setIsLoading] = useState(false);
-  const [showBackground, setShowBackground] = useState(true);
+  const [background, setBackground] = useState('peach');
 
   const containerRef = useRef();
   const scrollTopRef = useRef();
@@ -88,11 +93,14 @@ function App({ Component, pageProps }) {
   });
 
   useEffect(() => {
-    const routesWithoutBackgrounds = ['/settings', '/saved', '/resources/[resourceSlug]', '/themes/[slug]'];
+    const routesWithoutBackgrounds = ['/settings', '/saved', '/themes/[slug]'];
+    const routesWithBlueBackgrounds = ['/resources/[resourceSlug]/items/[itemId]'];
     if (routesWithoutBackgrounds.includes(router.pathname)) {
-      setShowBackground(false);
+      setBackground('none');
+    } else if (routesWithBlueBackgrounds.includes(router.pathname)) {
+      setBackground('blue');
     } else {
-      setShowBackground(true);
+      setBackground('peach');
     }
   }, [router]);
 
@@ -120,7 +128,9 @@ function App({ Component, pageProps }) {
                 flexDirection="column"
                 flexGrow={1}
                 overflow="scroll"
-                className={showBackground ? classes.background : null}
+                className={`${background === 'none' ? classes.backgroundNone : ''} 
+                ${background === 'blue' ? classes.backgroundBlue : ''}
+                ${background === 'peach' ? classes.backgroundPeach : ''}`}
               >
                 <Box ref={scrollTopRef} />
                 {
