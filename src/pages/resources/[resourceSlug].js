@@ -9,8 +9,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import Item from '../../components/Item';
 import ResourceContents from '../../components/ResourceContents';
 import firebase from '../../config/firebase';
+import { axiosGet } from '../../shared/axios';
 import isBrowser from '../../shared/browserCheck';
-import { axiosGet } from '../../store/axios';
 
 const ResourcePage = ({ propResource, propTheme, previewMode }) => {
   const router = useRouter();
@@ -22,6 +22,13 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
 
   useEffect(() => {
     if (previewMode && user) {
+      setTheme(propTheme);
+      setResource(propResource);
+    }
+  }, [resourceSlug]);
+
+  useEffect(() => {
+    if (previewMode) {
       const headers = {
         'X-PREVIEW-MODE': 'preview',
         authorization: `Bearer ${user.xa}`,
@@ -34,7 +41,7 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
         });
       });
     }
-  }, [user]);
+  }, [user, resourceSlug]);
 
   return (
     <Box
@@ -59,7 +66,7 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
             </Breadcrumbs>
             <Box>
               {resource.content && resource.content.length === 1
-                ? <Item item={resource.content[0]} canBeSaved />
+                ? <Item item={{ ...resource.content[0], slug: resource.slug }} canBeSaved />
                 : <ResourceContents resource={resource} />}
             </Box>
           </>

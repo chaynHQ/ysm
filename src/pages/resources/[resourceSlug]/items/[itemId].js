@@ -16,8 +16,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Item from '../../../../components/Item';
 import firebase from '../../../../config/firebase';
+import { axiosGet } from '../../../../shared/axios';
 import isBrowser from '../../../../shared/browserCheck';
-import { axiosGet } from '../../../../store/axios';
 
 const useStyles = makeStyles(() => ({
   link: {
@@ -55,6 +55,18 @@ const ItemPage = ({ propResource, previewMode }) => {
 
   useEffect(() => {
     if (previewMode && user) {
+      setResource(propResource);
+      setItem(propResource ? propResource.content.find((i) => i.id === itemId) : null);
+      setNextItem(propResource
+        ? propResource.content[propResource.content.findIndex(
+          (i) => i.id === itemId,
+        ) + 1] || null
+        : null);
+    }
+  }, [itemId, resourceSlug]);
+
+  useEffect(() => {
+    if (previewMode) {
       const headers = {
         'X-PREVIEW-MODE': 'preview',
         authorization: `Bearer ${user.xa}`,
@@ -68,7 +80,7 @@ const ItemPage = ({ propResource, previewMode }) => {
         ) + 1] || null);
       });
     }
-  }, [user]);
+  }, [user, itemId, resourceSlug]);
 
   return (
     <Box
@@ -115,6 +127,7 @@ const ItemPage = ({ propResource, previewMode }) => {
                         <LinkUi
                           underline="always"
                           className={classes.link}
+                          component="span"
                         >
                           {nextItem ? nextItem.title : resource.title}
                         </LinkUi>

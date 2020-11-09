@@ -75,6 +75,18 @@ const Theme = createMuiTheme({
         fontWeight: 900,
         textTransform: 'none',
       },
+      outlined: {
+        borderRadius: 34,
+        fontSize: 12,
+      },
+      outlinedSecondary: {
+        color: '#717798',
+        borderColor: '#717798',
+
+      },
+      outlinedSizeSmall: {
+        fontSize: 12,
+      },
     },
     MuiIconButton: {
       root: {
@@ -167,6 +179,7 @@ const Theme = createMuiTheme({
     MuiCard: {
       root: {
         margin: 6,
+        borderRadius: 6,
       },
     },
     MuiDialog: {

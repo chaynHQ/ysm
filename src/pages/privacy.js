@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import StaticPage from '../components/StaticPage';
 import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
-import { axiosGet } from '../store/axios';
 
 const Privacy = ({ propContent, previewMode }) => {
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];

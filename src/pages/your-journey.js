@@ -21,9 +21,9 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import SearchModal from '../components/SearchModal';
 import SignUpPrompt from '../components/SignUpPrompt';
 import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import richTextHelper from '../shared/rich-text';
-import { axiosGet } from '../store/axios';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -113,9 +113,10 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
 
             </Grid>
 
-            <Typography variant="h1" align="center" color="secondary.dark">Your Journey</Typography>
+            <Typography variant="h1" align="center">Your Journey</Typography>
             <Typography align="center">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ac
+              Browse accessible resources curated by a team of survivors.
+              Save what you love and come back anytime.
             </Typography>
             {themes.map((theme) => (
               <Card

@@ -10,8 +10,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import ResourceCard from '../components/ResourceCard';
 import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
-import { axiosGet } from '../store/axios';
 
 const useStyles = makeStyles(() => ({
   link: {

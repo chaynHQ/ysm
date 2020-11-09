@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
-import { axiosGet } from '../store/axios';
 
 const PreviewMode = ({ onLoadPreviewMode }) => {
   const router = useRouter();

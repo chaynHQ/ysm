@@ -1,5 +1,5 @@
 import {
-  Avatar, Box,
+  Box,
   Button, makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -11,12 +11,7 @@ import firebase from '../config/firebase';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    marginRight: theme.spacing(0.5),
-    width: 20,
-    height: 20,
-  },
+const useStyles = makeStyles(() => ({
   card: {
     height: 200,
     margin: 6,
@@ -32,9 +27,12 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: 'inset 0 0 0 1000px rgba(36, 42, 74, 0.3)',
   },
   iconContainer: {
-    backgroundColor: '#EADED6',
+    backgroundColor: '#E2E3E6',
+    padding: '10%',
+    borderRadius: 180,
+  },
+  icon: {
     width: '100%',
-    height: '100%',
   },
   link: {
     color: '#D27200',
@@ -67,11 +65,11 @@ const SignUpPrompt = () => {
             justifyContent="center"
             alignItems="center"
           >
-            <Box width={width * 0.3} height={width * 0.3} p={4}>
-              <Avatar
-                className={classes.iconContainer}
-                alt="Illustration of woman and a butterfly"
-                src="/resource-illustration.png"
+            <Box className={classes.iconContainer} width={width * 0.4} height={width * 0.4} mb={4}>
+              <img
+                className={classes.icon}
+                alt="YSM Logo"
+                src="/logo.png"
               />
             </Box>
             <Typography variant="h1" align="center">Sign up, it’s free</Typography>

@@ -11,8 +11,8 @@ import {
 import { ArrowBack, Clear } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { axiosGet } from '../shared/axios';
 import useWindowDimensions from '../shared/dimensions';
-import { axiosGet } from '../store/axios';
 import theme from '../styles/theme';
 import ResourceCard from './ResourceCard';
 
