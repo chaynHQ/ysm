@@ -1,10 +1,11 @@
-import { Box, makeStyles } from '@material-ui/core';
+import { Box, Button, makeStyles } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'firebaseui/dist/firebaseui.css';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
+import CookieConsent from 'react-cookie-consent';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Provider } from 'react-redux';
 import Footer from '../components/Footer';
@@ -33,7 +34,18 @@ const useStyles = makeStyles({
     backgroundSize: '100% 100%',
     backgroundRepeat: 'no-repeat',
   },
+  cookieContainer: {
+    position: 'static !important',
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  cookieButtonContainer: {
+    display: 'flex',
 
+  },
+  cookieButton: {
+    margin: 5,
+  },
 });
 
 function App({ Component, pageProps }) {
@@ -124,7 +136,29 @@ function App({ Component, pageProps }) {
             justifyContent="center"
           >
             <Box height={height} width={width} overflow="hidden" boxShadow={3} position="relative" ref={containerRef} display="flex" flexDirection="column">
+              <CookieConsent
+                location="bottom"
+                buttonText="Got it!"
+                declineButtonText="No Thanks"
+                cookieName="ConsentToCookie"
+                enableDeclineButton
+                containerClasses={`MuiBox-root ${classes.cookieContainer}`}
+                buttonWrapperClasses={`${classes.cookieButtonContainer}`}
+                buttonClasses={`MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall ${classes.cookieButton}`}
+                declineButtonClasses={`MuiButtonBase-root MuiButton-root MuiButton-contained  MuiButton-containedSizeSmall MuiButton-sizeSmall ${classes.cookieButton}`}
+                style={{
+                  backgroundColor: theme.palette.secondary.dark,
+                  color: theme.palette.primary.light,
+                  padding: theme.spacing(3),
+                }}
+                flipButtons
+                disableStyles
+                ButtonComponent={Button}
+              >
+                We use an analytics cookie to understand how YSM is being used so we can improve it.
+              </CookieConsent>
               <Header menuContainer={containerRef} />
+
               <Box
                 display="flex"
                 flexDirection="column"
