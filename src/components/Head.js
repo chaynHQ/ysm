@@ -20,9 +20,11 @@ const Head = ({
       <meta property="og:description" content={ogDescription || description} />
       <meta property="og:title" content={ogTitle || title} />
       <meta property="og:image" content={ogImage} />
+      <meta property="og:site_name" content="YSM" />
       <meta name="twitter:title" content={ogTitle || title} />
       <meta name="twitter:description" content={ogDescription || description} />
       <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:image:alt" content="Line drawing" />
     </NextHead>
   );
 };
