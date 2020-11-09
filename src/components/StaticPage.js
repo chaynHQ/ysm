@@ -67,6 +67,7 @@ const StaticPage = ({ content }) => {
         direction="column"
         height={1}
       >
+        {/* TODO: This is not currently displaying */}
         <Card className={classes.card}>
           <CardActions>
             <IconButton onClick={() => { router.back(); }}>
