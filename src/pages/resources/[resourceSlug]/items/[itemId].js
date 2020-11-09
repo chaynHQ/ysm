@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import Head from '../../../../components/Head';
 import Item from '../../../../components/Item';
 import firebase from '../../../../config/firebase';
 import { axiosGet } from '../../../../shared/axios';
@@ -92,6 +93,11 @@ const ItemPage = ({ propResource, previewMode }) => {
       {resource && item
         ? (
           <>
+            <Head
+              title={item.title}
+              ogImage={resource.image ? resource.image.filename : null}
+              ogImageAlt={resource.image ? resource.image.alt : null}
+            />
             <Breadcrumbs aria-label="breadcrumb">
               <Link href="/resources/[resourceSlug]" as={`/resources/${resource.slug}`} passHref>
                 <Box display="flex" alignItems="center" justifyContent="center">

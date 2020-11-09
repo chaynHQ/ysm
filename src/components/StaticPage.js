@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import richTextHelper from '../shared/rich-text';
+import Head from './Head';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -56,30 +57,35 @@ const StaticPage = ({ content }) => {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      direction="column"
-      height={1}
-    >
-      <Card className={classes.card}>
-        <CardActions>
-          <IconButton onClick={() => { router.back(); }}>
-            <ArrowBack />
-          </IconButton>
-        </CardActions>
-        <Typography align="center" variant="h1">{content.title}</Typography>
-        <CardMedia
-          component="img"
-          alt={content.image.alt}
-          image={content.image.filename}
-          title={content.image.title}
-        />
-      </Card>
-      <Box className={classes.content} flexGrow={1} px={2} py={3} display="flex" flexDirection="column">
-        {richTextHelper(content.content, (node) => richTextTransformer(node))}
+    <>
+      <Head
+        title={content.title}
+      />
+      <Box
+        display="flex"
+        flexDirection="column"
+        direction="column"
+        height={1}
+      >
+        <Card className={classes.card}>
+          <CardActions>
+            <IconButton onClick={() => { router.back(); }}>
+              <ArrowBack />
+            </IconButton>
+          </CardActions>
+          <Typography align="center" variant="h1">{content.title}</Typography>
+          <CardMedia
+            component="img"
+            alt={content.image.alt}
+            image={content.image.filename}
+            title={content.image.title}
+          />
+        </Card>
+        <Box className={classes.content} flexGrow={1} px={2} py={3} display="flex" flexDirection="column">
+          {richTextHelper(content.content, (node) => richTextTransformer(node))}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
