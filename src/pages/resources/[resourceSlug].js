@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useSelector } from 'react-redux';
+import Head from '../../components/Head';
 import Item from '../../components/Item';
 import ResourceContents from '../../components/ResourceContents';
 import firebase from '../../config/firebase';
@@ -54,6 +55,7 @@ const ResourcePage = ({ propResource, propTheme }) => {
       { theme && resource
         ? (
           <>
+            <Head title={resource.title} ogImage={resource.image ? resource.image.filename : '/logo.png'} />
             <Breadcrumbs aria-label="breadcrumb">
               <Link href="/themes/slug" as={`/themes/${theme.slug}`} passHref>
                 <LinkUi component="a" color="inherit">

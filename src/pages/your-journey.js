@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useSelector } from 'react-redux';
+import Head from '../components/Head';
 import SearchModal from '../components/SearchModal';
 import SignUpPrompt from '../components/SignUpPrompt';
 import firebase from '../config/firebase';
@@ -93,6 +94,7 @@ const YourJourney = ({ propThemes, container }) => {
       {themes
         ? (
           <>
+            <Head title="Your Journey" ogImage="logo.png" />
             <Grid container justify="space-between" direction="row">
               <Breadcrumbs aria-label="breadcrumb">
                 <Link href="/" passHref>

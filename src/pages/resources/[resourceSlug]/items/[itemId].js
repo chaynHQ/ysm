@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useSelector } from 'react-redux';
+import Head from '../../../../components/Head';
 import Item from '../../../../components/Item';
 import firebase from '../../../../config/firebase';
 import { axiosGet } from '../../../../shared/axios';
@@ -93,6 +94,7 @@ const ItemPage = ({ propResource }) => {
       {resource && item
         ? (
           <>
+            <Head title={item.title} ogImage={resource.image ? resource.image.filename : '/logo.png'} />
             <Breadcrumbs aria-label="breadcrumb">
               <Link href="/resources/[resourceSlug]" as={`/resources/${resource.slug}`} passHref>
                 <Box display="flex" alignItems="center" justifyContent="center">
