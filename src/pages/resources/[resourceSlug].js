@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useSelector } from 'react-redux';
 import Head from '../../components/Head';
 import Item from '../../components/Item';
 import ResourceContents from '../../components/ResourceContents';

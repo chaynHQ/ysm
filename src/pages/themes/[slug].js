@@ -15,7 +15,6 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useSelector } from 'react-redux';
 import Head from '../../components/Head';
 import ResourceCard from '../../components/ResourceCard';
 import SearchModal from '../../components/SearchModal';
