@@ -75,6 +75,18 @@ const Theme = createMuiTheme({
         fontWeight: 900,
         textTransform: 'none',
       },
+      outlined: {
+        borderRadius: 34,
+        fontSize: 12,
+      },
+      outlinedSecondary: {
+        color: '#717798',
+        borderColor: '#717798',
+
+      },
+      outlinedSizeSmall: {
+        fontSize: 12,
+      },
     },
     MuiIconButton: {
       root: {
@@ -97,7 +109,7 @@ const Theme = createMuiTheme({
     },
     MuiBottomNavigation: {
       root: {
-        backgroundColor: '#EFE9E5',
+        backgroundColor: '#FEF6F1',
         alignItems: 'flex-start',
         height: '100%',
         padding: 8,
@@ -167,6 +179,7 @@ const Theme = createMuiTheme({
     MuiCard: {
       root: {
         margin: 6,
+        borderRadius: 6,
       },
     },
     MuiDialog: {

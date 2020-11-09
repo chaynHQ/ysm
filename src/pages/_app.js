@@ -5,14 +5,16 @@ import 'firebaseui/dist/firebaseui.css';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Provider } from 'react-redux';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import Loading from '../components/Loading';
 import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
+import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
-import { axiosGet } from '../store/axios';
 import { useStore } from '../store/store';
 import theme from '../styles/theme';
 
@@ -21,18 +23,24 @@ const useStyles = makeStyles({
     height: '100vh',
     margin: 0,
   },
+  background: {
+    background: 'url(\'./background.png\')',
+    backgroundSize: '100% 100%',
+    backgroundRepeat: 'no-repeat',
+  },
 
 });
-
-const isBrowser = typeof window !== 'undefined';
 
 function App({ Component, pageProps }) {
   const router = useRouter();
   const classes = useStyles();
   const { height, width } = useWindowDimensions();
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
+  const [isLoading, setIsLoading] = useState(false);
+  const [showBackground, setShowBackground] = useState(true);
 
   const containerRef = useRef();
+  const scrollTopRef = useRef();
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -67,6 +75,27 @@ function App({ Component, pageProps }) {
     }
   }, [user]);
 
+  useEffect(() => {
+    router.events.on('routeChangeStart', () => {
+      setIsLoading(true);
+    });
+    router.events.on('routeChangeComplete', () => {
+      setIsLoading(false);
+    });
+    router.events.on('routeChangeError', () => {
+      setIsLoading(false);
+    });
+  });
+
+  useEffect(() => {
+    const routesWithoutBackgrounds = ['/settings', '/saved', '/resources/[resourceSlug]', '/themes/[slug]'];
+    if (routesWithoutBackgrounds.includes(router.pathname)) {
+      setShowBackground(false);
+    } else {
+      setShowBackground(true);
+    }
+  }, [router]);
+
   const store = useStore(pageProps.initialReduxState);
 
   return (
@@ -92,8 +121,18 @@ function App({ Component, pageProps }) {
                 flexDirection="column"
                 flexGrow={1}
                 overflow="scroll"
+                className={showBackground ? classes.background : null}
               >
-                <Component {...pageProps} container={containerRef} />
+                <Box ref={scrollTopRef} />
+                {
+                  isLoading ? <Loading />
+                    : (
+                      <Component
+                        {...pageProps}
+                        container={containerRef}
+                      />
+                    )
+}
               </Box>
               <Footer />
             </Box>

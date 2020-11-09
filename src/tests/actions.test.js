@@ -1,29 +1,7 @@
-import mockAxios from 'axios';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 import * as actions from '../store/actions';
 import * as types from '../store/types';
-import resources from './fixtures/resources';
-import themes from './fixtures/themes';
-
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
 
 describe('action creators', () => {
-  it('should create an action to set the themes', () => {
-    const expectedAction = {
-      type: types.SET_THEMES,
-      data: themes,
-    };
-    expect(actions.setThemes(themes)).toEqual(expectedAction);
-  });
-  it('should create an action to set the resources', () => {
-    const expectedAction = {
-      type: types.SET_RESOURCES,
-      data: resources,
-    };
-    expect(actions.setResources(resources)).toEqual(expectedAction);
-  });
   it('should create an action to set the signed in user', () => {
     const user = {};
     const expectedAction = {
@@ -32,6 +10,7 @@ describe('action creators', () => {
     };
     expect(actions.setUserSignIn(user)).toEqual(expectedAction);
   });
+
   it('should create an action to set the settings auth', () => {
     const settingsAuth = true;
     const expectedAction = {
@@ -40,48 +19,31 @@ describe('action creators', () => {
     };
     expect(actions.setSettingsAuth(settingsAuth)).toEqual(expectedAction);
   });
-});
 
-describe('async actions', () => {
-  it('creates SET_RESOURCES when fetching resources has been done', async () => {
-    const expectedActions = [{
-      type: types.SET_RESOURCES,
-      data: resources,
-    },
-    ];
-    const store = mockStore({ resources });
-    mockAxios.get.mockImplementationOnce(() => Promise.resolve({ data: resources }));
-
-    return store.dispatch(actions.fetchResources()).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
+  it('should create an action to set a bookmark', () => {
+    const bookmark = {};
+    const expectedAction = {
+      type: types.SET_BOOKMARK,
+      data: bookmark,
+    };
+    expect(actions.setBookmark(bookmark)).toEqual(expectedAction);
   });
 
-  it('creates SET_THEMES when fetching themes has been done', async () => {
-    const expectedActions = [{
-      type: types.SET_THEMES,
-      data: themes,
-    },
-    ];
-    const store = mockStore({ themes });
-    mockAxios.get.mockImplementationOnce(() => Promise.resolve({ data: themes }));
-
-    return store.dispatch(actions.fetchThemes()).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
+  it('should create an action to delete a bookmark', () => {
+    const bookmark = {};
+    const expectedAction = {
+      type: types.DELETE_BOOKMARK,
+      data: bookmark,
+    };
+    expect(actions.deleteBookmark(bookmark)).toEqual(expectedAction);
   });
 
-  it('creates SET_PROFILE when fetching profile has been done', async () => {
-    const expectedActions = [{
-      type: types.SET_PROFILE,
-      data: { xa: 'some-long-jwt-token' },
-    },
-    ];
-    const store = mockStore();
-    mockAxios.get.mockImplementationOnce(() => Promise.resolve({ data: { xa: 'some-long-jwt-token' } }));
-
-    return store.dispatch(actions.fetchProfile()).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
+  it('should create an action to set the preview mode', () => {
+    const previewMode = true;
+    const expectedAction = {
+      type: types.SET_PREVIEW_MODE,
+      data: previewMode,
+    };
+    expect(actions.setPreviewMode(previewMode)).toEqual(expectedAction);
   });
 });

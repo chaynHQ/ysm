@@ -10,7 +10,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import ResourceCard from '../components/ResourceCard';
 import firebase from '../config/firebase';
-import { axiosGet } from '../store/axios';
+import { axiosGet } from '../shared/axios';
+import isBrowser from '../shared/browserCheck';
 
 const useStyles = makeStyles(() => ({
   link: {
@@ -20,8 +21,6 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#ffffff',
   },
 }));
-
-const isBrowser = typeof window !== 'undefined';
 
 const Saved = ({ profile }) => {
   const classes = useStyles();
@@ -97,6 +96,7 @@ const Saved = ({ profile }) => {
         { user && bookmarks.length < 1 ? (
           <Typography>
             Start exploring:
+            {' '}
             <Link href="/your-journey">
               <LinkUi
                 underline="always"

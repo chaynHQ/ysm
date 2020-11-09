@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from '../config/firebase';
+import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 import leaveSite from '../shared/leave';
 
@@ -24,8 +25,6 @@ const useStyles = makeStyles({
   },
 });
 
-const isBrowser = typeof window !== 'undefined';
-
 const Header = ({ menuContainer }) => {
   const classes = useStyles();
   const { height } = useWindowDimensions();
@@ -39,7 +38,7 @@ const Header = ({ menuContainer }) => {
       alignItems="center"
       justifyContent="space-between"
       width={1}
-      bgcolor="#EFE9E5"
+      bgcolor="primary.light"
     >
       <Box p={2}>
         <IconButton onClick={() => { setDrawerOpen(true); }}>

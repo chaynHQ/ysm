@@ -60,16 +60,18 @@ const ResourceContents = ({ resource }) => {
         </ol>
 
         <Card variant="outlined" className={classes.card}>
-          <Link passHref href="/resources/[resourceSlug]/items/[itemId]" as={`/resources/${resource.slug}/items/${resource.content[0].id}`}>
+          <CardActionArea component="a" className={classes.cardMedia}>
+            <Link passHref href="/resources/[resourceSlug]/items/[itemId]" as={`/resources/${resource.slug}/items/${resource.content[0].id}`}>
 
-            <CardActionArea component="a" className={classes.cardMedia}>
               <CardContent>
                 <Grid container justify="space-between" direction="row">
                   <Typography color="textSecondary">
                     Start here!
+                    {' '}
                     <LinkUi
                       underline="always"
                       className={classes.link}
+                      component="span"
                     >
                       {resource.content[0].title}
                     </LinkUi>
@@ -77,8 +79,9 @@ const ResourceContents = ({ resource }) => {
                   <ArrowForward />
                 </Grid>
               </CardContent>
-            </CardActionArea>
-          </Link>
+            </Link>
+          </CardActionArea>
+
         </Card>
       </Box>
       <SignUpPrompt url="/" />

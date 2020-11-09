@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
-
-const isBrowser = typeof window !== 'undefined';
+import isBrowser from './browserCheck';
 
 function getWindowDimensions() {
   let { innerWidth: width, innerHeight: height } = isBrowser ? window : {};
