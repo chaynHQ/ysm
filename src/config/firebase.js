@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/analytics';
 
+import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
 
 const config = {
@@ -11,7 +12,7 @@ const config = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-if (typeof window !== 'undefined' && !firebase.apps.length) {
+if (isBrowser && !firebase.apps.length) {
   firebase.initializeApp(config);
 
   try {
