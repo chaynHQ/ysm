@@ -1,7 +1,6 @@
+import 'firebase/analytics';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import 'firebase/analytics';
-
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
 
@@ -27,4 +26,6 @@ export default firebase;
 export const uiConfig = {
   credentialHelper: 'none',
   signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
+  tosUrl: '/info/terms-and-conditions',
+  privacyPolicyUrl: '/info/privacy',
 };

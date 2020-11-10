@@ -176,7 +176,6 @@ const SignUpWidget = ({
             </Typography>
             <Typography>And if you’re signing in, welcome back friend!</Typography>
 
-            {/* TODO: NEED TO ADD PRIVACY POLICY & T&C's Link */}
             <Box id="firebaseui-auth-container" display={showTermsStep || showVerificationStep ? 'none' : 'block'} />
           </>
         ) : null}
@@ -228,10 +227,9 @@ const SignUpWidget = ({
                       timezone and IP address) for a minimum of 9 months. If you want
                       us to remove this information, we will delete it. Your
                       information might be shared with other apps such as analytics to
-                      see who is using Soul Medicine, this helps us improve it.
+                      see who is using YSM, this helps us improve it.
                       Detailed info can be found in our
-                      {/* TODO: FIX THIS URL */}
-                      <a href="privacyPolicyUrl" target="_blank">Privacy Policy</a>
+                      <a href="/info/privacy" target="_blank">Privacy Policy</a>
                       .
                     </Box>
                     <Box className="mdl-card__supporting-text">
@@ -240,7 +238,7 @@ const SignUpWidget = ({
                     </Box>
                     <ul className="mdl-list">
                       <li className="mdl-list__item">
-                        Announcements about Soul Medicine
+                        Announcements about YSM
                       </li>
                       <li className="mdl-list__item">
                         Updates about new courses
@@ -262,11 +260,10 @@ const SignUpWidget = ({
                       />
                       <span className="mdl-checkbox__label">
                         I have read and agree to the
-                        {/* // TODO: FIX THESE URLS */}
-                        <a href="privacyPolicyUrl" target="_blank">Privacy Policy</a>
+                        <a href="info/privacy" target="_blank">Privacy Policy</a>
                         and
                         {' '}
-                        <a href="tosUrl" target="_blank">Terms of Service</a>
+                        <a href="info/terms-and-conditions" target="_blank">Terms of Service</a>
                       </span>
                     </label>
                   </Box>
