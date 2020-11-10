@@ -42,7 +42,7 @@ function App({ Component, pageProps }) {
   const { height, width } = useWindowDimensions();
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const [isLoading, setIsLoading] = useState(false);
-  const [background, setBackground] = useState('peach');
+  const [background, setBackground] = useState('Peach');
 
   const containerRef = useRef();
   const scrollTopRef = useRef();
