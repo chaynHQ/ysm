@@ -86,6 +86,15 @@ const ItemPage = ({ propResource, previewMode }) => {
     }
   }, [user, itemId, resourceSlug]);
 
+  useEffect(() => {
+    if (!previewMode && item) {
+      firebase.analytics().logEvent('select_content', {
+        content_type: 'resource_content_item',
+        item_id: `${resource.slug}/${itemId}`,
+      });
+    }
+  }, [item, itemId, resourceSlug]);
+
   return (
     <Box
       display="flex"

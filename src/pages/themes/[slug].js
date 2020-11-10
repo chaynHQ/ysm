@@ -96,6 +96,15 @@ const ThemePage = ({
     }
   }, [slug, user]);
 
+  useEffect(() => {
+    if (!previewMode && theme) {
+      firebase.analytics().logEvent('select_content', {
+        content_type: 'theme',
+        item_id: theme.slug,
+      });
+    }
+  }, [slug]);
+
   return (
     <Box
       display="flex"
