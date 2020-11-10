@@ -181,14 +181,7 @@ const Theme = createMuiTheme({
       paper: {
         padding: 20,
         borderRadius: 6,
-        backgroundColor: '#FCEFE5CC',
-      },
-    },
-    MuiDialog: {
-      paper: {
-        padding: 20,
-        borderRadius: 6,
-        backgroundColor: '#FCEFE5CC',
+        backgroundColor: '#FCEFE5',
       },
     },
   },

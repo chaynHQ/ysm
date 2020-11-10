@@ -1,9 +1,35 @@
-import { AccountCircle, Box, Button, Clear, Dialog, DialogContent, DialogTitle, Divider, Drawer, ExitToApp, Home, Icon, IconButton, Info, makeStyles, Menu, MenuBook, SvgIcon, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Drawer,
+  Icon,
+  IconButton,
+  makeStyles,
+
+  SvgIcon, Typography,
+} from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
+import {
+  AccountCircle,
+  Clear,
+  ExitToApp,
+  Home,
+  Info,
+  Menu,
+  MenuBook,
+} from '@material-ui/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import BreatheIcon from '../../public/breathe.svg';
+import React, { useRef, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import ReactPlayer from 'react-player';
+import BreathIcon from '../../public/breatheIcon.svg';
+import firebase from '../config/firebase';
+import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 import leaveSite from '../shared/leave';
 
@@ -24,69 +50,7 @@ const useStyles = makeStyles({
     marginRight: 'auto',
     padding: '1.33em',
     letterSpacing: 1,
-  // -webkit-animation: 'bgcolor 10s infinite ease-in-out',
-  // animation: 'bgcolor 10s infinite ease-in-out',
-  // -webkit-animation-play-state: 'paused',
-  // animationPlayState: 'paused',
   },
-  breath: {
-    width: 260,
-    height: 260,
-    margin: 10,
-    padding: 10,
-    backgroundColor: '#d5ecf4',
-    borderRadius: '50%',
-    boxSizing: 'border - box',
-  // -webkit-animation: 'bgcolor2 10s infinite ease-in-out',
-  // animation: 'bgcolor2 10s infinite ease-in-out',
-  },
-  breathContent: {
-    width: 240,
-    height: 240,
-    margin: '0 auto',
-    backgroundColor: '#eeb15c',
-    borderRadius: '50%',
-  // -webkit-transform: 'scale(0.1)',
-  // transform: 'scale(0.1)',
-  // -webkit-animation: 'scale 10s infinite ease-in-out',
-  // animation: 'scale 10s infinite ease-in-out',
-  // -webkit-animation-play-state: 'paused',
-  // animationPlayState: 'paused',
-  // -webkit-transform-origin: '50% 50%',
-  // transformOrigin: '50% 50%',
-  },
-// @-webkit-keyframes scale: {
-//   50% {
-//     backgroundColor: '#eda644',
-//     -webkit-transform: 'scale(1)',
-//   }
-// },
-// @keyframes scale: {
-//   50% {
-//     backgroundColor: '#eda644',
-//     transform: 'scale(1)',
-//   }
-// },
-// @-webkit-keyframes bgcolor: {
-//   50% {
-//     backgroundColor: '#d4e4f4',
-//   }
-// },
-// @keyframes bgcolor: {
-//   50% {
-//     backgroundColor: '#d4e4f4',
-//   }
-// },
-// @-webkit-keyframes bgcolor2: {
-//   50% {
-//     backgroundColor:' #c3def4',
-//   }
-// },
-// @keyframes bgcolor2: {
-//   50% {
-//     backgroundColor: '#c3def4',
-//   }
-// }
 });
 
 const Header = ({ menuContainer }) => {
@@ -94,24 +58,25 @@ const Header = ({ menuContainer }) => {
   const { height } = useWindowDimensions();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [timerRunning, setTimerRunning] = useState(false);
+  const [breathTimerRunning, setBreathTimerRunning] = useState(false);
+  const [breathState, setBreathState] = useState('');
+  const [breathLoopCount, setBreathLoopCount] = useState(0);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
+  const breatheTimerRef = useRef();
 
   const message = 'Get comfortable and start breathing when ready';
-  let timerMessage = 'Breathe Out';
-
-  const toggleTimerMessage = () => {
-    if (timerMessage === 'Breathe In') {
-      timerMessage = 'Breathe Out';
-    } else {
-      timerMessage = 'Breathe In';
-    }
-  };
 
   const startTimer = () => {
-    toggleTimerMessage();
-    setTimerRunning(true);
+    setBreathState('Breathe Out');
+    setBreathTimerRunning(true);
   };
+
+  const clearTimer = () => {
+    setBreathTimerRunning(false);
+    setBreathLoopCount(0);
+    setBreathState('');
+  };
+
   return (
     <Box
       display="flex"
@@ -140,20 +105,21 @@ const Header = ({ menuContainer }) => {
       </Box>
       <Box p={2}>
         <IconButton onClick={() => { setModalOpen(true); }}>
-          <SvgIcon component={BreatheIcon} />
+          <SvgIcon component={BreathIcon} />
         </IconButton>
 
       </Box>
 
       <Dialog
         open={modalOpen}
-        onClose={() => { setModalOpen(false); }}
+        onClose={() => { clearTimer(); setModalOpen(false); }}
       >
         <DialogTitle disableTypography>
-          <Box display="flex" justifyContent="center" width={1}>
+          <Box display="flex" justifyContent="space-between" width={1}>
+            <IconButton />
             <Typography variant="h1">Take a break</Typography>
-            <IconButton alignSelf="flex-start" onClick={() => { setModalOpen(false); }}>
-              <Clear />
+            <IconButton onClick={() => { clearTimer(); setModalOpen(false); }}>
+              <Clear id="BreathTimerClose" />
             </IconButton>
           </Box>
         </DialogTitle>
@@ -167,22 +133,39 @@ const Header = ({ menuContainer }) => {
             alignContent="space-between"
             bgcolor="primary.light"
           >
-            <Typography align="center">{message}</Typography>
+            <Typography align="center" color="secondary">{message}</Typography>
 
-            <Box class={classes.breath}>
-              {/* <Box ref="breathContent" className={classes.breathContent} /> */}
-              <Box className={classes.breathContent} />
+            <Box>
+              <ReactPlayer
+                ref={breatheTimerRef}
+                url="/breathe.mp4"
+                width="100%"
+                playing={breathTimerRunning}
+                onProgress={(e) => {
+                  if (e.played > 0.5) {
+                    setBreathState('Breathe In');
+                  }
+                }}
+                onEnded={() => {
+                  setBreathLoopCount(breathLoopCount + 1);
+                  breatheTimerRef.current.seekTo(0);
+                  if (breathLoopCount < 5) {
+                    startTimer();
+                  } else {
+                    clearTimer();
+                  }
+                }}
+
+              />
             </Box>
 
             <Box
               mt={3}
               display="flex"
-              flexDirection="column"
               justifyContent="center"
-              alignContent="center"
             >
-              {timerRunning ? <Typography>{timerMessage}</Typography>
-                : <Button onClick={() => { startTimer(); }}>Start</Button> }
+              {breathTimerRunning ? <Typography align="center">{breathState}</Typography>
+                : <Button variant="contained" color="primary" size="small" onClick={() => { startTimer(); }}>Start</Button> }
 
             </Box>
           </Box>
@@ -217,7 +200,7 @@ const Header = ({ menuContainer }) => {
             <Typography className={classes.title}>Your Story Matters</Typography>
           </Box>
           <IconButton onClick={() => { setDrawerOpen(false); }}>
-            <Clear />
+            <Clear id="MenuClose" />
           </IconButton>
         </Box>
         <Divider />

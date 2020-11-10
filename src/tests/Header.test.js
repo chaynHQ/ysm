@@ -1,8 +1,10 @@
-import { Drawer, IconButton } from '@material-ui/core';
+import {
+  Dialog, Drawer, IconButton, SvgIcon,
+} from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import { createShallow } from '@material-ui/core/test-utils';
 import {
-  AccountCircle, Clear, ExitToApp, Home, Info, Menu, MenuBook,
+  AccountCircle, ExitToApp, Home, Info, Menu, MenuBook,
 } from '@material-ui/icons';
 import Link from 'next/link';
 import React from 'react';
@@ -10,6 +12,7 @@ import configureMockStore from 'redux-mock-store';
 import Header from '../components/Header';
 
 jest.mock('../config/firebase');
+jest.mock('../shared/leave');
 
 jest.mock('react-firebase-hooks/auth', () => ({
   useAuthState: () => ([
@@ -35,7 +38,8 @@ describe('Header', () => {
   });
 
   it('renders with correct number of links', () => {
-    expect(wrapper.find(IconButton)).toHaveLength(3); // Open & close menu + search
+    expect(wrapper.find(IconButton)).toHaveLength(5);
+    // Open & close menu + breath timer open & close & placeholder
     expect(wrapper.find(LinkUi)).toHaveLength(5); // Five links in the menu
     expect(wrapper.find(Link)).toHaveLength(4); // Four in the menu (One less because of leave site)
   });
@@ -72,8 +76,15 @@ describe('Header', () => {
   });
   it('opens and closes drawer on Close Menu click', () => {
     wrapper.find(Menu).closest(IconButton).simulate('click');
-    wrapper.find(Clear).closest(IconButton).simulate('click');
+    wrapper.find('#MenuClose').closest(IconButton).simulate('click');
     wrapper.update();
     expect(wrapper.find(Drawer).props().open).toEqual(false);
+  });
+
+  it('opens and closesbreathe timer on click', () => {
+    wrapper.find(SvgIcon).closest(IconButton).simulate('click');
+    wrapper.find('#BreathTimerClose').closest(IconButton).simulate('click');
+    wrapper.update();
+    expect(wrapper.find(Dialog).props().open).toEqual(false);
   });
 });

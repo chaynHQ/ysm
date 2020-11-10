@@ -43,6 +43,7 @@
     "react-device-detect": "^1.14.0",
     "react-dom": "16.13.1",
     "react-firebase-hooks": "^2.2.0",
+    "react-gif-player": "^0.4.2",
     "react-html-parser": "^2.0.2",
     "react-player": "^2.6.2",
     "react-redux": "^7.2.1",
@@ -76,9 +77,13 @@
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupTests.js"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.svg": "<rootDir>/src/__mocks__/svgrMock.js"
+    }
   },
   "devDependencies": {
+    "@svgr/webpack": "^5.4.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",
