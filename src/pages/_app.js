@@ -92,7 +92,7 @@ function App({ Component, pageProps }) {
     router.events.on('routeChangeError', () => {
       setIsLoading(false);
     });
-  });
+  }, []);
 
   useEffect(() => {
     const routesWithoutBackgrounds = ['/settings', '/saved', '/themes/[slug]'];
