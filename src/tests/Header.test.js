@@ -10,6 +10,7 @@ import configureMockStore from 'redux-mock-store';
 import Header from '../components/Header';
 
 jest.mock('../config/firebase');
+jest.mock('../shared/leave');
 
 jest.mock('react-firebase-hooks/auth', () => ({
   useAuthState: () => ([
@@ -35,7 +36,8 @@ describe('Header', () => {
   });
 
   it('renders with correct number of links', () => {
-    expect(wrapper.find(IconButton)).toHaveLength(3); // Open & close menu + search
+    expect(wrapper.find(IconButton)).toHaveLength(3);
+    // Open & close menu + breath timer open
     expect(wrapper.find(LinkUi)).toHaveLength(5); // Five links in the menu
     expect(wrapper.find(Link)).toHaveLength(4); // Four in the menu (One less because of leave site)
   });
