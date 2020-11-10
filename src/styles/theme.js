@@ -13,7 +13,7 @@ const Theme = createMuiTheme({
       // #FD9E8C
     },
     secondary: {
-      light: '#717798',
+      light: '#E2E3E6',
       main: '#3A4167',
       dark: '#242A4A', // header text
       // #E2E3E6
@@ -22,7 +22,7 @@ const Theme = createMuiTheme({
       main: '#EC836F',
     },
     info: {
-      main: '#A8B5F8',
+      main: '#E2E3E6', // Static Pages header card background colour
     },
     warning: {
       main: '#4D4D4D',
@@ -44,13 +44,16 @@ const Theme = createMuiTheme({
       fontWeight: 700,
       color: '#242A4A',
     },
+    h6: {
+      lineHeight: 18,
+    },
     body1: {
       fontSize: 16,
       color: '#717798',
     },
     body2: {
       fontSize: 16,
-      color: '#717798',
+      color: '#242A4A',
     },
     subtitle1: {
       fontSize: 14,
@@ -71,6 +74,18 @@ const Theme = createMuiTheme({
       label: {
         fontWeight: 900,
         textTransform: 'none',
+      },
+      outlined: {
+        borderRadius: 34,
+        fontSize: 12,
+      },
+      outlinedSecondary: {
+        color: '#717798',
+        borderColor: '#717798',
+
+      },
+      outlinedSizeSmall: {
+        fontSize: 12,
       },
     },
     MuiIconButton: {
@@ -94,15 +109,20 @@ const Theme = createMuiTheme({
     },
     MuiBottomNavigation: {
       root: {
-        backgroundColor: '#EFE9E5',
+        backgroundColor: '#FEF6F1',
         alignItems: 'flex-start',
         height: '100%',
-
+        padding: 8,
       },
     },
     MuiBottomNavigationAction: {
       root: {
+        paddingTop: 0,
+        paddingBottom: 0,
+        paddingRight: 12,
+        paddingLeft: 12,
         '&$selected': {
+          paddingTop: 0,
           color: '#D27200',
         },
       },
@@ -142,11 +162,11 @@ const Theme = createMuiTheme({
       root: {
         borderRadius: 6,
       },
-      input: {
-        backgroundColor: '#FFF',
-      },
     },
     MuiOutlinedInput: {
+      root: {
+        borderRadius: 120,
+      },
       notchedOutline: {
         borderColor: '#DADDED',
       },
@@ -154,6 +174,14 @@ const Theme = createMuiTheme({
     MuiCard: {
       root: {
         margin: 6,
+        borderRadius: 6,
+      },
+    },
+    MuiDialog: {
+      paper: {
+        padding: 20,
+        borderRadius: 6,
+        backgroundColor: '#FCEFE5CC',
       },
     },
     MuiDialog: {

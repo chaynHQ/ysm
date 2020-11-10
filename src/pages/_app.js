@@ -2,12 +2,18 @@ import { Box, makeStyles } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'firebaseui/dist/firebaseui.css';
-import Head from 'next/head';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Provider } from 'react-redux';
 import Footer from '../components/Footer';
+import Head from '../components/Head';
 import Header from '../components/Header';
+import Loading from '../components/Loading';
+import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
+import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 import { useStore } from '../store/store';
 import theme from '../styles/theme';
@@ -17,14 +23,24 @@ const useStyles = makeStyles({
     height: '100vh',
     margin: 0,
   },
+  background: {
+    background: 'url(\'./background.png\')',
+    backgroundSize: '100% 100%',
+    backgroundRepeat: 'no-repeat',
+  },
 
 });
 
 function App({ Component, pageProps }) {
+  const router = useRouter();
   const classes = useStyles();
   const { height, width } = useWindowDimensions();
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
+  const [isLoading, setIsLoading] = useState(false);
+  const [showBackground, setShowBackground] = useState(true);
 
   const containerRef = useRef();
+  const scrollTopRef = useRef();
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -34,18 +50,63 @@ function App({ Component, pageProps }) {
     }
   }, []);
 
+  useEffect(() => {
+    // This effect is called everytime the user changes because firebase has updated the token
+    // or if the router changes (i.e the user navigates)
+    const checkTermsAcceptance = async (u) => {
+      const idToken = await u.getIdToken();
+      const serverUser = await axiosGet('/profile',
+        {
+          headers: {
+            authorization: `Bearer ${idToken}`,
+          },
+        });
+      return serverUser.termsAccepted;
+    };
+    if (user && user.emailVerified) {
+      checkTermsAcceptance(user).then((termsAccepted) => {
+        // If there is a verified user but they haven't accepted the terms, reroute them to sign-in
+        if (!termsAccepted) {
+          router.push('/sign-in');
+        }
+      });
+    } else if (user && !user.emailVerified) {
+      // If there is a user but they aren't verified log them out
+      firebase.auth().signOut();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    router.events.on('routeChangeStart', () => {
+      setIsLoading(true);
+    });
+    router.events.on('routeChangeComplete', () => {
+      setIsLoading(false);
+    });
+    router.events.on('routeChangeError', () => {
+      setIsLoading(false);
+    });
+  });
+
+  useEffect(() => {
+    const routesWithoutBackgrounds = ['/settings', '/saved', '/resources/[resourceSlug]', '/themes/[slug]'];
+    if (routesWithoutBackgrounds.includes(router.pathname)) {
+      setShowBackground(false);
+    } else {
+      setShowBackground(true);
+    }
+  }, [router]);
+
   const store = useStore(pageProps.initialReduxState);
 
   return (
     <>
-      <Head>
-        <title>My page</title>
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      </Head>
+      <Head
+        title="Your Story Matters"
+      />
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-
           <Box
             bgcolor="primary.light"
             className={classes.screenContainer}
@@ -53,14 +114,27 @@ function App({ Component, pageProps }) {
             alignItems="center"
             justifyContent="center"
           >
-            <Box height={height} width={width} overflow="scroll" boxShadow={3} position="relative" ref={containerRef}>
-              <Box flexGrow={1} display="flex" flexDirection="column">
-                <Header menuContainer={containerRef} />
-                <Box height={height * 0.875} overflow="scroll">
-                  <Component {...pageProps} />
-                </Box>
-                <Footer />
+            <Box height={height} width={width} overflow="hidden" boxShadow={3} position="relative" ref={containerRef} display="flex" flexDirection="column">
+              <Header menuContainer={containerRef} />
+              <Box
+                display="flex"
+                flexDirection="column"
+                flexGrow={1}
+                overflow="scroll"
+                className={showBackground ? classes.background : null}
+              >
+                <Box ref={scrollTopRef} />
+                {
+                  isLoading ? <Loading />
+                    : (
+                      <Component
+                        {...pageProps}
+                        container={containerRef}
+                      />
+                    )
+}
               </Box>
+              <Footer />
             </Box>
           </Box>
         </ThemeProvider>

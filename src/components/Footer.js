@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-
 import {
-  BottomNavigationAction, BottomNavigation, Box,
+  BottomNavigation, BottomNavigationAction, Box, makeStyles,
 } from '@material-ui/core';
 import {
-  ExitToApp, ImportContacts, LocationOn, Bookmark,
+  Bookmark, ExitToApp, ImportContacts, LocationOn,
 } from '@material-ui/icons';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import leaveSite from '../shared/leave';
 
-import useWindowDimensions from '../shared/dimensions';
+const useStyles = makeStyles(() => ({
+  root: {
+    width: '100%',
+  },
+}));
 
 const Footer = () => {
-  const { height } = useWindowDimensions();
   const router = useRouter();
+  const classes = useStyles();
 
   const [selected, setSelected] = useState('');
 
@@ -30,13 +34,18 @@ const Footer = () => {
   }, [router]);
 
   return (
-    <Box height={height * 0.075}>
+    <Box>
       <BottomNavigation
         showLabels
+        className={classes.root}
         value={selected}
         onChange={(e, value) => {
-          setSelected(value);
-          router.push(value);
+          if (value === '/leave') {
+            leaveSite();
+          } else {
+            setSelected(value);
+            router.push(value);
+          }
         }}
       >
         <BottomNavigationAction
@@ -61,7 +70,7 @@ const Footer = () => {
           icon={<LocationOn />}
         />
         <BottomNavigationAction
-          component="a"
+          component="button"
           showLabel
           label="Leave Site"
           value="/leave"

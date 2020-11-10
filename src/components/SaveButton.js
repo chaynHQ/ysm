@@ -3,29 +3,35 @@ import { Bookmark, BookmarkBorder } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
+import firebase from '../config/firebase';
+import { axiosDelete, axiosPut } from '../shared/axios';
+import isBrowser from '../shared/browserCheck';
 import { deleteBookmark, setBookmark } from '../store/actions';
-import { axiosDelete, axiosPut } from '../store/axios';
 
 const SaveButton = ({
-  resourceSlug, redirectUrl, user, isSignedIn, deleteBookmarkOnClick, setBookmarkOnClick,
+  resourceSlug, redirectUrl, deleteBookmarkOnClick, setBookmarkOnClick, profile,
 }) => {
   const router = useRouter();
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
-  const saved = user.bookmarkedResources && user.bookmarkedResources.includes(resourceSlug);
+  const saved = profile.bookmarkedResources
+    && profile.bookmarkedResources.includes(resourceSlug);
 
   return (
     <>
       {saved
         ? (
           <IconButton
-            onClick={() => {
+            onClick={async () => {
+              const idToken = await user.getIdToken();
               axiosDelete(`/profile/bookmarks/resources/${resourceSlug}`, {
                 headers: {
-                  authorization: `Bearer ${user.xa}`,
+                  authorization: `Bearer ${idToken}`,
                 },
                 data: { resourceId: resourceSlug },
-              }).then(deleteBookmarkOnClick(resourceSlug, user.xa));
+              }).then(deleteBookmarkOnClick(resourceSlug, idToken));
             }}
           >
             <Bookmark color="error" />
@@ -36,14 +42,16 @@ const SaveButton = ({
             variant="outlined"
             disableElevation
             size="small"
+            color="secondary"
             startIcon={<BookmarkBorder />}
-            onClick={() => {
-              if (isSignedIn) {
+            onClick={async () => {
+              if (user) {
+                const idToken = await user.getIdToken();
                 axiosPut(`/profile/bookmarks/resources/${resourceSlug}`, { resourceId: resourceSlug }, {
                   headers: {
-                    authorization: `Bearer ${user.xa}`,
+                    authorization: `Bearer ${idToken}`,
                   },
-                }).then(setBookmarkOnClick(resourceSlug, user.xa));
+                }).then(setBookmarkOnClick(resourceSlug, idToken));
               } else {
                 router.push(`/sign-in?redirectUrl=${redirectUrl}`, '/sign-in');
               }
@@ -59,8 +67,7 @@ const SaveButton = ({
 SaveButton.propTypes = {
   resourceSlug: PropTypes.string.isRequired,
   redirectUrl: PropTypes.string,
-  user: PropTypes.objectOf(PropTypes.any).isRequired,
-  isSignedIn: PropTypes.bool.isRequired,
+  profile: PropTypes.objectOf(PropTypes.any).isRequired,
   setBookmarkOnClick: PropTypes.func.isRequired,
   deleteBookmarkOnClick: PropTypes.func.isRequired,
 };
@@ -70,8 +77,7 @@ SaveButton.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
-  isSignedIn: state.user ? Object.keys(state.user).length > 0 : false,
+  profile: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({

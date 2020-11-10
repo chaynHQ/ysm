@@ -5,7 +5,7 @@ import React from 'react';
 import ResourceCard from '../components/ResourceCard';
 
 Router.useRouter = jest.fn();
-Router.useRouter.mockImplementation(() => ({ route: '/resource/', query: { resource_slug: 'resource_slug' } }));
+Router.useRouter.mockImplementation(() => ({ route: '/resources/', query: { resource_slug: 'resource_slug' } }));
 
 describe('ResourceContents', () => {
   let wrapper;

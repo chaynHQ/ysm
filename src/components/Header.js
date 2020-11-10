@@ -1,16 +1,11 @@
-import {
-  Box, Button, Dialog, DialogContent, DialogTitle, Divider, Drawer, Icon, IconButton, makeStyles, SvgIcon, Typography,
-} from '@material-ui/core';
+import { AccountCircle, Box, Button, Clear, Dialog, DialogContent, DialogTitle, Divider, Drawer, ExitToApp, Home, Icon, IconButton, Info, makeStyles, Menu, MenuBook, SvgIcon, Typography } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
-import {
-  AccountCircle, Clear, ExitToApp, Home, Info, Menu, MenuBook,
-} from '@material-ui/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import BreatheIcon from '../../public/breathe.svg';
 import useWindowDimensions from '../shared/dimensions';
+import leaveSite from '../shared/leave';
 
 const useStyles = makeStyles({
   icon: {
@@ -94,12 +89,13 @@ const useStyles = makeStyles({
 // }
 });
 
-const Header = ({ menuContainer, isSignedin }) => {
+const Header = ({ menuContainer }) => {
   const classes = useStyles();
   const { height } = useWindowDimensions();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [timerRunning, setTimerRunning] = useState(false);
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const message = 'Get comfortable and start breathing when ready';
   let timerMessage = 'Breathe Out';
@@ -123,8 +119,7 @@ const Header = ({ menuContainer, isSignedin }) => {
       alignItems="center"
       justifyContent="space-between"
       width={1}
-      bgcolor="#EFE9E5"
-      height={height * 0.05}
+      bgcolor="primary.light"
     >
       <Box p={2}>
         <IconButton onClick={() => { setDrawerOpen(true); }}>
@@ -212,7 +207,7 @@ const Header = ({ menuContainer, isSignedin }) => {
           height={height * 0.05}
           px={2}
         >
-          <Box display="flex">
+          <Box display="flex" pr={2}>
             {' '}
             <img
               className={classes.icon}
@@ -258,26 +253,24 @@ const Header = ({ menuContainer, isSignedin }) => {
             </LinkUi>
           </Link>
 
-          <Link href={isSignedin ? '/settings' : '/sign-in'} passHref>
+          <Link href={user ? '/settings' : '/sign-in'} passHref>
             <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
               <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                 <Icon>
                   <AccountCircle />
                 </Icon>
-                {isSignedin ? 'My account' : 'Sign Up'}
+                {user ? 'My account' : 'Sign Up'}
               </Box>
             </LinkUi>
           </Link>
-          <Link href="/about" passHref>
-            <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
-              <Box display="flex" alignItems="flex-end" pl={2} py={1}>
-                <Icon>
-                  <ExitToApp />
-                </Icon>
-                Leave this site
-              </Box>
-            </LinkUi>
-          </Link>
+          <LinkUi component="a" color="inherit" onClick={() => { leaveSite(); }}>
+            <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+              <Icon>
+                <ExitToApp />
+              </Icon>
+              Leave this site
+            </Box>
+          </LinkUi>
         </Box>
       </Drawer>
     </Box>
@@ -286,11 +279,6 @@ const Header = ({ menuContainer, isSignedin }) => {
 
 Header.propTypes = {
   menuContainer: PropTypes.objectOf(PropTypes.any).isRequired,
-  isSignedin: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  isSignedin: state.user ? Object.keys(state.user) > 0 : false,
-});
-
-export default connect(mapStateToProps, null)(Header);
+export default Header;

@@ -10,7 +10,7 @@ const mockStore = configureMockStore();
 
 Router.useRouter = jest.fn();
 Router.useRouter.mockImplementation(() => ({
-  route: '/resource/',
+  route: '/resources/',
   query: { resource_slug: 'resource_slug' },
   push: jest.fn(),
 }));
@@ -18,9 +18,17 @@ Router.useRouter.mockImplementation(() => ({
 jest.mock('next/router', () => ({
   __esModule: true,
   useRouter: () => ({
-    route: '/resource/',
+    route: '/resources/',
     query: { resource_slug: 'resource_slug' },
   }),
+}));
+
+jest.mock('../config/firebase');
+
+jest.mock('react-firebase-hooks/auth', () => ({
+  useAuthState: () => ([
+    {}, {}, {}]
+  ),
 }));
 
 describe("SaveButton when resource isn't saved", () => {

@@ -11,12 +11,18 @@ import {
 import LinkUi from '@material-ui/core/Link';
 import { ArrowBack, Search } from '@material-ui/icons';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import Head from '../../components/Head';
 import ResourceCard from '../../components/ResourceCard';
+import SearchModal from '../../components/SearchModal';
 import SignUpPrompt from '../../components/SignUpPrompt';
+import firebase from '../../config/firebase';
+import { axiosGet } from '../../shared/axios';
+import isBrowser from '../../shared/browserCheck';
 import richTextHelper from '../../shared/rich-text';
-import { axiosGet } from '../../store/axios';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -35,8 +41,60 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ThemePage = ({ themes, theme, resources }) => {
+const ThemePage = ({
+  propThemes, propResources, container, previewMode,
+}) => {
   const classes = useStyles();
+  const router = useRouter();
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
+
+  const { slug } = router.query;
+
+  const [themes, setThemes] = useState(propThemes.filter((t) => t.slug !== slug));
+  const [theme, setTheme] = useState(propThemes.find((t) => t.slug === slug));
+  const [resources, setResources] = useState([]);
+
+  useEffect(() => {
+    setThemes(propThemes.filter((t) => t.slug !== slug));
+    setTheme(propThemes.find((t) => t.slug === slug));
+  }, [slug]);
+
+  useEffect(() => {
+    if (theme) {
+      setResources(propResources.filter(
+        (resource) => resource.themes && resource.themes.includes(theme.id),
+      ));
+    }
+  }, [slug]);
+
+  useEffect(() => {
+    if (previewMode && user) {
+      user
+        .getIdToken()
+        .then((idToken) => {
+          const headers = {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          };
+
+          return axiosGet('themes', {
+            headers,
+          }).then((allThemes) => {
+            setThemes(allThemes.filter((t) => t.slug !== slug));
+            const previewTheme = allThemes.find((t) => t.slug === slug);
+            setTheme(previewTheme);
+            return axiosGet('resources', {
+              headers,
+            }).then((allResources) => {
+              setResources(allResources.filter(
+                (resource) => resource.themes && resource.themes.includes(previewTheme.id),
+              ));
+            });
+          });
+        });
+    }
+  }, [slug, user]);
 
   return (
     <Box
@@ -57,16 +115,25 @@ const ThemePage = ({ themes, theme, resources }) => {
           </Link>
 
         </Breadcrumbs>
-        <Link href="/search" passHref>
-          <IconButton component="a">
-            <Search />
-          </IconButton>
-        </Link>
+        <IconButton component="a" onClick={() => setShowSearchModal(true)}>
+          <Search />
+        </IconButton>
+        <SearchModal
+          shown={showSearchModal}
+          container={container}
+          closeModal={() => setShowSearchModal(false)}
+        />
+
       </Grid>
       { !theme
         ? <Typography>Theme does not exist</Typography>
         : (
           <>
+            <Head
+              title={theme.title}
+              ogImage={theme.image ? theme.image.filename : null}
+              ogImageAlt={theme.image ? theme.image.alt : null}
+            />
             <Typography color="textSecondary" align="center" variant="h1">{theme.title}</Typography>
             <Typography
               color="textSecondary"
@@ -98,12 +165,12 @@ const ThemePage = ({ themes, theme, resources }) => {
           </Box>
         )}
 
-      <Box>
+      <Box py={4}>
         <Typography variant="h2">Explore other themes </Typography>
 
         {themes.map((t) => (
           <Card variant="outlined" key={t.id}>
-            <Link href="/theme/[slug]" as={`/theme/${t.slug}`}>
+            <Link href="/themes/[slug]" as={`/themes/${t.slug}`}>
               <CardActionArea component="a">
                 <CardContent className={classes.card}>
                   <Box display="flex">
@@ -147,24 +214,20 @@ const ThemePage = ({ themes, theme, resources }) => {
     </Box>
   );
 };
-export async function getServerSideProps({ params }) {
-  const { slug } = params;
-  const themes = await axiosGet('themes');
-  const theme = themes.filter((t) => t.slug === slug)[0] || null;
-
-  let resources = [];
-  if (theme) {
-    const allResourses = await axiosGet('resources');
-    resources = allResourses.filter(
-      (resource) => resource.themes && resource.themes.includes(theme.id),
-    );
+export async function getServerSideProps({ preview }) {
+  let propThemes = [];
+  let propResources = [];
+  if (!preview) {
+    propThemes = await axiosGet('themes');
+    propResources = await axiosGet('resources');
   }
 
-  return { props: { theme, themes, resources } };
+  return { props: { propThemes, propResources, previewMode: preview || false } };
 }
 
 ThemePage.propTypes = {
-  themes: PropTypes.arrayOf(
+  container: PropTypes.objectOf(PropTypes.any).isRequired,
+  propThemes: PropTypes.arrayOf(
     PropTypes.objectOf(
       PropTypes.oneOfType([
         PropTypes.string,
@@ -172,7 +235,7 @@ ThemePage.propTypes = {
       ]),
     ),
   ),
-  resources: PropTypes.arrayOf(
+  propResources: PropTypes.arrayOf(
     PropTypes.objectOf(
       PropTypes.oneOfType([
         PropTypes.string,
@@ -182,18 +245,13 @@ ThemePage.propTypes = {
       ]),
     ),
   ),
-  theme: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object,
-    ]),
-  ),
+  previewMode: PropTypes.bool,
 };
 
 ThemePage.defaultProps = {
-  themes: [],
-  theme: null,
-  resources: [],
+  propThemes: [],
+  propResources: [],
+  previewMode: false,
 };
 
 export default ThemePage;

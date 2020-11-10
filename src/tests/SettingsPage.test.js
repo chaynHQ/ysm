@@ -1,10 +1,16 @@
+import { Button, Card, Link } from '@material-ui/core';
 import { createShallow } from '@material-ui/core/test-utils';
-import configureMockStore from 'redux-mock-store';
 import React from 'react';
-import { Card, Button, Link } from '@material-ui/core';
+import configureMockStore from 'redux-mock-store';
 import Settings from '../pages/settings';
 
 const mockStore = configureMockStore();
+jest.mock('../config/firebase');
+jest.mock('react-firebase-hooks/auth', () => ({
+  useAuthState: () => ([
+    {}, {}, {}]
+  ),
+}));
 
 describe('Settings Page', () => {
   let wrapper;

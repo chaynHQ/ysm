@@ -1,22 +1,51 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-
-import { axiosGet } from '../store/axios';
-
+import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import StaticPage from '../components/StaticPage';
+import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
+import isBrowser from '../shared/browserCheck';
 
-const Privacy = ({ content }) => (
-  <StaticPage content={content} />
-);
+const Privacy = ({ propContent, previewMode }) => {
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
+  const [content, setContent] = useState(propContent);
 
-export async function getServerSideProps() {
-  const content = await axiosGet('pages/privacy');
+  useEffect(() => {
+    if (previewMode && user) {
+      user
+        .getIdToken()
+        .then((idToken) => axiosGet('pages/privacy', {
+          headers: {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          },
+        }))
+        .then((pageContent) => { setContent(pageContent); });
+    }
+  }, [user]);
 
-  return { props: { content } };
+  if (content) {
+    return (<StaticPage content={content} />);
+  }
+  return null;
+};
+
+export async function getServerSideProps({ preview }) {
+  let propContent = null;
+  if (!preview) {
+    propContent = await axiosGet('pages/privacy');
+  }
+
+  return { props: { propContent, previewMode: preview || false } };
 }
 
 Privacy.propTypes = {
-  content: PropTypes.objectOf(PropTypes.any).isRequired,
+  propContent: PropTypes.objectOf(PropTypes.any).isRequired,
+  previewMode: PropTypes.bool,
+};
+
+Privacy.defaultProps = {
+  previewMode: false,
 };
 
 export default Privacy;

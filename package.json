@@ -8,9 +8,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:url": "BASE_URL=\"http://localhost:3001\" API_URL=\"http://localhost:3000\" next dev",
+    "dev:url": "BASE_URL=\"http://localhost:3001\" API_URL=\"http://localhost:3000\" next dev -p 3001",
     "build": "next build",
     "start": "next start",
+    "start:local": "BASE_URL=\"http://localhost:3001\" API_URL=\"http://localhost:3000\" next start",
+    "start:heroku": "NODE_OPTIONS='--max_old_space_size=460' next start -p $PORT",
     "lint": "eslint --ext js,jsx ./",
     "lint:fix": "eslint --ext js,jsx --fix ./",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
@@ -28,22 +30,26 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "axios": "^0.20.0",
+    "add": "^2.0.6",
+    "axios": "^0.21.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.4",
-    "firebase": "^7.19.1",
-    "firebaseui": "^4.6.1",
-    "http-proxy-middleware": "^1.0.5",
-    "next": "9.5.2",
+    "firebase": "^8.0.1",
+    "firebaseui": "^4.7.1",
+    "http-proxy-middleware": "^1.0.6",
+    "next": "9.5.4",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
-    "react-device-detect": "^1.13.1",
+    "react-device-detect": "^1.14.0",
     "react-dom": "16.13.1",
+    "react-firebase-hooks": "^2.2.0",
     "react-html-parser": "^2.0.2",
+    "react-player": "^2.6.2",
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
-    "storyblok-js-client": "^2.5.2"
+    "rollbar": "^2.19.4",
+    "storyblok-js-client": "^2.5.2",
+    "yarn": "^1.22.10"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -73,8 +79,6 @@
     ]
   },
   "devDependencies": {
-    "@svgr/webpack": "^5.4.0",
-    "add": "^2.0.6",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",
@@ -82,7 +86,6 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",
     "jest": "^26.4.2",
-    "redux-mock-store": "^1.5.4",
-    "yarn": "^1.22.5"
+    "redux-mock-store": "^1.5.4"
   }
 }
