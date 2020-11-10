@@ -75,6 +75,13 @@ const SignUpWidget = ({
           signInSuccessWithAuthResult: async (authResult) => {
             const signedInUser = authResult.user;
 
+            // Analytics
+            if (authResult.additionalUserInfo.isNewUser) {
+              firebase.analytics().logEvent('sign_up');
+            } else {
+              firebase.analytics().logEvent('login');
+            }
+
             if (authResult.additionalUserInfo.isNewUser || !signedInUser.emailVerified) {
               signedInUser.sendEmailVerification();
               setShowVerificationStep(true);

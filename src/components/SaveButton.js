@@ -31,7 +31,14 @@ const SaveButton = ({
                   authorization: `Bearer ${idToken}`,
                 },
                 data: { resourceId: resourceSlug },
-              }).then(deleteBookmarkOnClick(resourceSlug, idToken));
+              }).then(() => {
+                deleteBookmarkOnClick(resourceSlug, idToken);
+
+                firebase.analytics().logEvent('remove_bookmark', {
+                  content_type: 'resource',
+                  item_id: resourceSlug,
+                });
+              });
             }}
           >
             <Bookmark color="error" />
@@ -51,7 +58,14 @@ const SaveButton = ({
                   headers: {
                     authorization: `Bearer ${idToken}`,
                   },
-                }).then(setBookmarkOnClick(resourceSlug, idToken));
+                }).then(() => {
+                  setBookmarkOnClick(resourceSlug, idToken);
+
+                  firebase.analytics().logEvent('add_bookmark', {
+                    content_type: 'resource',
+                    item_id: resourceSlug,
+                  });
+                });
               } else {
                 router.push(`/sign-in?redirectUrl=${redirectUrl}`, '/sign-in');
               }
