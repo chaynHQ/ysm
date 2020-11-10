@@ -96,11 +96,11 @@ function App({ Component, pageProps }) {
     const routesWithoutBackgrounds = ['/settings', '/saved', '/themes/[slug]'];
     const routesWithBlueBackgrounds = ['/resources/[resourceSlug]/items/[itemId]'];
     if (routesWithoutBackgrounds.includes(router.pathname)) {
-      setBackground('none');
+      setBackground('None');
     } else if (routesWithBlueBackgrounds.includes(router.pathname)) {
-      setBackground('blue');
+      setBackground('Blue');
     } else {
-      setBackground('peach');
+      setBackground('Peach');
     }
   }, [router]);
 
@@ -128,9 +128,7 @@ function App({ Component, pageProps }) {
                 flexDirection="column"
                 flexGrow={1}
                 overflow="scroll"
-                className={`${background === 'none' ? classes.backgroundNone : ''} 
-                ${background === 'blue' ? classes.backgroundBlue : ''}
-                ${background === 'peach' ? classes.backgroundPeach : ''}`}
+                className={classes[`background${background}`]}
               >
                 <Box ref={scrollTopRef} />
                 {
