@@ -54,10 +54,11 @@ function App({ Component, pageProps }) {
     // This effect is called everytime the user changes because firebase has updated the token
     // or if the router changes (i.e the user navigates)
     const checkTermsAcceptance = async (u) => {
+      const idToken = await u.getIdToken();
       const serverUser = await axiosGet('/profile',
         {
           headers: {
-            authorization: `Bearer ${u.xa}`,
+            authorization: `Bearer ${idToken}`,
           },
         });
       return serverUser.termsAccepted;

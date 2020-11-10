@@ -36,9 +36,10 @@ const PreviewMode = ({ onLoadPreviewMode }) => {
                   checked={previewMode}
                   onChange={async () => {
                     if (!previewMode) {
+                      const idToken = await user.getIdToken();
                       const res = await axiosGet('/preview', {
                         params: {
-                          token: user.xa,
+                          token: idToken,
                         },
                       });
                       setMessage(res.message);

@@ -81,10 +81,11 @@ const SignUpWidget = ({
               setShowTermsStep(false);
               await firebase.auth().signOut();
             } else if (signedInUser.emailVerified) {
+              const idToken = await signedInUser.getIdToken();
               const profile = await axiosGet('/profile',
                 {
                   headers: {
-                    authorization: `Bearer ${signedInUser.xa}`,
+                    authorization: `Bearer ${idToken}`,
                   },
                 });
               if (profile.termsAccepted) {
@@ -109,10 +110,11 @@ const SignUpWidget = ({
 
   useEffect(() => {
     const checkTermsAcceptance = async (u) => {
+      const idToken = await u.getIdToken();
       const profile = await axiosGet('/profile',
         {
           headers: {
-            authorization: `Bearer ${u.xa}`,
+            authorization: `Bearer ${idToken}`,
           },
         });
       return profile.termsAccepted;
@@ -195,11 +197,12 @@ const SignUpWidget = ({
           <>
             <Box className="mdl-card mdl-shadow--2dp firebaseui-container">
               <form
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
-                  axiosPut('/profile/terms/accept', { currentUserId: user.xa }, {
+                  const idToken = await user.getIdToken();
+                  await axiosPut('/profile/terms/accept', null, {
                     headers: {
-                      authorization: `Bearer ${user.xa}`,
+                      authorization: `Bearer ${idToken}`,
                     },
                   });
                   router.push(redirectUrl || '/');
@@ -305,9 +308,10 @@ const SignUpWidget = ({
                     onClick={async (e) => {
                       e.preventDefault();
 
-                      axiosPut('/profile/terms/unaccept', { currentUserId: user.xa }, {
+                      const idToken = await user.getIdToken();
+                      await axiosPut('/profile/terms/unaccept', null, {
                         headers: {
-                          authorization: `Bearer ${user.xa}`,
+                          authorization: `Bearer ${idToken}`,
                         },
 
                       });

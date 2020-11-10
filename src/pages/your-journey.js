@@ -72,12 +72,15 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
 
   useEffect(() => {
     if (previewMode && user) {
-      axiosGet('themes', {
-        headers: {
-          'X-PREVIEW-MODE': 'preview',
-          authorization: `Bearer ${user.xa}`,
-        },
-      }).then((allThemes) => { setThemes(allThemes); });
+      user
+        .getIdToken()
+        .then((idToken) => axiosGet('themes', {
+          headers: {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          },
+        }))
+        .then((allThemes) => { setThemes(allThemes); });
     }
   }, [user]);
 
