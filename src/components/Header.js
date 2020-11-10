@@ -7,7 +7,7 @@ import {
   IconButton,
   makeStyles,
 
-  SvgIcon, Typography
+  SvgIcon, Typography,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import {
@@ -17,7 +17,7 @@ import {
   Home,
   Info,
   Menu,
-  MenuBook
+  MenuBook,
 } from '@material-ui/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
@@ -28,7 +28,7 @@ import firebase from '../config/firebase';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 import leaveSite from '../shared/leave';
-import BreathingTimer from './BreathingTimer';
+import BreatheTimer from './BreatheTimer';
 
 const useStyles = makeStyles({
   icon: {
@@ -81,7 +81,7 @@ const Header = ({ menuContainer }) => {
 
       </Box>
 
-      <BreathingTimer modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <BreatheTimer modalOpen={modalOpen} setModalOpen={setModalOpen} />
 
       <Drawer
         open={drawerOpen}
@@ -111,7 +111,7 @@ const Header = ({ menuContainer }) => {
             <Typography className={classes.title}>Your Story Matters</Typography>
           </Box>
           <IconButton onClick={() => { setDrawerOpen(false); }}>
-            <Clear id="MenuClose" />
+            <Clear />
           </IconButton>
         </Box>
         <Divider />

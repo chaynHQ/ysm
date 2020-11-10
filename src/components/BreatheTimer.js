@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   },
 });
 
-const BreathingTimer = ({ modalOpen, setModalOpen }) => {
+const BreatheTimer = ({ modalOpen, setModalOpen }) => {
   const classes = useStyles();
   const [breathTimerRunning, setBreathTimerRunning] = useState(false);
   const [breathState, setBreathState] = useState('');
@@ -58,7 +58,7 @@ const BreathingTimer = ({ modalOpen, setModalOpen }) => {
           <IconButton />
           <Typography variant="h1">Take a break</Typography>
           <IconButton onClick={() => { clearTimer(); setModalOpen(false); }}>
-            <Clear id="BreathTimerClose" />
+            <Clear />
           </IconButton>
         </Box>
       </DialogTitle>
@@ -112,9 +112,9 @@ const BreathingTimer = ({ modalOpen, setModalOpen }) => {
   );
 };
 
-BreathingTimer.propTypes = {
+BreatheTimer.propTypes = {
   modalOpen: PropTypes.bool.isRequired,
   setModalOpen: PropTypes.func.isRequired,
 };
 
-export default BreathingTimer;
+export default BreatheTimer;
