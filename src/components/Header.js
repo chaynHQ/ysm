@@ -1,9 +1,6 @@
 import {
   Box,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
+
   Divider,
   Drawer,
   Icon,
@@ -24,14 +21,14 @@ import {
 } from '@material-ui/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import ReactPlayer from 'react-player';
 import BreathIcon from '../../public/breatheIcon.svg';
 import firebase from '../config/firebase';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 import leaveSite from '../shared/leave';
+import BreathingTimer from './BreathingTimer';
 
 const useStyles = makeStyles({
   icon: {
@@ -42,40 +39,14 @@ const useStyles = makeStyles({
     paddingLeft: 4,
     marginBottom: 0,
   },
-  breathingExercise: {
-    borderRadius: 4,
-    width: '100%',
-    maxWidth: 360,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    padding: '1.33em',
-    letterSpacing: 1,
-  },
 });
 
 const Header = ({ menuContainer }) => {
   const classes = useStyles();
   const { height } = useWindowDimensions();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [breathTimerRunning, setBreathTimerRunning] = useState(false);
-  const [breathState, setBreathState] = useState('');
-  const [breathLoopCount, setBreathLoopCount] = useState(0);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
-  const breatheTimerRef = useRef();
-
-  const message = 'Get comfortable and start breathing when ready';
-
-  const startTimer = () => {
-    setBreathState('Breathe Out');
-    setBreathTimerRunning(true);
-  };
-
-  const clearTimer = () => {
-    setBreathTimerRunning(false);
-    setBreathLoopCount(0);
-    setBreathState('');
-  };
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <Box
@@ -110,67 +81,7 @@ const Header = ({ menuContainer }) => {
 
       </Box>
 
-      <Dialog
-        open={modalOpen}
-        onClose={() => { clearTimer(); setModalOpen(false); }}
-      >
-        <DialogTitle disableTypography>
-          <Box display="flex" justifyContent="space-between" width={1}>
-            <IconButton />
-            <Typography variant="h1">Take a break</Typography>
-            <IconButton onClick={() => { clearTimer(); setModalOpen(false); }}>
-              <Clear id="BreathTimerClose" />
-            </IconButton>
-          </Box>
-        </DialogTitle>
-        <DialogContent>
-          <Typography align="center">Feeling overwhelmed?</Typography>
-          <Box
-            className={classes.breathingExercise}
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignContent="space-between"
-            bgcolor="primary.light"
-          >
-            <Typography align="center" color="secondary">{message}</Typography>
-
-            <Box>
-              <ReactPlayer
-                ref={breatheTimerRef}
-                url="/breathe.mp4"
-                width="100%"
-                playing={breathTimerRunning}
-                onProgress={(e) => {
-                  if (e.played > 0.5) {
-                    setBreathState('Breathe In');
-                  }
-                }}
-                onEnded={() => {
-                  setBreathLoopCount(breathLoopCount + 1);
-                  breatheTimerRef.current.seekTo(0);
-                  if (breathLoopCount < 5) {
-                    startTimer();
-                  } else {
-                    clearTimer();
-                  }
-                }}
-
-              />
-            </Box>
-
-            <Box
-              mt={3}
-              display="flex"
-              justifyContent="center"
-            >
-              {breathTimerRunning ? <Typography align="center">{breathState}</Typography>
-                : <Button variant="contained" color="primary" size="small" onClick={() => { startTimer(); }}>Start</Button> }
-
-            </Box>
-          </Box>
-        </DialogContent>
-      </Dialog>
+      <BreathingTimer modalOpen={modalOpen} setModalOpen={setModalOpen} />
 
       <Drawer
         open={drawerOpen}
