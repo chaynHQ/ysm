@@ -1,15 +1,16 @@
 import {
   Box,
-  Card,
+
+  Button, Card,
 
   CardActions, CardMedia,
 
-  IconButton, makeStyles,
+  IconButton,
+  makeStyles,
   Typography,
 } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import LinkUi from '@material-ui/core/Link';
 import { ArrowBack } from '@material-ui/icons';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -57,18 +58,30 @@ const InfoPage = ({ propContent, previewMode }) => {
   const richTextTransformer = (node) => {
     if (node.type === 'tag' && node.name === 'p' && node.children[0] && node.children[0].name === 'a') {
       return (
-        <Link
-          key={`index ${node.children[0].children[0].data}`}
+        <Button
+          variant="contained"
+          className={classes.button}
           href={node.children[0].attribs.href}
-          passHref
+          target="_blank"
+          key={`index ${node.children[0].children[0].data}`}
+          rel="noopener"
         >
-          <Button
-            variant="contained"
-            className={classes.button}
-          >
-            {node.children[0].children[0].data}
-          </Button>
-        </Link>
+          {node.children[0].children[0].data}
+        </Button>
+      );
+    }
+    if (node.type === 'tag' && node.name === 'a') {
+      return (
+        <LinkUi
+          href={node.attribs.href}
+          key={`index ${node.children[0].data}`}
+          color="inherit"
+          target="_blank"
+          rel="noopener"
+          underline="always"
+        >
+          {node.children[0].data}
+        </LinkUi>
       );
     }
     return undefined;
@@ -84,7 +97,6 @@ const InfoPage = ({ propContent, previewMode }) => {
           display="flex"
           flexDirection="column"
           direction="column"
-          height={1}
         >
           <Card className={classes.card}>
             <CardActions>
