@@ -93,27 +93,25 @@ const InfoPage = ({ propContent, previewMode }) => {
         <Head
           title={content.title}
         />
-        <Box
-          display="flex"
-          flexDirection="column"
-          direction="column"
-        >
-          <Card className={classes.card}>
-            <CardActions>
-              <IconButton onClick={() => { router.back(); }}>
-                <ArrowBack />
-              </IconButton>
-            </CardActions>
-            <Typography align="center" variant="h1">{content.title}</Typography>
-            <CardMedia
-              component="img"
-              alt={content.image.alt}
-              image={content.image.filename}
-              title={content.image.title}
-            />
-          </Card>
-          <Box className={classes.content} flexGrow={1} px={2} py={3} display="flex" flexDirection="column">
-            {richTextHelper(content.content, (node) => richTextTransformer(node))}
+        <Box minHeight={1} bgcolor="secondary.dark">
+          <Box>
+            <Card className={classes.card}>
+              <CardActions>
+                <IconButton onClick={() => { router.back(); }}>
+                  <ArrowBack />
+                </IconButton>
+              </CardActions>
+              <Typography align="center" variant="h1">{content.title}</Typography>
+              <CardMedia
+                component="img"
+                alt={content.image.alt}
+                image={content.image.filename}
+                title={content.image.title}
+              />
+            </Card>
+            <Box className={classes.content} px={2} py={3} display="flex" flexDirection="column">
+              {richTextHelper(content.content, (node) => richTextTransformer(node))}
+            </Box>
           </Box>
         </Box>
       </>
