@@ -7,7 +7,7 @@ import {
   IconButton,
   makeStyles,
 
-  SvgIcon, Typography,
+  SvgIcon, Typography
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import {
@@ -17,7 +17,7 @@ import {
   Home,
   Info,
   Menu,
-  MenuBook,
+  MenuBook
 } from '@material-ui/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
