@@ -68,19 +68,32 @@ const ItemPage = ({ propResource, previewMode }) => {
 
   useEffect(() => {
     if (previewMode && user) {
-      const headers = {
-        'X-PREVIEW-MODE': 'preview',
-        authorization: `Bearer ${user.xa}`,
-      };
-      axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
-        setResource(previewResource);
-        setItem(previewResource.content.find((i) => i.id === itemId));
-        setNextItem(previewResource.content[previewResource.content.findIndex(
-          (i) => i.id === itemId,
-        ) + 1] || null);
-      });
+      user
+        .getIdToken()
+        .then((idToken) => {
+          const headers = {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          };
+          return axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
+            setResource(previewResource);
+            setItem(previewResource.content.find((i) => i.id === itemId));
+            setNextItem(previewResource.content[previewResource.content.findIndex(
+              (i) => i.id === itemId,
+            ) + 1] || null);
+          });
+        });
     }
   }, [user, itemId, resourceSlug]);
+
+  useEffect(() => {
+    if (!previewMode && item) {
+      firebase.analytics().logEvent('select_content', {
+        content_type: 'resource_content_item',
+        item_id: `${resource.slug}/${itemId}`,
+      });
+    }
+  }, [item, itemId, resourceSlug]);
 
   return (
     <Box

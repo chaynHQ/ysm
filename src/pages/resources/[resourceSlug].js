@@ -30,19 +30,32 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
 
   useEffect(() => {
     if (previewMode && user) {
-      const headers = {
-        'X-PREVIEW-MODE': 'preview',
-        authorization: `Bearer ${user.xa}`,
-      };
+      user
+        .getIdToken()
+        .then((idToken) => {
+          const headers = {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          };
 
-      axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
-        setResource(previewResource);
-        axiosGet('themes', { headers }).then((allThemes) => {
-          setTheme(allThemes.find((t) => previewResource.themes.includes(t.id)));
+          return axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
+            setResource(previewResource);
+            return axiosGet('themes', { headers }).then((allThemes) => {
+              setTheme(allThemes.find((t) => previewResource.themes.includes(t.id)));
+            });
+          });
         });
-      });
     }
   }, [user, resourceSlug]);
+
+  useEffect(() => {
+    if (!previewMode && resource) {
+      firebase.analytics().logEvent('select_content', {
+        content_type: 'resource',
+        item_id: resource.slug,
+      });
+    }
+  }, [resourceSlug]);
 
   return (
     <Box

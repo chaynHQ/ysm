@@ -10,6 +10,7 @@ import configureMockStore from 'redux-mock-store';
 import Header from '../components/Header';
 
 jest.mock('../config/firebase');
+jest.mock('../shared/leave');
 
 jest.mock('react-firebase-hooks/auth', () => ({
   useAuthState: () => ([

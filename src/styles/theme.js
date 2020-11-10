@@ -171,11 +171,6 @@ const Theme = createMuiTheme({
         borderColor: '#DADDED',
       },
     },
-    MuiPaper: {
-      root: {
-        backgroundColor: 'inherit',
-      },
-    },
     MuiCard: {
       root: {
         margin: 6,
@@ -186,7 +181,7 @@ const Theme = createMuiTheme({
       paper: {
         padding: 20,
         borderRadius: 6,
-        backgroundColor: '#FCEFE5CC',
+        backgroundColor: '#FCEFE5',
       },
     },
   },
