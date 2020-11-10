@@ -1,4 +1,6 @@
-import { Box, Button, makeStyles } from '@material-ui/core';
+import {
+  Box, Button, makeStyles, Typography,
+} from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'firebaseui/dist/firebaseui.css';
@@ -40,6 +42,15 @@ const useStyles = makeStyles({
   },
   cookieButton: {
     margin: 5,
+  },
+  cookieIcon: {
+    width: 40,
+    height: 40,
+  },
+  cookieContent: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
   },
 });
 
@@ -132,6 +143,7 @@ function App({ Component, pageProps }) {
                 declineButtonText="No Thanks"
                 cookieName="ConsentToCookie"
                 enableDeclineButton
+                contentClasses={classes.cookieContent}
                 containerClasses={`MuiBox-root ${classes.cookieContainer}`}
                 buttonWrapperClasses={`${classes.cookieButtonContainer}`}
                 buttonClasses={`MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall ${classes.cookieButton}`}
@@ -145,7 +157,15 @@ function App({ Component, pageProps }) {
                 disableStyles
                 ButtonComponent={Button}
               >
-                We use an analytics cookie to understand how YSM is being used so we can improve it.
+                <Typography>
+                  We use an analytics cookie to understand how
+                  YSM is being used so we can improve it.
+                </Typography>
+                <img
+                  src="/butterfly.png"
+                  alt="Drawing of a butterfly"
+                  className={classes.cookieIcon}
+                />
               </CookieConsent>
               <Header menuContainer={containerRef} />
 
