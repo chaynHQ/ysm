@@ -56,12 +56,6 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     height: '100%',
   },
-  link: {
-    color: '#D27200',
-  },
-  linkSubtitle: {
-    margin: 0,
-  },
 }));
 
 const YourJourney = ({ propThemes, container, previewMode }) => {

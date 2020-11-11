@@ -16,9 +16,9 @@ import richTextHelper from '../shared/rich-text';
 import SaveButton from './SaveButton';
 import SignUpPrompt from './SignUpPrompt';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   link: {
-    color: '#D27200',
+    color: theme.palette.primary.dark,
   },
   card: {
     backgroundColor: '#ffffff',

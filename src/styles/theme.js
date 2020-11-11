@@ -5,7 +5,7 @@ const Theme = createMuiTheme({
     primary: {
       light: '#FEF6F1', // main background
       main: '#F9C8B0',
-      dark: '#F9C8B0',
+      dark: '#FD9E8C',
       contrastText: '#242A4A', // Main Text
     },
     secondary: {
@@ -118,7 +118,7 @@ const Theme = createMuiTheme({
         paddingLeft: 12,
         '&$selected': {
           paddingTop: 0,
-          color: '#D27200',
+          color: '#FD9E8C',
         },
       },
       label: {
@@ -139,7 +139,7 @@ const Theme = createMuiTheme({
     MuiBreadcrumbs: {
       li: {
         fontSize: 14,
-        color: '#D27200',
+        color: '#FD9E8C',
       },
     },
     MuiDrawer: {

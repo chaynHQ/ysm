@@ -11,7 +11,7 @@ import firebase from '../config/firebase';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     height: 200,
     margin: 6,
@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
     width: '100%',
   },
   link: {
-    color: '#D27200',
+    color: theme.palette.primary.dark,
   },
   linkSubtitle: {
     margin: 0,
