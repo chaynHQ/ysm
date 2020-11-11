@@ -39,6 +39,9 @@ const useStyles = makeStyles({
     paddingLeft: 4,
     marginBottom: 0,
   },
+  link: {
+    marginBottom: 0,
+  },
 });
 
 const Header = ({ menuContainer }) => {
@@ -67,12 +70,18 @@ const Header = ({ menuContainer }) => {
         alignItems="center"
         justifyContent="space-around"
       >
-        <img
-          className={classes.icon}
-          src="/logo.png"
-          alt="YSM Logo"
-        />
-        <Typography className={classes.title}>Your Story Matters</Typography>
+        <Link href="/" passHref>
+          <LinkUi component="a" underline="none" color="inherit" className={classes.link}>
+            <Box display="flex" alignItems="center">
+              <img
+                className={classes.icon}
+                src="/logo.png"
+                alt="YSM Logo"
+              />
+              <Typography className={classes.title}>Your Story Matters</Typography>
+            </Box>
+          </LinkUi>
+        </Link>
       </Box>
       <Box p={2}>
         <IconButton onClick={() => { setModalOpen(true); }}>

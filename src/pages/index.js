@@ -24,12 +24,11 @@ const Home = () => {
     <Box
       display="flex"
       flexDirection="column"
-      height={1}
       justifyContent="center"
       alignItems="center"
       p={4}
     >
-      <Box width={width * 0.5} height={width * 0.5} p={3}>
+      <Box p={3} display="flex" justifyContent="center">
         <img
           className={classes.image}
           alt="Illustration of woman and a butterfly"
