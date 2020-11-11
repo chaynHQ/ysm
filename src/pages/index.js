@@ -27,9 +27,10 @@ const Home = () => {
       height={1}
       justifyContent="center"
       alignItems="center"
+      p={4}
     >
       {/* TODO: Include the correct image */}
-      <Box width={width * 0.5} height={width * 0.5} p={4}>
+      <Box width={width * 0.5} height={width * 0.5} p={3}>
         <Avatar
           className={classes.iconContainer}
           alt="Illustration of woman and a butterfly"
