@@ -1,4 +1,4 @@
-import { Box, Breadcrumbs } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import { ArrowBack } from '@material-ui/icons';
 import Link from 'next/link';
@@ -73,16 +73,13 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
               ogImage={resource.image ? resource.image.filename : null}
               ogImageAlt={resource.image ? resource.image.alt : null}
             />
-            <Breadcrumbs aria-label="breadcrumb">
-              <Link href="/themes/slug" as={`/themes/${theme.slug}`} passHref>
-                <LinkUi component="a" color="inherit">
-                  <Box display="flex" alignItems="center">
-                    <ArrowBack />
-                  </Box>
-                </LinkUi>
-              </Link>
-
-            </Breadcrumbs>
+            <Link href="/themes/slug" as={`/themes/${theme.slug}`} passHref>
+              <LinkUi component="a" color="inherit">
+                <Box display="flex" alignItems="center">
+                  <ArrowBack />
+                </Box>
+              </LinkUi>
+            </Link>
             <Box>
               {resource.content && resource.content.length === 1
                 ? <Item item={{ ...resource.content[0], slug: resource.slug }} canBeSaved />

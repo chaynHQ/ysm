@@ -13,12 +13,9 @@ import firebase from '../config/firebase';
 import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   link: {
-    color: '#D27200',
-  },
-  card: {
-    backgroundColor: '#ffffff',
+    color: theme.palette.error.main,
   },
 }));
 

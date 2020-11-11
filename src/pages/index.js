@@ -1,5 +1,5 @@
 import {
-  Avatar, Box, Button, makeStyles, Typography,
+  Box, Button, makeStyles, Typography,
 } from '@material-ui/core';
 import Link from 'next/link';
 import React from 'react';
@@ -27,13 +27,13 @@ const Home = () => {
       height={1}
       justifyContent="center"
       alignItems="center"
+      p={4}
     >
-      {/* TODO: Include the correct image */}
-      <Box width={width * 0.5} height={width * 0.5} p={4}>
-        <Avatar
-          className={classes.iconContainer}
+      <Box width={width * 0.5} height={width * 0.5} p={3}>
+        <img
+          className={classes.image}
           alt="Illustration of woman and a butterfly"
-          src="/resource-illustration.png"
+          src="/home-illustration.png"
         />
       </Box>
       <Typography variant="h1" align="center">Your Story Matters</Typography>

@@ -166,7 +166,7 @@ const SignUpWidget = ({
       />
 
       {showErrorText ? (
-        <Box boxShadow={1} mt={5} p={5} py={4} bgcolor="primary.dark" display="flex" alignItems="center">
+        <Box boxShadow={1} mt={5} p={5} py={4} bgcolor="primary.main" display="flex" alignItems="center">
           <Typography variant="h2" align="center" color="secondary">{errorText}</Typography>
         </Box>
       ) : null}
@@ -193,7 +193,7 @@ const SignUpWidget = ({
           >
             <img
               className={classes.image}
-              src="/homepage-illustration.png"
+              src="/sign-up-illustration.png"
               alt="Line drawing of two people sat down having a conversation."
             />
             <Typography>Thanks for signing up!</Typography>

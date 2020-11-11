@@ -1,34 +1,29 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
-// TODO:
-// Once colours are settled upon remove Hex codes from within the components & transfer into here
 const Theme = createMuiTheme({
   palette: {
     primary: {
       light: '#FEF6F1', // main background
-      main: '#F7E3D7',
-      dark: '#F9C8B0',
+      main: '#F9C8B0',
+      dark: '#FD9E8C',
       contrastText: '#242A4A', // Main Text
-      // #EFE9E5
-      // #FD9E8C
     },
     secondary: {
       light: '#E2E3E6',
       main: '#3A4167',
       dark: '#242A4A', // header text
-      // #E2E3E6
     },
     error: {
       main: '#EC836F',
     },
     info: {
+      light: '#F7E3D7',
       main: '#E2E3E6', // Static Pages header card background colour
     },
     warning: {
       main: '#4D4D4D',
       light: '#898989',
       dark: '#000000',
-      // #CDCDCD
     },
   },
   typography: {
@@ -51,9 +46,10 @@ const Theme = createMuiTheme({
       fontSize: 16,
       color: '#717798',
     },
-    body2: {
-      fontSize: 16,
+    body2: { // Used for links
+      fontSize: 14,
       color: '#242A4A',
+      marginBottom: 0,
     },
     subtitle1: {
       fontSize: 14,
@@ -123,7 +119,7 @@ const Theme = createMuiTheme({
         paddingLeft: 12,
         '&$selected': {
           paddingTop: 0,
-          color: '#D27200',
+          color: '#EC836F',
         },
       },
       label: {
@@ -144,7 +140,7 @@ const Theme = createMuiTheme({
     MuiBreadcrumbs: {
       li: {
         fontSize: 14,
-        color: '#D27200',
+        color: '#FD9E8C',
       },
     },
     MuiDrawer: {
@@ -182,6 +178,12 @@ const Theme = createMuiTheme({
         padding: 20,
         borderRadius: 6,
         backgroundColor: '#FCEFE5',
+      },
+    },
+    MuiPaper: {
+      elevation1: {
+        boxShadow: '0px 0.5px 4px rgba(0, 0, 0, 0.12)',
+        border: '1px solid rgba(113, 119, 152, 0.35)',
       },
     },
   },

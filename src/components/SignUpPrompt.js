@@ -11,7 +11,7 @@ import firebase from '../config/firebase';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     height: 200,
     margin: 6,
@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
     boxShadow: 'inset 0 0 0 1000px rgba(36, 42, 74, 0.3)',
   },
   iconContainer: {
-    backgroundColor: '#E2E3E6',
+    backgroundColor: theme.palette.secondary.light,
     padding: '10%',
     borderRadius: 180,
   },
@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
     width: '100%',
   },
   link: {
-    color: '#D27200',
+    color: theme.palette.error.main,
   },
   linkSubtitle: {
     margin: 0,
@@ -65,7 +65,7 @@ const SignUpPrompt = () => {
             justifyContent="center"
             alignItems="center"
           >
-            <Box className={classes.iconContainer} width={width * 0.4} height={width * 0.4} mb={4}>
+            <Box className={classes.iconContainer} width={width * 0.3} height={width * 0.3} mb={4}>
               <img
                 className={classes.icon}
                 alt="YSM Logo"
@@ -85,7 +85,7 @@ const SignUpPrompt = () => {
               <Typography align="center" variant="subtitle1" className={classes.linkSubtitle}>
                 Your privacy will be protected.
               </Typography>
-              <Typography>
+              <Typography align="center">
                 Read our
                 {' '}
                 <Link href="/info/terms-and-conditions">
