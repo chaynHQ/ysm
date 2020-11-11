@@ -3,7 +3,6 @@ import {
 } from '@material-ui/core';
 import Link from 'next/link';
 import React from 'react';
-import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles({
   container: {
@@ -17,7 +16,6 @@ const useStyles = makeStyles({
 });
 
 const Home = () => {
-  const { width } = useWindowDimensions();
   const classes = useStyles();
 
   return (
