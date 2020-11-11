@@ -1,4 +1,6 @@
-import { Box, Button, makeStyles, Typography } from '@material-ui/core';
+import {
+  Box, Button, makeStyles, Typography,
+} from '@material-ui/core';
 import * as firebaseui from 'firebaseui';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
@@ -10,6 +12,7 @@ import { axiosGet, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
 import { setSettingsAuth } from '../store/actions';
+import NewsletterSignup from './NewsletterSignup';
 
 const useStyles = makeStyles({
   icon: {

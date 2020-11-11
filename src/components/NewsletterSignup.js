@@ -6,7 +6,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from '../config/firebase';
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
-import { axiosDelete, axiosGet, axiosPut } from '../store/axios';
+import { axiosDelete, axiosGet, axiosPut } from '../shared/axios';
 
 const NewsletterSignup = () => {
   const [checked, setChecked] = useState(false);
