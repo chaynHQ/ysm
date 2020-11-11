@@ -17,6 +17,7 @@ const Theme = createMuiTheme({
       main: '#EC836F',
     },
     info: {
+      light: '#F7E3D7',
       main: '#E2E3E6', // Static Pages header card background colour
     },
     warning: {
@@ -118,7 +119,7 @@ const Theme = createMuiTheme({
         paddingLeft: 12,
         '&$selected': {
           paddingTop: 0,
-          color: '#FD9E8C',
+          color: '#EC836F',
         },
       },
       label: {

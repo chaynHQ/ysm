@@ -105,7 +105,7 @@ const Settings = ({
       { settingsAuth
         ? (
           <Box>
-            <Box display="flex" justifyContent="space-between" px={3} pt={2} bgcolor="#F7E3D7">
+            <Box display="flex" justifyContent="space-between" px={3} pt={2} bgcolor="info.light">
               <Link href="/saved" passHref>
                 <LinkUi component="a" underline="always" color="inherit">
                   <Box display="flex" alignItems="center">

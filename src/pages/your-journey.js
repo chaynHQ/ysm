@@ -51,11 +51,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 26,
 
   },
-  iconContainer: {
-    backgroundColor: '#EADED6',
-    width: '100%',
-    height: '100%',
-  },
 }));
 
 const YourJourney = ({ propThemes, container, previewMode }) => {

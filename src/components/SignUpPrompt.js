@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: 'inset 0 0 0 1000px rgba(36, 42, 74, 0.3)',
   },
   iconContainer: {
-    backgroundColor: '#E2E3E6',
+    backgroundColor: theme.palette.secondary.light,
     padding: '10%',
     borderRadius: 180,
   },
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   link: {
-    color: theme.palette.primary.dark,
+    color: theme.palette.error.main,
   },
   linkSubtitle: {
     margin: 0,

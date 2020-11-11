@@ -21,13 +21,10 @@ import isBrowser from '../../../../shared/browserCheck';
 
 const useStyles = makeStyles((theme) => ({
   link: {
-    color: theme.palette.primary.dark,
+    color: theme.palette.error.main,
   },
   icon: {
     paddingRight: 6,
-  },
-  card: {
-    backgroundColor: '#ffffff',
   },
 
 }));

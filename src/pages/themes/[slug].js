@@ -29,9 +29,6 @@ const useStyles = makeStyles((theme) => ({
     width: 20,
     height: 20,
   },
-  link: {
-    color: '#ffffff',
-  },
   cardContent: {
     paddingRight: 16,
     paddingLeft: 16,
