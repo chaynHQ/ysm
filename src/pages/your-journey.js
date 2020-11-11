@@ -153,17 +153,16 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
               </Card>
             ))}
 
-            <Breadcrumbs aria-label="breadcrumb">
+            <Box pt={4}>
               <Link href="/" passHref>
-                <LinkUi component="a" color="inherit">
+                <LinkUi component="a" underline="always" color="inherit">
                   <Box display="flex" alignItems="center">
                     <ArrowBack className={classes.icon} />
-                    Back to Home
+                    <Typography variant="body2">Back to Home</Typography>
                   </Box>
                 </LinkUi>
               </Link>
-
-            </Breadcrumbs>
+            </Box>
             <SignUpPrompt url="/" />
           </>
         )

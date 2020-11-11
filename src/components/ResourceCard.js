@@ -10,12 +10,17 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SaveButton from './SaveButton';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   cardMedia: {
     height: '100%',
   },
   avatar: {
-    width: '100%',
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+  },
+  card: {
+    margin: 6,
+    backgroundColor: theme.palette.primary.light,
   },
 }));
 
@@ -26,12 +31,12 @@ const ResourceCard = ({
 
   return (
 
-    <Card variant="outlined">
+    <Card className={classes.card}>
       <Link href="/resources/[resourceSlug]" as={`/resources/${slug}`}>
         <CardActionArea component="a" className={classes.cardMedia}>
           <CardContent>
             <Box display="flex" flexDirection="row" justifyContent="space-between">
-              <Box width={2 / 3}>
+              <Box>
                 <Typography variant="h2">
                   {title}
                 </Typography>
@@ -39,7 +44,7 @@ const ResourceCard = ({
                   {subtitle}
                 </Typography>
               </Box>
-              <Box width={1 / 3}>
+              <Box display="flex" justifyContent="center">
                 {image
                   ? (
                     <Avatar

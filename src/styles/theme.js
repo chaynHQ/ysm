@@ -1,7 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
-// TODO:
-// Once colours are settled upon remove Hex codes from within the components & transfer into here
 const Theme = createMuiTheme({
   palette: {
     primary: {
@@ -9,14 +7,11 @@ const Theme = createMuiTheme({
       main: '#F9C8B0',
       dark: '#F9C8B0',
       contrastText: '#242A4A', // Main Text
-      // #EFE9E5
-      // #FD9E8C
     },
     secondary: {
       light: '#E2E3E6',
       main: '#3A4167',
       dark: '#242A4A', // header text
-      // #E2E3E6
     },
     error: {
       main: '#EC836F',
@@ -28,7 +23,6 @@ const Theme = createMuiTheme({
       main: '#4D4D4D',
       light: '#898989',
       dark: '#000000',
-      // #CDCDCD
     },
   },
   typography: {
@@ -51,9 +45,10 @@ const Theme = createMuiTheme({
       fontSize: 16,
       color: '#717798',
     },
-    body2: {
-      fontSize: 16,
+    body2: { // Used for links
+      fontSize: 14,
       color: '#242A4A',
+      marginBottom: 0,
     },
     subtitle1: {
       fontSize: 14,
@@ -182,6 +177,12 @@ const Theme = createMuiTheme({
         padding: 20,
         borderRadius: 6,
         backgroundColor: '#FCEFE5',
+      },
+    },
+    MuiPaper: {
+      elevation1: {
+        boxShadow: '0px 0.5px 4px rgba(0, 0, 0, 0.12)',
+        border: '1px solid rgba(113, 119, 152, 0.35)',
       },
     },
   },
