@@ -1,7 +1,9 @@
 import {
   Box, Button, makeStyles, Typography,
 } from '@material-ui/core';
+import LinkUi from '@material-ui/core/Link';
 import * as firebaseui from 'firebaseui';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -12,6 +14,7 @@ import { axiosGet, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
 import { setSettingsAuth } from '../store/actions';
+import NewsletterSignup from './NewsletterSignup';
 
 const useStyles = makeStyles({
   icon: {
@@ -31,6 +34,7 @@ const SignUpWidget = ({
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const [showVerificationStep, setShowVerificationStep] = useState(false);
   const [showTermsStep, setShowTermsStep] = useState(false);
+  const [showNewsletterStep, setShowNewsletterStep] = useState(false);
   const [showErrorText, setShowErrorText] = useState(false);
   const [errorText, setErrorText] = useState('');
 
@@ -211,7 +215,9 @@ const SignUpWidget = ({
                       authorization: `Bearer ${idToken}`,
                     },
                   });
-                  router.push(redirectUrl || '/');
+                  setShowNewsletterStep(true);
+                  setShowTermsStep(false);
+                  // router.push(redirectUrl || '/');
                 }}
               >
                 <Box className="firebaseui-card-header">
@@ -332,6 +338,20 @@ const SignUpWidget = ({
             </Box>
           </>
         ) : null }
+
+      {showNewsletterStep
+        ? (
+          <>
+            <NewsletterSignup />
+            <Link href={redirectUrl || '/'} passHref>
+              <LinkUi component="a" color="inherit">
+                Skip this step
+              </LinkUi>
+
+            </Link>
+          </>
+        )
+        : null}
     </Box>
   );
 };

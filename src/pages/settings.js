@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
+import NewsletterSignup from '../components/NewsletterSignup';
 import firebase from '../config/firebase';
 import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
@@ -167,6 +168,8 @@ const Settings = ({
                 Update
               </Button>
             </Box>
+
+            <NewsletterSignup />
 
             <Box mx={5} mb={5}>
               <Card className={classes.card}>
