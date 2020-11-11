@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import Head from '../../components/Head';
 import Item from '../../components/Item';
 import ResourceContents from '../../components/ResourceContents';
 import firebase from '../../config/firebase';
@@ -29,19 +30,32 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
 
   useEffect(() => {
     if (previewMode && user) {
-      const headers = {
-        'X-PREVIEW-MODE': 'preview',
-        authorization: `Bearer ${user.xa}`,
-      };
+      user
+        .getIdToken()
+        .then((idToken) => {
+          const headers = {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          };
 
-      axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
-        setResource(previewResource);
-        axiosGet('themes', { headers }).then((allThemes) => {
-          setTheme(allThemes.find((t) => previewResource.themes.includes(t.id)));
+          return axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
+            setResource(previewResource);
+            return axiosGet('themes', { headers }).then((allThemes) => {
+              setTheme(allThemes.find((t) => previewResource.themes.includes(t.id)));
+            });
+          });
         });
-      });
     }
   }, [user, resourceSlug]);
+
+  useEffect(() => {
+    if (!previewMode && resource) {
+      firebase.analytics().logEvent('select_content', {
+        content_type: 'resource',
+        item_id: resource.slug,
+      });
+    }
+  }, [resourceSlug]);
 
   return (
     <Box
@@ -54,6 +68,11 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
       { theme && resource
         ? (
           <>
+            <Head
+              title={resource.title}
+              ogImage={resource.image ? resource.image.filename : null}
+              ogImageAlt={resource.image ? resource.image.alt : null}
+            />
             <Breadcrumbs aria-label="breadcrumb">
               <Link href="/themes/slug" as={`/themes/${theme.slug}`} passHref>
                 <LinkUi component="a" color="inherit">

@@ -1,18 +1,34 @@
 import {
-  Box, Divider, Drawer, Icon, IconButton, makeStyles, Typography,
+  Box,
+
+  Divider,
+  Drawer,
+  Icon,
+  IconButton,
+  makeStyles,
+
+  SvgIcon, Typography,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import {
-  AccountCircle, Clear, ExitToApp, Home, Info, Menu, MenuBook, NaturePeople,
+  AccountCircle,
+  Clear,
+  ExitToApp,
+  Home,
+  Info,
+  Menu,
+  MenuBook,
 } from '@material-ui/icons';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import BreathIcon from '../../public/breatheIcon.svg';
 import firebase from '../config/firebase';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 import leaveSite from '../shared/leave';
+import BreatheTimer from './BreatheTimer';
 
 const useStyles = makeStyles({
   icon: {
@@ -30,6 +46,7 @@ const Header = ({ menuContainer }) => {
   const { height } = useWindowDimensions();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <Box
@@ -57,13 +74,14 @@ const Header = ({ menuContainer }) => {
         />
         <Typography className={classes.title}>Your Story Matters</Typography>
       </Box>
-      {/* TODO: Will actually be breathing timer */}
       <Box p={2}>
-        <IconButton onClick={() => { setDrawerOpen(true); }}>
-          <NaturePeople />
+        <IconButton onClick={() => { setModalOpen(true); }}>
+          <SvgIcon component={BreathIcon} />
         </IconButton>
 
       </Box>
+
+      <BreatheTimer modalOpen={modalOpen} setModalOpen={setModalOpen} />
 
       <Drawer
         open={drawerOpen}
@@ -108,7 +126,7 @@ const Header = ({ menuContainer }) => {
               </Box>
             </LinkUi>
           </Link>
-          <Link href="/about" passHref>
+          <Link href="/info/about-us" passHref>
             <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
               <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                 <Icon>
@@ -118,13 +136,24 @@ const Header = ({ menuContainer }) => {
               </Box>
             </LinkUi>
           </Link>
-          <Link href="/privacy" passHref>
+          <Link href="/info/privacy" passHref>
             <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
               <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                 <Icon>
                   <MenuBook />
                 </Icon>
                 Your Privacy
+              </Box>
+            </LinkUi>
+          </Link>
+
+          <Link href="/info/terms-and-conditions" passHref>
+            <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
+              <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+                <Icon>
+                  <MenuBook />
+                </Icon>
+                Terms and Conditions
               </Box>
             </LinkUi>
           </Link>

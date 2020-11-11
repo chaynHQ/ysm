@@ -18,6 +18,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import Head from '../components/Head';
 import SearchModal from '../components/SearchModal';
 import SignUpPrompt from '../components/SignUpPrompt';
 import firebase from '../config/firebase';
@@ -70,12 +71,15 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
 
   useEffect(() => {
     if (previewMode && user) {
-      axiosGet('themes', {
-        headers: {
-          'X-PREVIEW-MODE': 'preview',
-          authorization: `Bearer ${user.xa}`,
-        },
-      }).then((allThemes) => { setThemes(allThemes); });
+      user
+        .getIdToken()
+        .then((idToken) => axiosGet('themes', {
+          headers: {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          },
+        }))
+        .then((allThemes) => { setThemes(allThemes); });
     }
   }, [user]);
 
@@ -90,6 +94,9 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
       {themes
         ? (
           <>
+            <Head
+              title="Your Journey"
+            />
             <Grid container justify="space-between" direction="row">
               <Breadcrumbs aria-label="breadcrumb">
                 <Link href="/" passHref>

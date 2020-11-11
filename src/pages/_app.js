@@ -2,13 +2,13 @@ import { Box, makeStyles } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'firebaseui/dist/firebaseui.css';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Provider } from 'react-redux';
 import Footer from '../components/Footer';
+import Head from '../components/Head';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import firebase from '../config/firebase';
@@ -23,8 +23,13 @@ const useStyles = makeStyles({
     height: '100vh',
     margin: 0,
   },
-  background: {
-    background: 'url(\'./background.png\')',
+  backgroundBlue: {
+    background: 'url(\'/backgroundBlue.png\')',
+    backgroundSize: '100% 100%',
+    backgroundRepeat: 'no-repeat',
+  },
+  backgroundPeach: {
+    background: 'url(\'/backgroundPeach.png\')',
     backgroundSize: '100% 100%',
     backgroundRepeat: 'no-repeat',
   },
@@ -37,7 +42,7 @@ function App({ Component, pageProps }) {
   const { height, width } = useWindowDimensions();
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const [isLoading, setIsLoading] = useState(false);
-  const [showBackground, setShowBackground] = useState(true);
+  const [background, setBackground] = useState('Peach');
 
   const containerRef = useRef();
   const scrollTopRef = useRef();
@@ -54,10 +59,11 @@ function App({ Component, pageProps }) {
     // This effect is called everytime the user changes because firebase has updated the token
     // or if the router changes (i.e the user navigates)
     const checkTermsAcceptance = async (u) => {
+      const idToken = await u.getIdToken();
       const serverUser = await axiosGet('/profile',
         {
           headers: {
-            authorization: `Bearer ${u.xa}`,
+            authorization: `Bearer ${idToken}`,
           },
         });
       return serverUser.termsAccepted;
@@ -80,19 +86,23 @@ function App({ Component, pageProps }) {
       setIsLoading(true);
     });
     router.events.on('routeChangeComplete', () => {
+      firebase.analytics().logEvent('page_view');
       setIsLoading(false);
     });
     router.events.on('routeChangeError', () => {
       setIsLoading(false);
     });
-  });
+  }, []);
 
   useEffect(() => {
-    const routesWithoutBackgrounds = ['/settings', '/saved', '/resources/[resourceSlug]', '/themes/[slug]'];
+    const routesWithoutBackgrounds = ['/settings', '/saved', '/themes/[slug]'];
+    const routesWithBlueBackgrounds = ['/resources/[resourceSlug]/items/[itemId]'];
     if (routesWithoutBackgrounds.includes(router.pathname)) {
-      setShowBackground(false);
+      setBackground('None');
+    } else if (routesWithBlueBackgrounds.includes(router.pathname)) {
+      setBackground('Blue');
     } else {
-      setShowBackground(true);
+      setBackground('Peach');
     }
   }, [router]);
 
@@ -100,10 +110,9 @@ function App({ Component, pageProps }) {
 
   return (
     <>
-      <Head>
-        <title>My page</title>
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      </Head>
+      <Head
+        title="Your Story Matters"
+      />
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -121,7 +130,7 @@ function App({ Component, pageProps }) {
                 flexDirection="column"
                 flexGrow={1}
                 overflow="scroll"
-                className={showBackground ? classes.background : null}
+                className={classes[`background${background}`]}
               >
                 <Box ref={scrollTopRef} />
                 {

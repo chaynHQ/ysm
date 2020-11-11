@@ -7,9 +7,12 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
+import NewsletterSignup from '../components/NewsletterSignup';
 import firebase from '../config/firebase';
 import { axiosGet } from '../shared/axios';
+import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
 import { setSettingsAuth, setUserSignIn } from '../store/actions';
 
@@ -31,9 +34,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Settings = ({
-  setSettingsAuthOnError, settingsAuth, user, setUserSignInOnClick,
+  setSettingsAuthOnError, settingsAuth, setUserSignInOnClick,
 }) => {
   const classes = useStyles();
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -103,7 +107,7 @@ const Settings = ({
           <Box>
             <Box display="flex" justifyContent="space-between" px={3} pt={2} bgcolor="#FFEAE3">
               <Breadcrumbs aria-label="breadcrumb">
-                <Link href="/" passHref>
+                <Link href="/saved" passHref>
                   <LinkUi component="a" color="inherit">
                     <Box display="flex" alignItems="center">
                       <ArrowBack className={classes.icon} />
@@ -165,6 +169,8 @@ const Settings = ({
               </Button>
             </Box>
 
+            <NewsletterSignup />
+
             <Box mx={5} mb={5}>
               <Card className={classes.card}>
                 <CardContent>
@@ -221,16 +227,13 @@ Settings.propTypes = {
   setSettingsAuthOnError: PropTypes.func.isRequired,
   setUserSignInOnClick: PropTypes.func.isRequired,
   settingsAuth: PropTypes.bool,
-  user: PropTypes.objectOf(PropTypes.any),
 };
 
 Settings.defaultProps = {
   settingsAuth: false,
-  user: {},
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
   settingsAuth: state.user.settingsAuth,
 });
 

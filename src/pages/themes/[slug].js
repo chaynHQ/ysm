@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import Head from '../../components/Head';
 import ResourceCard from '../../components/ResourceCard';
 import SearchModal from '../../components/SearchModal';
 import SignUpPrompt from '../../components/SignUpPrompt';
@@ -69,27 +70,40 @@ const ThemePage = ({
 
   useEffect(() => {
     if (previewMode && user) {
-      const headers = {
-        'X-PREVIEW-MODE': 'preview',
-        authorization: `Bearer ${user.xa}`,
-      };
+      user
+        .getIdToken()
+        .then((idToken) => {
+          const headers = {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          };
 
-      axiosGet('themes', {
-        headers,
-      }).then((allThemes) => {
-        setThemes(allThemes.filter((t) => t.slug !== slug));
-        const previewTheme = allThemes.find((t) => t.slug === slug);
-        setTheme(previewTheme);
-        axiosGet('resources', {
-          headers,
-        }).then((allResources) => {
-          setResources(allResources.filter(
-            (resource) => resource.themes && resource.themes.includes(previewTheme.id),
-          ));
+          return axiosGet('themes', {
+            headers,
+          }).then((allThemes) => {
+            setThemes(allThemes.filter((t) => t.slug !== slug));
+            const previewTheme = allThemes.find((t) => t.slug === slug);
+            setTheme(previewTheme);
+            return axiosGet('resources', {
+              headers,
+            }).then((allResources) => {
+              setResources(allResources.filter(
+                (resource) => resource.themes && resource.themes.includes(previewTheme.id),
+              ));
+            });
+          });
         });
-      });
     }
   }, [slug, user]);
+
+  useEffect(() => {
+    if (!previewMode && theme) {
+      firebase.analytics().logEvent('select_content', {
+        content_type: 'theme',
+        item_id: theme.slug,
+      });
+    }
+  }, [slug]);
 
   return (
     <Box
@@ -124,6 +138,11 @@ const ThemePage = ({
         ? <Typography>Theme does not exist</Typography>
         : (
           <>
+            <Head
+              title={theme.title}
+              ogImage={theme.image ? theme.image.filename : null}
+              ogImageAlt={theme.image ? theme.image.alt : null}
+            />
             <Typography color="textSecondary" align="center" variant="h1">{theme.title}</Typography>
             <Typography
               color="textSecondary"
