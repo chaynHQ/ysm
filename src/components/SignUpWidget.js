@@ -331,9 +331,7 @@ const SignUpWidget = ({
 
       {showNewsletterStep
         ? (
-          <Box>
-            <NewsletterSignup />
-          </Box>
+          <NewsletterSignup />
         )
         : null}
     </Box>

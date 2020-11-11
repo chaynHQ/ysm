@@ -42,7 +42,7 @@ export const axiosPut = async (url, data, options) => {
     return response.data;
   } catch (err) {
     console.log('error in axios PUT');
-    console.log(err);
+    console.log(err.message);
     throw err;
   }
 };
