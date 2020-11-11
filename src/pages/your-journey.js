@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     margin: 6,
+    backgroundColor: theme.palette.primary.light,
   },
   cardMedia: {
     height: '100%',
@@ -128,7 +129,6 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
               <Card
                 key={theme.id}
                 className={classes.card}
-                variant="outlined"
               >
                 <Link href="/themes/[slug]" as={`/themes/${theme.slug}`}>
                   <CardActionArea component="a">

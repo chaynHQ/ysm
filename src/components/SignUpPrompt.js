@@ -65,7 +65,7 @@ const SignUpPrompt = () => {
             justifyContent="center"
             alignItems="center"
           >
-            <Box className={classes.iconContainer} width={width * 0.4} height={width * 0.4} mb={4}>
+            <Box className={classes.iconContainer} width={width * 0.3} height={width * 0.3} mb={4}>
               <img
                 className={classes.icon}
                 alt="YSM Logo"
@@ -85,7 +85,7 @@ const SignUpPrompt = () => {
               <Typography align="center" variant="subtitle1" className={classes.linkSubtitle}>
                 Your privacy will be protected.
               </Typography>
-              <Typography>
+              <Typography align="center">
                 Read our
                 {' '}
                 <Link href="/info/terms-and-conditions">
