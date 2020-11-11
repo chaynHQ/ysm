@@ -75,7 +75,7 @@ const Item = ({ item, canBeSaved }) => {
                   disableElevation
                   size="small"
                   onClick={() => {
-                    window.open(item.link, '_newtab');
+                    window.open(item.link, item.link);
                   }}
                   color="secondary"
                 >
