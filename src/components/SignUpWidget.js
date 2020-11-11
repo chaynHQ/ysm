@@ -1,7 +1,9 @@
 import {
   Box, Button, makeStyles, Typography,
 } from '@material-ui/core';
+import LinkUi from '@material-ui/core/Link';
 import * as firebaseui from 'firebaseui';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -339,7 +341,15 @@ const SignUpWidget = ({
 
       {showNewsletterStep
         ? (
-          <NewsletterSignup />
+          <>
+            <NewsletterSignup />
+            <Link href={redirectUrl || '/'} passHref>
+              <LinkUi component="a" color="inherit">
+                Skip this step
+              </LinkUi>
+
+            </Link>
+          </>
         )
         : null}
     </Box>

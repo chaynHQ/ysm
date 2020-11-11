@@ -1,14 +1,16 @@
 import {
   Box, Card, CardContent, Checkbox, Typography,
 } from '@material-ui/core';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from '../config/firebase';
+import { axiosDelete, axiosGet, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
-import { axiosDelete, axiosGet, axiosPut } from '../shared/axios';
 
 const NewsletterSignup = () => {
+  const router = useRouter();
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState(false);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
@@ -58,6 +60,9 @@ const NewsletterSignup = () => {
                 } else {
                   setError(true);
                   rollbar.error('Newsletter error', res.error);
+                }
+                if (router.pathname === '/sign-in') {
+                  router.push('/');
                 }
               }}
               checked={checked}
