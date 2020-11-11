@@ -11,8 +11,9 @@ import {
 import { ArrowBack, Clear } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
 import useWindowDimensions from '../shared/dimensions';
-import { axiosGet } from '../store/axios';
 import theme from '../styles/theme';
 import ResourceCard from './ResourceCard';
 
@@ -25,6 +26,7 @@ const Search = ({ shown, container, closeModal }) => {
   const getSearchResults = async (param) => {
     if (param.length >= 1) {
       setSearchStatus('searching');
+      firebase.analytics().logEvent('search', { search_term: param });
       const response = await axiosGet('resources', {
         params: {
           q: param,

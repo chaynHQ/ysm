@@ -18,13 +18,13 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useSelector } from 'react-redux';
+import Head from '../components/Head';
 import SearchModal from '../components/SearchModal';
 import SignUpPrompt from '../components/SignUpPrompt';
 import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import richTextHelper from '../shared/rich-text';
-import { axiosGet } from '../store/axios';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -64,23 +64,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const YourJourney = ({ propThemes, container }) => {
+const YourJourney = ({ propThemes, container, previewMode }) => {
   const classes = useStyles();
   const [showSearchModal, setShowSearchModal] = useState(false);
-  const previewMode = useSelector((state) => state.user.previewMode);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const [themes, setThemes] = useState(propThemes);
 
   useEffect(() => {
-    if (previewMode) {
-      axiosGet('themes', {
-        headers: {
-          'X-PREVIEW-MODE': 'preview',
-          authorization: `Bearer ${user.xa}`,
-        },
-      }).then((allThemes) => { setThemes(allThemes); });
+    if (previewMode && user) {
+      user
+        .getIdToken()
+        .then((idToken) => axiosGet('themes', {
+          headers: {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          },
+        }))
+        .then((allThemes) => { setThemes(allThemes); });
     }
-  }, []);
+  }, [user]);
 
   return (
     <Box
@@ -93,6 +95,9 @@ const YourJourney = ({ propThemes, container }) => {
       {themes
         ? (
           <>
+            <Head
+              title="Your Journey"
+            />
             <Grid container justify="space-between" direction="row">
               <Breadcrumbs aria-label="breadcrumb">
                 <Link href="/" passHref>
@@ -115,19 +120,10 @@ const YourJourney = ({ propThemes, container }) => {
 
             </Grid>
 
-            <Typography variant="h1" align="center" color="secondary.dark">Your Journey</Typography>
+            <Typography variant="h1" align="center">Your Journey</Typography>
             <Typography align="center">
-              Life after trauma can be a tricky and confusing place.
-              In this section there are resources aimed at helping us navigate what to do next,
-              whether this be rebuilding our confidence, determining how to or who to tell about
-              the assault, or finding a sense of justice. Click through to find accessible
-              resources, articles, and notes to support us emotionally, physically, and mentally.
-              If there is a particular resource that would be helpful to come back to,
-              feel free to save it for later.
-            </Typography>
-            {' '}
-            <Typography align="center">
-              Your journey starts now, and YSM is here to help along the way.
+              Browse accessible resources curated by a team of survivors.
+              Save what you love and come back anytime.
             </Typography>
             {themes.map((theme) => (
               <Card
@@ -184,7 +180,7 @@ export async function getServerSideProps({ preview }) {
     propThemes = await axiosGet('themes');
   }
 
-  return { props: { propThemes } };
+  return { props: { propThemes, previewMode: preview || false } };
 }
 
 YourJourney.propTypes = {
@@ -197,10 +193,12 @@ YourJourney.propTypes = {
       ]),
     ),
   ),
+  previewMode: PropTypes.bool,
 };
 
 YourJourney.defaultProps = {
   propThemes: [],
+  previewMode: false,
 };
 
 export default YourJourney;

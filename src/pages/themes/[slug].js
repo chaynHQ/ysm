@@ -15,14 +15,14 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useSelector } from 'react-redux';
+import Head from '../../components/Head';
 import ResourceCard from '../../components/ResourceCard';
 import SearchModal from '../../components/SearchModal';
 import SignUpPrompt from '../../components/SignUpPrompt';
 import firebase from '../../config/firebase';
+import { axiosGet } from '../../shared/axios';
 import isBrowser from '../../shared/browserCheck';
 import richTextHelper from '../../shared/rich-text';
-import { axiosGet } from '../../store/axios';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -42,18 +42,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ThemePage = ({
-  propThemes, propResources, container,
+  propThemes, propResources, container, previewMode,
 }) => {
   const classes = useStyles();
   const router = useRouter();
   const [showSearchModal, setShowSearchModal] = useState(false);
-  const previewMode = useSelector((state) => state.user.previewMode);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const { slug } = router.query;
+
   const [themes, setThemes] = useState(propThemes.filter((t) => t.slug !== slug));
   const [theme, setTheme] = useState(propThemes.find((t) => t.slug === slug));
   const [resources, setResources] = useState([]);
+
+  useEffect(() => {
+    setThemes(propThemes.filter((t) => t.slug !== slug));
+    setTheme(propThemes.find((t) => t.slug === slug));
+  }, [slug]);
 
   useEffect(() => {
     if (theme) {
@@ -61,31 +66,44 @@ const ThemePage = ({
         (resource) => resource.themes && resource.themes.includes(theme.id),
       ));
     }
-  }, []);
+  }, [slug]);
 
   useEffect(() => {
-    if (previewMode) {
-      const headers = {
-        'X-PREVIEW-MODE': 'preview',
-        authorization: `Bearer ${user.xa}`,
-      };
+    if (previewMode && user) {
+      user
+        .getIdToken()
+        .then((idToken) => {
+          const headers = {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          };
 
-      axiosGet('themes', {
-        headers,
-      }).then((allThemes) => {
-        setThemes(allThemes.filter((t) => t.slug !== slug));
-        const previewTheme = allThemes.find((t) => t.slug === slug);
-        setTheme(previewTheme);
-        axiosGet('resources', {
-          headers,
-        }).then((allResources) => {
-          setResources(allResources.filter(
-            (resource) => resource.themes && resource.themes.includes(previewTheme.id),
-          ));
+          return axiosGet('themes', {
+            headers,
+          }).then((allThemes) => {
+            setThemes(allThemes.filter((t) => t.slug !== slug));
+            const previewTheme = allThemes.find((t) => t.slug === slug);
+            setTheme(previewTheme);
+            return axiosGet('resources', {
+              headers,
+            }).then((allResources) => {
+              setResources(allResources.filter(
+                (resource) => resource.themes && resource.themes.includes(previewTheme.id),
+              ));
+            });
+          });
         });
+    }
+  }, [slug, user]);
+
+  useEffect(() => {
+    if (!previewMode && theme) {
+      firebase.analytics().logEvent('select_content', {
+        content_type: 'theme',
+        item_id: theme.slug,
       });
     }
-  }, []);
+  }, [slug]);
 
   return (
     <Box
@@ -120,6 +138,11 @@ const ThemePage = ({
         ? <Typography>Theme does not exist</Typography>
         : (
           <>
+            <Head
+              title={theme.title}
+              ogImage={theme.image ? theme.image.filename : null}
+              ogImageAlt={theme.image ? theme.image.alt : null}
+            />
             <Typography color="textSecondary" align="center" variant="h1">{theme.title}</Typography>
             <Typography
               color="textSecondary"
@@ -208,7 +231,7 @@ export async function getServerSideProps({ preview }) {
     propResources = await axiosGet('resources');
   }
 
-  return { props: { propThemes, propResources } };
+  return { props: { propThemes, propResources, previewMode: preview || false } };
 }
 
 ThemePage.propTypes = {
@@ -231,11 +254,13 @@ ThemePage.propTypes = {
       ]),
     ),
   ),
+  previewMode: PropTypes.bool,
 };
 
 ThemePage.defaultProps = {
   propThemes: [],
   propResources: [],
+  previewMode: false,
 };
 
 export default ThemePage;

@@ -6,16 +6,15 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useSelector } from 'react-redux';
+import Head from '../../components/Head';
 import Item from '../../components/Item';
 import ResourceContents from '../../components/ResourceContents';
 import firebase from '../../config/firebase';
+import { axiosGet } from '../../shared/axios';
 import isBrowser from '../../shared/browserCheck';
-import { axiosGet } from '../../store/axios';
 
-const ResourcePage = ({ propResource, propTheme }) => {
+const ResourcePage = ({ propResource, propTheme, previewMode }) => {
   const router = useRouter();
-  const previewMode = useSelector((state) => state.user.previewMode);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const { resourceSlug } = router.query;
@@ -23,20 +22,40 @@ const ResourcePage = ({ propResource, propTheme }) => {
   const [resource, setResource] = useState(propResource);
 
   useEffect(() => {
-    if (previewMode) {
-      const headers = {
-        'X-PREVIEW-MODE': 'preview',
-        authorization: `Bearer ${user.xa}`,
-      };
+    if (previewMode && user) {
+      setTheme(propTheme);
+      setResource(propResource);
+    }
+  }, [resourceSlug]);
 
-      axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
-        setResource(previewResource);
-        axiosGet('themes', { headers }).then((allThemes) => {
-          setTheme(allThemes.find((t) => previewResource.themes.includes(t.id)));
+  useEffect(() => {
+    if (previewMode && user) {
+      user
+        .getIdToken()
+        .then((idToken) => {
+          const headers = {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          };
+
+          return axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
+            setResource(previewResource);
+            return axiosGet('themes', { headers }).then((allThemes) => {
+              setTheme(allThemes.find((t) => previewResource.themes.includes(t.id)));
+            });
+          });
         });
+    }
+  }, [user, resourceSlug]);
+
+  useEffect(() => {
+    if (!previewMode && resource) {
+      firebase.analytics().logEvent('select_content', {
+        content_type: 'resource',
+        item_id: resource.slug,
       });
     }
-  }, []);
+  }, [resourceSlug]);
 
   return (
     <Box
@@ -49,6 +68,11 @@ const ResourcePage = ({ propResource, propTheme }) => {
       { theme && resource
         ? (
           <>
+            <Head
+              title={resource.title}
+              ogImage={resource.image ? resource.image.filename : null}
+              ogImageAlt={resource.image ? resource.image.alt : null}
+            />
             <Breadcrumbs aria-label="breadcrumb">
               <Link href="/themes/slug" as={`/themes/${theme.slug}`} passHref>
                 <LinkUi component="a" color="inherit">
@@ -61,7 +85,7 @@ const ResourcePage = ({ propResource, propTheme }) => {
             </Breadcrumbs>
             <Box>
               {resource.content && resource.content.length === 1
-                ? <Item item={resource.content[0]} canBeSaved />
+                ? <Item item={{ ...resource.content[0], slug: resource.slug }} canBeSaved />
                 : <ResourceContents resource={resource} />}
             </Box>
           </>
@@ -71,14 +95,14 @@ const ResourcePage = ({ propResource, propTheme }) => {
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps({ preview, params }) {
   let themes = [];
   let propResource = null;
 
-  if (!context.preview) {
+  if (!preview) {
     [themes, propResource] = await Promise.all([
       axiosGet('themes'),
-      axiosGet(`resources/${context.params.resourceSlug}`),
+      axiosGet(`resources/${params.resourceSlug}`),
     ]);
   }
 
@@ -86,6 +110,7 @@ export async function getServerSideProps(context) {
     props: {
       propResource,
       propTheme: themes.find((t) => propResource.themes.includes(t.id)) || null,
+      previewMode: preview || false,
     },
   };
 }
@@ -106,10 +131,12 @@ ResourcePage.propTypes = {
       PropTypes.object,
     ]),
   ),
+  previewMode: PropTypes.bool,
 };
 
 ResourcePage.defaultProps = {
   propResource: null,
   propTheme: null,
+  previewMode: false,
 };
 export default ResourcePage;

@@ -6,9 +6,9 @@ import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
+import { axiosDelete, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import { deleteBookmark, setBookmark } from '../store/actions';
-import { axiosDelete, axiosPut } from '../store/axios';
 
 const SaveButton = ({
   resourceSlug, redirectUrl, deleteBookmarkOnClick, setBookmarkOnClick, profile,
@@ -24,13 +24,21 @@ const SaveButton = ({
       {saved
         ? (
           <IconButton
-            onClick={() => {
+            onClick={async () => {
+              const idToken = await user.getIdToken();
               axiosDelete(`/profile/bookmarks/resources/${resourceSlug}`, {
                 headers: {
-                  authorization: `Bearer ${user.xa}`,
+                  authorization: `Bearer ${idToken}`,
                 },
                 data: { resourceId: resourceSlug },
-              }).then(deleteBookmarkOnClick(resourceSlug, user.xa));
+              }).then(() => {
+                deleteBookmarkOnClick(resourceSlug, idToken);
+
+                firebase.analytics().logEvent('remove_bookmark', {
+                  content_type: 'resource',
+                  item_id: resourceSlug,
+                });
+              });
             }}
           >
             <Bookmark color="error" />
@@ -43,13 +51,21 @@ const SaveButton = ({
             size="small"
             color="secondary"
             startIcon={<BookmarkBorder />}
-            onClick={() => {
+            onClick={async () => {
               if (user) {
+                const idToken = await user.getIdToken();
                 axiosPut(`/profile/bookmarks/resources/${resourceSlug}`, { resourceId: resourceSlug }, {
                   headers: {
-                    authorization: `Bearer ${user.xa}`,
+                    authorization: `Bearer ${idToken}`,
                   },
-                }).then(setBookmarkOnClick(resourceSlug, user.xa));
+                }).then(() => {
+                  setBookmarkOnClick(resourceSlug, idToken);
+
+                  firebase.analytics().logEvent('add_bookmark', {
+                    content_type: 'resource',
+                    item_id: resourceSlug,
+                  });
+                });
               } else {
                 router.push(`/sign-in?redirectUrl=${redirectUrl}`, '/sign-in');
               }

@@ -171,21 +171,17 @@ const Theme = createMuiTheme({
         borderColor: '#DADDED',
       },
     },
-    MuiPaper: {
-      root: {
-        backgroundColor: 'inherit',
-      },
-    },
     MuiCard: {
       root: {
         margin: 6,
+        borderRadius: 6,
       },
     },
     MuiDialog: {
       paper: {
         padding: 20,
         borderRadius: 6,
-        backgroundColor: '#FCEFE5CC',
+        backgroundColor: '#FCEFE5',
       },
     },
   },

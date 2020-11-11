@@ -14,11 +14,11 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useSelector } from 'react-redux';
+import Head from '../../../../components/Head';
 import Item from '../../../../components/Item';
 import firebase from '../../../../config/firebase';
+import { axiosGet } from '../../../../shared/axios';
 import isBrowser from '../../../../shared/browserCheck';
-import { axiosGet } from '../../../../store/axios';
 
 const useStyles = makeStyles(() => ({
   link: {
@@ -36,10 +36,9 @@ const useStyles = makeStyles(() => ({
 
 }));
 
-const ItemPage = ({ propResource }) => {
+const ItemPage = ({ propResource, previewMode }) => {
   const router = useRouter();
   const classes = useStyles();
-  const previewMode = useSelector((state) => state.user.previewMode);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const { itemId, resourceSlug } = router.query;
@@ -56,21 +55,45 @@ const ItemPage = ({ propResource }) => {
   );
 
   useEffect(() => {
-    if (previewMode) {
-      const headers = {
-        'X-PREVIEW-MODE': 'preview',
-        authorization: `Bearer ${user.xa}`,
-      };
-
-      axiosGet(`resources/${resourceSlug}`, headers).then((previewResource) => {
-        setResource(previewResource);
-        setItem(previewResource.content.find((i) => i.id === itemId));
-        setNextItem(previewResource.content[previewResource.content.findIndex(
+    if (previewMode && user) {
+      setResource(propResource);
+      setItem(propResource ? propResource.content.find((i) => i.id === itemId) : null);
+      setNextItem(propResource
+        ? propResource.content[propResource.content.findIndex(
           (i) => i.id === itemId,
-        ) + 1] || null);
+        ) + 1] || null
+        : null);
+    }
+  }, [itemId, resourceSlug]);
+
+  useEffect(() => {
+    if (previewMode && user) {
+      user
+        .getIdToken()
+        .then((idToken) => {
+          const headers = {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          };
+          return axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
+            setResource(previewResource);
+            setItem(previewResource.content.find((i) => i.id === itemId));
+            setNextItem(previewResource.content[previewResource.content.findIndex(
+              (i) => i.id === itemId,
+            ) + 1] || null);
+          });
+        });
+    }
+  }, [user, itemId, resourceSlug]);
+
+  useEffect(() => {
+    if (!previewMode && item) {
+      firebase.analytics().logEvent('select_content', {
+        content_type: 'resource_content_item',
+        item_id: `${resource.slug}/${itemId}`,
       });
     }
-  }, []);
+  }, [item, itemId, resourceSlug]);
 
   return (
     <Box
@@ -83,6 +106,11 @@ const ItemPage = ({ propResource }) => {
       {resource && item
         ? (
           <>
+            <Head
+              title={item.title}
+              ogImage={resource.image ? resource.image.filename : null}
+              ogImageAlt={resource.image ? resource.image.alt : null}
+            />
             <Breadcrumbs aria-label="breadcrumb">
               <Link href="/resources/[resourceSlug]" as={`/resources/${resource.slug}`} passHref>
                 <Box display="flex" alignItems="center" justifyContent="center">
@@ -117,6 +145,7 @@ const ItemPage = ({ propResource }) => {
                         <LinkUi
                           underline="always"
                           className={classes.link}
+                          component="span"
                         >
                           {nextItem ? nextItem.title : resource.title}
                         </LinkUi>
@@ -134,13 +163,13 @@ const ItemPage = ({ propResource }) => {
     </Box>
   );
 };
-export async function getServerSideProps(context) {
+export async function getServerSideProps({ preview, params }) {
   let propResource = null;
-  if (!context.preview) {
-    propResource = await axiosGet(`resources/${context.params.resourceSlug}`);
+  if (!preview) {
+    propResource = await axiosGet(`resources/${params.resourceSlug}`);
   }
 
-  return { props: { propResource } };
+  return { props: { propResource, previewMode: preview || false } };
 }
 
 ItemPage.propTypes = {
@@ -153,10 +182,12 @@ ItemPage.propTypes = {
         PropTypes.bool,
       ]),
     ),
+  previewMode: PropTypes.bool,
 };
 
 ItemPage.defaultProps = {
   propResource: null,
+  previewMode: false,
 };
 
 export default ItemPage;

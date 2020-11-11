@@ -7,9 +7,12 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import NewsletterSignup from '../components/NewsletterSignup';
 import firebase from '../config/firebase';
+import { axiosGet } from '../shared/axios';
+import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
 import { setSettingsAuth, setUserSignIn } from '../store/actions';
 
@@ -24,12 +27,17 @@ const useStyles = makeStyles((theme) => ({
     width: 20,
     height: 20,
   },
+  card: {
+    borderRadius: 10,
+    backgroundColor: 'white',
+  },
 }));
 
 const Settings = ({
-  setSettingsAuthOnError, settingsAuth, user, setUserSignInOnClick,
+  setSettingsAuthOnError, settingsAuth, setUserSignInOnClick,
 }) => {
   const classes = useStyles();
+  const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -99,7 +107,7 @@ const Settings = ({
           <Box>
             <Box display="flex" justifyContent="space-between" px={3} pt={2} bgcolor="#FFEAE3">
               <Breadcrumbs aria-label="breadcrumb">
-                <Link href="/" passHref>
+                <Link href="/saved" passHref>
                   <LinkUi component="a" color="inherit">
                     <Box display="flex" alignItems="center">
                       <ArrowBack className={classes.icon} />
@@ -112,6 +120,11 @@ const Settings = ({
                 onClick={() => {
                   setUserSignInOnClick({});
                   setSettingsAuthOnError(false);
+                  axiosGet('/preview', {
+                    params: {
+                      revokeAccess: true,
+                    },
+                  });
                 }}
               >
                 Log out
@@ -159,7 +172,7 @@ const Settings = ({
             <NewsletterSignup />
 
             <Box mx={5} mb={5}>
-              <Card>
+              <Card className={classes.card}>
                 <CardContent>
                   <Typography align="center" variant="h2">Set a new password</Typography>
                   <Typography align="center">Must be at least 6 characters long. You will be logged out and will need to sign in again.</Typography>
@@ -186,7 +199,7 @@ const Settings = ({
             <Box />
 
             <Box mx={5} mb={5}>
-              <Card>
+              <Card className={classes.card}>
                 <CardContent>
                   <Typography align="center" variant="h2">Want to delete your account?</Typography>
                   <Typography align="center">Account deletion is final. You won’t be able to restore your account or recuperate your saved items if you delete your account.</Typography>
@@ -194,7 +207,7 @@ const Settings = ({
                 </CardContent>
                 <CardActions>
                   <Box display="flex" flexDirection="column" width={1} mb={5} px={5}>
-                    <LinkUi component="a" variant="h2" align="center" href={`mailto:team@ysm.io?subject=Request Account Deletion&body=Request Deletion for ${user.name} (Email: ${user.email})`}>
+                    <LinkUi color="error" underline="always" component="a" variant="h2" align="center" href={`mailto:team@ysm.io?subject=Request Account Deletion&body=Request Deletion for ${user.name} (Email: ${user.email})`}>
                       Request Account Deletion
                     </LinkUi>
                   </Box>
@@ -214,16 +227,13 @@ Settings.propTypes = {
   setSettingsAuthOnError: PropTypes.func.isRequired,
   setUserSignInOnClick: PropTypes.func.isRequired,
   settingsAuth: PropTypes.bool,
-  user: PropTypes.objectOf(PropTypes.any),
 };
 
 Settings.defaultProps = {
   settingsAuth: false,
-  user: {},
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
   settingsAuth: state.user.settingsAuth,
 });
 

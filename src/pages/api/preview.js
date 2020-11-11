@@ -1,4 +1,5 @@
-import { axiosGet } from '../../store/axios';
+import { axiosGet } from '../../shared/axios';
+import rollbar from '../../shared/rollbar';
 
 export default async function handler(req, res) {
   if (req.query.token) {
@@ -21,9 +22,12 @@ export default async function handler(req, res) {
       res.clearPreviewData();
       res.status(200).json({ message: 'Preview mode cannot be turned on because your email is not on the list of approved content editors. Please get in touch with the dev team.', allowed: false });
     }
-  } else {
-    res.status(200).json({ message: 'Preview mode is now turned off.', allowed: false });
-
+  } else if (req.query.revokeAccess) {
     res.clearPreviewData();
+    res.status(200).json({ message: 'Preview mode is now turned off.', allowed: false });
+  } else {
+    res.clearPreviewData();
+    res.status(200).json({ message: 'There was an error setting preview mode. It is now turned off.', allowed: false });
+    rollbar.error('Trying to set preview mode with incorrect data', req.query);
   }
 }

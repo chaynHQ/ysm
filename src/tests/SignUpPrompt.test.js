@@ -31,7 +31,7 @@ describe('SignUpPrompt', () => {
       />,
     ).dive();
 
-    expect(wrapper.find(Link)).toHaveLength(1);
+    expect(wrapper.find(Link)).toHaveLength(2);
     expect(wrapper.find(Button)).toHaveLength(1);
   });
 });
