@@ -85,17 +85,39 @@ const SignUpPrompt = () => {
               <Typography align="center" variant="subtitle1" className={classes.linkSubtitle}>
                 Your privacy will be protected.
               </Typography>
-              <Link href="/">
-                <LinkUi
-                  component="a"
-                  color="textPrimary"
-                  underline="always"
-                  to="/privacy"
-                  align="center"
-                >
-                  Read our Terms & Privacy Policy
-                </LinkUi>
-              </Link>
+              <Typography>
+                Read our
+                {' '}
+                <Link href="/info/terms-and-conditions">
+                  <LinkUi
+                    component="a"
+                    color="textPrimary"
+                    underline="always"
+                    to="/privacy"
+                    align="center"
+                  >
+
+                    Terms
+
+                  </LinkUi>
+                </Link>
+                {' '}
+                &
+                {' '}
+                <Link href="/info/privacy">
+                  <LinkUi
+                    component="a"
+                    color="textPrimary"
+                    underline="always"
+                    to="/privacy"
+                    align="center"
+                  >
+                    Privacy Policy
+                    {' '}
+                  </LinkUi>
+                </Link>
+
+              </Typography>
             </Box>
           </Box>
         ) }

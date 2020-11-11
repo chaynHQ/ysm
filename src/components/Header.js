@@ -126,7 +126,7 @@ const Header = ({ menuContainer }) => {
               </Box>
             </LinkUi>
           </Link>
-          <Link href="/about" passHref>
+          <Link href="/info/about-us" passHref>
             <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
               <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                 <Icon>
@@ -136,13 +136,24 @@ const Header = ({ menuContainer }) => {
               </Box>
             </LinkUi>
           </Link>
-          <Link href="/privacy" passHref>
+          <Link href="/info/privacy" passHref>
             <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
               <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                 <Icon>
                   <MenuBook />
                 </Icon>
                 Your Privacy
+              </Box>
+            </LinkUi>
+          </Link>
+
+          <Link href="/info/terms-and-conditions" passHref>
+            <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
+              <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+                <Icon>
+                  <MenuBook />
+                </Icon>
+                Terms and Conditions
               </Box>
             </LinkUi>
           </Link>
