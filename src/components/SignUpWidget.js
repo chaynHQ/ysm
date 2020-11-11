@@ -193,7 +193,7 @@ const SignUpWidget = ({
           >
             <img
               className={classes.image}
-              src="/sign-up-illustration.png"
+              src="/two-people-illustration.png"
               alt="Line drawing of two people sat down having a conversation."
             />
             <Typography>Thanks for signing up!</Typography>
