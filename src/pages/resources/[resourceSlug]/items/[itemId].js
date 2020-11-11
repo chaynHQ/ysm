@@ -1,6 +1,5 @@
 import {
   Box,
-  Breadcrumbs,
 
   Card,
   CardActionArea,
@@ -23,9 +22,6 @@ import isBrowser from '../../../../shared/browserCheck';
 const useStyles = makeStyles((theme) => ({
   link: {
     color: theme.palette.primary.dark,
-  },
-  breadcrumbs: {
-    marginBottom: 0,
   },
   icon: {
     paddingRight: 6,
@@ -111,23 +107,19 @@ const ItemPage = ({ propResource, previewMode }) => {
               ogImage={resource.image ? resource.image.filename : null}
               ogImageAlt={resource.image ? resource.image.alt : null}
             />
-            <Breadcrumbs aria-label="breadcrumb">
-              <Link href="/resources/[resourceSlug]" as={`/resources/${resource.slug}`} passHref>
-                <Box display="flex" alignItems="center" justifyContent="center">
+
+            <Link href="/resources/[resourceSlug]" as={`/resources/${resource.slug}`} passHref>
+              <LinkUi component="a" underline="always" color="inherit">
+                <Box display="flex" alignItems="center">
                   <ArrowBack className={classes.icon} />
-                  <Typography color="textSecondary" className={classes.breadcrumbs}>
+                  <Typography variant="body2">
                     Part of:
-                    <LinkUi
-                      underline="always"
-                      className={classes.link}
-                    >
-                      {resource.title}
-                    </LinkUi>
+                    {' '}
+                    {resource.title}
                   </Typography>
                 </Box>
-              </Link>
-
-            </Breadcrumbs>
+              </LinkUi>
+            </Link>
 
             <Item item={item} />
 

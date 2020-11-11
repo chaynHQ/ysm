@@ -1,6 +1,6 @@
 import {
   Box,
-  Breadcrumbs,
+
   Card,
   CardActionArea,
   CardContent,
@@ -93,16 +93,13 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
               title="Your Journey"
             />
             <Grid container justify="space-between" direction="row">
-              <Breadcrumbs aria-label="breadcrumb">
-                <Link href="/" passHref>
-                  <LinkUi component="a" color="inherit">
-                    <Box display="flex" alignItems="center">
-                      <ArrowBack className={classes.icon} />
-                    </Box>
-                  </LinkUi>
-                </Link>
-
-              </Breadcrumbs>
+              <Link href="/" passHref>
+                <LinkUi component="a" color="inherit">
+                  <Box display="flex" alignItems="center">
+                    <ArrowBack className={classes.icon} />
+                  </Box>
+                </LinkUi>
+              </Link>
               <IconButton component="a" onClick={() => { setShowSearchModal(true); }}>
                 <Search />
               </IconButton>

@@ -1,5 +1,5 @@
 import {
-  Box, Breadcrumbs, Button, Card, CardActions, CardContent, makeStyles, TextField, Typography,
+  Box, Button, Card, CardActions, CardContent, makeStyles, TextField, Typography,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import { ArrowBack } from '@material-ui/icons';
@@ -105,17 +105,15 @@ const Settings = ({
       { settingsAuth
         ? (
           <Box>
-            <Box display="flex" justifyContent="space-between" px={3} pt={2} bgcolor="#FFEAE3">
-              <Breadcrumbs aria-label="breadcrumb">
-                <Link href="/saved" passHref>
-                  <LinkUi component="a" color="inherit">
-                    <Box display="flex" alignItems="center">
-                      <ArrowBack className={classes.icon} />
-                      Saved for later
-                    </Box>
-                  </LinkUi>
-                </Link>
-              </Breadcrumbs>
+            <Box display="flex" justifyContent="space-between" px={3} pt={2} bgcolor="#F7E3D7">
+              <Link href="/saved" passHref>
+                <LinkUi component="a" underline="always" color="inherit">
+                  <Box display="flex" alignItems="center">
+                    <ArrowBack className={classes.icon} />
+                    <Typography variant="body2">Saved for later</Typography>
+                  </Box>
+                </LinkUi>
+              </Link>
               <Typography
                 onClick={() => {
                   setUserSignInOnClick({});

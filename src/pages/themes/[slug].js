@@ -1,6 +1,5 @@
 import {
   Avatar, Box,
-  Breadcrumbs,
 
   Card,
   CardActionArea,
@@ -118,16 +117,13 @@ const ThemePage = ({
       px={2}
     >
       <Grid container justify="space-between" direction="row">
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link href="/your-journey" passHref>
-            <LinkUi component="a" color="inherit">
-              <Box display="flex" alignItems="center">
-                <ArrowBack className={classes.icon} />
-              </Box>
-            </LinkUi>
-          </Link>
-
-        </Breadcrumbs>
+        <Link href="/your-journey" passHref>
+          <LinkUi component="a" color="inherit">
+            <Box display="flex" alignItems="center">
+              <ArrowBack className={classes.icon} />
+            </Box>
+          </LinkUi>
+        </Link>
         <IconButton component="a" onClick={() => setShowSearchModal(true)}>
           <Search />
         </IconButton>
