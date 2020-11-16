@@ -166,6 +166,9 @@ function App({ Component, pageProps }) {
                 flipButtons
                 disableStyles
                 ButtonComponent={Button}
+                onAccept={() => {
+                  window.location.reload();
+                }}
               >
                 <Typography>
                   We use an analytics cookie to understand how

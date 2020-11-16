@@ -1,8 +1,33 @@
 import 'firebase/analytics';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { Cookies } from 'react-cookie-consent';
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
+
+const CONSENT_COOKIE_NAME = 'ConsentToCookie';
+
+function enableAnalytics() {
+  // Ref: https://github.com/Mastermindzh/react-cookie-consent#why-are-there-two-cookies-one-of-which-named-legacy
+
+  let cookieValue = Cookies.get(CONSENT_COOKIE_NAME);
+
+  // If the cookieValue is undefined check for the legacy cookie
+  if (cookieValue === undefined) {
+    cookieValue = Cookies.get(`${CONSENT_COOKIE_NAME}-legacy`);
+  }
+
+  return cookieValue === 'true';
+}
+
+function disableGoogleAnalyticsAdSignals() {
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer.push(arguments);
+  }
+  gtag('set', 'allow_google_signals', false);
+}
 
 const config = {
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -15,8 +40,12 @@ if (isBrowser && !firebase.apps.length) {
   firebase.initializeApp(config);
 
   try {
-    firebase.analytics();
+    disableGoogleAnalyticsAdSignals();
+    const analytics = firebase.analytics();
+    analytics.setAnalyticsCollectionEnabled(enableAnalytics());
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Failed to initialise analytics', error);
     rollbar.error('Failed to initialise analytics', error);
   }
 }
