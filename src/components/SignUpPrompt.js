@@ -91,14 +91,12 @@ const SignUpPrompt = () => {
                 <Link href="/info/terms-and-conditions">
                   <LinkUi
                     component="a"
-                    color="textPrimary"
                     underline="always"
                     to="/privacy"
                     align="center"
+                    color="inherit"
                   >
-
                     Terms
-
                   </LinkUi>
                 </Link>
                 {' '}
@@ -107,10 +105,10 @@ const SignUpPrompt = () => {
                 <Link href="/info/privacy">
                   <LinkUi
                     component="a"
-                    color="textPrimary"
                     underline="always"
                     to="/privacy"
                     align="center"
+                    color="inherit"
                   >
                     Privacy Policy
                     {' '}

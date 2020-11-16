@@ -13,7 +13,11 @@ import LinkUi from '@material-ui/core/Link';
 import {
   AccountCircle,
   Clear,
-  ExitToApp,
+
+  Description,
+
+  EmojiFoodBeverage, ExitToApp,
+
   Home,
   Info,
   Menu,
@@ -124,67 +128,81 @@ const Header = ({ menuContainer }) => {
           </IconButton>
         </Box>
         <Divider />
-        <Box>
-          <Link href="/" passHref>
-            <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
-              <Box display="flex" alignItems="flex-end" pl={2} py={1}>
-                <Icon>
-                  <Home />
-                </Icon>
-                Home
-              </Box>
-            </LinkUi>
-          </Link>
-          <Link href="/info/about-us" passHref>
-            <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
-              <Box display="flex" alignItems="flex-end" pl={2} py={1}>
-                <Icon>
-                  <Info />
-                </Icon>
-                About Us
-              </Box>
-            </LinkUi>
-          </Link>
-          <Link href="/info/privacy" passHref>
-            <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
-              <Box display="flex" alignItems="flex-end" pl={2} py={1}>
-                <Icon>
-                  <MenuBook />
-                </Icon>
-                Your Privacy
-              </Box>
-            </LinkUi>
-          </Link>
+        <Box display="flex" flexDirection="column" justifyContent="space-between" height={1} pb={2}>
+          <Box>
+            <Link href="/" passHref>
+              <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
+                <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+                  <Icon>
+                    <Home />
+                  </Icon>
+                  Home
+                </Box>
+              </LinkUi>
+            </Link>
+            <Link href="/info/about-us" passHref>
+              <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
+                <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+                  <Icon>
+                    <Info />
+                  </Icon>
+                  About Us
+                </Box>
+              </LinkUi>
+            </Link>
 
-          <Link href="/info/terms-and-conditions" passHref>
-            <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
+            <Link href={user ? '/settings' : '/sign-in'} passHref>
+              <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
+                <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+                  <Icon>
+                    <AccountCircle />
+                  </Icon>
+                  {user ? 'My account' : 'Sign Up'}
+                </Box>
+              </LinkUi>
+            </Link>
+            <LinkUi component="a" color="inherit" onClick={() => { leaveSite(); }}>
               <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                 <Icon>
-                  <MenuBook />
+                  <ExitToApp />
                 </Icon>
-                Terms and Conditions
+                Leave this site
               </Box>
             </LinkUi>
-          </Link>
+          </Box>
+          <Box>
+            <Link href="/info/privacy" passHref>
+              <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
+                <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+                  <Icon>
+                    <MenuBook />
+                  </Icon>
+                  Your Privacy
+                </Box>
+              </LinkUi>
+            </Link>
 
-          <Link href={user ? '/settings' : '/sign-in'} passHref>
-            <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
-              <Box display="flex" alignItems="flex-end" pl={2} py={1}>
-                <Icon>
-                  <AccountCircle />
-                </Icon>
-                {user ? 'My account' : 'Sign Up'}
-              </Box>
-            </LinkUi>
-          </Link>
-          <LinkUi component="a" color="inherit" onClick={() => { leaveSite(); }}>
-            <Box display="flex" alignItems="flex-end" pl={2} py={1}>
-              <Icon>
-                <ExitToApp />
-              </Icon>
-              Leave this site
-            </Box>
-          </LinkUi>
+            <Link href="/info/terms-and-conditions" passHref>
+              <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
+                <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+                  <Icon>
+                    <Description />
+                  </Icon>
+                  Terms and Conditions
+                </Box>
+              </LinkUi>
+            </Link>
+            <Link href="/info/cookies" passHref>
+              <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
+                <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+                  <Icon>
+                    <EmojiFoodBeverage />
+                  </Icon>
+                  Cookie Policy
+                </Box>
+              </LinkUi>
+            </Link>
+          </Box>
         </Box>
       </Drawer>
     </Box>
