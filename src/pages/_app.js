@@ -2,8 +2,10 @@ import {
   Box, Button, makeStyles, Typography,
 } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import LinkUi from '@material-ui/core/Link';
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'firebaseui/dist/firebaseui.css';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
@@ -170,10 +172,21 @@ function App({ Component, pageProps }) {
                   window.location.reload();
                 }}
               >
-                <Typography>
-                  We use an analytics cookie to understand how
-                  YSM is being used so we can improve it.
-                </Typography>
+                <Box color="primary.light">
+                  <Typography color="textPrimary">
+                    We use cookies on YSM for a number of reasons that include making
+                    our sites secure, robust and analysing how our site is being used,
+                    which allows us to create more diverse content.
+                    {' '}
+                    <Link href="/info/cookies" passHref>
+                      <LinkUi component="a" color="inherit" underline="always">Learn More.</LinkUi>
+                    </Link>
+                  </Typography>
+                  <Typography color="textPrimary">
+                    You can choose to accept or reject this kind of tracking.
+                    We love you either way.
+                  </Typography>
+                </Box>
                 <img
                   src="/butterfly.png"
                   alt="Drawing of a butterfly"
