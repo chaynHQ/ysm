@@ -46,12 +46,15 @@ const InfoPage = ({ propContent, previewMode }) => {
 
   useEffect(() => {
     if (previewMode && user) {
-      axiosGet(`pages/${slug}`, {
-        headers: {
-          'X-PREVIEW-MODE': 'preview',
-          authorization: `Bearer ${user.xa}`,
-        },
-      }).then((pageContent) => { setContent(pageContent); });
+      user
+        .getIdToken()
+        .then((idToken) => axiosGet(`pages/${slug}`, {
+          headers: {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          },
+        }))
+        .then((pageContent) => { setContent(pageContent); });
     }
   }, [user]);
 
@@ -122,11 +125,19 @@ const InfoPage = ({ propContent, previewMode }) => {
 
 export async function getServerSideProps({ preview, params }) {
   let propContent = null;
+
   if (!preview) {
     propContent = await axiosGet(`pages/${params.slug}`);
   }
 
-  return { props: { propContent, previewMode: preview || false } };
+  if (propContent && propContent.status === 404) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: { propContent, previewMode: preview || false },
+  };
 }
 
 InfoPage.propTypes = {

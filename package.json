@@ -40,7 +40,7 @@
     "firebaseui": "^4.7.1",
     "http-proxy-middleware": "^1.0.6",
     "md5": "^2.3.0",
-    "next": "9.5.4",
+    "next": "^10.0.1",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-cookie-consent": "^6.1.0",

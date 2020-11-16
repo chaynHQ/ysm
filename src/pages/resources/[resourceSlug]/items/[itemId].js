@@ -69,11 +69,15 @@ const ItemPage = ({ propResource, previewMode }) => {
             authorization: `Bearer ${idToken}`,
           };
           return axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
-            setResource(previewResource);
-            setItem(previewResource.content.find((i) => i.id === itemId));
-            setNextItem(previewResource.content[previewResource.content.findIndex(
-              (i) => i.id === itemId,
-            ) + 1] || null);
+            if (previewResource.status === 404) {
+              router.push('/404');
+            } else {
+              setResource(previewResource);
+              setItem(previewResource.content.find((i) => i.id === itemId));
+              setNextItem(previewResource.content[previewResource.content.findIndex(
+                (i) => i.id === itemId,
+              ) + 1] || null);
+            }
           });
         });
     }
@@ -156,6 +160,10 @@ export async function getServerSideProps({ preview, params }) {
   let propResource = null;
   if (!preview) {
     propResource = await axiosGet(`resources/${params.resourceSlug}`);
+  }
+
+  if (propResource && propResource.status === 404) {
+    return { notFound: true };
   }
 
   return { props: { propResource, previewMode: preview || false } };
