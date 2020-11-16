@@ -7,7 +7,7 @@ import rollbar from '../shared/rollbar';
 
 const CONSENT_COOKIE_NAME = 'ConsentToCookie';
 
-function enableAnalytics() {
+function shouldEnableAnalytics() {
   // Ref: https://github.com/Mastermindzh/react-cookie-consent#why-are-there-two-cookies-one-of-which-named-legacy
 
   let cookieValue = Cookies.get(CONSENT_COOKIE_NAME);
@@ -42,7 +42,7 @@ if (isBrowser && !firebase.apps.length) {
   try {
     disableGoogleAnalyticsAdSignals();
     const analytics = firebase.analytics();
-    analytics.setAnalyticsCollectionEnabled(enableAnalytics());
+    analytics.setAnalyticsCollectionEnabled(shouldEnableAnalytics());
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Failed to initialise analytics', error);
