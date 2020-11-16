@@ -130,12 +130,14 @@ export async function getServerSideProps({ preview, params }) {
     propContent = await axiosGet(`pages/${params.slug}`);
   }
 
-  // if (propContent.status === 404) {
-  //   console.log('HERE');
-  //   return { notFound: true, props: {} };
-  // }
-
-  return { props: { propContent, previewMode: preview || false } };
+  if (propContent && propContent.status === 404) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: { propContent, previewMode: preview || false },
+  };
 }
 
 InfoPage.propTypes = {
