@@ -1,7 +1,9 @@
 import {
   Box, Button, makeStyles, Typography,
 } from '@material-ui/core';
+import LinkUi from '@material-ui/core/Link';
 import * as firebaseui from 'firebaseui';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -12,6 +14,7 @@ import { axiosGet, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
 import { setSettingsAuth } from '../store/actions';
+import NewsletterSignup from './NewsletterSignup';
 
 const useStyles = makeStyles({
   icon: {
@@ -31,6 +34,7 @@ const SignUpWidget = ({
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const [showVerificationStep, setShowVerificationStep] = useState(false);
   const [showTermsStep, setShowTermsStep] = useState(false);
+  const [showNewsletterStep, setShowNewsletterStep] = useState(false);
   const [showErrorText, setShowErrorText] = useState(false);
   const [errorText, setErrorText] = useState('');
 
@@ -75,16 +79,24 @@ const SignUpWidget = ({
           signInSuccessWithAuthResult: async (authResult) => {
             const signedInUser = authResult.user;
 
+            // Analytics
+            if (authResult.additionalUserInfo.isNewUser) {
+              firebase.analytics().logEvent('sign_up');
+            } else {
+              firebase.analytics().logEvent('login');
+            }
+
             if (authResult.additionalUserInfo.isNewUser || !signedInUser.emailVerified) {
               signedInUser.sendEmailVerification();
               setShowVerificationStep(true);
               setShowTermsStep(false);
               await firebase.auth().signOut();
             } else if (signedInUser.emailVerified) {
+              const idToken = await signedInUser.getIdToken();
               const profile = await axiosGet('/profile',
                 {
                   headers: {
-                    authorization: `Bearer ${signedInUser.xa}`,
+                    authorization: `Bearer ${idToken}`,
                   },
                 });
               if (profile.termsAccepted) {
@@ -109,10 +121,11 @@ const SignUpWidget = ({
 
   useEffect(() => {
     const checkTermsAcceptance = async (u) => {
+      const idToken = await u.getIdToken();
       const profile = await axiosGet('/profile',
         {
           headers: {
-            authorization: `Bearer ${u.xa}`,
+            authorization: `Bearer ${idToken}`,
           },
         });
       return profile.termsAccepted;
@@ -153,7 +166,7 @@ const SignUpWidget = ({
       />
 
       {showErrorText ? (
-        <Box boxShadow={1} mt={5} p={5} py={4} bgcolor="primary.dark" display="flex" alignItems="center">
+        <Box boxShadow={1} mt={5} p={5} py={4} bgcolor="primary.main" display="flex" alignItems="center">
           <Typography variant="h2" align="center" color="secondary">{errorText}</Typography>
         </Box>
       ) : null}
@@ -167,7 +180,6 @@ const SignUpWidget = ({
             </Typography>
             <Typography>And if you’re signing in, welcome back friend!</Typography>
 
-            {/* TODO: NEED TO ADD PRIVACY POLICY & T&C's Link */}
             <Box id="firebaseui-auth-container" display={showTermsStep || showVerificationStep ? 'none' : 'block'} />
           </>
         ) : null}
@@ -181,7 +193,7 @@ const SignUpWidget = ({
           >
             <img
               className={classes.image}
-              src="/homepage-illustration.png"
+              src="/two-people-illustration.png"
               alt="Line drawing of two people sat down having a conversation."
             />
             <Typography>Thanks for signing up!</Typography>
@@ -195,14 +207,17 @@ const SignUpWidget = ({
           <>
             <Box className="mdl-card mdl-shadow--2dp firebaseui-container">
               <form
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
-                  axiosPut('/profile/terms/accept', { currentUserId: user.xa }, {
+                  const idToken = await user.getIdToken();
+                  await axiosPut('/profile/terms/accept', null, {
                     headers: {
-                      authorization: `Bearer ${user.xa}`,
+                      authorization: `Bearer ${idToken}`,
                     },
                   });
-                  router.push(redirectUrl || '/');
+                  setShowNewsletterStep(true);
+                  setShowTermsStep(false);
+                  // router.push(redirectUrl || '/');
                 }}
               >
                 <Box className="firebaseui-card-header">
@@ -218,10 +233,9 @@ const SignUpWidget = ({
                       timezone and IP address) for a minimum of 9 months. If you want
                       us to remove this information, we will delete it. Your
                       information might be shared with other apps such as analytics to
-                      see who is using Soul Medicine, this helps us improve it.
+                      see who is using YSM, this helps us improve it.
                       Detailed info can be found in our
-                      {/* TODO: FIX THIS URL */}
-                      <a href="privacyPolicyUrl" target="_blank">Privacy Policy</a>
+                      <a href="/info/privacy" target="_blank">Privacy Policy</a>
                       .
                     </Box>
                     <Box className="mdl-card__supporting-text">
@@ -230,7 +244,7 @@ const SignUpWidget = ({
                     </Box>
                     <ul className="mdl-list">
                       <li className="mdl-list__item">
-                        Announcements about Soul Medicine
+                        Announcements about YSM
                       </li>
                       <li className="mdl-list__item">
                         Updates about new courses
@@ -252,11 +266,10 @@ const SignUpWidget = ({
                       />
                       <span className="mdl-checkbox__label">
                         I have read and agree to the
-                        {/* // TODO: FIX THESE URLS */}
-                        <a href="privacyPolicyUrl" target="_blank">Privacy Policy</a>
+                        <a href="info/privacy" target="_blank">Privacy Policy</a>
                         and
                         {' '}
-                        <a href="tosUrl" target="_blank">Terms of Service</a>
+                        <a href="info/terms-and-conditions" target="_blank">Terms of Service</a>
                       </span>
                     </label>
                   </Box>
@@ -305,9 +318,10 @@ const SignUpWidget = ({
                     onClick={async (e) => {
                       e.preventDefault();
 
-                      axiosPut('/profile/terms/unaccept', { currentUserId: user.xa }, {
+                      const idToken = await user.getIdToken();
+                      await axiosPut('/profile/terms/unaccept', null, {
                         headers: {
-                          authorization: `Bearer ${user.xa}`,
+                          authorization: `Bearer ${idToken}`,
                         },
 
                       });
@@ -324,6 +338,20 @@ const SignUpWidget = ({
             </Box>
           </>
         ) : null }
+
+      {showNewsletterStep
+        ? (
+          <>
+            <NewsletterSignup />
+            <Link href={redirectUrl || '/'} passHref>
+              <LinkUi component="a" color="inherit">
+                Skip this step
+              </LinkUi>
+
+            </Link>
+          </>
+        )
+        : null}
     </Box>
   );
 };

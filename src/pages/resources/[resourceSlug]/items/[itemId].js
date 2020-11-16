@@ -1,6 +1,5 @@
 import {
   Box,
-  Breadcrumbs,
 
   Card,
   CardActionArea,
@@ -20,18 +19,12 @@ import firebase from '../../../../config/firebase';
 import { axiosGet } from '../../../../shared/axios';
 import isBrowser from '../../../../shared/browserCheck';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   link: {
-    color: '#D27200',
-  },
-  breadcrumbs: {
-    marginBottom: 0,
+    color: theme.palette.error.main,
   },
   icon: {
     paddingRight: 6,
-  },
-  card: {
-    backgroundColor: '#ffffff',
   },
 
 }));
@@ -68,19 +61,32 @@ const ItemPage = ({ propResource, previewMode }) => {
 
   useEffect(() => {
     if (previewMode && user) {
-      const headers = {
-        'X-PREVIEW-MODE': 'preview',
-        authorization: `Bearer ${user.xa}`,
-      };
-      axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
-        setResource(previewResource);
-        setItem(previewResource.content.find((i) => i.id === itemId));
-        setNextItem(previewResource.content[previewResource.content.findIndex(
-          (i) => i.id === itemId,
-        ) + 1] || null);
-      });
+      user
+        .getIdToken()
+        .then((idToken) => {
+          const headers = {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          };
+          return axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
+            setResource(previewResource);
+            setItem(previewResource.content.find((i) => i.id === itemId));
+            setNextItem(previewResource.content[previewResource.content.findIndex(
+              (i) => i.id === itemId,
+            ) + 1] || null);
+          });
+        });
     }
   }, [user, itemId, resourceSlug]);
+
+  useEffect(() => {
+    if (!previewMode && item) {
+      firebase.analytics().logEvent('select_content', {
+        content_type: 'resource_content_item',
+        item_id: `${resource.slug}/${itemId}`,
+      });
+    }
+  }, [item, itemId, resourceSlug]);
 
   return (
     <Box
@@ -98,23 +104,19 @@ const ItemPage = ({ propResource, previewMode }) => {
               ogImage={resource.image ? resource.image.filename : null}
               ogImageAlt={resource.image ? resource.image.alt : null}
             />
-            <Breadcrumbs aria-label="breadcrumb">
-              <Link href="/resources/[resourceSlug]" as={`/resources/${resource.slug}`} passHref>
-                <Box display="flex" alignItems="center" justifyContent="center">
+
+            <Link href="/resources/[resourceSlug]" as={`/resources/${resource.slug}`} passHref>
+              <LinkUi component="a" underline="always" color="inherit">
+                <Box display="flex" alignItems="center">
                   <ArrowBack className={classes.icon} />
-                  <Typography color="textSecondary" className={classes.breadcrumbs}>
+                  <Typography variant="body2">
                     Part of:
-                    <LinkUi
-                      underline="always"
-                      className={classes.link}
-                    >
-                      {resource.title}
-                    </LinkUi>
+                    {' '}
+                    {resource.title}
                   </Typography>
                 </Box>
-              </Link>
-
-            </Breadcrumbs>
+              </LinkUi>
+            </Link>
 
             <Item item={item} />
 

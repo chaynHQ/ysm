@@ -1,7 +1,8 @@
 import { Card } from '@material-ui/core';
 import { createShallow } from '@material-ui/core/test-utils';
+import * as Router from 'next/router';
 import React from 'react';
-import Privacy from '../pages/privacy';
+import InfoPage from '../pages/info/[slug]';
 import staticPage from './fixtures/staticPage';
 
 jest.mock('react-redux', () => ({
@@ -18,20 +19,23 @@ jest.mock('react-firebase-hooks/auth', () => ({
   ),
 }));
 
-describe('Privacy', () => {
+Router.useRouter = jest.fn();
+
+describe('InfoPage', () => {
   let wrapper;
   let shallow;
 
   beforeEach(() => {
     shallow = createShallow();
+    Router.useRouter.mockImplementation(() => ({ route: '/info/slug', query: { slug: 'slug' } }));
   });
 
-  it('renders with correct number of links', () => {
+  it('renders with correct number of cards', () => {
     wrapper = shallow(
-      <Privacy
+      <InfoPage
         propContent={staticPage}
       />,
-    ).dive();
+    );
 
     expect(wrapper.find(Card)).toHaveLength(1);
   });

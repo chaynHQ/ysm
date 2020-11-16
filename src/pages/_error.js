@@ -28,7 +28,7 @@ function Error({ statusCode }) {
       </Typography>
       <img
         className={classes.image}
-        src="/error-illustration.png"
+        src="/two-people-illustration.png"
         alt="Line drawing of two people sat down having a conversation."
       />
       <Typography align="center">Oh no!</Typography>

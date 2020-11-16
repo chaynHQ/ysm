@@ -1,6 +1,6 @@
 import {
   Box,
-  Breadcrumbs,
+
   Card,
   CardActionArea,
   CardContent,
@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
     height: 20,
   },
   card: {
-    height: 340,
     margin: 6,
+    backgroundColor: theme.palette.primary.light,
   },
   cardMedia: {
     height: '100%',
@@ -51,17 +51,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 26,
 
   },
-  iconContainer: {
-    backgroundColor: '#EADED6',
-    width: '100%',
-    height: '100%',
-  },
-  link: {
-    color: '#D27200',
-  },
-  linkSubtitle: {
-    margin: 0,
-  },
 }));
 
 const YourJourney = ({ propThemes, container, previewMode }) => {
@@ -72,12 +61,15 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
 
   useEffect(() => {
     if (previewMode && user) {
-      axiosGet('themes', {
-        headers: {
-          'X-PREVIEW-MODE': 'preview',
-          authorization: `Bearer ${user.xa}`,
-        },
-      }).then((allThemes) => { setThemes(allThemes); });
+      user
+        .getIdToken()
+        .then((idToken) => axiosGet('themes', {
+          headers: {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          },
+        }))
+        .then((allThemes) => { setThemes(allThemes); });
     }
   }, [user]);
 
@@ -96,16 +88,13 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
               title="Your Journey"
             />
             <Grid container justify="space-between" direction="row">
-              <Breadcrumbs aria-label="breadcrumb">
-                <Link href="/" passHref>
-                  <LinkUi component="a" color="inherit">
-                    <Box display="flex" alignItems="center">
-                      <ArrowBack className={classes.icon} />
-                    </Box>
-                  </LinkUi>
-                </Link>
-
-              </Breadcrumbs>
+              <Link href="/" passHref>
+                <LinkUi component="a" color="inherit">
+                  <Box display="flex" alignItems="center">
+                    <ArrowBack className={classes.icon} />
+                  </Box>
+                </LinkUi>
+              </Link>
               <IconButton component="a" onClick={() => { setShowSearchModal(true); }}>
                 <Search />
               </IconButton>
@@ -126,7 +115,6 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
               <Card
                 key={theme.id}
                 className={classes.card}
-                variant="outlined"
               >
                 <Link href="/themes/[slug]" as={`/themes/${theme.slug}`}>
                   <CardActionArea component="a">
@@ -140,7 +128,6 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
                       {theme.image
                         ? (
                           <CardMedia
-                            height="200"
                             component="img"
                             image={theme.image.filename}
                           />
@@ -152,17 +139,16 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
               </Card>
             ))}
 
-            <Breadcrumbs aria-label="breadcrumb">
+            <Box pt={4}>
               <Link href="/" passHref>
-                <LinkUi component="a" color="inherit">
+                <LinkUi component="a" underline="always" color="inherit">
                   <Box display="flex" alignItems="center">
                     <ArrowBack className={classes.icon} />
-                    Back to Home
+                    <Typography variant="body2">Back to Home</Typography>
                   </Box>
                 </LinkUi>
               </Link>
-
-            </Breadcrumbs>
+            </Box>
             <SignUpPrompt url="/" />
           </>
         )

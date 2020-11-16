@@ -1,9 +1,8 @@
 import {
-  Avatar, Box, Button, makeStyles, Typography,
+  Box, Button, makeStyles, Typography,
 } from '@material-ui/core';
 import Link from 'next/link';
 import React from 'react';
-import useWindowDimensions from '../shared/dimensions';
 
 const useStyles = makeStyles({
   container: {
@@ -17,23 +16,21 @@ const useStyles = makeStyles({
 });
 
 const Home = () => {
-  const { width } = useWindowDimensions();
   const classes = useStyles();
 
   return (
     <Box
       display="flex"
       flexDirection="column"
-      height={1}
       justifyContent="center"
       alignItems="center"
+      p={4}
     >
-      {/* TODO: Include the correct image */}
-      <Box width={width * 0.5} height={width * 0.5} p={4}>
-        <Avatar
-          className={classes.iconContainer}
+      <Box p={3} display="flex" justifyContent="center">
+        <img
+          className={classes.image}
           alt="Illustration of woman and a butterfly"
-          src="/resource-illustration.png"
+          src="/home-illustration.png"
         />
       </Box>
       <Typography variant="h1" align="center">Your Story Matters</Typography>

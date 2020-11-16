@@ -1,6 +1,5 @@
 import {
   Avatar, Box,
-  Breadcrumbs,
 
   Card,
   CardActionArea,
@@ -30,14 +29,15 @@ const useStyles = makeStyles((theme) => ({
     width: 20,
     height: 20,
   },
-  link: {
-    color: '#ffffff',
-  },
-  card: {
+  cardContent: {
     paddingRight: 16,
     paddingLeft: 16,
     paddingBottom: 0,
     paddingTop: 16,
+  },
+  card: {
+    margin: 6,
+    backgroundColor: theme.palette.primary.light,
   },
 }));
 
@@ -70,27 +70,40 @@ const ThemePage = ({
 
   useEffect(() => {
     if (previewMode && user) {
-      const headers = {
-        'X-PREVIEW-MODE': 'preview',
-        authorization: `Bearer ${user.xa}`,
-      };
+      user
+        .getIdToken()
+        .then((idToken) => {
+          const headers = {
+            'X-PREVIEW-MODE': 'preview',
+            authorization: `Bearer ${idToken}`,
+          };
 
-      axiosGet('themes', {
-        headers,
-      }).then((allThemes) => {
-        setThemes(allThemes.filter((t) => t.slug !== slug));
-        const previewTheme = allThemes.find((t) => t.slug === slug);
-        setTheme(previewTheme);
-        axiosGet('resources', {
-          headers,
-        }).then((allResources) => {
-          setResources(allResources.filter(
-            (resource) => resource.themes && resource.themes.includes(previewTheme.id),
-          ));
+          return axiosGet('themes', {
+            headers,
+          }).then((allThemes) => {
+            setThemes(allThemes.filter((t) => t.slug !== slug));
+            const previewTheme = allThemes.find((t) => t.slug === slug);
+            setTheme(previewTheme);
+            return axiosGet('resources', {
+              headers,
+            }).then((allResources) => {
+              setResources(allResources.filter(
+                (resource) => resource.themes && resource.themes.includes(previewTheme.id),
+              ));
+            });
+          });
         });
-      });
     }
   }, [slug, user]);
+
+  useEffect(() => {
+    if (!previewMode && theme) {
+      firebase.analytics().logEvent('select_content', {
+        content_type: 'theme',
+        item_id: theme.slug,
+      });
+    }
+  }, [slug]);
 
   return (
     <Box
@@ -101,16 +114,13 @@ const ThemePage = ({
       px={2}
     >
       <Grid container justify="space-between" direction="row">
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link href="/your-journey" passHref>
-            <LinkUi component="a" color="inherit">
-              <Box display="flex" alignItems="center">
-                <ArrowBack className={classes.icon} />
-              </Box>
-            </LinkUi>
-          </Link>
-
-        </Breadcrumbs>
+        <Link href="/your-journey" passHref>
+          <LinkUi component="a" color="inherit">
+            <Box display="flex" alignItems="center">
+              <ArrowBack className={classes.icon} />
+            </Box>
+          </LinkUi>
+        </Link>
         <IconButton component="a" onClick={() => setShowSearchModal(true)}>
           <Search />
         </IconButton>
@@ -165,10 +175,10 @@ const ThemePage = ({
         <Typography variant="h2">Explore other themes </Typography>
 
         {themes.map((t) => (
-          <Card variant="outlined" key={t.id}>
+          <Card key={t.id} className={classes.card}>
             <Link href="/themes/[slug]" as={`/themes/${t.slug}`}>
               <CardActionArea component="a">
-                <CardContent className={classes.card}>
+                <CardContent className={classes.cardContent}>
                   <Box display="flex">
                     {t.image
                       ? (
@@ -179,7 +189,7 @@ const ThemePage = ({
                         />
                       )
                       : null}
-                    <Box width={1}>
+                    <Box width={1} pl={2}>
                       <Typography align="center">
                         {t.title}
                       </Typography>
@@ -194,16 +204,14 @@ const ThemePage = ({
 
       </Box>
 
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link href="/your-journey">
-          <LinkUi component="a" color="inherit">
-            <Box display="flex" alignItems="center">
-              <ArrowBack className={classes.icon} />
-              Back to Your Journey
-            </Box>
-          </LinkUi>
-        </Link>
-      </Breadcrumbs>
+      <Link href="/your-journey" passHref>
+        <LinkUi component="a" underline="always" color="inherit">
+          <Box display="flex" alignItems="center">
+            <ArrowBack className={classes.icon} />
+            <Typography variant="body2">Back to  Your Journey</Typography>
+          </Box>
+        </LinkUi>
+      </Link>
 
       <SignUpPrompt url="/" />
 
