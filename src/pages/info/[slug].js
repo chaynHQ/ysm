@@ -125,9 +125,15 @@ const InfoPage = ({ propContent, previewMode }) => {
 
 export async function getServerSideProps({ preview, params }) {
   let propContent = null;
+
   if (!preview) {
     propContent = await axiosGet(`pages/${params.slug}`);
   }
+
+  // if (propContent.status === 404) {
+  //   console.log('HERE');
+  //   return { notFound: true, props: {} };
+  // }
 
   return { props: { propContent, previewMode: preview || false } };
 }
