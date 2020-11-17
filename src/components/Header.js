@@ -35,7 +35,7 @@ import leaveSite from '../shared/leave';
 import BreatheTimer from './BreatheTimer';
 
 const useStyles = makeStyles({
-  icon: {
+  headerIcon: {
     width: 20,
     height: 20,
   },
@@ -43,7 +43,7 @@ const useStyles = makeStyles({
     paddingLeft: 4,
     marginBottom: 0,
   },
-  link: {
+  homepageLink: {
     marginBottom: 0,
   },
 });
@@ -57,41 +57,38 @@ const Header = ({ menuContainer }) => {
 
   return (
     <Box
-      display="flex"
-      alignContent="center"
-      alignItems="center"
-      justifyContent="space-between"
-      width={1}
       bgcolor="primary.light"
     >
-      <Box p={2}>
-        <IconButton onClick={() => { setDrawerOpen(true); }}>
-          <Menu />
-        </IconButton>
-      </Box>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-around"
-      >
-        <Link href="/" passHref>
-          <LinkUi component="a" underline="none" color="inherit" className={classes.link}>
-            <Box display="flex" alignItems="center">
-              <img
-                className={classes.icon}
-                src="/logo.png"
-                alt="YSM Logo"
-              />
-              <Typography className={classes.title}>Your Story Matters</Typography>
-            </Box>
-          </LinkUi>
-        </Link>
-      </Box>
-      <Box p={2}>
-        <IconButton onClick={() => { setModalOpen(true); }}>
-          <SvgIcon component={BreathIcon} />
-        </IconButton>
+      <Box width={1} display="flex" justifyContent="space-between">
+        <Box p={2}>
+          <IconButton onClick={() => { setDrawerOpen(true); }}>
+            <Menu />
+          </IconButton>
+        </Box>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-around"
+        >
+          <Link href="/" passHref>
+            <LinkUi component="a" underline="none" color="inherit" className={classes.homepageLink}>
+              <Box display="flex" alignItems="center">
+                <img
+                  className={classes.headerIcon}
+                  src="/logo.png"
+                  alt="YSM Logo"
+                />
+                <Typography className={classes.title}>Your Story Matters</Typography>
+              </Box>
+            </LinkUi>
+          </Link>
+        </Box>
+        <Box p={2}>
+          <IconButton onClick={() => { setModalOpen(true); }}>
+            <SvgIcon component={BreathIcon} />
+          </IconButton>
 
+        </Box>
       </Box>
 
       <BreatheTimer modalOpen={modalOpen} setModalOpen={setModalOpen} />
@@ -117,7 +114,7 @@ const Header = ({ menuContainer }) => {
           <Box display="flex" pr={2}>
             {' '}
             <img
-              className={classes.icon}
+              className={classes.headerIcon}
               src="/logo.png"
               alt="YSM Logo"
             />
@@ -171,7 +168,7 @@ const Header = ({ menuContainer }) => {
             </LinkUi>
           </Box>
           <Box>
-            <Link href="/info/privacy" passHref>
+            <Link href="https://chayn.co/privacy" passHref>
               <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
                 <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                   <Icon>

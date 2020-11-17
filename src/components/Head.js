@@ -9,11 +9,12 @@ const Head = ({
   const router = useRouter();
   return (
     <NextHead>
-      <title>
+      <title key="title">
         {title}
         {' '}
         | YSM
       </title>
+      <link rel="icon" href="/favicon.png" />
       <meta name="description" content={description} />
       <meta property="og:url" content={`${process.env.BASE_URL}${router.pathname}`} />
       <meta property="og:type" content="website" />

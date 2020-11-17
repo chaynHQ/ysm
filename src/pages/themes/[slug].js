@@ -3,7 +3,7 @@ import {
 
   Card,
   CardActionArea,
-  CardContent, Grid,
+  CardContent,
   IconButton, makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -109,28 +109,30 @@ const ThemePage = ({
     <Box
       display="flex"
       flexDirection="column"
-      direction="column"
       pt={3.5}
       px={2}
     >
-      <Grid container justify="space-between" direction="row">
-        <Link href="/your-journey" passHref>
-          <LinkUi component="a" color="inherit">
-            <Box display="flex" alignItems="center">
-              <ArrowBack className={classes.icon} />
-            </Box>
-          </LinkUi>
-        </Link>
-        <IconButton component="a" onClick={() => setShowSearchModal(true)}>
-          <Search />
-        </IconButton>
-        <SearchModal
-          shown={showSearchModal}
-          container={container}
-          closeModal={() => setShowSearchModal(false)}
-        />
+      <Box>
+        <Box display="flex" justifyContent="space-between" flexDirection="row">
+          <Link href="/your-journey" as="/your-journey" passHref>
+            <LinkUi component="a" color="inherit">
+              <Box display="flex" alignItems="center">
+                <ArrowBack />
+              </Box>
+            </LinkUi>
+          </Link>
 
-      </Grid>
+          <IconButton component="a" onClick={() => setShowSearchModal(true)}>
+            <Search />
+          </IconButton>
+        </Box>
+      </Box>
+      <SearchModal
+        shown={showSearchModal}
+        container={container}
+        closeModal={() => setShowSearchModal(false)}
+      />
+
       { !theme
         ? <Typography>Theme does not exist</Typography>
         : (
@@ -212,8 +214,9 @@ const ThemePage = ({
           </Box>
         </LinkUi>
       </Link>
-
-      <SignUpPrompt url="/" />
+      <Box>
+        <SignUpPrompt url="/" />
+      </Box>
 
     </Box>
   );

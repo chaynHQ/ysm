@@ -86,10 +86,11 @@ const Theme = createMuiTheme({
     },
     MuiIconButton: {
       root: {
-        width: 20,
-        height: 20,
+        width: 22,
+        height: 22,
         fontSize: 22,
         lineHeight: 26,
+        padding: 0,
       },
     },
     MuiTypography: {
@@ -107,7 +108,6 @@ const Theme = createMuiTheme({
       root: {
         backgroundColor: '#FEF6F1',
         alignItems: 'flex-start',
-        height: '100%',
         padding: 8,
       },
     },

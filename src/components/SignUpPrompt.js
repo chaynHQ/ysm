@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   iconContainer: {
     backgroundColor: theme.palette.secondary.light,
-    padding: '10%',
+    padding: '8%',
     borderRadius: 180,
   },
   icon: {
@@ -51,8 +51,6 @@ const SignUpPrompt = () => {
     <Box
       display="flex"
       flexDirection="column"
-      direction="column"
-      className={classes.container}
       pt={3.5}
       px={2}
     >
@@ -88,11 +86,10 @@ const SignUpPrompt = () => {
               <Typography align="center">
                 Read our
                 {' '}
-                <Link href="/info/terms-and-conditions">
+                <Link href="/info/terms-and-conditions" passHref>
                   <LinkUi
                     component="a"
                     underline="always"
-                    to="/privacy"
                     align="center"
                     color="inherit"
                   >
@@ -102,11 +99,10 @@ const SignUpPrompt = () => {
                 {' '}
                 &
                 {' '}
-                <Link href="/info/privacy">
+                <Link href="https://chayn.co/privacy" passHref>
                   <LinkUi
                     component="a"
                     underline="always"
-                    to="/privacy"
                     align="center"
                     color="inherit"
                   >

@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import LinkUi from '@material-ui/core/Link';
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'firebaseui/dist/firebaseui.css';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
@@ -12,7 +13,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import CookieConsent from 'react-cookie-consent';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Provider } from 'react-redux';
-import Footer from '../components/Footer';
 import Head from '../components/Head';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
@@ -22,6 +22,11 @@ import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 import { useStore } from '../store/store';
 import theme from '../styles/theme';
+
+const Footer = dynamic(
+  () => import('../components/Footer'),
+  { ssr: false },
+);
 
 const useStyles = makeStyles({
   screenContainer: {
@@ -149,50 +154,52 @@ function App({ Component, pageProps }) {
             justifyContent="center"
           >
             <Box height={height} width={width} overflow="hidden" boxShadow={3} position="relative" ref={containerRef} display="flex" flexDirection="column">
-              <CookieConsent
-                location="bottom"
-                buttonText="Got it!"
-                declineButtonText="No Thanks"
-                cookieName="ConsentToCookie"
-                enableDeclineButton
-                contentClasses={classes.cookieContent}
-                containerClasses={`MuiBox-root ${classes.cookieContainer}`}
-                buttonWrapperClasses={`${classes.cookieButtonContainer}`}
-                buttonClasses={`MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall ${classes.cookieButton}`}
-                declineButtonClasses={`MuiButtonBase-root MuiButton-root MuiButton-contained  MuiButton-containedSizeSmall MuiButton-sizeSmall ${classes.cookieButton}`}
-                style={{
-                  backgroundColor: theme.palette.secondary.dark,
-                  color: theme.palette.primary.light,
-                  padding: theme.spacing(3),
-                }}
-                flipButtons
-                disableStyles
-                ButtonComponent={Button}
-                onAccept={() => {
-                  window.location.reload();
-                }}
-              >
-                <Box color="primary.light">
-                  <Typography color="textPrimary">
-                    We use cookies on YSM for a number of reasons that include making
-                    our sites secure, robust and analysing how our site is being used,
-                    which allows us to create more diverse content.
-                    {' '}
-                    <Link href="/info/cookies" passHref>
-                      <LinkUi component="a" color="inherit" underline="always">Learn More.</LinkUi>
-                    </Link>
-                  </Typography>
-                  <Typography color="textPrimary">
-                    You can choose to accept or reject this kind of tracking.
-                    We love you either way.
-                  </Typography>
-                </Box>
-                <img
-                  src="/butterfly.png"
-                  alt="Drawing of a butterfly"
-                  className={classes.cookieIcon}
-                />
-              </CookieConsent>
+              <Box>
+                <CookieConsent
+                  location="bottom"
+                  buttonText="Got it!"
+                  declineButtonText="No Thanks"
+                  cookieName="ConsentToCookie"
+                  enableDeclineButton
+                  contentClasses={classes.cookieContent}
+                  containerClasses={`MuiBox-root ${classes.cookieContainer}`}
+                  buttonWrapperClasses={`${classes.cookieButtonContainer}`}
+                  buttonClasses={`MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall ${classes.cookieButton}`}
+                  declineButtonClasses={`MuiButtonBase-root MuiButton-root MuiButton-contained  MuiButton-containedSizeSmall MuiButton-sizeSmall ${classes.cookieButton}`}
+                  style={{
+                    backgroundColor: theme.palette.secondary.dark,
+                    color: theme.palette.primary.light,
+                    padding: theme.spacing(3),
+                  }}
+                  flipButtons
+                  disableStyles
+                  ButtonComponent={Button}
+                  onAccept={() => {
+                    window.location.reload();
+                  }}
+                >
+                  <Box color="primary.light">
+                    <Typography color="textPrimary">
+                      We use cookies on YSM for a number of reasons that include making
+                      our sites secure, robust and analysing how our site is being used,
+                      which allows us to create more diverse content.
+                      {' '}
+                      <Link href="/info/cookies" passHref>
+                        <LinkUi component="a" color="inherit" underline="always">Learn More.</LinkUi>
+                      </Link>
+                    </Typography>
+                    <Typography color="textPrimary">
+                      You can choose to accept or reject this kind of tracking.
+                      We love you either way.
+                    </Typography>
+                  </Box>
+                  <img
+                    src="/butterfly.png"
+                    alt="Drawing of a butterfly"
+                    className={classes.cookieIcon}
+                  />
+                </CookieConsent>
+              </Box>
               <Header menuContainer={containerRef} />
 
               <Box

@@ -56,5 +56,5 @@ export const uiConfig = {
   credentialHelper: 'none',
   signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
   tosUrl: '/info/terms-and-conditions',
-  privacyPolicyUrl: '/info/privacy',
+  privacyPolicyUrl: 'https://chayn.co/privacy',
 };
