@@ -12,6 +12,7 @@ import ResourceCard from '../components/ResourceCard';
 import firebase from '../config/firebase';
 import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
+import { setBookmark } from '../store/actions';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -19,10 +20,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Saved = ({ profile }) => {
+const Saved = ({ profile, setBookmarkOnRender }) => {
   const classes = useStyles();
   const [bookmarks, setBookmarks] = useState([]);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
+
+  useEffect(() => {
+    const getServerBookmarkData = async () => {
+      const idToken = await user.getIdToken();
+      const serverProfile = await axiosGet('/profile',
+        {
+          headers: {
+            authorization: `Bearer ${idToken}`,
+          },
+        });
+      serverProfile.bookmarkedResources.forEach((bookmarkSlug) => {
+        setBookmarkOnRender(bookmarkSlug);
+      });
+    };
+    if (user) {
+      getServerBookmarkData();
+    }
+  }, [user]);
 
   useEffect(() => {
     const getResourceData = async (slug) => {
@@ -45,7 +64,7 @@ const Saved = ({ profile }) => {
     if (user && profile.bookmarkedResources) {
       getBookmarkData();
     }
-  }, [user]);
+  }, [user, profile]);
 
   return (
     <Box
@@ -57,29 +76,31 @@ const Saved = ({ profile }) => {
 
       { user
         ? (
-          <Box display="flex" justifyContent="space-between" width={1} px={3} pt={2} bgcolor="#FFEAE3">
-            <Link href="/settings" passHref>
-              <LinkUi component="a" color="textSecondary">
-                <Box display="flex" alignItems="center">
-                  <AccountCircle className={classes.icon} />
-                  My Account
-                </Box>
+          <Box width={1} bgcolor="#FFEAE3">
+            <Box display="flex" justifyContent="space-between" width={1} px={3} pt={2}>
+              <Link href="/settings" passHref>
+                <LinkUi component="a" color="textSecondary">
+                  <Box display="flex" alignItems="center">
+                    <AccountCircle className={classes.icon} />
+                    My Account
+                  </Box>
+                </LinkUi>
+              </Link>
+              <LinkUi
+                color="textSecondary"
+                onClick={() => {
+                  firebase.auth().signOut();
+                  setBookmarks([]);
+                  axiosGet('/preview', {
+                    params: {
+                      revokeAccess: true,
+                    },
+                  });
+                }}
+              >
+                Log out
               </LinkUi>
-            </Link>
-            <LinkUi
-              color="textSecondary"
-              onClick={() => {
-                firebase.auth().signOut();
-                setBookmarks([]);
-                axiosGet('/preview', {
-                  params: {
-                    revokeAccess: true,
-                  },
-                });
-              }}
-            >
-              Log out
-            </LinkUi>
+            </Box>
           </Box>
         )
         : null }
@@ -111,6 +132,7 @@ const Saved = ({ profile }) => {
         )
           : bookmarks.map((resource) => (
             <ResourceCard
+              key={resource.id}
               id={resource.id}
               title={resource.title}
               subtitle={resource.subtitle}
@@ -151,10 +173,15 @@ const Saved = ({ profile }) => {
 
 Saved.propTypes = {
   profile: PropTypes.objectOf(PropTypes.any).isRequired,
+  setBookmarkOnRender: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   profile: state.user,
 });
 
-export default connect(mapStateToProps, null)(Saved);
+const mapDispatchToProps = (dispatch) => ({
+  setBookmarkOnRender: (slug) => dispatch(setBookmark(slug)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Saved);
