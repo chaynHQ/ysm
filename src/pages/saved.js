@@ -25,6 +25,8 @@ const Saved = ({ profile }) => {
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   useEffect(() => {
+    console.log('GOING TO GET DATA');
+    console.log('Profile: ', profile);
     const getResourceData = async (slug) => {
       const resource = await axiosGet(`resources/${slug}`);
       return resource;
@@ -43,6 +45,7 @@ const Saved = ({ profile }) => {
     };
 
     if (user && profile.bookmarkedResources) {
+      console.log('GETTING BOOKMARK DATA');
       getBookmarkData();
     }
   }, [user]);

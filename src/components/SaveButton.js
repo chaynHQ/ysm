@@ -19,6 +19,8 @@ const SaveButton = ({
   const saved = profile.bookmarkedResources
     && profile.bookmarkedResources.includes(resourceSlug);
 
+  // TODO: On Effect, if bookmarkedResources is empty, refresh it
+
   return (
     <>
       {saved
@@ -32,7 +34,7 @@ const SaveButton = ({
                 },
                 data: { resourceId: resourceSlug },
               }).then(() => {
-                deleteBookmarkOnClick(resourceSlug, idToken);
+                deleteBookmarkOnClick(resourceSlug);
 
                 firebase.analytics().logEvent('remove_bookmark', {
                   content_type: 'resource',
@@ -59,7 +61,7 @@ const SaveButton = ({
                     authorization: `Bearer ${idToken}`,
                   },
                 }).then(() => {
-                  setBookmarkOnClick(resourceSlug, idToken);
+                  setBookmarkOnClick(resourceSlug);
 
                   firebase.analytics().logEvent('add_bookmark', {
                     content_type: 'resource',
@@ -95,8 +97,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteBookmarkOnClick: (slug, token) => dispatch(deleteBookmark(slug, token)),
-  setBookmarkOnClick: (slug, token) => dispatch(setBookmark(slug, token)),
+  deleteBookmarkOnClick: (slug) => dispatch(deleteBookmark(slug)),
+  setBookmarkOnClick: (slug) => dispatch(setBookmark(slug)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SaveButton);
