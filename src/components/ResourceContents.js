@@ -81,7 +81,9 @@ const ResourceContents = ({ resource }) => {
 
         </Card>
       </Box>
-      <SignUpPrompt url="/" />
+      <Box>
+        <SignUpPrompt url="/" />
+      </Box>
     </Box>
   );
 };

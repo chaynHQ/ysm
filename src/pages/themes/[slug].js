@@ -212,8 +212,9 @@ const ThemePage = ({
           </Box>
         </LinkUi>
       </Link>
-
-      <SignUpPrompt url="/" />
+      <Box>
+        <SignUpPrompt url="/" />
+      </Box>
 
     </Box>
   );

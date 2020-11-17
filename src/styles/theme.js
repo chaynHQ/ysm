@@ -86,10 +86,11 @@ const Theme = createMuiTheme({
     },
     MuiIconButton: {
       root: {
-        width: 20,
-        height: 20,
+        width: 22,
+        height: 22,
         fontSize: 22,
         lineHeight: 26,
+        padding: 0,
       },
     },
     MuiTypography: {

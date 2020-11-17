@@ -1,11 +1,8 @@
 import {
   Box,
-
   Card,
-  CardActionArea,
-  CardContent,
 
-  CardMedia,
+  CardActionArea, CardContent, CardMedia,
 
   Grid,
   IconButton,
@@ -111,33 +108,40 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
               Browse accessible resources curated by a team of survivors.
               Save what you love and come back anytime.
             </Typography>
-            {themes.map((theme) => (
-              <Card
-                key={theme.id}
-                className={classes.card}
-              >
-                <Link href="/themes/[slug]" as={`/themes/${theme.slug}`}>
-                  <CardActionArea component="a">
-                    <CardContent className={classes.cardContent}>
-                      <Typography variant="h2" align="center" color="textSecondary">
-                        {theme.title}
-                      </Typography>
-                      <Typography align="center">
-                        {richTextHelper(theme.description)}
-                      </Typography>
-                      {theme.image
-                        ? (
-                          <CardMedia
-                            component="img"
-                            image={theme.image.filename}
-                          />
-                        ) : null }
-                    </CardContent>
+            <Box
+              pt={3.5}
+              px={2}
+            >
+              {themes.map((theme) => (
+                <Card
+                  key={theme.id}
+                  className={classes.card}
+                >
+                  <Link href="/themes/[slug]" as={`/themes/${theme.slug}`}>
+                    <CardActionArea component="a" className={classes.cardMedia}>
+                      <CardContent className={classes.cardContent}>
+                        <Box>
+                          <Typography variant="h2" align="center" color="textSecondary">
+                            {theme.title}
+                          </Typography>
+                          <Typography align="center">
+                            {richTextHelper(theme.description)}
+                          </Typography>
+                          {theme.image
+                            ? (
+                              <CardMedia
+                                component="img"
+                                image={theme.image.filename}
+                              />
+                            ) : null }
+                        </Box>
+                      </CardContent>
 
-                  </CardActionArea>
-                </Link>
-              </Card>
-            ))}
+                    </CardActionArea>
+                  </Link>
+                </Card>
+              ))}
+            </Box>
 
             <Box pt={4}>
               <Link href="/" passHref>
@@ -149,7 +153,9 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
                 </LinkUi>
               </Link>
             </Box>
-            <SignUpPrompt url="/" />
+            <Box>
+              <SignUpPrompt url="/" />
+            </Box>
           </>
         )
         : null }
