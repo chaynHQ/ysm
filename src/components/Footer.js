@@ -34,10 +34,10 @@ const Footer = () => {
   }, [router]);
 
   return (
-    <Box>
+    <Box width={1}>
       <BottomNavigation
         showLabels
-        className={classes.root}
+        className={classes.yellow}
         value={selected}
         onChange={(e, value) => {
           if (value === '/leave') {

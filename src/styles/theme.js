@@ -108,7 +108,6 @@ const Theme = createMuiTheme({
       root: {
         backgroundColor: '#FEF6F1',
         alignItems: 'flex-start',
-        height: '100%',
         padding: 8,
       },
     },
