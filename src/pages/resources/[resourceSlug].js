@@ -61,7 +61,6 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
     <Box
       display="flex"
       flexDirection="column"
-      direction="column"
       pt={3.5}
       px={2}
     >

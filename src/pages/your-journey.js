@@ -4,7 +4,6 @@ import {
 
   CardActionArea, CardContent, CardMedia,
 
-  Grid,
   IconButton,
   makeStyles,
   Typography,
@@ -84,24 +83,26 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
             <Head
               title="Your Journey"
             />
-            <Grid container justify="space-between" direction="row">
-              <Link href="/" passHref>
-                <LinkUi component="a" color="inherit">
-                  <Box display="flex" alignItems="center">
-                    <ArrowBack className={classes.icon} />
-                  </Box>
-                </LinkUi>
-              </Link>
-              <IconButton component="a" onClick={() => { setShowSearchModal(true); }}>
-                <Search />
-              </IconButton>
-              <SearchModal
-                shown={showSearchModal}
-                container={container}
-                closeModal={() => { setShowSearchModal(false); }}
-              />
 
-            </Grid>
+            <Box>
+              <Box display="flex" justifyContent="space-between" flexDirection="row">
+                <Link href="/" passHref>
+                  <LinkUi component="a" color="inherit">
+                    <Box display="flex" alignItems="center">
+                      <ArrowBack className={classes.icon} />
+                    </Box>
+                  </LinkUi>
+                </Link>
+                <IconButton component="a" onClick={() => { setShowSearchModal(true); }}>
+                  <Search />
+                </IconButton>
+              </Box>
+            </Box>
+            <SearchModal
+              shown={showSearchModal}
+              container={container}
+              closeModal={() => { setShowSearchModal(false); }}
+            />
 
             <Typography variant="h1" align="center">Your Journey</Typography>
             <Typography align="center">
