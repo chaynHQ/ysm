@@ -110,9 +110,9 @@ function App({ Component, pageProps }) {
 
   return (
     <>
-      <Head>
-        <title>Your Story Matters</title>
-      </Head>
+      <Head
+        title="Your Story Matters"
+      />
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />

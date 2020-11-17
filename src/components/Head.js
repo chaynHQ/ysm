@@ -9,7 +9,7 @@ const Head = ({
   const router = useRouter();
   return (
     <NextHead>
-      <title>
+      <title key="title">
         {title}
         {' '}
         | YSM
