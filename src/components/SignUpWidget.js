@@ -1,4 +1,6 @@
-import { Box, Button, makeStyles, Typography } from '@material-ui/core';
+import {
+  Box, Button, makeStyles, Typography,
+} from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import * as firebaseui from 'firebaseui';
 import Link from 'next/link';
@@ -233,7 +235,7 @@ const SignUpWidget = ({
                       information might be shared with other apps such as analytics to
                       see who is using YSM, this helps us improve it.
                       Detailed info can be found in our
-                      <a href="https://chayn.co/privacy" target="_blank">Privacy Policy</a>
+                      <a href="https://chayn.co/privacy" rel="noreferrer" target="_blank">Privacy Policy</a>
                       .
                     </Box>
                     <Box className="mdl-card__supporting-text">
@@ -267,7 +269,7 @@ const SignUpWidget = ({
                         <a href="https://chayn.co/privacy" rel="noreferrer" target="_blank">Privacy Policy</a>
                         and
                         {' '}
-                        <a href="info/terms-and-conditions" target="_blank">Terms of Service</a>
+                        <a href="info/terms-and-conditions" rel="noreferrer" target="_blank">Terms of Service</a>
                       </span>
                     </label>
                   </Box>
