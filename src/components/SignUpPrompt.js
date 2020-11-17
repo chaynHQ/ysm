@@ -86,12 +86,11 @@ const SignUpPrompt = () => {
               <Typography align="center">
                 Read our
                 {' '}
-                <Link href="/info/terms-and-conditions">
+                <Link href="/info/terms-and-conditions" passHref>
                   <LinkUi
                     component="a"
                     color="textPrimary"
                     underline="always"
-                    to="/privacy"
                     align="center"
                   >
                     Terms
@@ -100,12 +99,11 @@ const SignUpPrompt = () => {
                 {' '}
                 &
                 {' '}
-                <Link href="/info/privacy">
+                <Link href="https://chayn.co/privacy" passHref>
                   <LinkUi
                     component="a"
                     color="textPrimary"
                     underline="always"
-                    to="/privacy"
                     align="center"
                   >
                     Privacy Policy

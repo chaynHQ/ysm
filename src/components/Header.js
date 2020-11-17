@@ -141,7 +141,7 @@ const Header = ({ menuContainer }) => {
                 </Box>
               </LinkUi>
             </Link>
-            <Link href="/info/privacy" passHref>
+            <Link href="https://chayn.co/privacy" passHref>
               <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
                 <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                   <Icon>
