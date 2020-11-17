@@ -76,7 +76,7 @@ const SignUpWidget = ({
           signInFailure(error) {
             handleError(error);
           },
-          signInSuccessWithAuthResult: async (authResult) => {
+          signInSuccessWithAuthResult: (authResult) => {
             const signedInUser = authResult.user;
 
             // Analytics
@@ -86,12 +86,7 @@ const SignUpWidget = ({
               firebase.analytics().logEvent('login');
             }
 
-            if (authResult.additionalUserInfo.isNewUser || !signedInUser.emailVerified) {
-              signedInUser.sendEmailVerification();
-              setShowVerificationStep(true);
-              setShowTermsStep(false);
-              await firebase.auth().signOut();
-            } else if (signedInUser.emailVerified) {
+            const successResponse = async () => {
               const idToken = await signedInUser.getIdToken();
               const profile = await axiosGet('/profile',
                 {
@@ -109,8 +104,20 @@ const SignUpWidget = ({
                 setShowTermsStep(true);
                 setShowVerificationStep(false);
               }
+            };
+
+            const signOut = async () => {
+              await firebase.auth().signOut();
+            };
+
+            if (authResult.additionalUserInfo.isNewUser || !signedInUser.emailVerified) {
+              signedInUser.sendEmailVerification();
+              setShowVerificationStep(true);
+              setShowTermsStep(false);
+              signOut().then(() => false);
+            } else if (signedInUser.emailVerified) {
+              successResponse().then(() => false);
             }
-            return false;
           },
         },
       });
