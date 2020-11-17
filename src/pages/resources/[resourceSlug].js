@@ -66,7 +66,6 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
     <Box
       display="flex"
       flexDirection="column"
-      direction="column"
       pt={3.5}
       px={2}
     >
@@ -87,7 +86,16 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
             </Link>
             <Box>
               {resource.content && resource.content.length === 1
-                ? <Item item={{ ...resource.content[0], slug: resource.slug }} canBeSaved />
+                ? (
+                  <Item
+                    item={{
+                      ...resource.content[0],
+                      description: resource.description,
+                      slug: resource.slug,
+                    }}
+                    canBeSaved
+                  />
+                )
                 : <ResourceContents resource={resource} />}
             </Box>
           </>

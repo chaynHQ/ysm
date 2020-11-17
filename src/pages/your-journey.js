@@ -1,13 +1,9 @@
 import {
   Box,
-
   Card,
-  CardActionArea,
-  CardContent,
 
-  CardMedia,
+  CardActionArea, CardContent, CardMedia,
 
-  Grid,
   IconButton,
   makeStyles,
   Typography,
@@ -87,57 +83,66 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
             <Head
               title="Your Journey"
             />
-            <Grid container justify="space-between" direction="row">
-              <Link href="/" passHref>
-                <LinkUi component="a" color="inherit">
-                  <Box display="flex" alignItems="center">
-                    <ArrowBack className={classes.icon} />
-                  </Box>
-                </LinkUi>
-              </Link>
-              <IconButton component="a" onClick={() => { setShowSearchModal(true); }}>
-                <Search />
-              </IconButton>
-              <SearchModal
-                shown={showSearchModal}
-                container={container}
-                closeModal={() => { setShowSearchModal(false); }}
-              />
 
-            </Grid>
+            <Box>
+              <Box display="flex" justifyContent="space-between" flexDirection="row">
+                <Link href="/" passHref>
+                  <LinkUi component="a" color="inherit">
+                    <Box display="flex" alignItems="center">
+                      <ArrowBack className={classes.icon} />
+                    </Box>
+                  </LinkUi>
+                </Link>
+                <IconButton component="a" onClick={() => { setShowSearchModal(true); }}>
+                  <Search />
+                </IconButton>
+              </Box>
+            </Box>
+            <SearchModal
+              shown={showSearchModal}
+              container={container}
+              closeModal={() => { setShowSearchModal(false); }}
+            />
 
             <Typography variant="h1" align="center">Your Journey</Typography>
             <Typography align="center">
               Browse accessible resources curated by a team of survivors.
               Save what you love and come back anytime.
             </Typography>
-            {themes.map((theme) => (
-              <Card
-                key={theme.id}
-                className={classes.card}
-              >
-                <Link href="/themes/[slug]" as={`/themes/${theme.slug}`}>
-                  <CardActionArea component="a">
-                    <CardContent className={classes.cardContent}>
-                      <Typography variant="h2" align="center" color="textSecondary">
-                        {theme.title}
-                      </Typography>
-                      <Typography align="center">
-                        {richTextHelper(theme.description)}
-                      </Typography>
-                      {theme.image
-                        ? (
-                          <CardMedia
-                            component="img"
-                            image={theme.image.filename}
-                          />
-                        ) : null }
-                    </CardContent>
+            <Box
+              pt={3.5}
+              px={2}
+            >
+              {themes.map((theme) => (
+                <Card
+                  key={theme.id}
+                  className={classes.card}
+                >
+                  <Link href="/themes/[slug]" as={`/themes/${theme.slug}`}>
+                    <CardActionArea component="a" className={classes.cardMedia}>
+                      <CardContent className={classes.cardContent}>
+                        <Box>
+                          <Typography variant="h2" align="center" color="textSecondary">
+                            {theme.title}
+                          </Typography>
+                          <Typography align="center">
+                            {richTextHelper(theme.description)}
+                          </Typography>
+                          {theme.image
+                            ? (
+                              <CardMedia
+                                component="img"
+                                image={theme.image.filename}
+                              />
+                            ) : null }
+                        </Box>
+                      </CardContent>
 
-                  </CardActionArea>
-                </Link>
-              </Card>
-            ))}
+                    </CardActionArea>
+                  </Link>
+                </Card>
+              ))}
+            </Box>
 
             <Box pt={4}>
               <Link href="/" passHref>
@@ -149,7 +154,9 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
                 </LinkUi>
               </Link>
             </Box>
-            <SignUpPrompt url="/" />
+            <Box>
+              <SignUpPrompt url="/" />
+            </Box>
           </>
         )
         : null }

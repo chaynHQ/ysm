@@ -13,6 +13,9 @@ const useStyles = makeStyles({
     width: '100%',
     height: '100%',
   },
+  image: {
+    width: '100%',
+  },
 });
 
 const Home = () => {
@@ -26,7 +29,7 @@ const Home = () => {
       alignItems="center"
       p={4}
     >
-      <Box p={3} display="flex" justifyContent="center">
+      <Box p={3} width="50%" display="flex" justifyContent="center">
         <img
           className={classes.image}
           alt="Illustration of woman and a butterfly"
