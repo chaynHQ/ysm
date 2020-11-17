@@ -38,7 +38,7 @@ const BreatheTimer = ({ modalOpen, setModalOpen }) => {
   const message = 'Get comfortable and start breathing when ready';
 
   const startTimer = () => {
-    setBreathState('Breathe Out');
+    setBreathState('Breathe In');
     setBreathTimerRunning(true);
   };
 
@@ -79,10 +79,11 @@ const BreatheTimer = ({ modalOpen, setModalOpen }) => {
               ref={breatheTimerRef}
               url="/breathe.mp4"
               width="100%"
+              height="100%"
               playing={breathTimerRunning}
               onProgress={(e) => {
                 if (e.played > 0.5) {
-                  setBreathState('Breathe In');
+                  setBreathState('Breathe Out');
                 }
               }}
               onEnded={() => {

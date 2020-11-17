@@ -69,7 +69,7 @@ const NewsletterSignup = () => {
               }}
               checked={checked}
             />
-            <Typography align="center"> I want to receive emails when new content is available on YSM.</Typography>
+            <Typography align="center"> Sign up for our monthly community newsletter to receive comforting recommendations, yummy recipes, positive news, exciting events and chances to get more involved in our work. Join us today!</Typography>
 
           </Box>
           {error

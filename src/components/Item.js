@@ -61,7 +61,7 @@ const Item = ({ item, canBeSaved }) => {
         <Typography variant="h1" align="center">{item.title}</Typography>
         {richTextHelper(item.description)}
 
-        {canBeSaved ? <SaveButton resourceSlug={item.slug} /> : null}
+        {canBeSaved ? <SaveButton resourceSlug={item.slug} redirectUrl={`/resources/${item.slug}`} /> : null}
       </Box>
 
       { (() => {
