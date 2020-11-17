@@ -77,6 +77,8 @@ const SignUpWidget = ({
             handleError(error);
           },
           signInSuccessWithAuthResult: (authResult) => {
+            // This cannot be async & must return false for proper redirection
+
             const signedInUser = authResult.user;
 
             // Analytics
