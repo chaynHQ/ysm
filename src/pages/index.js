@@ -15,6 +15,7 @@ const useStyles = makeStyles({
   },
   image: {
     width: '100%',
+    height: 'auto',
   },
 });
 
@@ -38,7 +39,7 @@ const Home = () => {
         />
       </Box>
       <Typography variant="h1" align="center">Your Story Matters</Typography>
-      <Typography align="center">
+      <Typography align="center" color="textSecondary">
         If you&apos;ve been treated in a way that has made you feel uncomfortable or violated,
         let YSM be your companion because your story matters.
       </Typography>
@@ -52,7 +53,7 @@ const Home = () => {
       </Box>
 
       <Box width="50%">
-        <Typography align="center" variant="subtitle2" color="textSecondary">
+        <Typography align="center" variant="subtitle2">
           If you&apos;re in crisis call the emergency services in your area.
         </Typography>
       </Box>

@@ -56,6 +56,7 @@ const Theme = createMuiTheme({
     },
     subtitle2: {
       fontSize: 14,
+      color: '#717798',
     },
   },
   overrides: {
