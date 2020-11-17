@@ -116,10 +116,12 @@ const SignUpWidget = ({
               signedInUser.sendEmailVerification();
               setShowVerificationStep(true);
               setShowTermsStep(false);
-              signOut().then(() => false);
+              signOut();
             } else if (signedInUser.emailVerified) {
-              successResponse().then(() => false);
+              successResponse();
             }
+
+            return false;
           },
         },
       });
