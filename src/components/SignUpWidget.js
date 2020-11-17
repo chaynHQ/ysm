@@ -1,5 +1,5 @@
 import {
-  Box, Button, makeStyles, Typography,
+  Avatar, Box, Button, makeStyles, Typography,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import * as firebaseui from 'firebaseui';
@@ -18,8 +18,8 @@ import NewsletterSignup from './NewsletterSignup';
 
 const useStyles = makeStyles({
   icon: {
-    width: 60,
-    height: 60,
+    width: '100%',
+    height: 'auto',
   },
   image: {
     width: '65%',
@@ -170,15 +170,18 @@ const SignUpWidget = ({
     <Box
       display="flex"
       flexDirection="column"
-      py={5}
+      py={3}
       px={5}
       alignItems="center"
     >
-      <img
-        className={classes.icon}
-        src="/logo.png"
-        alt="YSM Logo"
-      />
+      <Box pb={2} width="30%" display="flex" justifyContent="center">
+        <Avatar
+          variant="square"
+          className={classes.icon}
+          src="/logo.png"
+          alt="YSM Logo"
+        />
+      </Box>
 
       {showErrorText ? (
         <Box boxShadow={1} mt={5} p={5} py={4} bgcolor="primary.main" display="flex" alignItems="center">
@@ -189,11 +192,11 @@ const SignUpWidget = ({
       {!showTermsStep && !showVerificationStep
         ? (
           <>
-            <Typography>
+            <Typography color="textSecondary">
               If you are signing up for the first time, you can give us any name like
               &quot;New Sunshine&quot;
             </Typography>
-            <Typography>And if you’re signing in, welcome back friend!</Typography>
+            <Typography color="textSecondary">And if you’re signing in, welcome back friend!</Typography>
 
             <Box id="firebaseui-auth-container" display={showTermsStep || showVerificationStep ? 'none' : 'block'} />
           </>
@@ -211,9 +214,9 @@ const SignUpWidget = ({
               src="/two-people-illustration.png"
               alt="Line drawing of two people sat down having a conversation."
             />
-            <Typography>Thanks for signing up!</Typography>
-            <Typography><b>We&apos;ve sent you an email to verify your account.</b></Typography>
-            <Typography><b>Please check your email.</b></Typography>
+            <Typography color="textSecondary">Thanks for signing up!</Typography>
+            <Typography color="textSecondary"><b>We&apos;ve sent you an email to verify your account.</b></Typography>
+            <Typography color="textSecondary"><b>Please check your email.</b></Typography>
           </Box>
         ) : null}
 
