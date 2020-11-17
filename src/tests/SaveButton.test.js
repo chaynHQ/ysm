@@ -79,7 +79,8 @@ describe("SaveButton when resource isn't saved", () => {
 
 //   beforeEach(() => {
 //     shallow = createShallow();
-//     const store = mockStore({ user: { xa: 'some-token', bookmarkedResources: ['resource_slug'] } });
+//     const store = mockStore({ user: { xa: 'some-token',
+// bookmarkedResources: ['resource_slug'] } });
 //     mockAxios.delete.mockImplementationOnce(() => Promise.resolve({}));
 
 //     wrapper = shallow(
