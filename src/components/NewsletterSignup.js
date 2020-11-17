@@ -16,17 +16,19 @@ const NewsletterSignup = () => {
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   useEffect(() => {
-    axiosGet('/newsletter', {
-      params: {
-        email: user.email,
-      },
-    }).then((res) => {
-      if (res.status === 'subscribed') {
-        setChecked(true);
-      } else {
-        setChecked(false);
-      }
-    });
+    if (Object.keys(user).length > 0) {
+      axiosGet('/newsletter', {
+        params: {
+          email: user.email,
+        },
+      }).then((res) => {
+        if (res.status === 'subscribed') {
+          setChecked(true);
+        } else {
+          setChecked(false);
+        }
+      });
+    }
   }, []);
 
   return (
