@@ -1,5 +1,5 @@
 import {
-  Box, Button, makeStyles, Typography,
+  Avatar, Box, Button, makeStyles, Typography,
 } from '@material-ui/core';
 import Link from 'next/link';
 import React from 'react';
@@ -29,8 +29,9 @@ const Home = () => {
       alignItems="center"
       p={4}
     >
-      <Box p={3} width="50%" display="flex" justifyContent="center">
-        <img
+      <Box p={3} width="40%" display="flex" justifyContent="center">
+        <Avatar
+          variant="square"
           className={classes.image}
           alt="Illustration of woman and a butterfly"
           src="/home-illustration.png"

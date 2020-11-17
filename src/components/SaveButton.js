@@ -39,8 +39,6 @@ const SaveButton = ({
     }
   }, [user, profile]);
 
-  console.log(redirectUrl);
-
   return (
     <>
       {saved
