@@ -5,6 +5,7 @@ import LinkUi from '@material-ui/core/Link';
 import { ArrowBack } from '@material-ui/icons';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -13,7 +14,6 @@ import NewsletterSignup from '../components/NewsletterSignup';
 import firebase from '../config/firebase';
 import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
-import rollbar from '../shared/rollbar';
 import { setSettingsAuth, setUserSignIn } from '../store/actions';
 
 const SignUpWidget = dynamic(
@@ -37,25 +37,38 @@ const Settings = ({
   setSettingsAuthOnError, settingsAuth, setUserSignInOnClick,
 }) => {
   const classes = useStyles();
+  const router = useRouter();
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nameError, setNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
+  const logout = () => {
+    setUserSignInOnClick({});
+    setSettingsAuthOnError(false);
+    axiosGet('/preview', {
+      params: {
+        revokeAccess: true,
+      },
+    });
+    firebase.auth().signOut();
+  };
 
   const resetPassword = (newPassword) => {
     firebase.auth().onAuthStateChanged((u) => {
       if (u) {
         u.updatePassword(newPassword).then(() => {
-          // Update successful.
+          setPasswordError(false);
+          logout();
         }).catch((error) => {
           if (error.code === 'auth/weak-password') {
-            // Show some sort of weak password message
+            setPasswordError(true);
           } else if (error.code === 'auth/requires-recent-login') {
             setSettingsAuthOnError(false);
-          } else {
-            rollbar.error('Error updating password', error);
-            throw error;
           }
         });
       } else {
@@ -68,13 +81,12 @@ const Settings = ({
     firebase.auth().onAuthStateChanged((u) => {
       if (u) {
         u.updateEmail(newEmail).then(() => {
-          // Update successful.
+          setEmailError(false);
         }).catch((error) => {
           if (error.code === 'auth/requires-recent-login') {
             setSettingsAuthOnError(false);
           } else {
-            rollbar.error('Error updating email', error);
-            throw error;
+            setEmailError(true);
           }
         });
       } else {
@@ -90,9 +102,9 @@ const Settings = ({
           displayName: newName,
         }).then(() => {
           // Update successful.
-        }).catch((error) => {
-          rollbar.error('Error updating display name', error);
-          throw error;
+          setNameError(false);
+        }).catch(() => {
+          setNameError(true);
         });
       } else {
         // No user is signed in.
@@ -116,13 +128,8 @@ const Settings = ({
               </Link>
               <Typography
                 onClick={() => {
-                  setUserSignInOnClick({});
-                  setSettingsAuthOnError(false);
-                  axiosGet('/preview', {
-                    params: {
-                      revokeAccess: true,
-                    },
-                  });
+                  logout();
+                  router.push('/');
                 }}
               >
                 Log out
@@ -143,6 +150,8 @@ const Settings = ({
                     setName(event.target.value);
                   }}
                   fullWidth
+                  error={nameError}
+                  helperText={nameError ? 'We had a problem updating your name. Please try again' : null}
                 />
               </Box>
               <Button color="primary" variant="contained" disableElevation onClick={() => { updateName(name); }}>
@@ -160,6 +169,8 @@ const Settings = ({
                     setEmail(event.target.value);
                   }}
                   fullWidth
+                  error={emailError}
+                  helperText={emailError ? "We couldn't update your email, it could already be in use by another user or it's not formatted correctly. Please try again." : null}
                 />
               </Box>
               <Button color="primary" variant="contained" disableElevation onClick={() => { resetEmail(email); }}>
@@ -185,6 +196,8 @@ const Settings = ({
                           setPassword(event.target.value);
                         }}
                         fullWidth
+                        error={passwordError}
+                        helperText={passwordError ? "We couldn't update your password, it's not strong enough. Please try again with a password that is at least 6 characters long." : null}
                       />
                     </Box>
                     <Button color="primary" variant="contained" disableElevation onClick={() => { resetPassword(password); }}>
