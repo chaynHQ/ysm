@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ResourceContents = ({ resource }) => {
   const classes = useStyles();
-
   return (
     <Box
       display="flex"
@@ -36,7 +35,7 @@ const ResourceContents = ({ resource }) => {
     >
 
       <Typography variant="h1" align="center">{resource.title}</Typography>
-      <SaveButton resourceSlug={resource.slug} />
+      <SaveButton resourceSlug={resource.slug} redirectUrl={`/resources/${resource.slug}`} />
       <Typography component={Box} color="textSecondary">
         {richTextHelper(resource.description)}
       </Typography>

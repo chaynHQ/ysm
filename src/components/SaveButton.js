@@ -39,6 +39,8 @@ const SaveButton = ({
     }
   }, [user, profile]);
 
+  console.log(redirectUrl);
+
   return (
     <>
       {saved
@@ -52,6 +54,7 @@ const SaveButton = ({
                 },
                 data: { resourceId: resourceSlug },
               }).then(() => {
+                setSaved(false);
                 deleteUserBookmark(resourceSlug);
 
                 firebase.analytics().logEvent('remove_bookmark', {
