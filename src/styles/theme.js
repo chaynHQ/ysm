@@ -98,7 +98,7 @@ const Theme = createMuiTheme({
         marginBottom: 16,
       },
       colorTextPrimary: {
-        color: '#717798', // Body Text
+        color: '#FEF6F1',
       },
       colorTextSecondary: {
         color: '#242A4A', // Header Text & some body text

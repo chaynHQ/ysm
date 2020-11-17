@@ -89,9 +89,9 @@ const SignUpPrompt = () => {
                 <Link href="/info/terms-and-conditions" passHref>
                   <LinkUi
                     component="a"
-                    color="textPrimary"
                     underline="always"
                     align="center"
+                    color="inherit"
                   >
                     Terms
                   </LinkUi>
@@ -102,9 +102,9 @@ const SignUpPrompt = () => {
                 <Link href="https://chayn.co/privacy" passHref>
                   <LinkUi
                     component="a"
-                    color="textPrimary"
                     underline="always"
                     align="center"
+                    color="inherit"
                   >
                     Privacy Policy
                     {' '}

@@ -24,6 +24,9 @@ export const axiosGet = async (url, options) => {
     const response = await axiosInstance.get(url, options);
     return response.data;
   } catch (err) {
+    if (err.response.status === 404) {
+      return { status: 404, message: 'Not Found' };
+    }
     rollbar.error('error in axios GET', err);
     throw err;
   }

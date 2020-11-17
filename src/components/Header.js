@@ -13,7 +13,11 @@ import LinkUi from '@material-ui/core/Link';
 import {
   AccountCircle,
   Clear,
-  ExitToApp,
+
+  Description,
+
+  EmojiFoodBeverage, ExitToApp,
+
   Home,
   Info,
   Menu,
@@ -85,41 +89,43 @@ const Header = ({ menuContainer }) => {
           </IconButton>
 
         </Box>
+      </Box>
 
-        <BreatheTimer modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <BreatheTimer modalOpen={modalOpen} setModalOpen={setModalOpen} />
 
-        <Drawer
-          open={drawerOpen}
-          onClose={() => { setDrawerOpen(false); }}
-          PaperProps={{ style: { position: 'absolute' } }}
-          BackdropProps={{ style: { position: 'absolute' } }}
-          ModalProps={{
-            container: menuContainer.current,
-            style: { position: 'absolute' },
-          }}
+      <Drawer
+        open={drawerOpen}
+        onClose={() => { setDrawerOpen(false); }}
+        PaperProps={{ style: { position: 'absolute' } }}
+        BackdropProps={{ style: { position: 'absolute' } }}
+        ModalProps={{
+          container: menuContainer.current,
+          style: { position: 'absolute' },
+        }}
+      >
+        <Box
+          display="flex"
+          alignContent="center"
+          alignItems="center"
+          justifyContent="space-between"
+          height={height * 0.05}
+          px={2}
         >
-          <Box
-            display="flex"
-            alignContent="center"
-            alignItems="center"
-            justifyContent="space-between"
-            height={height * 0.05}
-            px={2}
-          >
-            <Box display="flex" pr={2}>
-              {' '}
-              <img
-                className={classes.icon}
-                src="/logo.png"
-                alt="YSM Logo"
-              />
-              <Typography className={classes.title}>Your Story Matters</Typography>
-            </Box>
-            <IconButton onClick={() => { setDrawerOpen(false); }}>
-              <Clear />
-            </IconButton>
+          <Box display="flex" pr={2}>
+            {' '}
+            <img
+              className={classes.headerIcon}
+              src="/logo.png"
+              alt="YSM Logo"
+            />
+            <Typography className={classes.title}>Your Story Matters</Typography>
           </Box>
-          <Divider />
+          <IconButton onClick={() => { setDrawerOpen(false); }}>
+            <Clear />
+          </IconButton>
+        </Box>
+        <Divider />
+        <Box display="flex" flexDirection="column" justifyContent="space-between" height={1} pb={2}>
           <Box>
             <Link href="/" passHref>
               <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
@@ -138,27 +144,6 @@ const Header = ({ menuContainer }) => {
                     <Info />
                   </Icon>
                   About Us
-                </Box>
-              </LinkUi>
-            </Link>
-            <Link href="https://chayn.co/privacy" passHref>
-              <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
-                <Box display="flex" alignItems="flex-end" pl={2} py={1}>
-                  <Icon>
-                    <MenuBook />
-                  </Icon>
-                  Your Privacy
-                </Box>
-              </LinkUi>
-            </Link>
-
-            <Link href="/info/terms-and-conditions" passHref>
-              <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
-                <Box display="flex" alignItems="flex-end" pl={2} py={1}>
-                  <Icon>
-                    <MenuBook />
-                  </Icon>
-                  Terms and Conditions
                 </Box>
               </LinkUi>
             </Link>
@@ -182,8 +167,41 @@ const Header = ({ menuContainer }) => {
               </Box>
             </LinkUi>
           </Box>
-        </Drawer>
-      </Box>
+          <Box>
+            <Link href="https://chayn.co/privacy" passHref>
+              <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
+                <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+                  <Icon>
+                    <MenuBook />
+                  </Icon>
+                  Your Privacy
+                </Box>
+              </LinkUi>
+            </Link>
+
+            <Link href="/info/terms-and-conditions" passHref>
+              <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
+                <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+                  <Icon>
+                    <Description />
+                  </Icon>
+                  Terms and Conditions
+                </Box>
+              </LinkUi>
+            </Link>
+            <Link href="/info/cookies" passHref>
+              <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
+                <Box display="flex" alignItems="flex-end" pl={2} py={1}>
+                  <Icon>
+                    <EmojiFoodBeverage />
+                  </Icon>
+                  Cookie Policy
+                </Box>
+              </LinkUi>
+            </Link>
+          </Box>
+        </Box>
+      </Drawer>
     </Box>
   );
 };

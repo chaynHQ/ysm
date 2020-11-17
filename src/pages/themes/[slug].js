@@ -229,6 +229,13 @@ export async function getServerSideProps({ preview }) {
     propResources = await axiosGet('resources');
   }
 
+  if (
+    (propThemes && propThemes.status === 404)
+    || (propResources && propResources.status === 404)
+  ) {
+    return { notFound: true };
+  }
+
   return { props: { propThemes, propResources, previewMode: preview || false } };
 }
 

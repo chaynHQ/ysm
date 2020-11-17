@@ -39,10 +39,15 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
           };
 
           return axiosGet(`resources/${resourceSlug}`, { headers }).then((previewResource) => {
-            setResource(previewResource);
-            return axiosGet('themes', { headers }).then((allThemes) => {
-              setTheme(allThemes.find((t) => previewResource.themes.includes(t.id)));
-            });
+            if (previewResource.status === 404) {
+              router.push('/404');
+            } else {
+              setResource(previewResource);
+              return axiosGet('themes', { headers }).then((allThemes) => {
+                setTheme(allThemes.find((t) => previewResource.themes.includes(t.id)));
+              });
+            }
+            return { previewResource };
           });
         });
     }
@@ -109,6 +114,10 @@ export async function getServerSideProps({ preview, params }) {
       axiosGet('themes'),
       axiosGet(`resources/${params.resourceSlug}`),
     ]);
+  }
+
+  if ((propResource && propResource.status === 404) || (themes && themes.status === 404)) {
+    return { notFound: true };
   }
 
   return {
