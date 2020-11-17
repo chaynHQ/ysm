@@ -1,6 +1,4 @@
-import {
-  BottomNavigation, BottomNavigationAction, Box, makeStyles,
-} from '@material-ui/core';
+import { BottomNavigation, BottomNavigationAction, Box } from '@material-ui/core';
 import {
   Bookmark, ExitToApp, ImportContacts, LocationOn,
 } from '@material-ui/icons';
@@ -8,15 +6,8 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import leaveSite from '../shared/leave';
 
-const useStyles = makeStyles(() => ({
-  root: {
-    width: '100%',
-  },
-}));
-
 const Footer = () => {
   const router = useRouter();
-  const classes = useStyles();
 
   const [selected, setSelected] = useState('');
 
@@ -37,7 +28,6 @@ const Footer = () => {
     <Box width={1}>
       <BottomNavigation
         showLabels
-        className={classes.yellow}
         value={selected}
         onChange={(e, value) => {
           if (value === '/leave') {
