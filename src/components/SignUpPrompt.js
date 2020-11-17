@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   iconContainer: {
     backgroundColor: theme.palette.secondary.light,
-    padding: '10%',
+    padding: '8%',
     borderRadius: 180,
   },
   icon: {
@@ -94,9 +94,7 @@ const SignUpPrompt = () => {
                     to="/privacy"
                     align="center"
                   >
-
                     Terms
-
                   </LinkUi>
                 </Link>
                 {' '}
