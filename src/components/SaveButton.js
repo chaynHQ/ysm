@@ -2,22 +2,42 @@ import { Button, IconButton } from '@material-ui/core';
 import { Bookmark, BookmarkBorder } from '@material-ui/icons';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
-import { axiosDelete, axiosPut } from '../shared/axios';
+import { axiosDelete, axiosGet, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import { deleteBookmark, setBookmark } from '../store/actions';
 
 const SaveButton = ({
-  resourceSlug, redirectUrl, deleteBookmarkOnClick, setBookmarkOnClick, profile,
+  resourceSlug, redirectUrl, deleteUserBookmark, setUserBookmark, profile,
 }) => {
   const router = useRouter();
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
+  const [saved, setSaved] = useState(false);
 
-  const saved = profile.bookmarkedResources
-    && profile.bookmarkedResources.includes(resourceSlug);
+  useEffect(() => {
+    const getServerBookmarkData = async () => {
+      const idToken = await user.getIdToken();
+      const serverProfile = await axiosGet('/profile',
+        {
+          headers: {
+            authorization: `Bearer ${idToken}`,
+          },
+        });
+      serverProfile.bookmarkedResources.forEach((bookmarkSlug) => {
+        setUserBookmark(bookmarkSlug);
+      });
+    };
+
+    if (profile.bookmarkedResources
+    && profile.bookmarkedResources.includes(resourceSlug)) {
+      setSaved(true);
+    } else if (!profile.bookmarkedResources && user) {
+      getServerBookmarkData();
+    }
+  }, [user, profile]);
 
   return (
     <>
@@ -32,7 +52,7 @@ const SaveButton = ({
                 },
                 data: { resourceId: resourceSlug },
               }).then(() => {
-                deleteBookmarkOnClick(resourceSlug, idToken);
+                deleteUserBookmark(resourceSlug);
 
                 firebase.analytics().logEvent('remove_bookmark', {
                   content_type: 'resource',
@@ -59,7 +79,7 @@ const SaveButton = ({
                     authorization: `Bearer ${idToken}`,
                   },
                 }).then(() => {
-                  setBookmarkOnClick(resourceSlug, idToken);
+                  setUserBookmark(resourceSlug);
 
                   firebase.analytics().logEvent('add_bookmark', {
                     content_type: 'resource',
@@ -82,8 +102,8 @@ SaveButton.propTypes = {
   resourceSlug: PropTypes.string.isRequired,
   redirectUrl: PropTypes.string,
   profile: PropTypes.objectOf(PropTypes.any).isRequired,
-  setBookmarkOnClick: PropTypes.func.isRequired,
-  deleteBookmarkOnClick: PropTypes.func.isRequired,
+  setUserBookmark: PropTypes.func.isRequired,
+  deleteUserBookmark: PropTypes.func.isRequired,
 };
 
 SaveButton.defaultProps = {
@@ -95,8 +115,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteBookmarkOnClick: (slug, token) => dispatch(deleteBookmark(slug, token)),
-  setBookmarkOnClick: (slug, token) => dispatch(setBookmark(slug, token)),
+  deleteUserBookmark: (slug) => dispatch(deleteBookmark(slug)),
+  setUserBookmark: (slug) => dispatch(setBookmark(slug)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SaveButton);

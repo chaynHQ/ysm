@@ -13,7 +13,7 @@ import firebase, { uiConfig } from '../config/firebase';
 import { axiosGet, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
-import { setSettingsAuth } from '../store/actions';
+import { setBookmark, setSettingsAuth } from '../store/actions';
 import NewsletterSignup from './NewsletterSignup';
 
 const useStyles = makeStyles({
@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 });
 
 const SignUpWidget = ({
-  redirectUrl, setSettingsAuthOnSuccess,
+  redirectUrl, setSettingsAuthOnSuccess, setBookmarkOnSignIn,
 }) => {
   const router = useRouter();
   const classes = useStyles();
@@ -96,7 +96,11 @@ const SignUpWidget = ({
                     authorization: `Bearer ${idToken}`,
                   },
                 });
+
               if (profile.termsAccepted) {
+                profile.bookmarkedResources.forEach((bookmarkSlug) => {
+                  setBookmarkOnSignIn(bookmarkSlug);
+                });
                 if (router.pathname === '/settings') {
                   setSettingsAuthOnSuccess(true);
                 } else {
@@ -370,6 +374,7 @@ const SignUpWidget = ({
 SignUpWidget.propTypes = {
   redirectUrl: PropTypes.string,
   setSettingsAuthOnSuccess: PropTypes.func.isRequired,
+  setBookmarkOnSignIn: PropTypes.func.isRequired,
 };
 
 SignUpWidget.defaultProps = {
@@ -378,6 +383,7 @@ SignUpWidget.defaultProps = {
 
 const mapDispatchToProps = (dispatch) => ({
   setSettingsAuthOnSuccess: (bool) => dispatch(setSettingsAuth(bool)),
+  setBookmarkOnSignIn: (slug) => dispatch(setBookmark(slug)),
 });
 
 export default connect(null, mapDispatchToProps)(SignUpWidget);
