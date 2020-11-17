@@ -42,11 +42,13 @@ const Home = () => {
         let YSM be your companion because your story matters.
       </Typography>
 
-      <Link href="/your-journey">
-        <Button variant="contained" component="a" color="primary">
-          Start your journey
-        </Button>
-      </Link>
+      <Box py={2}>
+        <Link href="/your-journey">
+          <Button variant="contained" component="a" color="primary">
+            Start your journey
+          </Button>
+        </Link>
+      </Box>
 
       <Box width="50%">
         <Typography align="center" variant="subtitle2" color="textSecondary">
