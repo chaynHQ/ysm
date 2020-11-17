@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import CookieConsent from 'react-cookie-consent';
+import { isMobile } from 'react-device-detect';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Provider } from 'react-redux';
 import Head from '../components/Head';
@@ -30,8 +31,11 @@ const Footer = dynamic(
 
 const useStyles = makeStyles({
   screenContainer: {
-    height: '100vh',
+
     margin: 0,
+  },
+  mobileScreenContainer: {
+    height: '100vh',
   },
   backgroundBlue: {
     background: 'url(\'/backgroundBlue.png\')',
@@ -148,12 +152,13 @@ function App({ Component, pageProps }) {
           <CssBaseline />
           <Box
             bgcolor="primary.light"
-            className={classes.screenContainer}
+            className={`${classes.screenContainer} ${!isMobile ? classes.mobileScreenContainer : null}`}
             display="flex"
             alignItems="center"
             justifyContent="center"
           >
             <Box height={height} width={width} overflow="hidden" boxShadow={3} position="relative" ref={containerRef} display="flex" flexDirection="column">
+
               <Box>
                 <CookieConsent
                   location="bottom"
@@ -218,9 +223,11 @@ function App({ Component, pageProps }) {
                         container={containerRef}
                       />
                     )
-}
+                }
               </Box>
+
               <Footer />
+
             </Box>
           </Box>
         </ThemeProvider>

@@ -56,6 +56,7 @@ const Theme = createMuiTheme({
     },
     subtitle2: {
       fontSize: 14,
+      color: '#717798',
     },
   },
   overrides: {
@@ -106,6 +107,7 @@ const Theme = createMuiTheme({
     },
     MuiBottomNavigation: {
       root: {
+        height: '100%',
         backgroundColor: '#FEF6F1',
         alignItems: 'flex-start',
         padding: 8,
