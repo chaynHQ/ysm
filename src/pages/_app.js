@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import CookieConsent from 'react-cookie-consent';
-import { isMobile } from 'react-device-detect';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Provider } from 'react-redux';
 import Head from '../components/Head';
@@ -33,9 +32,13 @@ const useStyles = makeStyles({
   screenContainer: {
 
     margin: 0,
+    [theme.breakpoints.up('sm')]: {
+      height: '100vh',
+    },
   },
-  mobileScreenContainer: {
-    height: '100vh',
+
+  desktopScreenContainer: {
+
   },
   backgroundBlue: {
     background: 'url(\'/backgroundBlue.png\')',
@@ -152,7 +155,7 @@ function App({ Component, pageProps }) {
           <CssBaseline />
           <Box
             bgcolor="primary.light"
-            className={`${classes.screenContainer} ${!isMobile ? classes.mobileScreenContainer : null}`}
+            className={classes.screenContainer}
             display="flex"
             alignItems="center"
             justifyContent="center"
