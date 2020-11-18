@@ -40,7 +40,7 @@ const ResourceCard = ({
                 <Typography variant="h2">
                   {title}
                 </Typography>
-                <Typography>
+                <Typography variant="h3">
                   {subtitle}
                 </Typography>
               </Box>

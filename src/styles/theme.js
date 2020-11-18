@@ -39,6 +39,11 @@ const Theme = createMuiTheme({
       fontWeight: 700,
       color: '#242A4A',
     },
+    h3: {
+      fontSize: 16,
+      color: '#717798',
+      lineHeight: 1.5,
+    },
     h6: {
       lineHeight: 18,
     },
@@ -184,6 +189,9 @@ const Theme = createMuiTheme({
       },
     },
     MuiPaper: {
+      root: {
+        color: '#242A4A',
+      },
       elevation1: {
         boxShadow: '0px 0.5px 4px rgba(0, 0, 0, 0.12)',
         border: '1px solid rgba(113, 119, 152, 0.35)',
