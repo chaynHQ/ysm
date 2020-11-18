@@ -143,7 +143,11 @@ const Item = ({ item, canBeSaved }) => {
                         <Typography variant="h2">{value.title}</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <Box display="flex" flexDirection="column" width={1}>
+                        <Box
+                          display="flex"
+                          flexDirection="column"
+                          width={1}
+                        >
                           {richTextHelper(value.content, (node) => richTextTransformer(node))}
                         </Box>
                       </AccordionDetails>
