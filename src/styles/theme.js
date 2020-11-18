@@ -142,6 +142,8 @@ const Theme = createMuiTheme({
       root: {
         height: 22,
         width: 22,
+      },
+      colorPrimary: {
         color: '#717798',
       },
     },
