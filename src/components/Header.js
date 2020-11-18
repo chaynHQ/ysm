@@ -117,7 +117,7 @@ const Header = ({ menuContainer }) => {
           </IconButton>
         </Box>
         <Divider />
-        <Box display="flex" flexDirection="column" justifyContent="space-between" height={1} pb={2}>
+        <Box display="flex" flexDirection="column" justifyContent="space-between" height={1} pb={2} pr={2}>
           <Box>
             <Link href="/" passHref>
               <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
@@ -177,7 +177,7 @@ const Header = ({ menuContainer }) => {
                   <Icon>
                     <Description color="primary" />
                   </Icon>
-                  Terms and Conditions
+                  Terms & Conditions
                 </Box>
               </LinkUi>
             </Link>
