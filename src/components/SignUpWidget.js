@@ -65,6 +65,10 @@ const SignUpWidget = ({
     }
   };
 
+  const actionCodeSettings = {
+    url: isBrowser ? window.location.href : null,
+  };
+
   useEffect(() => {
     const FirebaseAuth = firebaseui.auth.AuthUI;
     const UI = FirebaseAuth.getInstance() || new FirebaseAuth(firebase.auth());
@@ -117,7 +121,7 @@ const SignUpWidget = ({
             };
 
             if (authResult.additionalUserInfo.isNewUser || !signedInUser.emailVerified) {
-              signedInUser.sendEmailVerification();
+              signedInUser.sendEmailVerification(actionCodeSettings);
               setShowVerificationStep(true);
               setShowTermsStep(false);
               signOut();
@@ -147,7 +151,7 @@ const SignUpWidget = ({
     };
     if (user) {
       if (!user.emailVerified) {
-        user.sendEmailVerification();
+        user.sendEmailVerification(actionCodeSettings);
         firebase.auth().signOut();
         setShowVerificationStep(true);
         setShowTermsStep(false);
