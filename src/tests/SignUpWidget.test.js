@@ -29,7 +29,7 @@ describe('SignUpWidget', () => {
       />,
     ).dive().dive();
 
-    expect(wrapper.find(Box)).toHaveLength(2);
+    expect(wrapper.find(Box)).toHaveLength(3);
     expect(wrapper.find(Typography)).toHaveLength(2);
   });
 });
