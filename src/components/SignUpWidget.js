@@ -172,194 +172,199 @@ const SignUpWidget = ({
 
   return (
     <Box
-      display="flex"
-      flexDirection="column"
       py={3}
       px={5}
-      alignItems="center"
     >
-      <Box pb={2} width="30%" display="flex" justifyContent="center">
-        <Avatar
-          variant="square"
-          className={classes.icon}
-          src="/logo.png"
-          alt="YSM Logo"
-        />
-      </Box>
-
-      {showErrorText ? (
-        <Box boxShadow={1} mt={5} p={5} py={4} bgcolor="primary.main" display="flex" alignItems="center">
-          <Typography variant="h2" align="center" color="secondary">{errorText}</Typography>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <Box pb={2} width="30%" display="flex" justifyContent="center">
+          <Avatar
+            variant="square"
+            className={classes.icon}
+            src="/logo.png"
+            alt="YSM Logo"
+          />
         </Box>
-      ) : null}
 
-      {!showTermsStep && !showVerificationStep
-        ? (
-          <>
-            <Typography color="textSecondary">
-              If you are signing up for the first time, you can give us any name like
-              &quot;New Sunshine&quot;
-            </Typography>
-            <Typography color="textSecondary">And if you’re signing in, welcome back friend!</Typography>
-
-            <Box id="firebaseui-auth-container" display={showTermsStep || showVerificationStep ? 'none' : 'block'} />
-          </>
-        ) : null}
-
-      { !showTermsStep && showVerificationStep
-        ? (
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-          >
-            <img
-              className={classes.image}
-              src="/two-people-illustration.png"
-              alt="Line drawing of two people sat down having a conversation."
-            />
-            <Typography color="textSecondary">Thanks for signing up!</Typography>
-            <Typography color="textSecondary"><b>We&apos;ve sent you an email to verify your account.</b></Typography>
-            <Typography color="textSecondary"><b>Please check your email.</b></Typography>
+        {showErrorText ? (
+          <Box boxShadow={1} mt={5} p={5} py={4} bgcolor="primary.main" display="flex" alignItems="center">
+            <Typography variant="h2" align="center" color="secondary">{errorText}</Typography>
           </Box>
         ) : null}
 
-      { showTermsStep && !showVerificationStep
-        ? (
-          <>
-            <Box className="mdl-card mdl-shadow--2dp firebaseui-container">
-              <form
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  const idToken = await user.getIdToken();
-                  await axiosPut('/profile/terms/accept', null, {
-                    headers: {
-                      authorization: `Bearer ${idToken}`,
-                    },
-                  });
-                  setShowNewsletterStep(true);
-                  setShowTermsStep(false);
+        {!showTermsStep && !showVerificationStep
+          ? (
+            <>
+              <Typography color="textSecondary">
+                If you are signing up for the first time, you can give us any name like
+                &quot;New Sunshine&quot;
+              </Typography>
+              <Typography color="textSecondary">And if you’re signing in, welcome back friend!</Typography>
+
+              <Box id="firebaseui-auth-container" display={showTermsStep || showVerificationStep ? 'none' : 'block'} />
+            </>
+          ) : null}
+
+        { !showTermsStep && showVerificationStep
+          ? (
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+            >
+              <img
+                className={classes.image}
+                src="/two-people-illustration.png"
+                alt="Line drawing of two people sat down having a conversation."
+              />
+              <Typography color="textSecondary">Thanks for signing up!</Typography>
+              <Typography color="textSecondary"><b>We&apos;ve sent you an email to verify your account.</b></Typography>
+              <Typography color="textSecondary"><b>Please check your email.</b></Typography>
+            </Box>
+          ) : null}
+
+        { showTermsStep && !showVerificationStep
+          ? (
+            <>
+              <Box className="mdl-card mdl-shadow--2dp firebaseui-container">
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    const idToken = await user.getIdToken();
+                    await axiosPut('/profile/terms/accept', null, {
+                      headers: {
+                        authorization: `Bearer ${idToken}`,
+                      },
+                    });
+                    setShowNewsletterStep(true);
+                    setShowTermsStep(false);
                   // router.push(redirectUrl || '/');
-                }}
-              >
+                  }}
+                >
+                  <Box>
+                    <Box className="firebaseui-card-header">
+                      <h1 className="firebaseui-title">
+                        Notifications and Privacy Policy
+                      </h1>
+                    </Box>
+                    <Box className="firebaseui-card-content">
+                      <Box className="firebaseui-relative-wrapper">
+                        <Box className="mdl-card__supporting-text">
+                          We care about your privacy! We will securely store the
+                          information you have provided to us (name, email and IP address)
+                          for a minimum of 9 months. If you want
+                          us to remove this information, we will delete it. Your
+                          information might be shared with other apps such as analytics to
+                          see who is using YSM, this helps us improve it.
+                          Detailed info can be found in our
+                          <a href="https://chayn.co/privacy" rel="noreferrer" target="_blank">Privacy Policy</a>
+                          .
+                        </Box>
+
+                        <label
+                          className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+                          htmlFor="acceptCheckBox"
+                        >
+                          <input
+                            id="acceptCheckBox"
+                            type="checkbox"
+                            className="mdl-checkbox__input"
+                            required
+                          />
+                          <span className="mdl-checkbox__label">
+                            I have read and agree to the
+                            <a href="https://chayn.co/privacy" rel="noreferrer" target="_blank">Privacy Policy</a>
+                            {' '}
+                            and
+                            {' '}
+                            <a href="info/terms-and-conditions" rel="noreferrer" target="_blank">Terms of Service</a>
+                          </span>
+                        </label>
+                      </Box>
+                    </Box>
+                    <Box className="firebaseui-card-actions">
+                      <Box className="firebaseui-form-actions">
+                        <button
+                          id="acceptButton"
+                          type="submit"
+                          className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                          data-upgraded=",MaterialButton"
+                        >
+                          Accept and sign in
+                        </button>
+                      </Box>
+                    </Box>
+                  </Box>
+                </form>
+              </Box>
+
+              <Box my={3}>
+                <Typography variant="h1">
+                  OR
+                </Typography>
+              </Box>
+
+              <Box className="mdl-card mdl-shadow--2dp firebaseui-container">
                 <Box className="firebaseui-card-header">
                   <h1 className="firebaseui-title">
-                    Notifications and Privacy Policy
+                    Reject and don&apos;t proceed
                   </h1>
                 </Box>
                 <Box className="firebaseui-card-content">
                   <Box className="firebaseui-relative-wrapper">
                     <Box className="mdl-card__supporting-text">
-                      We care about your privacy! We will securely store the
-                      information you have provided to us (name, email and IP address)
-                      for a minimum of 9 months. If you want
-                      us to remove this information, we will delete it. Your
-                      information might be shared with other apps such as analytics to
-                      see who is using YSM, this helps us improve it.
-                      Detailed info can be found in our
-                      <a href="https://chayn.co/privacy" rel="noreferrer" target="_blank">Privacy Policy</a>
-                      .
+                      You can choose to not proceed and reject the Privacy Policy and
+                      Terms of Service.
+                      <br />
+                      <br />
+                      Clicking on the button below will sign you out.
                     </Box>
-
-                    <label
-                      className="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
-                      htmlFor="acceptCheckBox"
-                    >
-                      <input
-                        id="acceptCheckBox"
-                        type="checkbox"
-                        className="mdl-checkbox__input"
-                        required
-                      />
-                      <span className="mdl-checkbox__label">
-                        I have read and agree to the
-                        <a href="https://chayn.co/privacy" rel="noreferrer" target="_blank">Privacy Policy</a>
-                        {' '}
-                        and
-                        {' '}
-                        <a href="info/terms-and-conditions" rel="noreferrer" target="_blank">Terms of Service</a>
-                      </span>
-                    </label>
                   </Box>
                 </Box>
                 <Box className="firebaseui-card-actions">
                   <Box className="firebaseui-form-actions">
-                    <button
-                      id="acceptButton"
-                      type="submit"
+                    <Button
+                      onClick={async (e) => {
+                        e.preventDefault();
+
+                        const idToken = await user.getIdToken();
+                        await axiosPut('/profile/terms/unaccept', null, {
+                          headers: {
+                            authorization: `Bearer ${idToken}`,
+                          },
+
+                        });
+                        await firebase.auth().signOut();
+
+                        router.push(redirectUrl || '/');
+                      }}
                       className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                      data-upgraded=",MaterialButton"
                     >
-                      Accept and sign in
-                    </button>
-                  </Box>
-                </Box>
-              </form>
-            </Box>
-
-            <Box my={3}>
-              <Typography variant="h1">
-                OR
-              </Typography>
-            </Box>
-
-            <Box className="mdl-card mdl-shadow--2dp firebaseui-container">
-              <Box className="firebaseui-card-header">
-                <h1 className="firebaseui-title">
-                  Reject and don&apos;t proceed
-                </h1>
-              </Box>
-              <Box className="firebaseui-card-content">
-                <Box className="firebaseui-relative-wrapper">
-                  <Box className="mdl-card__supporting-text">
-                    You can choose to not proceed and reject the Privacy Policy and
-                    Terms of Service.
-                    <br />
-                    <br />
-                    Clicking on the button below will sign you out.
+                      Reject
+                    </Button>
                   </Box>
                 </Box>
               </Box>
-              <Box className="firebaseui-card-actions">
-                <Box className="firebaseui-form-actions">
-                  <Button
-                    onClick={async (e) => {
-                      e.preventDefault();
+            </>
+          ) : null }
 
-                      const idToken = await user.getIdToken();
-                      await axiosPut('/profile/terms/unaccept', null, {
-                        headers: {
-                          authorization: `Bearer ${idToken}`,
-                        },
+        {showNewsletterStep
+          ? (
+            <>
+              <NewsletterSignup />
+              <Link href={redirectUrl || '/'} passHref>
+                <LinkUi component="a" color="inherit">
+                  Skip this step
+                </LinkUi>
 
-                      });
-                      await firebase.auth().signOut();
-
-                      router.push(redirectUrl || '/');
-                    }}
-                    className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                  >
-                    Reject
-                  </Button>
-                </Box>
-              </Box>
-            </Box>
-          </>
-        ) : null }
-
-      {showNewsletterStep
-        ? (
-          <>
-            <NewsletterSignup />
-            <Link href={redirectUrl || '/'} passHref>
-              <LinkUi component="a" color="inherit">
-                Skip this step
-              </LinkUi>
-
-            </Link>
-          </>
-        )
-        : null}
+              </Link>
+            </>
+          )
+          : null}
+      </Box>
     </Box>
   );
 };
