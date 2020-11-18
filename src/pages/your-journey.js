@@ -73,6 +73,7 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
     if (node.type === 'tag' && node.name === 'p') {
       return (
         <Typography
+          key={node.children[0].data}
           variant="h3"
         >
           {node.children[0].data}
