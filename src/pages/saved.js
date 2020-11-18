@@ -111,13 +111,13 @@ const Saved = ({ profile, setBookmarkOnRender }) => {
 
       >
         <Typography variant="h1" align="center">Saved for Later</Typography>
-        <Typography>
+        <Typography variant="h3">
           { user && bookmarks.length < 1 ? "You haven't saved any resources yet!" : null }
           {' '}
         </Typography>
 
         { user && bookmarks.length < 1 ? (
-          <Typography>
+          <Typography variant="h3">
             Start exploring:
             {' '}
             <Link href="/your-journey">

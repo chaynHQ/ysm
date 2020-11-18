@@ -52,7 +52,6 @@ const Item = ({ item, canBeSaved }) => {
         <LinkUi
           href={node.attribs.href}
           key={`index ${node.children[0].data}`}
-          // color="inherit"
           target="_blank"
           rel="noopener"
           underline="always"
@@ -136,18 +135,20 @@ const Item = ({ item, canBeSaved }) => {
                 break;
               case 'accordion':
                 content = item.items.map((value) => (
-                  <Accordion key={value._uid}>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                    >
-                      <Typography>{value.title}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Box display="flex" flexDirection="column">
-                        {richTextHelper(value.content)}
-                      </Box>
-                    </AccordionDetails>
-                  </Accordion>
+                  <Box mb={2}>
+                    <Accordion key={value._uid}>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                      >
+                        <Typography variant="h2">{value.title}</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Box display="flex" flexDirection="column">
+                          {richTextHelper(value.content, (node) => richTextTransformer(node))}
+                        </Box>
+                      </AccordionDetails>
+                    </Accordion>
+                  </Box>
                 ));
                 break;
               case 'checklist':
