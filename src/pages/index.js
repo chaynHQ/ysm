@@ -31,7 +31,7 @@ const Home = () => {
         flexDirection="column"
         alignItems="center"
       >
-        <Box pt={2} pb={5} width="40%" display="flex" justifyContent="center">
+        <Box pt={2} pb={4} width="40%" display="flex" justifyContent="center">
           <Avatar
             variant="square"
             className={classes.image}
