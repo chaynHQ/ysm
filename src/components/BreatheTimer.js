@@ -81,6 +81,7 @@ const BreatheTimer = ({ modalOpen, setModalOpen }) => {
               width="100%"
               height="100%"
               playing={breathTimerRunning}
+              playsinline
               onProgress={(e) => {
                 if (e.played > 0.5) {
                   setBreathState('Breathe Out');
