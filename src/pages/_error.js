@@ -33,15 +33,29 @@ function Error({ statusCode }) {
       />
       <Typography align="center">Oh no!</Typography>
       <Typography align="center">Looks like there is a mistake!</Typography>
-      <Typography align="center">
-        This has been reported to us and we are working on it. Head back to the
-        {' '}
-        <Link href="/">
-          <LinkUi color="inherit" underline="always">homepage</LinkUi>
-        </Link>
-        {' '}
-        for now.
-      </Typography>
+      {statusCode === 429
+        ? (
+          <Typography align="center">
+            Our server&apos;s struggling trying to do too many things at one time.
+            Wait a minute then head back to the
+            {' '}
+            <Link href="/">
+              <LinkUi color="inherit" underline="always">homepage</LinkUi>
+            </Link>
+            .
+          </Typography>
+        )
+        : (
+          <Typography align="center">
+            This has been reported to us and we are working on it. Head back to the
+            {' '}
+            <Link href="/">
+              <LinkUi color="inherit" underline="always">homepage</LinkUi>
+            </Link>
+            {' '}
+            for now.
+          </Typography>
+        )}
     </Box>
   );
 }

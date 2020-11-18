@@ -32,6 +32,8 @@ const Footer = () => {
         onChange={(e, value) => {
           if (value === '/leave') {
             leaveSite();
+          } else if (value === '/directory') {
+            window.open('https://directory.chayn.co');
           } else {
             setSelected(value);
             router.push(value);

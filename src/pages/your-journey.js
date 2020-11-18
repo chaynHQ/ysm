@@ -73,7 +73,6 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
     <Box
       display="flex"
       flexDirection="column"
-      direction="column"
       pt={3.5}
       px={2}
     >
