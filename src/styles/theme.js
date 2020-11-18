@@ -42,17 +42,18 @@ const Theme = createMuiTheme({
     h6: {
       lineHeight: 18,
     },
-    body1: {
+    body1: { // Used for links
       fontSize: 16,
-      color: '#717798',
-    },
-    body2: { // Used for links
-      fontSize: 14,
       color: '#242A4A',
       marginBottom: 0,
     },
+    body2: {
+      fontSize: 16,
+      color: '#242A4A',
+    },
     subtitle1: {
       fontSize: 14,
+      marginBottom: 0,
     },
     subtitle2: {
       fontSize: 14,
@@ -153,7 +154,7 @@ const Theme = createMuiTheme({
     },
     MuiLink: {
       root: {
-        fontSize: 15,
+        fontSize: 16,
       },
     },
     MuiInputBase: {

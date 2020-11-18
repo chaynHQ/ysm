@@ -14,6 +14,7 @@ import {
 
   makeStyles, Typography,
 } from '@material-ui/core';
+import LinkUi from '@material-ui/core/Link';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -21,7 +22,7 @@ import ReactPlayer from 'react-player';
 import richTextHelper from '../shared/rich-text';
 import SaveButton from './SaveButton';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   videoWrapper: {
     position: 'relative',
     paddingTop: '56.25%', // For correct youtube aspect ratio
@@ -30,6 +31,9 @@ const useStyles = makeStyles(() => ({
     position: 'absolute',
     top: 0,
     left: 0,
+  },
+  link: {
+    color: theme.palette.error.main,
   },
 }));
 
@@ -40,6 +44,22 @@ const Item = ({ item, canBeSaved }) => {
       const img = node.children[0];
       return (
         <img src={img.attribs.src} alt={img.attribs.alt} style={{ width: '100%' }} />
+      );
+    }
+
+    if (node.type === 'tag' && node.name === 'a') {
+      return (
+        <LinkUi
+          href={node.attribs.href}
+          key={`index ${node.children[0].data}`}
+          // color="inherit"
+          target="_blank"
+          rel="noopener"
+          underline="always"
+          className={classes.link}
+        >
+          {node.children[0].data}
+        </LinkUi>
       );
     }
 

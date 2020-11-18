@@ -7,7 +7,7 @@ import {
   IconButton,
   makeStyles,
 
-  SvgIcon, Typography,
+  SvgIcon,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import {
@@ -36,8 +36,8 @@ import BreatheTimer from './BreatheTimer';
 
 const useStyles = makeStyles({
   headerIcon: {
-    width: 20,
-    height: 20,
+    width: 40,
+    height: 40,
   },
   title: {
     paddingLeft: 4,
@@ -75,10 +75,9 @@ const Header = ({ menuContainer }) => {
               <Box display="flex" alignItems="center">
                 <img
                   className={classes.headerIcon}
-                  src="/logo.png"
+                  src="/logo-with-text.png"
                   alt="YSM Logo"
                 />
-                <Typography className={classes.title}>Your Story Matters</Typography>
               </Box>
             </LinkUi>
           </Link>
@@ -108,18 +107,13 @@ const Header = ({ menuContainer }) => {
           alignContent="center"
           alignItems="center"
           justifyContent="space-between"
-          height={height * 0.05}
-          px={2}
+          p={2}
         >
-          <Box display="flex" pr={2}>
-            {' '}
-            <img
-              className={classes.headerIcon}
-              src="/logo.png"
-              alt="YSM Logo"
-            />
-            <Typography className={classes.title}>Your Story Matters</Typography>
-          </Box>
+          <img
+            className={classes.headerIcon}
+            src="/logo-with-text.png"
+            alt="YSM Logo"
+          />
           <IconButton onClick={() => { setDrawerOpen(false); }}>
             <Clear />
           </IconButton>

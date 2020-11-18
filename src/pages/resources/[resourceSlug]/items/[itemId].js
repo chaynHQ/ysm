@@ -113,7 +113,7 @@ const ItemPage = ({ propResource, previewMode }) => {
               <LinkUi component="a" underline="always" color="inherit">
                 <Box display="flex" alignItems="center">
                   <ArrowBack className={classes.icon} />
-                  <Typography variant="body2">
+                  <Typography variant="subtitle1">
                     Part of:
                     {' '}
                     {resource.title}
@@ -123,32 +123,34 @@ const ItemPage = ({ propResource, previewMode }) => {
             </Link>
 
             <Item item={item} />
+            <Box>
 
-            <Card variant="outlined" className={classes.card}>
-              <Link
-                href={nextItem ? '/resources/[resourceSlug]/items/[itemId]' : '/resources/[resourceSlug]'}
-                as={nextItem ? `/resources/${resource.slug}/items/${nextItem.id}` : `/resources/${resource.slug}`}
-              >
-                <CardActionArea component="a" className={classes.cardMedia}>
-                  <CardContent>
-                    <Grid container justify="space-between" direction="row">
-                      <Typography color="textSecondary">
-                        {nextItem ? 'Continue: ' : 'That was the last note on: '}
-                        {' '}
-                        <LinkUi
-                          underline="always"
-                          className={classes.link}
-                          component="span"
-                        >
-                          {nextItem ? nextItem.title : resource.title}
-                        </LinkUi>
-                      </Typography>
-                      <ArrowForward />
-                    </Grid>
-                  </CardContent>
-                </CardActionArea>
-              </Link>
-            </Card>
+              <Card variant="outlined" className={classes.card}>
+                <Link
+                  href={nextItem ? '/resources/[resourceSlug]/items/[itemId]' : '/resources/[resourceSlug]'}
+                  as={nextItem ? `/resources/${resource.slug}/items/${nextItem.id}` : `/resources/${resource.slug}`}
+                >
+                  <CardActionArea component="a" className={classes.cardMedia}>
+                    <CardContent>
+                      <Grid container justify="space-between" direction="row">
+                        <Typography color="textSecondary">
+                          {nextItem ? 'Continue: ' : 'That was the last note on: '}
+                          {' '}
+                          <LinkUi
+                            underline="always"
+                            className={classes.link}
+                            component="span"
+                          >
+                            {nextItem ? nextItem.title : resource.title}
+                          </LinkUi>
+                        </Typography>
+                        <ArrowForward />
+                      </Grid>
+                    </CardContent>
+                  </CardActionArea>
+                </Link>
+              </Card>
+            </Box>
           </>
         )
         : null }
