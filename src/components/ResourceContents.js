@@ -68,6 +68,7 @@ const ResourceContents = ({ resource }) => {
                       underline="always"
                       className={classes.link}
                       component="span"
+                      variant="subtitle1"
                     >
                       {resource.content[0].title}
                     </LinkUi>

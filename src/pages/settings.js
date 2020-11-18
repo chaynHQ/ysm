@@ -122,7 +122,7 @@ const Settings = ({
                 <LinkUi component="a" underline="always" color="inherit">
                   <Box display="flex" alignItems="center">
                     <ArrowBack className={classes.icon} />
-                    <Typography variant="body2">Saved for later</Typography>
+                    <Typography variant="subtitle1">Saved for later</Typography>
                   </Box>
                 </LinkUi>
               </Link>

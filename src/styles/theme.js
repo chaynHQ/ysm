@@ -39,20 +39,26 @@ const Theme = createMuiTheme({
       fontWeight: 700,
       color: '#242A4A',
     },
+    h3: {
+      fontSize: 16,
+      color: '#717798',
+      lineHeight: 1.5,
+    },
     h6: {
       lineHeight: 18,
     },
-    body1: {
+    body1: { // Used for links
       fontSize: 16,
-      color: '#717798',
-    },
-    body2: { // Used for links
-      fontSize: 14,
       color: '#242A4A',
       marginBottom: 0,
     },
+    body2: {
+      fontSize: 16,
+      color: '#242A4A',
+    },
     subtitle1: {
       fontSize: 14,
+      marginBottom: 0,
     },
     subtitle2: {
       fontSize: 14,
@@ -136,6 +142,8 @@ const Theme = createMuiTheme({
       root: {
         height: 22,
         width: 22,
+      },
+      colorPrimary: {
         color: '#717798',
       },
     },
@@ -153,7 +161,7 @@ const Theme = createMuiTheme({
     },
     MuiLink: {
       root: {
-        fontSize: 15,
+        fontSize: 16,
       },
     },
     MuiInputBase: {
@@ -183,6 +191,9 @@ const Theme = createMuiTheme({
       },
     },
     MuiPaper: {
+      root: {
+        color: '#242A4A',
+      },
       elevation1: {
         boxShadow: '0px 0.5px 4px rgba(0, 0, 0, 0.12)',
         border: '1px solid rgba(113, 119, 152, 0.35)',

@@ -7,7 +7,7 @@ import {
   IconButton,
   makeStyles,
 
-  SvgIcon, Typography,
+  SvgIcon,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import {
@@ -30,14 +30,13 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import BreathIcon from '../../public/breatheIcon.svg';
 import firebase from '../config/firebase';
 import isBrowser from '../shared/browserCheck';
-import useWindowDimensions from '../shared/dimensions';
 import leaveSite from '../shared/leave';
 import BreatheTimer from './BreatheTimer';
 
 const useStyles = makeStyles({
   headerIcon: {
-    width: 20,
-    height: 20,
+    width: 40,
+    height: 40,
   },
   title: {
     paddingLeft: 4,
@@ -50,7 +49,6 @@ const useStyles = makeStyles({
 
 const Header = ({ menuContainer }) => {
   const classes = useStyles();
-  const { height } = useWindowDimensions();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [user] = isBrowser ? useAuthState(firebase.auth()) : [{}];
   const [modalOpen, setModalOpen] = useState(false);
@@ -75,10 +73,9 @@ const Header = ({ menuContainer }) => {
               <Box display="flex" alignItems="center">
                 <img
                   className={classes.headerIcon}
-                  src="/logo.png"
+                  src="/logo-with-text.png"
                   alt="YSM Logo"
                 />
-                <Typography className={classes.title}>Your Story Matters</Typography>
               </Box>
             </LinkUi>
           </Link>
@@ -108,18 +105,13 @@ const Header = ({ menuContainer }) => {
           alignContent="center"
           alignItems="center"
           justifyContent="space-between"
-          height={height * 0.05}
-          px={2}
+          p={2}
         >
-          <Box display="flex" pr={2}>
-            {' '}
-            <img
-              className={classes.headerIcon}
-              src="/logo.png"
-              alt="YSM Logo"
-            />
-            <Typography className={classes.title}>Your Story Matters</Typography>
-          </Box>
+          <img
+            className={classes.headerIcon}
+            src="/logo-with-text.png"
+            alt="YSM Logo"
+          />
           <IconButton onClick={() => { setDrawerOpen(false); }}>
             <Clear />
           </IconButton>
@@ -131,7 +123,7 @@ const Header = ({ menuContainer }) => {
               <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
                 <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                   <Icon>
-                    <Home />
+                    <Home color="primary" />
                   </Icon>
                   Home
                 </Box>
@@ -141,7 +133,7 @@ const Header = ({ menuContainer }) => {
               <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
                 <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                   <Icon>
-                    <Info />
+                    <Info color="primary" />
                   </Icon>
                   About Us
                 </Box>
@@ -152,16 +144,16 @@ const Header = ({ menuContainer }) => {
               <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
                 <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                   <Icon>
-                    <AccountCircle />
+                    <AccountCircle color="primary" />
                   </Icon>
-                  {user ? 'My account' : 'Sign Up'}
+                  {user ? 'My account' : 'Sign Up/Sign In'}
                 </Box>
               </LinkUi>
             </Link>
             <LinkUi component="a" color="inherit" onClick={() => { leaveSite(); }}>
               <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                 <Icon>
-                  <ExitToApp />
+                  <ExitToApp color="primary" />
                 </Icon>
                 Leave this site
               </Box>
@@ -172,7 +164,7 @@ const Header = ({ menuContainer }) => {
               <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
                 <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                   <Icon>
-                    <MenuBook />
+                    <MenuBook color="primary" />
                   </Icon>
                   Your Privacy
                 </Box>
@@ -183,7 +175,7 @@ const Header = ({ menuContainer }) => {
               <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
                 <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                   <Icon>
-                    <Description />
+                    <Description color="primary" />
                   </Icon>
                   Terms and Conditions
                 </Box>
@@ -193,7 +185,7 @@ const Header = ({ menuContainer }) => {
               <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
                 <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                   <Icon>
-                    <EmojiFoodBeverage />
+                    <EmojiFoodBeverage color="primary" />
                   </Icon>
                   Cookie Policy
                 </Box>

@@ -55,6 +55,20 @@ const ThemePage = ({
   const [theme, setTheme] = useState(propThemes.find((t) => t.slug === slug));
   const [resources, setResources] = useState([]);
 
+  const richTextTransformer = (node) => {
+    if (node.type === 'tag' && node.name === 'p') {
+      return (
+        <Typography
+          key={node.children[0].data}
+          variant="h3"
+        >
+          {node.children[0].data}
+        </Typography>
+      );
+    }
+    return undefined;
+  };
+
   useEffect(() => {
     setThemes(propThemes.filter((t) => t.slug !== slug));
     setTheme(propThemes.find((t) => t.slug === slug));
@@ -143,12 +157,13 @@ const ThemePage = ({
               ogImageAlt={theme.image ? theme.image.alt : null}
             />
             <Typography color="textSecondary" align="center" variant="h1">{theme.title}</Typography>
+
             <Typography
               color="textSecondary"
               component="div"
               align="center"
             >
-              {richTextHelper(theme.description)}
+              {richTextHelper(theme.description, (node) => richTextTransformer(node))}
             </Typography>
           </>
         )}
@@ -210,7 +225,7 @@ const ThemePage = ({
         <LinkUi component="a" underline="always" color="inherit">
           <Box display="flex" alignItems="center">
             <ArrowBack className={classes.icon} />
-            <Typography variant="body2">Back to  Your Journey</Typography>
+            <Typography variant="subtitle1">Back to  Your Journey</Typography>
           </Box>
         </LinkUi>
       </Link>

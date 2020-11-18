@@ -35,7 +35,7 @@ const SignIn = () => {
         <LinkUi component="a" underline="always" color="inherit">
           <Box display="flex" alignItems="center">
             <ArrowBack className={classes.icon} />
-            <Typography variant="body2">Back</Typography>
+            <Typography variant="subtitle1">Back</Typography>
           </Box>
         </LinkUi>
       </Link>

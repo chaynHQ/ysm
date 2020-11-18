@@ -69,6 +69,20 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
     }
   }, [user]);
 
+  const richTextTransformer = (node) => {
+    if (node.type === 'tag' && node.name === 'p') {
+      return (
+        <Typography
+          key={node.children[0].data}
+          variant="h3"
+        >
+          {node.children[0].data}
+        </Typography>
+      );
+    }
+    return undefined;
+  };
+
   return (
     <Box
       display="flex"
@@ -104,7 +118,7 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
             />
 
             <Typography variant="h1" align="center">Your Journey</Typography>
-            <Typography align="center">
+            <Typography align="center" variant="h3">
               Browse accessible resources curated by a team of survivors.
               Save what you love and come back anytime.
             </Typography>
@@ -124,15 +138,16 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
                           <Typography variant="h2" align="center" color="textSecondary">
                             {theme.title}
                           </Typography>
-                          <Typography align="center">
-                            {richTextHelper(theme.description)}
-                          </Typography>
+
+                          {richTextHelper(theme.description, (node) => richTextTransformer(node))}
                           {theme.image
                             ? (
-                              <CardMedia
-                                component="img"
-                                image={theme.image.filename}
-                              />
+                              <Box pl={5} pr={5}>
+                                <CardMedia
+                                  component="img"
+                                  image={theme.image.filename}
+                                />
+                              </Box>
                             ) : null }
                         </Box>
                       </CardContent>
@@ -148,7 +163,7 @@ const YourJourney = ({ propThemes, container, previewMode }) => {
                 <LinkUi component="a" underline="always" color="inherit">
                   <Box display="flex" alignItems="center">
                     <ArrowBack className={classes.icon} />
-                    <Typography variant="body2">Back to Home</Typography>
+                    <Typography variant="subtitle1">Back to Home</Typography>
                   </Box>
                 </LinkUi>
               </Link>

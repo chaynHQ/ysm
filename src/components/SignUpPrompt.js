@@ -74,13 +74,15 @@ const SignUpPrompt = () => {
             <Typography align="center">
               Sign up to Your Story Matters and privately save resources for later.
             </Typography>
-            <Link href="/sign-in">
-              <Button variant="contained" disableElevation color="primary" component="a" to="/sign-in">
-                Create Your Account
-              </Button>
-            </Link>
+            <Box pt={3}>
+              <Link href="/sign-in">
+                <Button variant="contained" disableElevation color="primary" component="a" to="/sign-in">
+                  Create Your Account
+                </Button>
+              </Link>
+            </Box>
             <Box width="50%" display="flex" flexDirection="column" alignItems="center">
-              <Typography align="center" variant="subtitle1" className={classes.linkSubtitle}>
+              <Typography align="center" variant="subtitle2" className={classes.linkSubtitle}>
                 Your privacy will be protected.
               </Typography>
               <Typography align="center">
