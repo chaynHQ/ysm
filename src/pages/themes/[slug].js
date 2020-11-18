@@ -210,7 +210,7 @@ const ThemePage = ({
         <LinkUi component="a" underline="always" color="inherit">
           <Box display="flex" alignItems="center">
             <ArrowBack className={classes.icon} />
-            <Typography variant="body2">Back to  Your Journey</Typography>
+            <Typography variant="subtitle1">Back to  Your Journey</Typography>
           </Box>
         </LinkUi>
       </Link>
