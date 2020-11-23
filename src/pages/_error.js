@@ -12,8 +12,6 @@ const useStyles = makeStyles({
   },
 });
 
-const { publicRuntimeConfig } = getConfig();
-
 function Error({ statusCode }) {
   const classes = useStyles();
   return (
@@ -64,6 +62,8 @@ function Error({ statusCode }) {
 }
 
 Error.getInitialProps = ({ req, res, err }) => {
+  const { publicRuntimeConfig } = getConfig();
+
   let statusCode;
   if (res) {
     statusCode = res.statusCode;
@@ -72,10 +72,9 @@ Error.getInitialProps = ({ req, res, err }) => {
   } else {
     statusCode = 404;
   }
-  const rollbarToken = publicRuntimeConfig.NEXT_PUBLIC_ROLLBAR_SERVER_TOKEN
-  || process.env.NEXT_PUBLIC_ROLLBAR_SERVER_TOKEN;
-  const rollbarEnv = publicRuntimeConfig.NEXT_PUBLIC_ROLLBAR_ENV
-  || process.env.NEXT_PUBLIC_ROLLBAR_ENV;
+
+  const rollbarEnv = publicRuntimeConfig.NEXT_PUBLIC_ROLLBAR_ENV;
+  const rollbarToken = publicRuntimeConfig.NEXT_PUBLIC_ROLLBAR_SERVER_TOKEN;
 
   // Only require Rollbar and report error if we're on the server & it's not a local 404.
   if (!process.browser && statusCode !== 404) {

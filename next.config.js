@@ -20,8 +20,4 @@ module.exports = {
     API_URL: process.env.API_URL,
     BASE_URL: process.env.BASE_URL,
   },
-  env: {
-    NEXT_PUBLIC_ROLLBAR_ENV: process.env.NEXT_PUBLIC_ROLLBAR_ENV,
-    NEXT_PUBLIC_ROLLBAR_SERVER_TOKEN: process.env.NEXT_PUBLIC_ROLLBAR_SERVER_TOKEN,
-  },
 };
