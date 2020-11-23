@@ -12,6 +12,8 @@ const useStyles = makeStyles({
   },
 });
 
+const { publicRuntimeConfig } = getConfig();
+
 function Error({ statusCode }) {
   const classes = useStyles();
   return (
@@ -62,8 +64,6 @@ function Error({ statusCode }) {
 }
 
 Error.getInitialProps = ({ req, res, err }) => {
-  const { publicRuntimeConfig } = getConfig();
-
   let statusCode;
   if (res) {
     statusCode = res.statusCode;
