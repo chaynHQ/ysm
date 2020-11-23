@@ -2,13 +2,13 @@ name: YSM CI pipeline
 
 on:
   push:
-    branches: [master,live]
+    branches: [master, live]
   pull_request:
-    branches: [master,live]
+    branches: [master, live]
 
 jobs:
   frontend-test-and-build:
-    name: 'Frontend test and build'
+    name: "Frontend test and build"
 
     runs-on: ubuntu-18.04
 
@@ -21,7 +21,7 @@ jobs:
 
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: '12'
+          node-version: "12"
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -46,3 +46,5 @@ jobs:
 
       - name: Build app
         run: yarn build
+        env:
+          NEXT_PUBLIC_ROLLBAR_ENV: CI
