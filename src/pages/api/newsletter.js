@@ -1,5 +1,8 @@
 import md5 from 'md5';
+import getConfig from 'next/config';
 import mailchimp from '../../config/mailchimp';
+
+const { publicRuntimeConfig } = getConfig();
 
 export default async (req, res) => {
   const { email, displayName } = req.query;
@@ -8,7 +11,7 @@ export default async (req, res) => {
   }
   const emailHash = md5(email.toLowerCase());
 
-  const audienceId = process.env.NEXT_PUBLIC_MAILCHIMP_AUDIENCE_ID;
+  const audienceId = publicRuntimeConfig.NEXT_PUBLIC_MAILCHIMP_AUDIENCE_ID;
   let response = {};
 
   try {

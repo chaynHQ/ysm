@@ -1,4 +1,7 @@
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 export const config = {
   api: {
@@ -9,6 +12,6 @@ export const config = {
 
 // TODO: Need to check for the existance of API_URL
 export default createProxyMiddleware({
-  target: process.env.API_URL,
+  target: publicRuntimeConfig.API_URL,
   changeOrigin: true,
 });

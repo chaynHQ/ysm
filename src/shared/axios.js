@@ -1,12 +1,13 @@
 import axios from 'axios';
+import getConfig from 'next/config';
 import rollbar from './rollbar';
 
-// TODO: Need to check for existance of BASE_URL
+const { publicRuntimeConfig } = getConfig();
 
 let baseUrl = '';
-if (process && process.env.BASE_URL) {
-  if (process.env.BASE_URL) {
-    baseUrl = process.env.BASE_URL;
+if (publicRuntimeConfig && publicRuntimeConfig.BASE_URL) {
+  if (publicRuntimeConfig.BASE_URL) {
+    baseUrl = publicRuntimeConfig.BASE_URL;
   } else {
     throw new Error('BASE_URL env variable missing');
   }
