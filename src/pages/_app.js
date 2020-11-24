@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import LinkUi from '@material-ui/core/Link';
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'firebaseui/dist/firebaseui.css';
+import getConfig from 'next/config';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -72,6 +73,7 @@ const useStyles = makeStyles({
     width: '100%',
   },
 });
+const { publicRuntimeConfig } = getConfig();
 
 function App({ Component, pageProps }) {
   const router = useRouter();
@@ -208,6 +210,12 @@ function App({ Component, pageProps }) {
                   />
                 </CookieConsent>
               </Box>
+              {publicRuntimeConfig.NEXT_PUBLIC_ENV === 'staging'
+                ? (
+                  <Box bgcolor="error.main" p={2}>
+                    <Typography align="center" color="textPrimary">You are currently viewing the staging environment.</Typography>
+                  </Box>
+                ) : null }
               <Header menuContainer={containerRef} />
 
               <Box
