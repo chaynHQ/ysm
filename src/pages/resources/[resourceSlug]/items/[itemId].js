@@ -1,6 +1,5 @@
 import {
   Box,
-
   Card,
   CardActionArea,
   CardContent, Grid, makeStyles,
@@ -123,8 +122,8 @@ const ItemPage = ({ propResource, previewMode }) => {
             </Link>
 
             <Item item={item} />
-            <Box>
 
+            <Box>
               <Card variant="outlined" className={classes.card}>
                 <Link
                   href={nextItem ? '/resources/[resourceSlug]/items/[itemId]' : '/resources/[resourceSlug]'}

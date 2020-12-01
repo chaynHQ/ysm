@@ -20,6 +20,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactPlayer from 'react-player';
 import richTextHelper from '../shared/rich-text';
+import DownloadButton from './DownloadButton';
 import SaveButton from './SaveButton';
 
 const useStyles = makeStyles((theme) => ({
@@ -204,6 +205,14 @@ const Item = ({ item, canBeSaved }) => {
             return null;
         }
       })()}
+
+      {item.type === 'list'
+        ? (
+          <Box display="flex" justifyContent="center" pb={2}>
+            <DownloadButton item={item} />
+          </Box>
+        )
+        : null }
 
     </Box>
   );
