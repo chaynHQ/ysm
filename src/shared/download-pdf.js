@@ -103,6 +103,12 @@ export default function downloadPDF(item) {
         link: window.location.href,
         alignment: 'center',
         style: ['link'],
+        margin: [0, 0, 0, 6],
+      },
+      {
+        text: `Downloaded on: ${(new Date()).toDateString()}`,
+        fontSize: 12,
+        alignment: 'center',
         margin: [0, 0, 0, 20],
       },
       {
