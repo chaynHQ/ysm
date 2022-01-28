@@ -36,7 +36,7 @@
     "axios": "^0.21.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.4",
-    "firebase": "^8.0.1",
+    "firebase": "^9.6.5",
     "firebaseui": "^4.7.1",
     "html-to-pdfmake": "^2.1.2",
     "http-proxy-middleware": "^1.0.6",
