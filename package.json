@@ -54,7 +54,7 @@
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
     "rollbar": "^2.19.4",
-    "storyblok-js-client": "^2.5.2",
+    "storyblok-js-client": "^3.0.0",
     "yarn": "^1.22.10"
   },
   "eslintConfig": {
