@@ -33,7 +33,7 @@ const Footer = () => {
           if (value === '/leave') {
             leaveSite();
           } else if (value === '/directory') {
-            window.open('https://directory.chayn.co/login?api_token=a3e56550-3eb1-4ee8-82d6-c42d4683c16f');
+            window.open('https://directory.chayn.co/login?api_token=e5939162-9380-4f28-bf01-0a4e523897af');
           } else {
             setSelected(value);
             router.push(value);
