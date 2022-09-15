@@ -23,12 +23,12 @@ import {
   Menu,
   MenuBook,
 } from '@material-ui/icons';
+import firebase from 'firebase/compat/app';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import BreathIcon from '../../public/breatheIcon.svg';
-import firebase from '../config/firebase';
 import isBrowser from '../shared/browserCheck';
 import leaveSite from '../shared/leave';
 import BreatheTimer from './BreatheTimer';

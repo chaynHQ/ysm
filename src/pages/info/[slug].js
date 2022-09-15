@@ -11,12 +11,13 @@ import {
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import { ArrowBack } from '@material-ui/icons';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Head from '../../components/Head';
-import firebase from '../../config/firebase';
 import { axiosGet } from '../../shared/axios';
 import isBrowser from '../../shared/browserCheck';
 import richTextHelper from '../../shared/rich-text';

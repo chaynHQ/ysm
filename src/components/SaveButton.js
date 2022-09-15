@@ -1,11 +1,12 @@
 import { Button, IconButton } from '@material-ui/core';
 import { Bookmark, BookmarkBorder } from '@material-ui/icons';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
-import firebase from '../config/firebase';
 import { axiosDelete, axiosGet, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import { deleteBookmark, setBookmark } from '../store/actions';

@@ -10,6 +10,8 @@ import {
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import { ArrowBack, Search } from '@material-ui/icons';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -17,7 +19,6 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import Head from '../components/Head';
 import SearchModal from '../components/SearchModal';
 import SignUpPrompt from '../components/SignUpPrompt';
-import firebase from '../config/firebase';
 import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import richTextHelper from '../shared/rich-text';

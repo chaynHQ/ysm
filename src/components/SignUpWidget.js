@@ -2,6 +2,8 @@ import {
   Avatar, Box, Button, makeStyles, Typography,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 import * as firebaseui from 'firebaseui';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -9,12 +11,33 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
-import firebase, { uiConfig } from '../config/firebase';
 import { axiosGet, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
 import { setBookmark, setSettingsAuth } from '../store/actions';
 import NewsletterSignup from './NewsletterSignup';
+
+const uiConfig = {
+  credentialHelper: 'none',
+  signInOptions: [
+    // Leave the lines as is for the providers you want to offer your users.
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+    firebase.auth.GithubAuthProvider.PROVIDER_ID,
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+    firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID,
+  ],
+  // tosUrl and privacyPolicyUrl accept either url string or a callback
+  // function.
+  // Terms of service url/callback.
+  tosUrl: '/info/terms-and-conditions',
+  // Privacy policy url/callback.
+  privacyPolicyUrl() {
+    window.location.assign('https://chayn.co/privacy');
+  },
+};
 
 const useStyles = makeStyles({
   icon: {
@@ -70,8 +93,9 @@ const SignUpWidget = ({
   };
 
   useEffect(() => {
-    const FirebaseAuth = firebaseui.auth.AuthUI;
-    const UI = FirebaseAuth.getInstance() || new FirebaseAuth(firebase.auth());
+    // Initialize the FirebaseUI Widget using Firebase.
+    const UI = new firebaseui.auth.AuthUI(firebase.auth);
+    // The start method will wait until the DOM is loaded.
 
     try {
       UI.start('#firebaseui-auth-container', {

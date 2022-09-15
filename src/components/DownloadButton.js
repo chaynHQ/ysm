@@ -1,9 +1,9 @@
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import firebase from 'firebase/compat/app';
 import PropTypes from 'prop-types';
 import React from 'react';
-import firebase from '../config/firebase';
 import downloadPDF from '../shared/download-pdf';
 
 const useStyles = makeStyles((theme) => ({

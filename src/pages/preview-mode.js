@@ -1,10 +1,11 @@
 import { Box, Typography } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import firebase from '../config/firebase';
 import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 

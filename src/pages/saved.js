@@ -3,13 +3,14 @@ import {
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import { AccountCircle } from '@material-ui/icons';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import ResourceCard from '../components/ResourceCard';
-import firebase from '../config/firebase';
 import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import { setBookmark } from '../store/actions';

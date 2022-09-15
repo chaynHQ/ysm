@@ -9,9 +9,9 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ArrowBack, Clear } from '@material-ui/icons';
+import firebase from 'firebase/compat/app';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import firebase from '../config/firebase';
 import { axiosGet } from '../shared/axios';
 import useWindowDimensions from '../shared/dimensions';
 import theme from '../styles/theme';

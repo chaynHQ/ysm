@@ -4,10 +4,10 @@ import {
   Typography,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
+import firebase from 'firebase/compat/app';
 import Link from 'next/link';
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import firebase from '../config/firebase';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 

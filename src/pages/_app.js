@@ -4,6 +4,8 @@ import {
 import CssBaseline from '@material-ui/core/CssBaseline';
 import LinkUi from '@material-ui/core/Link';
 import { ThemeProvider } from '@material-ui/core/styles';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 import 'firebaseui/dist/firebaseui.css';
 import getConfig from 'next/config';
 import dynamic from 'next/dynamic';
@@ -17,7 +19,6 @@ import { Provider } from 'react-redux';
 import Head from '../components/Head';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
-import firebase from '../config/firebase';
 import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';

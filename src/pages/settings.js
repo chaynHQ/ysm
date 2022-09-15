@@ -3,6 +3,8 @@ import {
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import { ArrowBack } from '@material-ui/icons';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -11,7 +13,6 @@ import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import NewsletterSignup from '../components/NewsletterSignup';
-import firebase from '../config/firebase';
 import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import { setSettingsAuth, setUserSignIn } from '../store/actions';

@@ -1,10 +1,10 @@
 import {
   Box, Card, CardContent, Checkbox, Typography,
 } from '@material-ui/core';
+import firebase from 'firebase/compat/app';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import firebase from '../config/firebase';
 import { axiosDelete, axiosGet, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
