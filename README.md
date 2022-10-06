@@ -18,7 +18,7 @@ A [NextJs](https://nextjs.org/) VueJS app with PWA mode enabled and [Jest](https
 
 ### Prerequisites
 
-- NodeJS v12+
+- NodeJS v14+
 - Yarn v1.21+
 
 ### Install dependencies
