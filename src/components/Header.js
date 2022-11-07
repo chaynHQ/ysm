@@ -160,7 +160,7 @@ const Header = ({ menuContainer }) => {
             </LinkUi>
           </Box>
           <Box>
-            <Link href="https://chayn.co/privacy" passHref>
+            <Link href="https://chayn.notion.site/Privacy-policy-ad4a447bc1aa4d7294d9af5f8be7ae43" passHref>
               <LinkUi component="a" color="inherit" onClick={() => { setDrawerOpen(false); }}>
                 <Box display="flex" alignItems="flex-end" pl={2} py={1}>
                   <Icon>
