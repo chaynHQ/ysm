@@ -2,12 +2,11 @@
 import 'firebase/compat/analytics';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import getConfig from 'next/config';
+
 import { Cookies } from 'react-cookie-consent';
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
 
-const { publicRuntimeConfig } = getConfig();
 const CONSENT_COOKIE_NAME = 'ConsentToCookie';
 
 function shouldEnableAnalytics() {
@@ -33,10 +32,10 @@ function disableGoogleAnalyticsAdSignals() {
 }
 
 const config = {
-  projectId: publicRuntimeConfig.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  apiKey: publicRuntimeConfig.NEXT_PUBLIC_FIREBASE_KEY,
-  authDomain: publicRuntimeConfig.NEXT_PUBLIC_FIREBASE_DOMAIN,
-  appId: publicRuntimeConfig.NEXT_PUBLIC_FIREBASE_APP_ID,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_DOMAIN,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 if (isBrowser && !firebase.apps.length) {
