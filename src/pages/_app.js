@@ -210,7 +210,7 @@ function App({ Component, pageProps }) {
                   />
                 </CookieConsent>
               </Box>
-              {publicRuntimeConfig.NEXT_PUBLIC_ENV === 'staging'
+              {process.env.NEXT_PUBLIC_ENV === 'staging'
                 ? (
                   <Box bgcolor="error.main" p={2}>
                     <Typography align="center" color="textPrimary">You are currently viewing the staging environment.</Typography>
