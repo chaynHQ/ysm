@@ -9,7 +9,7 @@ assignees: ''
 
 **Describe the bug**
 A clear and concise description of what the bug is.
-*Please do not report security vulnerabilities here. To report security vulnerabilities, please follow our Security Policy instructions:* https://github.com/chaynHQ/ysm/security
+*Please do not report security vulnerabilities here. To report security vulnerabilities, please follow our Security Policy instructions:* https://github.com/chaynHQ/ysm/security/policy
 
 **To Reproduce**
 Steps to reproduce the behavior:
