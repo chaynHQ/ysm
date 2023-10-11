@@ -6,9 +6,21 @@ Your Story Matters (YSM) is a digital companion for survivors of sexual assault 
 
 **Currently in active development.**
 
-## Support Us
+## Get Involved
 
-YSM is created by Chayn a global volunteer network with over 400 volunteers from 15 countries. If you like what you see and you want to join our team of volunteers get in touch. Or you can [donate](https://www.paypal.me/chaynhq); all proceeds go to improving YSM and building more tools and resources at ChaynHQ.
+If you would like to help Chayn and receive special access to our organization and volunteer opportunities, please [visit our Getting Involved guide](https://chayn.notion.site/Get-involved-423c067536f3426a88005de68f0cab19). We'll get back to you to schedule an onboarding call. Other ways to get involved and support us are [donating](https://www.paypal.me/chaynhq), starring this repo and making an open-source contribution here on GitHub, and supporting us on social media! 
+
+Our social medias:
+
+Website - [Chayn](https://www.chayn.co/)
+
+Twitter - [@ChaynHQ](https://twitter.com/ChaynHQ)
+
+Instagram - [@chaynhq](https://www.instagram.com/chaynhq/)
+
+Youtube - [Chayn Team](https://www.youtube.com/channel/UC5_1Ci2SWVjmbeH8_USm-Bg)
+
+LinkedIn - [@chayn](https://www.linkedin.com/company/chayn)
 
 # YSM Frontend
 
