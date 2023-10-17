@@ -136,7 +136,7 @@ const Search = ({ shown, container, closeModal }) => {
 };
 
 Search.propTypes = {
-  container: PropTypes.objectOf(PropTypes.any).isRequired,
+  container: PropTypes.oneOfType([PropTypes.object]).isRequired,
   shown: PropTypes.bool,
   closeModal: PropTypes.func.isRequired,
 };

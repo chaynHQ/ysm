@@ -199,7 +199,7 @@ const Header = ({ menuContainer }) => {
 };
 
 Header.propTypes = {
-  menuContainer: PropTypes.objectOf(PropTypes.any).isRequired,
+  menuContainer: PropTypes.oneOfType([PropTypes.object]).isRequired,
 };
 
 export default Header;

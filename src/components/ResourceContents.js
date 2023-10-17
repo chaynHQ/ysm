@@ -89,7 +89,7 @@ const ResourceContents = ({ resource }) => {
 };
 
 ResourceContents.propTypes = {
-  resource: PropTypes.objectOf(PropTypes.any).isRequired,
+  resource: PropTypes.oneOfType([PropTypes.object]).isRequired,
 };
 
 export default ResourceContents;

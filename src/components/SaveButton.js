@@ -102,7 +102,7 @@ const SaveButton = ({
 SaveButton.propTypes = {
   resourceSlug: PropTypes.string.isRequired,
   redirectUrl: PropTypes.string,
-  profile: PropTypes.objectOf(PropTypes.any).isRequired,
+  profile: PropTypes.oneOfType([PropTypes.object]).isRequired,
   setUserBookmark: PropTypes.func.isRequired,
   deleteUserBookmark: PropTypes.func.isRequired,
 };

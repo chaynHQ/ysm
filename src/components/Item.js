@@ -219,7 +219,7 @@ const Item = ({ item, canBeSaved }) => {
 };
 
 Item.propTypes = {
-  item: PropTypes.objectOf(PropTypes.any).isRequired,
+  item: PropTypes.oneOfType([PropTypes.object]).isRequired,
   canBeSaved: PropTypes.bool,
 };
 

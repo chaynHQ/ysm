@@ -36,7 +36,7 @@ const DownloadButton = ({ item }) => {
 };
 
 DownloadButton.propTypes = {
-  item: PropTypes.objectOf(PropTypes.any).isRequired,
+  item: PropTypes.oneOfType([PropTypes.object]).isRequired,
 };
 
 export default DownloadButton;
