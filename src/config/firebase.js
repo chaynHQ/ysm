@@ -1,5 +1,4 @@
 // Import the functions you need from the SDKs you need
-import analytics from 'firebase/compat/analytics';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
@@ -38,7 +37,7 @@ const config = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-if (isBrowser && !firebase.apps.length && analytics.isSupported()) {
+if (isBrowser && !firebase.apps.length) {
   firebase.initializeApp(config);
 
   try {
