@@ -19,7 +19,7 @@ const SaveButton = ({
 
   useEffect(() => {
     const getServerBookmarkData = async () => {
-      const idToken = await user.getIdToken();
+      const idToken = await user.user.getIdToken();
       const serverProfile = await axiosGet('/profile',
         {
           headers: {

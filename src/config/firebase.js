@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import 'firebase/compat/analytics';
+import analytics from 'firebase/compat/analytics';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
@@ -38,13 +38,13 @@ const config = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-if (isBrowser && !firebase.apps.length) {
+if (isBrowser && !firebase.apps.length && analytics.isSupported()) {
   firebase.initializeApp(config);
 
   try {
     disableGoogleAnalyticsAdSignals();
-    const analytics = firebase.analytics();
-    analytics.setAnalyticsCollectionEnabled(shouldEnableAnalytics());
+    const analyticsInstance = firebase.analytics();
+    analyticsInstance.setAnalyticsCollectionEnabled(shouldEnableAnalytics());
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Failed to initialise analytics', error);
