@@ -41,7 +41,7 @@ const config = {
 if (isBrowser && !firebase.apps.length) {
   firebase.initializeApp(config);
 
-  if (process.NEXT_PUBLIC_ENV !== 'ci') {
+  if (process.env.NEXT_PUBLIC_ENV !== 'ci') {
     try {
       disableGoogleAnalyticsAdSignals();
       const analyticsInstance = firebase.analytics();
