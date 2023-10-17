@@ -41,14 +41,16 @@ const config = {
 if (isBrowser && !firebase.apps.length) {
   firebase.initializeApp(config);
 
-  try {
-    disableGoogleAnalyticsAdSignals();
-    const analytics = firebase.analytics();
-    analytics.setAnalyticsCollectionEnabled(shouldEnableAnalytics());
-  } catch (error) {
+  if (process.env.NEXT_PUBLIC_ENV === 'production') {
+    try {
+      disableGoogleAnalyticsAdSignals();
+      const analyticsInstance = firebase.analytics();
+      analyticsInstance.setAnalyticsCollectionEnabled(shouldEnableAnalytics());
+    } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Failed to initialise analytics', error);
-    rollbar.error('Failed to initialise analytics', error);
+      console.error('Failed to initialise analytics', error);
+      rollbar.error('Failed to initialise analytics', error);
+    }
   }
 }
 

@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import firebase, { uiConfig } from '../config/firebase';
+import analyticsEvent from '../shared/analyticsEvent';
 import { axiosGet, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import rollbar from '../shared/rollbar';
@@ -87,9 +88,9 @@ const SignUpWidget = ({
 
             // Analytics
             if (authResult.additionalUserInfo.isNewUser) {
-              firebase.analytics().logEvent('sign_up');
+              analyticsEvent('sign_up');
             } else {
-              firebase.analytics().logEvent('login');
+              analyticsEvent('login');
             }
 
             const successResponse = async () => {

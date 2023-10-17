@@ -15,6 +15,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import Head from '../../../../components/Head';
 import Item from '../../../../components/Item';
 import firebase from '../../../../config/firebase';
+import analyticsEvent from '../../../../shared/analyticsEvent';
 import { axiosGet } from '../../../../shared/axios';
 import isBrowser from '../../../../shared/browserCheck';
 
@@ -84,10 +85,12 @@ const ItemPage = ({ propResource, previewMode }) => {
 
   useEffect(() => {
     if (!previewMode && item) {
-      firebase.analytics().logEvent('select_content', {
-        content_type: 'resource_content_item',
-        item_id: `${resource.slug}/${itemId}`,
-      });
+      analyticsEvent(
+        'select_content', {
+          content_type: 'resource_content_item',
+          item_id: `${resource.slug}/${itemId}`,
+        },
+      );
     }
   }, [item, itemId, resourceSlug]);
 
@@ -131,7 +134,7 @@ const ItemPage = ({ propResource, previewMode }) => {
                 >
                   <CardActionArea component="a" className={classes.cardMedia}>
                     <CardContent>
-                      <Grid container justify="space-between" direction="row">
+                      <Grid container justifyContent="space-between" direction="row">
                         <Typography color="textSecondary">
                           {nextItem ? 'Continue: ' : 'That was the last note on: '}
                           {' '}

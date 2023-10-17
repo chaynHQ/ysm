@@ -70,7 +70,6 @@ const Item = ({ item, canBeSaved }) => {
     <Box
       pt={3.5}
       px={2}
-
     >
       <Box
         display="flex"
@@ -109,25 +108,25 @@ const Item = ({ item, canBeSaved }) => {
             switch (item.render_as) {
               case 'plain':
                 content = (
-                  <List>
+                  <List key={`list_${item.items.length}`}>
                     {item.items.map((value) => (
-                      <>
-                        <ListItem key={value._uid}>
+                      <Box key={`list_${value._uid}`}>
+                        <ListItem>
                           <ListItemText
                             primary={value.title}
                             secondary={richTextHelper(value.content)}
                           />
                         </ListItem>
                         <Divider />
-                      </>
+                      </Box>
                     ))}
                   </List>
                 );
                 break;
               case 'cards':
                 content = item.items.map((value) => (
-                  <Card key={value._uid} variant="outlined">
-                    <CardContent key={value._uid}>
+                  <Card key={`cards_${value._uid}`} variant="outlined">
+                    <CardContent>
                       <Typography>{value.title}</Typography>
                       {richTextHelper(value.content)}
                     </CardContent>
@@ -136,8 +135,8 @@ const Item = ({ item, canBeSaved }) => {
                 break;
               case 'accordion':
                 content = item.items.map((value) => (
-                  <Box mb={2}>
-                    <Accordion key={value._uid}>
+                  <Box mb={2} key={`accordion_${value._uid}`}>
+                    <Accordion>
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                       >
@@ -160,8 +159,8 @@ const Item = ({ item, canBeSaved }) => {
                 content = (
                   <List>
                     {item.items.map((value) => (
-                      <>
-                        <ListItem key={value._uid}>
+                      <Box key={`checklist_${value._uid}`}>
+                        <ListItem>
                           <ListItemIcon>
                             <Checkbox
                               edge="start"
@@ -171,7 +170,7 @@ const Item = ({ item, canBeSaved }) => {
                           <ListItemText>{richTextHelper(value.content)}</ListItemText>
                         </ListItem>
                         <Divider key={`divider ${value._uid}`} />
-                      </>
+                      </Box>
                     ))}
                   </List>
                 );
@@ -219,7 +218,7 @@ const Item = ({ item, canBeSaved }) => {
 };
 
 Item.propTypes = {
-  item: PropTypes.objectOf(PropTypes.any).isRequired,
+  item: PropTypes.oneOfType([PropTypes.object]).isRequired,
   canBeSaved: PropTypes.bool,
 };
 

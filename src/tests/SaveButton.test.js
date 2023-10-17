@@ -27,7 +27,7 @@ jest.mock('../config/firebase');
 
 jest.mock('react-firebase-hooks/auth', () => ({
   useAuthState: () => ([
-    {}, {}, {}]
+    { getIdToken: () => 'testtoken' }, {}, {}]
   ),
 }));
 
