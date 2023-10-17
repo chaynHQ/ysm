@@ -19,6 +19,7 @@ import ResourceCard from '../../components/ResourceCard';
 import SearchModal from '../../components/SearchModal';
 import SignUpPrompt from '../../components/SignUpPrompt';
 import firebase from '../../config/firebase';
+import analyticsEvent from '../../shared/analyticsEvent';
 import { axiosGet } from '../../shared/axios';
 import isBrowser from '../../shared/browserCheck';
 import richTextHelper from '../../shared/rich-text';
@@ -112,7 +113,7 @@ const ThemePage = ({
 
   useEffect(() => {
     if (!previewMode && theme) {
-      firebase.analytics()?.logEvent('select_content', {
+      analyticsEvent('select_content', {
         content_type: 'theme',
         item_id: theme.slug,
       });

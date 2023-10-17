@@ -1,9 +1,9 @@
 import {
-    Box,
-    Card,
-    CardActionArea,
-    CardContent, Grid, makeStyles,
-    Typography,
+  Box,
+  Card,
+  CardActionArea,
+  CardContent, Grid, makeStyles,
+  Typography,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import { ArrowBack, ArrowForward } from '@material-ui/icons';
@@ -15,6 +15,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import Head from '../../../../components/Head';
 import Item from '../../../../components/Item';
 import firebase from '../../../../config/firebase';
+import analyticsEvent from '../../../../shared/analyticsEvent';
 import { axiosGet } from '../../../../shared/axios';
 import isBrowser from '../../../../shared/browserCheck';
 
@@ -84,10 +85,12 @@ const ItemPage = ({ propResource, previewMode }) => {
 
   useEffect(() => {
     if (!previewMode && item) {
-      firebase.analytics()?.logEvent('select_content', {
-        content_type: 'resource_content_item',
-        item_id: `${resource.slug}/${itemId}`,
-      });
+      analyticsEvent(
+        'select_content', {
+          content_type: 'resource_content_item',
+          item_id: `${resource.slug}/${itemId}`,
+        },
+      );
     }
   }, [item, itemId, resourceSlug]);
 

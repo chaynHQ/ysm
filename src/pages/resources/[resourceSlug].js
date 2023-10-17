@@ -10,6 +10,7 @@ import Head from '../../components/Head';
 import Item from '../../components/Item';
 import ResourceContents from '../../components/ResourceContents';
 import firebase from '../../config/firebase';
+import analyticsEvent from '../../shared/analyticsEvent';
 import { axiosGet } from '../../shared/axios';
 import isBrowser from '../../shared/browserCheck';
 
@@ -55,7 +56,7 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
 
   useEffect(() => {
     if (!previewMode && resource) {
-      firebase.analytics()?.logEvent('select_content', {
+      analyticsEvent('select_content', {
         content_type: 'resource',
         item_id: resource.slug,
       });

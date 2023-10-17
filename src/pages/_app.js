@@ -17,6 +17,7 @@ import Head from '../components/Head';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import firebase from '../config/firebase';
+import analyticsEvent from '../shared/analyticsEvent';
 import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
@@ -123,7 +124,7 @@ function App({ Component, pageProps }) {
       setIsLoading(true);
     });
     router.events.on('routeChangeComplete', () => {
-      firebase.analytics()?.logEvent('page_view');
+      analyticsEvent('page_view');
       setIsLoading(false);
     });
     router.events.on('routeChangeError', () => {
