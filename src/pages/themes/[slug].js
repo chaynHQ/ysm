@@ -112,7 +112,7 @@ const ThemePage = ({
 
   useEffect(() => {
     if (!previewMode && theme) {
-      firebase.analytics().logEvent('select_content', {
+      firebase.analytics()?.logEvent('select_content', {
         content_type: 'theme',
         item_id: theme.slug,
       });

@@ -87,9 +87,9 @@ const SignUpWidget = ({
 
             // Analytics
             if (authResult.additionalUserInfo.isNewUser) {
-              firebase.analytics().logEvent('sign_up');
+              firebase.analytics()?.logEvent('sign_up');
             } else {
-              firebase.analytics().logEvent('login');
+              firebase.analytics()?.logEvent('login');
             }
 
             const successResponse = async () => {

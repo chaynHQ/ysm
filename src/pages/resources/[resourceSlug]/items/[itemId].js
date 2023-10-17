@@ -1,9 +1,9 @@
 import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent, Grid, makeStyles,
-  Typography,
+    Box,
+    Card,
+    CardActionArea,
+    CardContent, Grid, makeStyles,
+    Typography,
 } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
 import { ArrowBack, ArrowForward } from '@material-ui/icons';
@@ -84,7 +84,7 @@ const ItemPage = ({ propResource, previewMode }) => {
 
   useEffect(() => {
     if (!previewMode && item) {
-      firebase.analytics().logEvent('select_content', {
+      firebase.analytics()?.logEvent('select_content', {
         content_type: 'resource_content_item',
         item_id: `${resource.slug}/${itemId}`,
       });
@@ -131,7 +131,7 @@ const ItemPage = ({ propResource, previewMode }) => {
                 >
                   <CardActionArea component="a" className={classes.cardMedia}>
                     <CardContent>
-                      <Grid container justify="space-between" direction="row">
+                      <Grid container justifyContent="space-between" direction="row">
                         <Typography color="textSecondary">
                           {nextItem ? 'Continue: ' : 'That was the last note on: '}
                           {' '}

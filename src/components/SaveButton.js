@@ -19,7 +19,7 @@ const SaveButton = ({
 
   useEffect(() => {
     const getServerBookmarkData = async () => {
-      const idToken = await user.user.getIdToken();
+      const idToken = await user.getIdToken();
       const serverProfile = await axiosGet('/profile',
         {
           headers: {
@@ -45,7 +45,7 @@ const SaveButton = ({
         ? (
           <IconButton
             onClick={async () => {
-              const idToken = await user.user.getIdToken();
+              const idToken = await user.getIdToken();
               axiosDelete(`/profile/bookmarks/resources/${resourceSlug}`, {
                 headers: {
                   authorization: `Bearer ${idToken}`,
@@ -55,7 +55,7 @@ const SaveButton = ({
                 setSaved(false);
                 deleteUserBookmark(resourceSlug);
 
-                firebase.analytics().logEvent('remove_bookmark', {
+                firebase.analytics()?.logEvent('remove_bookmark', {
                   content_type: 'resource',
                   item_id: resourceSlug,
                 });
@@ -74,7 +74,7 @@ const SaveButton = ({
             startIcon={<BookmarkBorder />}
             onClick={async () => {
               if (user) {
-                const idToken = await user.user.getIdToken();
+                const idToken = await user.getIdToken();
                 axiosPut(`/profile/bookmarks/resources/${resourceSlug}`, { resourceId: resourceSlug }, {
                   headers: {
                     authorization: `Bearer ${idToken}`,
@@ -82,7 +82,7 @@ const SaveButton = ({
                 }).then(() => {
                   setUserBookmark(resourceSlug);
 
-                  firebase.analytics().logEvent('add_bookmark', {
+                  firebase.analytics()?.logEvent('add_bookmark', {
                     content_type: 'resource',
                     item_id: resourceSlug,
                   });

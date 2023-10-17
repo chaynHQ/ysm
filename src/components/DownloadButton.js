@@ -25,7 +25,7 @@ const DownloadButton = ({ item }) => {
       onClick={() => {
         downloadPDF(item);
 
-        firebase.analytics().logEvent('download_pdf', {
+        firebase.analytics()?.logEvent('download_pdf', {
           item_id: item.id,
         });
       }}

@@ -123,7 +123,7 @@ function App({ Component, pageProps }) {
       setIsLoading(true);
     });
     router.events.on('routeChangeComplete', () => {
-      firebase.analytics().logEvent('page_view');
+      firebase.analytics()?.logEvent('page_view');
       setIsLoading(false);
     });
     router.events.on('routeChangeError', () => {

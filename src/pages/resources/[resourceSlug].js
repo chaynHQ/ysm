@@ -55,7 +55,7 @@ const ResourcePage = ({ propResource, propTheme, previewMode }) => {
 
   useEffect(() => {
     if (!previewMode && resource) {
-      firebase.analytics().logEvent('select_content', {
+      firebase.analytics()?.logEvent('select_content', {
         content_type: 'resource',
         item_id: resource.slug,
       });

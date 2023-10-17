@@ -26,7 +26,7 @@ const Search = ({ shown, container, closeModal }) => {
   const getSearchResults = async (param) => {
     if (param.length >= 1) {
       setSearchStatus('searching');
-      firebase.analytics().logEvent('search', { search_term: param });
+      firebase.analytics()?.logEvent('search', { search_term: param });
       const response = await axiosGet('resources', {
         params: {
           q: param,
