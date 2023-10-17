@@ -45,7 +45,7 @@ const SaveButton = ({
         ? (
           <IconButton
             onClick={async () => {
-              const idToken = await user.getIdToken();
+              const idToken = await user.user.getIdToken();
               axiosDelete(`/profile/bookmarks/resources/${resourceSlug}`, {
                 headers: {
                   authorization: `Bearer ${idToken}`,
@@ -74,7 +74,7 @@ const SaveButton = ({
             startIcon={<BookmarkBorder />}
             onClick={async () => {
               if (user) {
-                const idToken = await user.getIdToken();
+                const idToken = await user.user.getIdToken();
                 axiosPut(`/profile/bookmarks/resources/${resourceSlug}`, { resourceId: resourceSlug }, {
                   headers: {
                     authorization: `Bearer ${idToken}`,
