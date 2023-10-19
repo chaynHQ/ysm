@@ -5,7 +5,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import LinkUi from '@material-ui/core/Link';
 import { ThemeProvider } from '@material-ui/core/styles';
 import 'firebaseui/dist/firebaseui.css';
-import getConfig from 'next/config';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -18,6 +17,7 @@ import Head from '../components/Head';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import firebase from '../config/firebase';
+import analyticsEvent from '../shared/analyticsEvent';
 import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
@@ -73,7 +73,6 @@ const useStyles = makeStyles({
     width: '100%',
   },
 });
-const { publicRuntimeConfig } = getConfig();
 
 function App({ Component, pageProps }) {
   const router = useRouter();
@@ -125,7 +124,7 @@ function App({ Component, pageProps }) {
       setIsLoading(true);
     });
     router.events.on('routeChangeComplete', () => {
-      firebase.analytics().logEvent('page_view');
+      analyticsEvent('page_view');
       setIsLoading(false);
     });
     router.events.on('routeChangeError', () => {
@@ -210,7 +209,7 @@ function App({ Component, pageProps }) {
                   />
                 </CookieConsent>
               </Box>
-              {publicRuntimeConfig.NEXT_PUBLIC_ENV === 'staging'
+              {process.env.NEXT_PUBLIC_ENV === 'staging'
                 ? (
                   <Box bgcolor="error.main" p={2}>
                     <Typography align="center" color="textPrimary">You are currently viewing the staging environment.</Typography>
@@ -250,5 +249,5 @@ export default App;
 
 App.propTypes = {
   Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.objectOf(PropTypes.any).isRequired,
+  pageProps: PropTypes.oneOfType([PropTypes.object]).isRequired,
 };

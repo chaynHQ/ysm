@@ -1,5 +1,13 @@
 name: YSM CI pipeline
 
+env:
+  NEXT_PUBLIC_ENV: ci
+  NEXT_PUBLIC_ROLLBAR_ENV: CI
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+  NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+  NEXT_PUBLIC_FIREBASE_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_KEY }}
+  NEXT_PUBLIC_FIREBASE_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_DOMAIN }}
+
 on:
   push:
     branches: [master]
@@ -10,7 +18,7 @@ jobs:
   frontend-test-and-build:
     name: "Frontend test and build"
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     defaults:
       run:
@@ -21,7 +29,7 @@ jobs:
 
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: "14"
+          node-version: "16"
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -46,5 +54,3 @@ jobs:
 
       - name: Build app
         run: yarn build
-        env:
-          NEXT_PUBLIC_ROLLBAR_ENV: CI

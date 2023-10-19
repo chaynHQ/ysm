@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
+import analyticsEvent from '../shared/analyticsEvent';
 import { axiosDelete, axiosGet, axiosPut } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import { deleteBookmark, setBookmark } from '../store/actions';
@@ -55,7 +56,7 @@ const SaveButton = ({
                 setSaved(false);
                 deleteUserBookmark(resourceSlug);
 
-                firebase.analytics().logEvent('remove_bookmark', {
+                analyticsEvent('remove_bookmark', {
                   content_type: 'resource',
                   item_id: resourceSlug,
                 });
@@ -82,7 +83,7 @@ const SaveButton = ({
                 }).then(() => {
                   setUserBookmark(resourceSlug);
 
-                  firebase.analytics().logEvent('add_bookmark', {
+                  analyticsEvent('add_bookmark', {
                     content_type: 'resource',
                     item_id: resourceSlug,
                   });
@@ -102,7 +103,7 @@ const SaveButton = ({
 SaveButton.propTypes = {
   resourceSlug: PropTypes.string.isRequired,
   redirectUrl: PropTypes.string,
-  profile: PropTypes.objectOf(PropTypes.any).isRequired,
+  profile: PropTypes.oneOfType([PropTypes.object]).isRequired,
   setUserBookmark: PropTypes.func.isRequired,
   deleteUserBookmark: PropTypes.func.isRequired,
 };

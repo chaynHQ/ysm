@@ -141,7 +141,7 @@ export async function getServerSideProps({ preview, params }) {
 }
 
 InfoPage.propTypes = {
-  propContent: PropTypes.objectOf(PropTypes.any).isRequired,
+  propContent: PropTypes.oneOfType([PropTypes.object]).isRequired,
   previewMode: PropTypes.bool,
 };
 
