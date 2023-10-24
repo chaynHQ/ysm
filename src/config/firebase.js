@@ -41,13 +41,13 @@ const config = {
 if (isBrowser && !firebase.apps.length) {
   firebase.initializeApp(config);
 
-  if (process.env.NEXT_PUBLIC_ENV === 'production') {
+  if (process.env.NEXT_PUBLIC_ENV === 'live') {
     try {
       disableGoogleAnalyticsAdSignals();
       const analyticsInstance = firebase.analytics();
       analyticsInstance.setAnalyticsCollectionEnabled(shouldEnableAnalytics());
     } catch (error) {
-    // eslint-disable-next-line no-console
+      // eslint-disable-next-line no-console
       console.error('Failed to initialise analytics', error);
       rollbar.error('Failed to initialise analytics', error);
     }

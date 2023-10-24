@@ -105,7 +105,7 @@ function App({ Component, pageProps }) {
           router.push('/sign-in');
         }
         if (
-          process.env.NEXT_PUBLIC_ENV === 'production' &&
+          process.env.NEXT_PUBLIC_ENV === 'live' &&
           getCookieConsentValue('ConsentToCookie') === 'true'
         ) {
           hotjar.identify('USER_ID', { userProperty: user.id });
@@ -129,7 +129,7 @@ function App({ Component, pageProps }) {
       setIsLoading(false);
     });
 
-    if (process.env.NEXT_PUBLIC_ENV === 'production') {
+    if (process.env.NEXT_PUBLIC_ENV === 'live') {
       hotjar.initialize(Number(process.env.NEXT_PUBLIC_HOTJAR_ID), 5);
     }
   }, []);
