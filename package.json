@@ -6,7 +6,6 @@
   "productName": "YSM",
   "author": "Chayn",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "dev:url": "BASE_URL=\"http://localhost:3001\" API_URL=\"http://localhost:3000\" next dev -p 3001",
