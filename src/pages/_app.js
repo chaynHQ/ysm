@@ -130,7 +130,7 @@ function App({ Component, pageProps }) {
     });
 
     if (process.env.NEXT_PUBLIC_ENV === 'production') {
-      hotjar.initialize(Number(process.env.NEXT_PUBLIC_HOTJAR_ID), 6);
+      hotjar.initialize(Number(process.env.NEXT_PUBLIC_HOTJAR_ID), 5);
     }
   }, []);
 

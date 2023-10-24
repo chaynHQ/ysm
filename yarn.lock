@@ -6729,10 +6729,10 @@ react-firebase-hooks@^2.2.0:
   resolved "https://registry.yarnpkg.com/react-firebase-hooks/-/react-firebase-hooks-2.2.0.tgz#a2cea46d3da94619e8a316b85173638698ef7d2b"
   integrity sha512-bwBaCYa8M+bpTqD0masAPGDTzxiTkGbyxv363hyR+NeNH1HbezPll6G7aMIGl+7OOYRPzfdmpkk72zc3VgXfEw==
 
-react-hotjar@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/react-hotjar/-/react-hotjar-6.1.0.tgz#910dd5d002f5043a6f34ae7ada545b2aace1edae"
-  integrity sha512-V1UJixDMspAIrbGIFG282U7mH2aK1JBid0YR8F9oscb6lTkjMga+gst2gesxJDsqsax+k+lM1LqRXYzmUu8izA==
+react-hotjar@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/react-hotjar/-/react-hotjar-5.5.0.tgz#5f74a659a4d85773a7988c6d6d6261c5e45a160b"
+  integrity sha512-cXp1DKUruibmbSvCCRl4hXLagT7fVUiFJbpXtVDovVjNxooClf7ZXdkkzbATpPSU4+IuvYP773T4vXXnjrV3dg==
 
 react-html-parser@^2.0.2:
   version "2.0.2"
