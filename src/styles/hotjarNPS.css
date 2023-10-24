@@ -1,7 +1,7 @@
 /* Hotjar CUSTOM styles to override default hotjar CSS */
 
 ._hj-widget-container ._hj-Pbej5__styles__resetStyles * {
-    font-family: 'Open Sans', 'hotjar', 'sans-serif' !important;
+    font-family: 'Nunito', 'hotjar', 'sans-serif' !important;
   }
   
 ._hj-PZjqr__styles__surveyBranding {
@@ -70,6 +70,7 @@
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.15) !important;
 }
 
+
 ._hj-widget-container ._hj-s3UIi__styles__globalStyles ._hj-SU8LU__styles__primaryButton:hover,
 ._hj-widget-container
   ._hj-s3UIi__styles__globalStyles
@@ -101,7 +102,7 @@
   ._hj-s3UIi__styles__globalStyles
   ._hj-XpAaA__styles__surveyFooter
   button[disabled]:hover {
-  background: #f1f2f6 !important;
+  background: rgb(255, 203, 182) !important;
 }
 
 /* Input styles */
