@@ -12,7 +12,6 @@ import CookieConsent, { getCookieConsentValue } from 'react-cookie-consent';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { hotjar } from 'react-hotjar';
 import { Provider } from 'react-redux';
-import '../../public/hotjarNPS.css';
 import Head from '../components/Head';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
@@ -22,6 +21,7 @@ import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 import { useStore } from '../store/store';
+import '../styles/hotjarNPS.css';
 import theme from '../styles/theme';
 
 const Footer = dynamic(() => import('../components/Footer'), { ssr: false });
