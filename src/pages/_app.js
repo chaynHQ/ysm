@@ -12,6 +12,7 @@ import CookieConsent, { getCookieConsentValue } from 'react-cookie-consent';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { hotjar } from 'react-hotjar';
 import { Provider } from 'react-redux';
+import '../../public/hotjarNPS.css';
 import Head from '../components/Head';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
