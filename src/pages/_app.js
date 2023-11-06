@@ -21,7 +21,6 @@ import { axiosGet } from '../shared/axios';
 import isBrowser from '../shared/browserCheck';
 import useWindowDimensions from '../shared/dimensions';
 import { useStore } from '../store/store';
-import '../styles/hotjarNPS.css';
 import theme from '../styles/theme';
 
 const Footer = dynamic(() => import('../components/Footer'), { ssr: false });
@@ -130,7 +129,7 @@ function App({ Component, pageProps }) {
     });
 
     if (process.env.NEXT_PUBLIC_ENV === 'live') {
-      hotjar.initialize(Number(process.env.NEXT_PUBLIC_HOTJAR_ID), 5);
+      hotjar.initialize(Number(process.env.NEXT_PUBLIC_HOTJAR_ID), 6);
     }
   }, []);
 
