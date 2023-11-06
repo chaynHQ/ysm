@@ -12,7 +12,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Nunito&display=swap"
           />
-          <link href="https://bloom.chayn.co/hotjarNPS.css" rel="preload" as="style" />
+          <link rel="stylesheet" href="https://bloom.chayn.co/hotjarNPS.css" />
         </Head>
         <body>
           <Main />
