@@ -7,7 +7,6 @@ const Head = ({ title, description, ogDescription, ogImage, ogTitle, ogImageAlt 
   <NextHead>
     <title key="title">{title} | YSM</title>
     <link rel="icon" href="/favicon.png" />
-    <link href="https://bloom.chayn.co/hotjarNPS.css" rel="stylesheet" type="text/css" />
     <meta name="description" content={description} />
     <meta property="og:url" content={isBrowser ? window.location.href : null} />
     <meta property="og:type" content="website" />
