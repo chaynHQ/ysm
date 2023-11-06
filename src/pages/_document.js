@@ -1,8 +1,6 @@
 /* eslint-disable react/jsx-filename-extension */
 import { ServerStyleSheets } from '@material-ui/core/styles';
-import Document, {
-  Head, Html, Main, NextScript,
-} from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 
 export default class MyDocument extends Document {
@@ -10,7 +8,11 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito&display=swap" />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Nunito&display=swap"
+          />
+          <link href="https://bloom.chayn.co/hotjarNPS.css" rel="stylesheet" type="text/css" />
         </Head>
         <body>
           <Main />
@@ -25,9 +27,10 @@ MyDocument.getInitialProps = async (ctx) => {
   const sheets = new ServerStyleSheets();
   const originalRenderPage = ctx.renderPage;
 
-  ctx.renderPage = () => originalRenderPage({
-    enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
-  });
+  ctx.renderPage = () =>
+    originalRenderPage({
+      enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
+    });
 
   const initialProps = await Document.getInitialProps(ctx);
 
