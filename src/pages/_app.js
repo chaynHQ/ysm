@@ -129,7 +129,7 @@ function App({ Component, pageProps }) {
     });
 
     if (process.env.NEXT_PUBLIC_ENV === 'live') {
-      hotjar.initialize(Number(process.env.NEXT_PUBLIC_HOTJAR_ID), 5);
+      hotjar.initialize(Number(process.env.NEXT_PUBLIC_HOTJAR_ID), 6);
     }
   }, []);
 
