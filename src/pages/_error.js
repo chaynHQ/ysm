@@ -1,6 +1,5 @@
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import LinkUi from '@material-ui/core/Link';
-import getConfig from 'next/config';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -62,8 +61,6 @@ function Error({ statusCode }) {
 }
 
 Error.getInitialProps = ({ req, res, err }) => {
-  const { publicRuntimeConfig } = getConfig();
-
   let statusCode;
   if (res) {
     statusCode = res.statusCode;
@@ -73,8 +70,8 @@ Error.getInitialProps = ({ req, res, err }) => {
     statusCode = 404;
   }
 
-  const rollbarEnv = publicRuntimeConfig.NEXT_PUBLIC_ROLLBAR_ENV;
-  const rollbarToken = publicRuntimeConfig.NEXT_PUBLIC_ROLLBAR_SERVER_TOKEN;
+  const rollbarEnv = process.env.NEXT_PUBLIC_ROLLBAR_ENV;
+  const rollbarToken = process.env.NEXT_PUBLIC_ROLLBAR_SERVER_TOKEN;
 
   // Only require Rollbar and report error if we're on the server & it's not a local 404.
   if (!process.browser && statusCode !== 404) {

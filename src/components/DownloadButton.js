@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import PropTypes from 'prop-types';
 import React from 'react';
-import firebase from '../config/firebase';
+import analyticsEvent from '../shared/analyticsEvent';
 import downloadPDF from '../shared/download-pdf';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +25,7 @@ const DownloadButton = ({ item }) => {
       onClick={() => {
         downloadPDF(item);
 
-        firebase.analytics().logEvent('download_pdf', {
+        analyticsEvent('download_pdf', {
           item_id: item.id,
         });
       }}
@@ -36,7 +36,7 @@ const DownloadButton = ({ item }) => {
 };
 
 DownloadButton.propTypes = {
-  item: PropTypes.objectOf(PropTypes.any).isRequired,
+  item: PropTypes.oneOfType([PropTypes.object]).isRequired,
 };
 
 export default DownloadButton;

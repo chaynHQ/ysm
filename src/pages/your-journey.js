@@ -188,7 +188,7 @@ export async function getServerSideProps({ preview }) {
 }
 
 YourJourney.propTypes = {
-  container: PropTypes.objectOf(PropTypes.any).isRequired,
+  container: PropTypes.oneOfType([PropTypes.object]).isRequired,
   propThemes: PropTypes.arrayOf(
     PropTypes.objectOf(
       PropTypes.oneOfType([
