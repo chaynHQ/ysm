@@ -60,7 +60,7 @@ const ResourceContents = ({ resource }) => {
             <Link passHref href="/resources/[resourceSlug]/items/[itemId]" as={`/resources/${resource.slug}/items/${resource.content[0].id}`}>
 
               <CardContent>
-                <Grid container justify="space-between" direction="row">
+                <Grid container justifyContent="space-between" direction="row">
                   <Typography color="textSecondary">
                     Start here!
                     {' '}
@@ -89,7 +89,7 @@ const ResourceContents = ({ resource }) => {
 };
 
 ResourceContents.propTypes = {
-  resource: PropTypes.objectOf(PropTypes.any).isRequired,
+  resource: PropTypes.oneOfType([PropTypes.object]).isRequired,
 };
 
 export default ResourceContents;

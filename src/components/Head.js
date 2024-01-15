@@ -3,15 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import isBrowser from '../shared/browserCheck';
 
-const Head = ({
-  title, description, ogDescription, ogImage, ogTitle, ogImageAlt,
-}) => (
+const Head = ({ title, description, ogDescription, ogImage, ogTitle, ogImageAlt }) => (
   <NextHead>
-    <title key="title">
-      {title}
-      {' '}
-      | YSM
-    </title>
+    <title key="title">{title} | YSM</title>
     <link rel="icon" href="/favicon.png" />
     <meta name="description" content={description} />
     <meta property="og:url" content={isBrowser ? window.location.href : null} />
@@ -38,7 +32,8 @@ Head.propTypes = {
 
 Head.defaultProps = {
   ogTitle: null,
-  description: 'Browse accessible resources curated by a team of survivors. Save what you love and come back anytime.',
+  description:
+    'Browse accessible resources curated by a team of survivors. Save what you love and come back anytime.',
   ogDescription: null,
   ogImage: '/logo.png',
   ogImageAlt: 'Line drawing',

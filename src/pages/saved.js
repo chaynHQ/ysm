@@ -172,7 +172,7 @@ const Saved = ({ profile, setBookmarkOnRender }) => {
 };
 
 Saved.propTypes = {
-  profile: PropTypes.objectOf(PropTypes.any).isRequired,
+  profile: PropTypes.oneOfType([PropTypes.object]).isRequired,
   setBookmarkOnRender: PropTypes.func.isRequired,
 };
 
