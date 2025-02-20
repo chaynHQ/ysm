@@ -9,7 +9,7 @@ on:
 jobs:
   security-check: # exits as failure if forked pr, before the build steps
     runs-on: ubuntu-24.04
-    if: github.event.workflow_run.event == 'pull_request' # job only runs on PRs, not pushes to develop
+    if: github.event.workflow_run.event == 'pull_request'
     outputs:
       is_internal: ${{ steps.check_fork.outputs.is_internal }}
     steps:
