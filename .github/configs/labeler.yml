@@ -1,0 +1,22 @@
+needs-file-review:
+  - cypress/**
+  - cypress-after.config.ts
+  - cypress.config.ts
+  - scripts/**
+  - bin/**
+  - "*.sh"
+  - "*.py"
+  - "**/*.json"
+  - "**/*.lock"
+  - "**/*.yaml"
+  - "**/*.yml"
+  - .vscode/**
+  - .husky/**
+  - .gitignore
+  - .nycrc
+  - next.config.js
+  - middleware.ts
+  - next-env.d.ts
+  - jest.config.js
+  - .prettierrc
+  - .github/**

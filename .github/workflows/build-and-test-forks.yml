@@ -1,0 +1,83 @@
+name: Build & Test Forked PRs
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+jobs:
+  verify-labels:
+    runs-on: ubuntu-24.04
+    outputs:
+      should_run_tests: ${{ steps.check-label.outputs.should_run_tests }}
+    steps:
+      - name: Check PR Labels
+        id: check-label
+        run: |
+          labels=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels" | jq -r '.[].name')
+
+              if echo "$labels" | grep -q "needs-file-review"; then
+              echo "Sensitive files modified. Stopping workflow."
+              echo "should_run_tests=false" >> $GITHUB_ENV
+              exit 1
+          else
+              echo "No sensitive files detected or labels are missing. Proceeding with tests."
+              echo "should_run_tests=true" >> $GITHUB_ENV
+      - name: Comment on PR if review is required
+        if: env.should_run_tests == 'false'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: "This PR modifies sensitive files. A maintainer must review and remove the 'needs-file-review' label before tests can proceed."
+            });
+            core.setFailed("Sensitive files changed. Review required.")
+
+  build-and-test:
+    needs: verify-labels
+    if: needs.verify-labels.outputs.should_run_tests == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout PR Code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+  
+      - name: Activate caching for yarn
+        uses: actions/cache@v1
+        with:
+            path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            key: ysm-frontend-${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+            restore-keys: |
+              ysm-frontend-${{ runner.os }}-yarn--
+
+      - name: Use NodeJs
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a
+        with:
+          node-version: '16.x'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+
+      - name: Run linting
+        run: yarn lint
+
+      - name: Build app 
+        run: yarn build
+        env:
+          NEXT_PUBLIC_ENV: ci
+          NEXT_PUBLIC_ROLLBAR_ENV: CI
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+          NEXT_PUBLIC_FIREBASE_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_KEY }}
+          NEXT_PUBLIC_FIREBASE_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_DOMAIN }}
+      - name: Run unit tests
+        run: yarn test:unit

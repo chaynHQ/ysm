@@ -1,13 +1,5 @@
 name: YSM CI pipeline
 
-env:
-  NEXT_PUBLIC_ENV: ci
-  NEXT_PUBLIC_ROLLBAR_ENV: CI
-  NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
-  NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
-  NEXT_PUBLIC_FIREBASE_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_KEY }}
-  NEXT_PUBLIC_FIREBASE_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_DOMAIN }}
-
 on:
   push:
     branches: [master]
@@ -15,21 +7,36 @@ on:
     branches: [master]
 
 jobs:
+  security-check: # exits as failure if forked pr, before the build steps
+    runs-on: ubuntu-24.04
+    if: github.event.workflow_run.event == 'pull_request' # job only runs on PRs, not pushes to develop
+    outputs:
+      is_internal: ${{ steps.check_fork.outputs.is_internal }}
+    steps:
+      - name: Check if PR is from a Fork
+        id: check_fork
+        run: |
+          if [[ "${{ github.event.pull_request.head.repo.fork }}" == "true" ]]; then
+            echo "This PR is from a fork and cannot proceed."
+            echo "is_internal=false" >> $GITHUB_ENV
+            exit 1
+          else
+            echo "is_internal=true" >> $GITHUB_ENV
+          fi
+
   frontend-test-and-build:
-    name: "Frontend test and build"
-
+    needs: security-check
+    if: needs.security-check.outputs.is_internal == 'true'
     runs-on: ubuntu-latest
-
     defaults:
       run:
         shell: bash
-
     steps:
       - uses: actions/checkout@v2
 
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: "16"
+          node-version: '16'
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -49,8 +56,15 @@ jobs:
       - name: Run linting
         run: yarn lint
 
-      - name: Run unit tests
-        run: yarn test:unit
-
       - name: Build app
         run: yarn build
+        env:
+          NEXT_PUBLIC_ENV: ci
+          NEXT_PUBLIC_ROLLBAR_ENV: CI
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+          NEXT_PUBLIC_FIREBASE_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_KEY }}
+          NEXT_PUBLIC_FIREBASE_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_DOMAIN }}
+
+      - name: Run unit tests
+        run: yarn test:unit
