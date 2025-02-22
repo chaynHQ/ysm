@@ -54,7 +54,7 @@ jobs:
 
   frontend-test-and-build-staff:
     needs: [security-check-pr, get-user-permission-push]
-    if: needs.security-check-pr.outputs.is_internal == 'true' || needs.get-user-permission-push.outputs.is_admin == 'true'
+    if: always() && (needs.security-check-pr.outputs.is_internal == 'true' || needs.get-user-permission-push.outputs.is_admin == 'true')
     runs-on: ubuntu-latest
     defaults:
       run:
