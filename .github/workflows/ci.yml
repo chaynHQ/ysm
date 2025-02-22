@@ -10,6 +10,8 @@ jobs:
   get-user-permission-push: # if push: exits as failure if user pushing to master does not have write permissions
     runs-on: ubuntu-24.04
     if: github.event_name == 'push'
+    outputs:
+      is_admin: ${{ steps.check_access_result.outputs.is_admin }}
     steps:
       - name: Get User Permission
         id: check_access
@@ -20,16 +22,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Check User Permission
-        if: steps.check_access.outputs.require-result == 'false'
+        id: check_access_result
         run: |
-          echo "${{ github.triggering_actor }} does not have permissions on this repo."
-          echo "Current permission level is ${{ steps.check_access.outputs.user-permission }}"
-          echo "Job originally triggered by ${{ github.actor }}"
-          exit 1
+          if [[ "${{ steps.check_access.outputs.require-result }}" == "false" ]]; then
+            echo "is_admin=false" >> $GITHUB_OUTPUT
+            echo "${{ github.triggering_actor }} does not have permissions on this repo."
+            echo "Current permission level is ${{ steps.check_access.outputs.user-permission }}"
+            echo "Job originally triggered by ${{ github.actor }}"
+            exit 1
+          else
+            echo "is_admin=true" >> $GITHUB_OUTPUT
+          fi
 
   security-check-pr: # if pr: exits as failure if forked pr, before the build steps
     runs-on: ubuntu-24.04
-    needs: get-user-permission-push
     if: github.event_name == 'pull_request'
     outputs:
       is_internal: ${{ steps.check_fork.outputs.is_internal }}
@@ -45,9 +51,9 @@ jobs:
             echo "is_internal=true" >> $GITHUB_ENV
           fi
 
-  frontend-test-and-build:
-    needs: security-check-pr
-    if: needs.security-check-pr.outputs.is_internal == 'true'
+  frontend-test-and-build-staff:
+    needs: [security-check-pr, get-user-permission-push]
+    if: needs.security-check-pr.outputs.is_internal == 'true' || needs.get-user-permission-push.outputs.is_admin == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
