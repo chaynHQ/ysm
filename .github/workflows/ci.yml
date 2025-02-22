@@ -7,9 +7,30 @@ on:
     branches: [master]
 
 jobs:
-  security-check: # exits as failure if forked pr, before the build steps
+  get-user-permission: # if push: exits as failure if user pushing to master does not have write permissions
     runs-on: ubuntu-24.04
-    if: github.event.workflow_run.event == 'pull_request'
+    if: github.event_name == 'push'
+    steps:
+      - name: Get User Permission
+        id: check_access
+        uses: actions-cool/check-user-permission@v2
+        with:
+          require: write
+          username: ${{ github.triggering_actor }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check User Permission
+        if: steps.check_access.outputs.require-result == 'false'
+        run: |
+          echo "${{ github.triggering_actor }} does not have permissions on this repo."
+          echo "Current permission level is ${{ steps.check_access.outputs.user-permission }}"
+          echo "Job originally triggered by ${{ github.actor }}"
+          exit 1
+
+  security-check: # if pr: exits as failure if forked pr, before the build steps
+    runs-on: ubuntu-24.04
+    needs: get-user-permission
+    if: github.event_name == 'pull_request'
     outputs:
       is_internal: ${{ steps.check_fork.outputs.is_internal }}
     steps:
