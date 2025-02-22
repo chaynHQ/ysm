@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 jobs:
-  get-user-permission: # if push: exits as failure if user pushing to master does not have write permissions
+  get-user-permission-push: # if push: exits as failure if user pushing to master does not have write permissions
     runs-on: ubuntu-24.04
     if: github.event_name == 'push'
     steps:
@@ -15,7 +15,7 @@ jobs:
         id: check_access
         uses: actions-cool/check-user-permission@v2
         with:
-          require: write
+          require: admin
           username: ${{ github.triggering_actor }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -27,9 +27,9 @@ jobs:
           echo "Job originally triggered by ${{ github.actor }}"
           exit 1
 
-  security-check: # if pr: exits as failure if forked pr, before the build steps
+  security-check-pr: # if pr: exits as failure if forked pr, before the build steps
     runs-on: ubuntu-24.04
-    needs: get-user-permission
+    needs: get-user-permission-push
     if: github.event_name == 'pull_request'
     outputs:
       is_internal: ${{ steps.check_fork.outputs.is_internal }}
@@ -46,8 +46,8 @@ jobs:
           fi
 
   frontend-test-and-build:
-    needs: security-check
-    if: needs.security-check.outputs.is_internal == 'true'
+    needs: security-check-pr
+    if: needs.security-check-pr.outputs.is_internal == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
