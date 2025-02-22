@@ -32,6 +32,7 @@ jobs:
             exit 1
           else
             echo "is_admin=true" >> $GITHUB_OUTPUT
+            echo "${{ github.triggering_actor }} has admin permissions on this repo."
           fi
 
   security-check-pr: # if pr: exits as failure if forked pr, before the build steps
@@ -59,6 +60,11 @@ jobs:
       run:
         shell: bash
     steps:
+      - name: Debug Outputs
+        run: |
+          echo "is_internal: ${{ needs.security-check-pr.outputs.is_internal }}"
+          echo "is_admin: ${{ needs.get-user-permission-push.outputs.is_admin }}"
+
       - uses: actions/checkout@v2
 
       - uses: actions/setup-node@v2-beta
