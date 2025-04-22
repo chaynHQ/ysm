@@ -1,22 +1,18 @@
 # Your Story Matters (YSM)
 
+**This repo has been archived as of April 2025.**
+
 Your Story Matters (YSM) is a digital companion for survivors of sexual assault launched in 2019. Formerly called YANA (You Are Not Alone) and funded by Nesta and the UK Department of Digital, Culture, Media and Sport through the Tech to Connect Challenge, YSM has curated content including recovery, moving through trauma, accessing justice through the law, stories of resilience, and allows survivors the option to create an account and save their journey.
 
-## Get Involved
+<img src="https://github.com/user-attachments/assets/98c7c154-09a0-429f-9da3-e6571395e775" alt="YSM_Demo" width="450" height="450"/>
 
-If you would like to help Chayn and receive special access to our organization and volunteer opportunities, please [visit our Getting Involved guide](https://chayn.notion.site/Get-involved-423c067536f3426a88005de68f0cab19). We'll get back to you to schedule an onboarding call. Other ways to get involved and support us are [donating](https://www.paypal.me/chaynhq), starring this repo and making an open-source contribution here on GitHub, and supporting us on social media!
+# Support Our Work
 
-Our social medias:
+Chayn is proudly open-source and built with volunteer contributions. We are grateful for the generosity of the open-source community.
 
-Website - [Chayn](https://www.chayn.co/)
+**Please consider giving this repository a star ⭐ and follow our GitHub profile to help us grow our open-source community and find more contributors like you!**
 
-Twitter - [@ChaynHQ](https://twitter.com/ChaynHQ)
-
-Instagram - [@chaynhq](https://www.instagram.com/chaynhq/)
-
-Youtube - [Chayn Team](https://www.youtube.com/channel/UC5_1Ci2SWVjmbeH8_USm-Bg)
-
-LinkedIn - [@chayn](https://www.linkedin.com/company/chayn)
+Support our mission further by [sponsoring us on GitHub](https://github.com/sponsors/chaynHQ), exploring [our volunteer programs](), and following us on [social media](https://linktr.ee/chayn).
 
 # YSM Frontend
 
